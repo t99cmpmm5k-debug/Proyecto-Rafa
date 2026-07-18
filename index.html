@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V18</title>
+<title>Proyecto Rafa · V18.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -503,7 +503,7 @@ nav{
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V18</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V18.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -513,7 +513,7 @@ nav{
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V18 ACTIVA</span>
+    <span class="version">V18.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -1844,56 +1844,132 @@ function parseGarminDate(text){
 }
 function parseGarminScreenshot(raw){
  const text=normalizeOcrText(raw);
- const lines=text.split("\n").map(x=>x.trim()).filter(Boolean);
+ const lines=text.split("\n").map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
  const flat=lines.join(" ");
- const distance=firstMatch(flat,[
-   /(?:distancia|distance)\s*[:\-]?\s*(\d{1,3}[.,]\d{1,2})\s*(?:km|kil[oó]metros?)/i,
-   /(\d{1,3}[.,]\d{1,2})\s*km\b/i
- ]);
- const totalTime=firstMatch(flat,[
-   /(?:tiempo(?:\s+total)?|time|duraci[oó]n)\s*[:\-]?\s*(\d{1,2}:\d{2}(?::\d{2})?)/i,
-   /\b(\d{1,2}:\d{2}:\d{2})\b/
- ]);
- const pace=firstMatch(flat,[
-   /(?:ritmo(?:\s+medio)?|average pace|ritmo prom(?:edio)?)\s*[:\-]?\s*(\d{1,2}:\d{2})\s*(?:\/\s*km|min\/km)?/i,
-   /\b(\d{1,2}:\d{2})\s*\/\s*km\b/i
- ]);
- const avgHr=firstMatch(flat,[
-   /(?:frecuencia cardiaca media|fc media|average heart rate|pulso medio)\s*[:\-]?\s*(\d{2,3})/i,
-   /(?:media|promedio)\s*(\d{2,3})\s*(?:ppm|bpm)/i
- ]);
- const maxHr=firstMatch(flat,[
-   /(?:frecuencia cardiaca m[aá]xima|fc m[aá]x(?:ima)?|maximum heart rate|pulso m[aá]ximo)\s*[:\-]?\s*(\d{2,3})/i,
-   /(?:m[aá]x(?:imo|ima)?|maximum)\s*(\d{2,3})\s*(?:ppm|bpm)/i
- ]);
- const cadence=firstMatch(flat,[
-   /(?:cadencia media|average cadence)\s*[:\-]?\s*(\d{2,3})/i,
-   /(?:cadencia)\s*[:\-]?\s*(\d{2,3})\s*(?:ppm|spm)?/i
- ]);
- const temperature=firstMatch(flat,[
-   /(?:temperatura|temperature)\s*[:\-]?\s*(-?\d{1,2}(?:[.,]\d)?)\s*°?\s*c/i,
-   /(-?\d{1,2}(?:[.,]\d)?)\s*°\s*c\b/i
- ]);
- let type="Rodaje";
+
+ const findValueNearLabel=(labels,valueRegex,windowSize=3)=>{
+   const lab=labels.map(x=>x.toLowerCase());
+   for(let i=0;i<lines.length;i++){
+     const current=lines[i].toLowerCase();
+     if(!lab.some(l=>current.includes(l)))continue;
+
+     let m=lines[i].match(valueRegex);
+     if(m&&m[1])return m[1];
+
+     for(let j=1;j<=windowSize;j++){
+       if(i-j>=0){
+         m=lines[i-j].match(valueRegex);
+         if(m&&m[1])return m[1];
+       }
+     }
+
+     for(let j=1;j<=windowSize;j++){
+       if(i+j<lines.length){
+         m=lines[i+j].match(valueRegex);
+         if(m&&m[1])return m[1];
+       }
+     }
+   }
+   return "";
+ };
+
+ const distance=findValueNearLabel(
+   ["distancia","distance"],
+   /(\d{1,3}[.,]\d{1,2})\s*(?:km)?/i,
+   2
+ ) || firstMatch(flat,[/(\d{1,3}[.,]\d{1,2})\s*km\b/i]);
+
+ const totalTime=findValueNearLabel(
+   ["tiempo total","tiempo en movimiento","moving time","time","duración","duracion"],
+   /(\d{1,2}:\d{2}(?::\d{2})?)/,
+   2
+ ) || firstMatch(flat,[/\b(\d{1,2}:\d{2}:\d{2})\b/]);
+
+ const pace=findValueNearLabel(
+   ["ritmo medio","average pace","ritmo promedio","ritmo"],
+   /(\d{1,2}:\d{2})\s*(?:\/\s*km|min\/km)?/i,
+   2
+ ) || firstMatch(flat,[/\b(\d{1,2}:\d{2})\s*\/\s*km\b/i]);
+
+ const avgHr=findValueNearLabel(
+   ["frecuencia cardiaca media","ritmo cardiaco promedio","fc media","average heart rate","pulso medio"],
+   /(\d{2,3})\s*(?:ppm|bpm)?/i,
+   2
+ ) || firstMatch(flat,[/(?:media|promedio)\s*(\d{2,3})\s*(?:ppm|bpm)/i]);
+
+ const maxHr=findValueNearLabel(
+   ["frecuencia cardiaca máxima","frecuencia cardiaca maxima","fc máxima","fc maxima","maximum heart rate","pulso máximo","pulso maximo"],
+   /(\d{2,3})\s*(?:ppm|bpm)?/i,
+   2
+ ) || firstMatch(flat,[/(?:máx(?:imo|ima)?|max(?:imo|ima)?|maximum)\s*(\d{2,3})\s*(?:ppm|bpm)/i]);
+
+ const cadence=findValueNearLabel(
+   ["cadencia media","average cadence","cadencia"],
+   /(\d{2,3})\s*(?:ppm|spm)?/i,
+   2
+ );
+
+ const temperature=findValueNearLabel(
+   ["temperatura","temperature"],
+   /(-?\d{1,2}(?:[.,]\d)?)\s*°?\s*c/i,
+   2
+ ) || firstMatch(flat,[/(-?\d{1,2}(?:[.,]\d)?)\s*°\s*c\b/i]);
+
+ const titleCandidates=lines.filter(l=>{
+   const lo=l.toLowerCase();
+   return l.length>5 && l.length<90 &&
+    !/^\d/.test(l) &&
+    !lo.includes("resumen") &&
+    !lo.includes("estadísticas") &&
+    !lo.includes("estadisticas") &&
+    !lo.includes("gráficos") &&
+    !lo.includes("graficos") &&
+    !lo.includes("distancia") &&
+    !lo.includes("ritmo") &&
+    !lo.includes("tiempo") &&
+    !lo.includes("calorías") &&
+    !lo.includes("calorias") &&
+    !lo.includes("frecuencia") &&
+    !lo.includes("garmin forerunner") &&
+    !lo.includes("administrar grupo") &&
+    !lo.includes("kudos") &&
+    !lo.includes("obtén datos") &&
+    !lo.includes("obten datos");
+ });
+ let detectedTitle="";
+ for(const l of titleCandidates){
+   if(l.includes("-") || l.toLowerCase().includes("rodaje") || l.toLowerCase().includes("carrera")){
+     detectedTitle=l;
+     break;
+   }
+ }
+
  const lower=flat.toLowerCase();
- let category="Zona 2";
- if(lower.includes("interval")||lower.includes("serie")){category="Series";type="Series"}
- else if(lower.includes("carrera")||lower.includes("race")){category="Carrera";type="Carrera"}
- else if(lower.includes("recuper")){category="Recuperación";type="Recuperación"}
- else if(lower.includes("tirada larga")||lower.includes("long run")){category="Tirada larga";type="Tirada larga"}
- else if(lower.includes("zona 2")||lower.includes("z2")){category="Zona 2";type="Rodaje Z2"}
+ let category="Zona 2",type=detectedTitle||"Rodaje";
+ if(lower.includes("interval")||lower.includes("serie")){category="Series";if(!detectedTitle)type="Series"}
+ else if(lower.includes("carrera")||lower.includes("race")){category="Carrera";if(!detectedTitle)type="Carrera"}
+ else if(lower.includes("recuper")){category="Recuperación";if(!detectedTitle)type="Recuperación"}
+ else if(lower.includes("tirada larga")||lower.includes("long run")){category="Tirada larga";if(!detectedTitle)type="Tirada larga"}
+ else if(lower.includes("zona 2")||lower.includes("z2")){category="Zona 2";if(!detectedTitle)type="Rodaje Z2"}
+
  const d=parseDecimal(distance);
  let time=normalizeTime(totalTime);
- if(!time&&d&&pace){
-   const paceSec=timeToSeconds(pace);
+ let paceValue=normalizeTime(pace);
+
+ if(!time && d && paceValue){
+   const paceSec=timeToSeconds(paceValue);
    if(paceSec)time=secondsToTime(paceSec*d);
  }
+ if(!paceValue && d && time){
+   paceValue=calcPace(d,time);
+ }
+
  return {
   date:parseGarminDate(text),
   type,category,
   distance:d||"",
   time,
-  pace:pace||"",
+  pace:paceValue||"",
   avgHr:parseDecimal(avgHr)||"",
   maxHr:parseDecimal(maxHr)||"",
   avgCadence:parseDecimal(cadence)||"",
@@ -1908,7 +1984,8 @@ function renderGarminDetected(data){
   ["FC media",data.avgHr?`${data.avgHr} ppm`:"—"],["FC máxima",data.maxHr?`${data.maxHr} ppm`:"—"],
   ["Cadencia",data.avgCadence?`${data.avgCadence} ppm`:"—"],["Temperatura",data.temperature!==""?`${data.temperature} °C`:"—"]
  ];
- $("#garminDetected").innerHTML=`<div class="ocr-result-grid">${values.map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div>`;
+ const missing=values.filter(([,v])=>v==="—").map(([k])=>k);
+ $("#garminDetected").innerHTML=`<div class="ocr-result-grid">${values.map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div>${missing.length?`<div class="z2-note">No se detectó: ${missing.join(", ")}. Podrás completarlo manualmente antes de guardar.</div>`:""}`;
 }
 async function importGarminImage(file){
  const status=$("#garminStatus"),statusText=$("#garminStatusText"),progress=$("#garminProgress");
@@ -1930,7 +2007,7 @@ async function importGarminImage(file){
    progress.style.width="100%";
    const parsed=parseGarminScreenshot(result.data.text);
    renderGarminDetected(parsed);
-   const useful=[parsed.distance,parsed.time,parsed.avgHr,parsed.maxHr,parsed.avgCadence].filter(Boolean).length;
+   const useful=[parsed.distance,parsed.time,parsed.pace,parsed.avgHr,parsed.maxHr,parsed.avgCadence].filter(Boolean).length;
    if(useful<2){
      statusText.innerHTML="<strong>No se han reconocido suficientes datos.</strong> Prueba con una captura completa y nítida.";
      return;
@@ -2156,7 +2233,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=18").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=181").catch(()=>{}))}
 render();
 </script>
 </body>
