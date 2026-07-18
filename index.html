@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V18.2</title>
+<title>Proyecto Rafa · V19</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -498,12 +498,32 @@ nav{
 .ocr-result-grid b{font-size:13px}
 @media(max-width:520px){.garmin-import-actions{grid-template-columns:1fr}.ocr-result-grid{grid-template-columns:1fr 1fr}}
 
+
+.more-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:12px}
+.more-card{
+ border:1px solid var(--line);background:linear-gradient(145deg,#14221a,#0e1712);
+ border-radius:21px;padding:16px;text-align:left;color:var(--text);min-height:122px;
+ box-shadow:0 10px 30px rgba(0,0,0,.18)
+}
+.more-card span{display:block;font-size:25px;margin-bottom:12px}
+.more-card strong{display:block;font-size:16px;margin-bottom:5px}
+.more-card small{color:var(--muted);font-size:11px;line-height:1.4}
+.more-section{margin-top:18px}
+.more-back{margin-bottom:12px}
+nav{grid-template-columns:repeat(6,1fr)!important}
+.nav{font-size:10px!important;padding-left:2px!important;padding-right:2px!important}
+.nav span{font-size:18px!important}
+.compact-top-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+@media(max-width:520px){
+ .more-grid{grid-template-columns:1fr 1fr}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V18.2</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -513,7 +533,7 @@ nav{
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V18.2 ACTIVA</span>
+    <span class="version">V19 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -547,6 +567,7 @@ nav{
 
 
 <section id="progreso" class="view">
+  <button class="btn secondary small more-back" type="button" onclick="setView('mas')">‹ Volver a Más</button>
   <div class="section-head">
     <div><div class="kicker">EVOLUCIÓN</div><h2>Progreso</h2></div>
   </div>
@@ -693,6 +714,7 @@ nav{
 </section>
 
 <section id="material" class="view">
+  <button class="btn secondary small more-back" type="button" onclick="setView('mas')">‹ Volver a Más</button>
   <div class="section-head">
     <div><div class="kicker">EQUIPO</div><h2>Material</h2></div>
     <button class="btn primary" data-add="gear">＋ Añadir</button>
@@ -760,16 +782,40 @@ nav{
   <div id="finishedRaces" class="stack"></div>
 
   </div>
-  <div class="section-head"><h3>Copias de seguridad</h3></div>
-  <div class="toolbar">
-    <button class="btn secondary" id="exportBtn">Exportar</button>
-    <label class="btn secondary" style="text-align:center">Importar<input class="file" id="importInput" type="file" accept=".json,application/json"></label>
+</section>
+
+<section id="mas" class="view">
+  <div class="section-head">
+    <div><div class="kicker">ORGANIZACIÓN</div><h2>Más</h2></div>
   </div>
-  <div class="backup-card">
-    <strong>Seguridad de tus datos</strong>
-    <span id="backupStatus" class="backup-status">Comprobando última copia…</span>
+
+  <div class="more-grid">
+    <button class="more-card" type="button" onclick="setView('progreso')">
+      <span>↗</span><strong>Progreso</strong><small>Estadísticas, tendencias, Zona 2 y evolución.</small>
+    </button>
+    <button class="more-card" type="button" onclick="setView('material')">
+      <span>◇</span><strong>Material</strong><small>Zapatillas, kilómetros y vida útil estimada.</small>
+    </button>
+    <button class="more-card" type="button" onclick="document.getElementById('exportBtn').click()">
+      <span>⇩</span><strong>Exportar copia</strong><small>Guarda todos tus datos en un archivo JSON.</small>
+    </button>
+    <button class="more-card" type="button" onclick="document.getElementById('importInput').click()">
+      <span>⇧</span><strong>Importar copia</strong><small>Restaura tus datos desde una copia anterior.</small>
+    </button>
+  </div>
+
+  <div class="more-section">
+    <div class="backup-card">
+      <strong>Seguridad de tus datos</strong>
+      <span id="backupStatus" class="backup-status">Comprobando última copia…</span>
+    </div>
+    <div class="toolbar" style="margin-top:10px">
+      <button class="btn secondary" id="exportBtn">Exportar datos</button>
+      <label class="btn secondary" style="text-align:center">Importar datos<input class="file" id="importInput" type="file" accept=".json,application/json"></label>
+    </div>
   </div>
 </section>
+
 </main>
 
 <button class="fab" id="fab">＋</button>
@@ -777,11 +823,10 @@ nav{
 <nav>
   <button class="nav active" data-view="inicio"><span>⌂</span>Inicio</button>
   <button class="nav" data-view="plan"><span>▤</span>Plan</button>
-  <button class="nav" data-view="progreso"><span>↗</span>Progreso</button>
   <button class="nav" data-view="running"><span>◉</span>Running</button>
   <button class="nav" data-view="gym"><span>▣</span>Gym</button>
-  <button class="nav" data-view="material"><span>◇</span>Material</button>
   <button class="nav" data-view="carreras"><span>★</span>Carreras</button>
+  <button class="nav" data-view="mas"><span>•••</span>Más</button>
 </nav>
 
 <dialog id="modal">
@@ -1781,7 +1826,7 @@ function render(){
  renderRaces();
  renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();renderGymPlan();
 }
-function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
+function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
 document.querySelectorAll("[data-race-filter]").forEach(b=>b.onclick=()=>{raceFilter=b.dataset.raceFilter;document.querySelectorAll("[data-race-filter]").forEach(x=>x.classList.toggle("active",x===b));renderRaceList()});
@@ -1800,6 +1845,11 @@ $("#garminFileInput").onchange=e=>{
 };
 $("#prevRaceMonth").onclick=()=>{raceMonthOffset--;renderRaceCalendar()};
 $("#nextRaceMonth").onclick=()=>{raceMonthOffset++;renderRaceCalendar()};
+function updateFab(){
+ const fab=$("#fab");
+ const hidden=["inicio","progreso","mas"].includes(currentView);
+ fab.style.display=hidden?"none":"block";
+}
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
 
 
@@ -2246,8 +2296,8 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=182").catch(()=>{}))}
-render();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=19").catch(()=>{}))}
+render();updateFab();
 </script>
 </body>
 </html>
