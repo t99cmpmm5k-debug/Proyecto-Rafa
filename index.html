@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V7.1</title>
+<title>Proyecto Rafa · V7.3</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
  integrity="sha256-p4NxAoJBhIINfQ3ynT7tOMiB03yMZQKxQ9S1a5v8GZE=" crossorigin="">
 <style>
@@ -154,11 +154,58 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
  .route-panel{padding:10px}
 }
 
+
+.route-map-wrap.fullscreen-map{
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ background:#0b1014;
+ padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+ display:flex;
+ flex-direction:column;
+}
+.route-map-wrap.fullscreen-map #routeMap{
+ flex:1;
+ height:auto!important;
+ min-height:0!important;
+ border-radius:0;
+ border:0;
+}
+.route-map-wrap.fullscreen-map .route-map-note{display:none}
+.route-fullscreen-bar{
+ display:none;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ padding:10px 12px;
+ background:#0b1014;
+ border-bottom:1px solid var(--line);
+}
+.route-map-wrap.fullscreen-map .route-fullscreen-bar{display:flex}
+.route-fullscreen-title{font-weight:900}
+#routeFullscreenBtn{
+ position:absolute;
+ right:12px;
+ bottom:12px;
+ z-index:600;
+ width:54px;
+ height:54px;
+ border-radius:50%;
+ border:0;
+ background:var(--green);
+ color:#0b1208;
+ font-size:24px;
+ font-weight:900;
+ box-shadow:0 8px 24px #0008;
+}
+.route-map-wrap.fullscreen-map #routeFullscreenBtn{display:none}
+body.route-map-open{overflow:hidden}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V7.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V7.3</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -168,7 +215,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V7.1 ACTIVA</span>
+    <span class="version">V7.3 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -251,9 +298,14 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
       <button type="button" class="btn danger small" id="routeClear">Limpiar</button>
     </div>
 
-    <div class="route-map-wrap">
+    <div class="route-map-wrap" id="routeMapWrap">
+      <div class="route-fullscreen-bar">
+        <div class="route-fullscreen-title">Planificar ruta</div>
+        <button type="button" class="btn secondary small" id="routeExitFullscreen">✕ Cerrar</button>
+      </div>
       <div id="routeMap"></div>
-      <div class="route-map-note">Mueve el mapa normalmente. Para marcar un punto, pulsa primero «Añadir punto». Los marcadores se pueden arrastrar.</div>
+      <button type="button" id="routeFullscreenBtn" aria-label="Abrir mapa a pantalla completa">⛶</button>
+      <div class="route-map-note">Toca el botón ⛶ para abrir el mapa a pantalla completa.</div>
     </div>
 
     <div class="route-actions">
@@ -416,16 +468,24 @@ function setAddMode(on){
 }
 function initRouteMap(){
  if(routeMap || !window.L) return;
- routeMap=L.map("routeMap",{zoomControl:true}).setView([37.5635,-1.8100],14);
+ routeMap=L.map("routeMap",{zoomControl:true,preferCanvas:true}).setView([37.5635,-1.8100],14);
 
- const streets=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-   maxZoom:19,attribution:'&copy; OpenStreetMap'
+ const streets=L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{
+   subdomains:"abcd",maxZoom:20,
+   attribution:'&copy; OpenStreetMap &copy; CARTO',
+   crossOrigin:true,
+   updateWhenIdle:false,
+   keepBuffer:4
+ });
+ const osm=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
+   maxZoom:19,attribution:'&copy; OpenStreetMap',crossOrigin:true,keepBuffer:4
  });
  const satellite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{
-   maxZoom:19,attribution:"Esri"
+   maxZoom:19,attribution:"Esri",crossOrigin:true,keepBuffer:4
  });
+
  streets.addTo(routeMap);
- L.control.layers({"Mapa":streets,"Satélite":satellite},null,{position:"topright"}).addTo(routeMap);
+ L.control.layers({"Mapa claro":streets,"OpenStreetMap":osm,"Satélite":satellite},null,{position:"topright"}).addTo(routeMap);
 
  routeLine=L.polyline([],{color:"#36a7ff",weight:6,opacity:.95,lineJoin:"round"}).addTo(routeMap);
 
@@ -435,7 +495,15 @@ function initRouteMap(){
    setAddMode(false);
    refreshRoute();
  });
- setTimeout(()=>routeMap.invalidateSize(),100);
+
+ const repairMap=()=>{
+   if(!routeMap)return;
+   routeMap.invalidateSize({pan:false,debounceMoveend:true});
+ };
+ [100,350,800,1500].forEach(ms=>setTimeout(repairMap,ms));
+ window.addEventListener("resize",repairMap);
+ window.visualViewport?.addEventListener("resize",repairMap);
+ new ResizeObserver(repairMap).observe(document.getElementById("routeMap"));
 }
 async function requestRoadRoute(){
  if(routePoints.length<2){
@@ -538,7 +606,7 @@ function drawSavedRouteMaps(){
    const geometry=(r.geometry?.length?r.geometry:r.points);
    if(!geometry?.length)return;
    const m=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false});
-   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);
+   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:20,crossOrigin:true}).addTo(m);
    const line=L.polyline(geometry,{color:"#36a7ff",weight:5}).addTo(m);
    m.fitBounds(line.getBounds(),{padding:[18,18]});
    savedRouteMaps.push(m);
@@ -576,7 +644,7 @@ function render(){
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
  renderSavedRoutes();
 }
-function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));if(v==="rutas")setTimeout(()=>{initRouteMap();routeMap?.invalidateSize();updateRouteDrawing()},80);scrollTo({top:0,behavior:"smooth"})}
+function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));if(v==="rutas"){[80,350,900].forEach(ms=>setTimeout(()=>{initRouteMap();routeMap?.invalidateSize({pan:false});updateRouteDrawing()},ms));}scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 $("#fab").onclick=()=>{if(currentView==="rutas"){setView("rutas");return}openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":"run")};
 
@@ -690,6 +758,18 @@ $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.routes)x.routes=[];if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
 
 
+
+function setRouteFullscreen(open){
+ const wrap=$("#routeMapWrap");
+ wrap.classList.toggle("fullscreen-map",open);
+ document.body.classList.toggle("route-map-open",open);
+ setTimeout(()=>routeMap?.invalidateSize({pan:false}),80);
+ setTimeout(()=>routeMap?.invalidateSize({pan:false}),350);
+}
+$("#routeFullscreenBtn").addEventListener("click",()=>setRouteFullscreen(true));
+$("#routeExitFullscreen").addEventListener("click",()=>setRouteFullscreen(false));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")setRouteFullscreen(false)});
+
 $("#routeTarget").addEventListener("change",()=>{
  const target=$("#routeTarget").value;
  $("#routeName").value="Rodaje "+String(target).replace(".",",")+" km";
@@ -697,17 +777,24 @@ $("#routeTarget").addEventListener("change",()=>{
 });
 $("#routeAddPoint").addEventListener("click",()=>setAddMode(!routeAddMode));
 $("#routeLocate").addEventListener("click",()=>{
- if(!navigator.geolocation){alert("Este dispositivo no permite obtener la ubicación.");return}
+ if(!navigator.geolocation){setRouteStatus("Este dispositivo no permite obtener la ubicación.","error");return}
  setRouteStatus("Buscando tu ubicación…","loading");
+ const timer=setTimeout(()=>{
+   setRouteStatus("La ubicación está tardando demasiado. Puedes mover el mapa manualmente y añadir el punto.","error");
+ },8000);
  navigator.geolocation.getCurrentPosition(pos=>{
+   clearTimeout(timer);
    initRouteMap();
    const p=[pos.coords.latitude,pos.coords.longitude];
    routeMap.setView(p,16);
    routePoints.push(p);
    setAddMode(false);
    refreshRoute();
- },()=>setRouteStatus("No se pudo obtener tu ubicación. Revisa los permisos del navegador.","error"),{
-   enableHighAccuracy:true,timeout:10000,maximumAge:30000
+ },()=>{
+   clearTimeout(timer);
+   setRouteStatus("No se pudo obtener tu ubicación. Revisa los permisos o mueve el mapa manualmente.","error");
+ },{
+   enableHighAccuracy:false,timeout:7000,maximumAge:120000
  });
 });
 $("#routeUndo").addEventListener("click",()=>{
@@ -738,7 +825,7 @@ $("#routeSave").addEventListener("click",()=>{
  save();alert("Ruta guardada.");
 });
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=71").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=73").catch(()=>{}))}
 render();
 </script>
 </body>
