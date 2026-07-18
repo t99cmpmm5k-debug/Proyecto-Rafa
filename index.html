@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V18.1</title>
+<title>Proyecto Rafa · V18.2</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -503,7 +503,7 @@ nav{
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V18.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V18.2</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -513,7 +513,7 @@ nav{
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V18.1 ACTIVA</span>
+    <span class="version">V18.2 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -2031,6 +2031,7 @@ const defs={
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${q.date||new Date().toISOString().slice(0,10)}"></div>
  <div class="field"><label>Nombre</label><input name="type" value="${q.type||cat}" placeholder="Ej. Rodaje Z2 suave"></div>
  <div class="two"><div class="field"><label>Distancia total (km)</label><input name="distance" type="number" step=".01" required value="${q.distance??""}"></div><div class="field"><label>Tiempo total</label><input name="time" required value="${q.time||""}" placeholder="47:35"></div></div>
+ <div class="field"><label>Ritmo medio</label><input name="pace" id="runPaceField" value="${q.pace||calcPace(q.distance,q.time)||""}" placeholder="Se calcula automáticamente" readonly></div>
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
  <div id="runDynamicFields"></div>
  <div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div>
@@ -2100,7 +2101,19 @@ function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDat
    window.gymRoutinePreset=null;
  }
  $("#modal").showModal();
- if(type==="run"){const q=item||{};renderRunDynamicFields(q.category||inferRunCategory(q),q);document.querySelectorAll('input[name="category"]').forEach(r=>r.addEventListener("change",()=>renderRunDynamicFields(r.value,q)));window.quickRunPreset=null}
+ if(type==="run"){
+   const q=item||{};
+   renderRunDynamicFields(q.category||inferRunCategory(q),q);
+   document.querySelectorAll('input[name="category"]').forEach(r=>r.addEventListener("change",()=>renderRunDynamicFields(r.value,q)));
+   const distanceInput=document.querySelector('input[name="distance"]');
+   const timeInput=document.querySelector('input[name="time"]');
+   const paceInput=document.querySelector('input[name="pace"]');
+   const updatePace=()=>{if(paceInput)paceInput.value=calcPace(distanceInput?.value,timeInput?.value)||""};
+   distanceInput?.addEventListener("input",updatePace);
+   timeInput?.addEventListener("input",updatePace);
+   if(paceInput&&!paceInput.value)updatePace();
+   window.quickRunPreset=null;
+ }
 }
 function renderExerciseLibrary(){
  $("#exerciseLibrary").innerHTML=EXERCISES.map((e,i)=>`<button type="button" class="library-btn" onclick="addExercise(${i})"><b>${e.name}</b><small>Paso ${e.step} kg</small></button>`).join("")
@@ -2233,7 +2246,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=181").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=182").catch(()=>{}))}
 render();
 </script>
 </body>
