@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V14.1</title>
+<title>Proyecto Rafa · V15</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -344,11 +344,106 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 .finished-bar-track i{display:block;height:100%;border-radius:999px;background:var(--race)}
 .finished-bar-row b{text-align:right;font-size:11px}
 
+
+:root{
+ --bg:#07100c;
+ --panel:#101a15;
+ --panel2:#15231b;
+ --line:#26382d;
+ --text:#f3f7f4;
+ --muted:#8fa198;
+ --green:#a8f07a;
+ --green2:#6ecb49;
+ --danger:#ff7a80;
+}
+body{
+ background:
+ radial-gradient(circle at top right,#183323 0,transparent 28%),
+ radial-gradient(circle at top left,#10251a 0,transparent 24%),
+ var(--bg);
+}
+header{
+ background:linear-gradient(180deg,rgba(7,16,12,.96),rgba(7,16,12,.82));
+ border-bottom:1px solid #1d2e24;
+ backdrop-filter:blur(18px);
+}
+.hero{
+ position:relative;
+ overflow:hidden;
+ background:
+ radial-gradient(circle at 85% 10%,rgba(168,240,122,.25),transparent 32%),
+ linear-gradient(145deg,#16291c,#0d1711);
+ border:1px solid #35543e;
+ box-shadow:0 18px 55px rgba(0,0,0,.28);
+}
+.hero:after{
+ content:"";
+ position:absolute;
+ width:180px;height:180px;border-radius:50%;
+ border:28px solid rgba(168,240,122,.06);
+ right:-72px;bottom:-95px;
+}
+.hero h2{font-size:30px;letter-spacing:-1.1px}
+.metric,.card,.quick-run,.race-calendar-card,.finished-chart-card,.finished-insight{
+ box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+.btn.primary{
+ background:linear-gradient(135deg,var(--green),#71d84f);
+ box-shadow:0 8px 20px rgba(112,216,79,.18);
+}
+nav{
+ background:rgba(9,16,12,.94);
+ border-top:1px solid #223429;
+ backdrop-filter:blur(18px);
+}
+.nav.active{color:var(--green)}
+.nav.active:after{
+ content:"";
+ width:18px;height:3px;border-radius:999px;background:var(--green);
+ position:absolute;bottom:5px;left:50%;transform:translateX(-50%);
+}
+.nav{position:relative}
+.section-head h2{font-size:27px;letter-spacing:-.7px}
+.section-head h3{font-size:18px}
+.race-view-switch{
+ display:grid;grid-template-columns:1fr 1fr;gap:8px;
+ background:#0d1712;border:1px solid var(--line);padding:6px;border-radius:18px;margin-bottom:14px
+}
+.race-view-btn{
+ border:0;background:transparent;color:var(--muted);padding:12px;border-radius:13px;font-weight:900
+}
+.race-view-btn.active{
+ background:linear-gradient(135deg,#203826,#17291c);
+ color:var(--green);box-shadow:inset 0 0 0 1px #385640
+}
+.race-view-panel{display:none}
+.race-view-panel.active{display:block}
+.backup-card{
+ background:linear-gradient(145deg,#15231b,#0d1712);
+ border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:12px
+}
+.backup-card strong{display:block;font-size:15px;margin-bottom:5px}
+.backup-card span{font-size:12px;color:var(--muted)}
+.backup-status.good{color:#bff5a0}.backup-status.warn{color:#ffd08a}
+.home-focus{
+ display:grid;grid-template-columns:1.4fr .8fr;gap:10px;margin:12px 0
+}
+.home-focus .focus-card{
+ background:linear-gradient(145deg,#14221a,#0e1712);
+ border:1px solid var(--line);border-radius:20px;padding:14px
+}
+.focus-card small{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.focus-card strong{font-size:18px;line-height:1.2}
+@media(max-width:560px){
+ .home-focus{grid-template-columns:1fr}
+ .hero h2{font-size:27px}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V14.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V15</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -358,13 +453,17 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V14.1 ACTIVA</span>
+    <span class="version">V15 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
     <div class="metric"><span>Último ritmo Z2</span><strong id="lastPace">—</strong></div>
     <div class="metric"><span>FC media Z2</span><strong id="lastHr">—</strong></div>
     <div class="metric"><span>Entrenamientos</span><strong id="totalRuns">0</strong></div>
+  </div>
+  <div class="home-focus">
+    <div class="focus-card"><small>FOCO ACTUAL</small><strong>Mejorar eficiencia en Zona 2</strong></div>
+    <div class="focus-card"><small>CONSTANCIA</small><strong id="consistencyScore">—</strong></div>
   </div>
 
   <div class="section-head"><h3>Entrenamiento de hoy</h3><button class="btn secondary small" onclick="setView('plan')">Ver semana</button></div>
@@ -521,6 +620,11 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <button class="btn primary" data-add="race">＋ Añadir</button>
   </div>
 
+  <div class="race-view-switch">
+    <button type="button" class="race-view-btn active" data-race-view="calendar">Calendario</button>
+    <button type="button" class="race-view-btn" data-race-view="history">Historial</button>
+  </div>
+  <div id="raceCalendarPanel" class="race-view-panel active">
   <div id="nextRaceCard"></div>
 
   <div class="race-legend">
@@ -552,7 +656,10 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   </div>
   <div id="races" class="stack"></div>
 
+  </div>
+  <div id="raceHistoryPanel" class="race-view-panel">
   <div class="section-head"><h3>Carreras terminadas</h3></div>
+
   <div id="finishedSummary" class="finished-summary"></div>
   <div class="finished-filters">
     <button class="finished-filter active" data-finished-filter="Todas">Todas</button>
@@ -566,10 +673,15 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   <div id="finishedChart"></div>
   <div id="finishedRaces" class="stack"></div>
 
+  </div>
   <div class="section-head"><h3>Copias de seguridad</h3></div>
   <div class="toolbar">
     <button class="btn secondary" id="exportBtn">Exportar</button>
     <label class="btn secondary" style="text-align:center">Importar<input class="file" id="importInput" type="file" accept=".json,application/json"></label>
+  </div>
+  <div class="backup-card">
+    <strong>Seguridad de tus datos</strong>
+    <span id="backupStatus" class="backup-status">Comprobando última copia…</span>
   </div>
 </section>
 </main>
@@ -664,7 +776,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas";
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar";
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -1436,6 +1548,33 @@ function renderRaces(){
  renderFinishedRaces();
 }
 
+
+function renderConsistency(){
+ const now=new Date(),start=new Date(now);start.setDate(now.getDate()-27);start.setHours(0,0,0,0);
+ const recent=data.runs.filter(r=>new Date(r.date+"T12:00:00")>=start);
+ const weeks=new Set(recent.map(r=>{
+   const d=new Date(r.date+"T12:00:00"),wd=(d.getDay()+6)%7,m=new Date(d);m.setDate(d.getDate()-wd);
+   return isoDate(m);
+ }));
+ const score=Math.min(100,Math.round((recent.length/12)*70+(weeks.size/4)*30));
+ $("#consistencyScore").textContent=score>=85?"Muy alta":score>=65?"Buena":score>=40?"En construcción":"Por activar";
+}
+function renderBackupStatus(){
+ const el=$("#backupStatus");
+ if(!el)return;
+ const raw=localStorage.getItem("proyectoRafaLastBackup");
+ if(!raw){el.textContent="Todavía no has exportado una copia de seguridad.";el.className="backup-status warn";return}
+ const days=Math.floor((Date.now()-Number(raw))/86400000);
+ el.textContent=days===0?"Última copia realizada hoy.":`Última copia hace ${days} día${days===1?"":"s"}.`;
+ el.className="backup-status "+(days<=7?"good":"warn");
+}
+function setRaceView(view){
+ raceView=view;
+ document.querySelectorAll("[data-race-view]").forEach(b=>b.classList.toggle("active",b.dataset.raceView===view));
+ $("#raceCalendarPanel").classList.toggle("active",view==="calendar");
+ $("#raceHistoryPanel").classList.toggle("active",view==="history");
+}
+
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -1450,13 +1589,14 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  renderRaces();
- renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();
+ renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
 document.querySelectorAll("[data-race-filter]").forEach(b=>b.onclick=()=>{raceFilter=b.dataset.raceFilter;document.querySelectorAll("[data-race-filter]").forEach(x=>x.classList.toggle("active",x===b));renderRaceList()});
 document.querySelectorAll("[data-finished-filter]").forEach(b=>b.onclick=()=>{finishedRaceFilter=b.dataset.finishedFilter;document.querySelectorAll("[data-finished-filter]").forEach(x=>x.classList.toggle("active",x===b));renderFinishedRaces()});
+document.querySelectorAll("[data-race-view]").forEach(b=>b.onclick=()=>setRaceView(b.dataset.raceView));
 $("#prevRaceMonth").onclick=()=>{raceMonthOffset--;renderRaceCalendar()};
 $("#nextRaceMonth").onclick=()=>{raceMonthOffset++;renderRaceCalendar()};
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
@@ -1616,7 +1756,7 @@ $("#form").onsubmit=e=>{
  if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);
  save();$("#modal").close()
 };
-function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);localStorage.setItem("proyectoRafaLastBackup",String(Date.now()));renderBackupStatus()}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.plan)x.plan=[];if(!x.templates)x.templates=structuredClone(seed.templates||[]);if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
 
@@ -1627,7 +1767,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=141").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=15").catch(()=>{}))}
 render();
 </script>
 </body>
