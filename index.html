@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V8</title>
+<title>Proyecto Rafa · V9</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -75,7 +75,7 @@ main{max-width:820px;margin:auto;padding:15px}
 }
 nav{
   position:fixed;bottom:0;left:0;right:0;z-index:40;
-  display:grid;grid-template-columns:repeat(6,1fr);
+  display:grid;grid-template-columns:repeat(7,1fr);
   padding:8px 7px calc(8px + env(safe-area-inset-bottom));
   background:rgba(8,11,14,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line)
 }
@@ -168,11 +168,47 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
  .feeling-grid{grid-template-columns:repeat(3,1fr)}
 }
 
+
+.stats-hero{background:linear-gradient(145deg,#17231a,#10171d);border:1px solid #42632f;border-radius:24px;padding:18px}
+.stats-hero strong{font-size:29px;display:block;margin-top:5px}
+.stats-hero p{color:var(--muted);margin-top:6px;line-height:1.45}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.stat-tile{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}
+.stat-tile span{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
+.stat-tile strong{font-size:20px}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:21px;padding:15px;margin-top:12px}
+.chart-title{font-size:17px;font-weight:900;margin-bottom:14px}
+.bar-chart{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;align-items:end;height:190px}
+.bar-col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px}
+.bar-value{font-size:9px;color:var(--muted)}
+.bar{width:100%;max-width:30px;min-height:3px;background:linear-gradient(180deg,var(--green2),var(--green));border-radius:8px 8px 3px 3px}
+.bar-label{font-size:9px;color:var(--muted);white-space:nowrap}
+.progress-list{display:flex;flex-direction:column;gap:10px}
+.progress-row{display:grid;grid-template-columns:80px 1fr 48px;gap:9px;align-items:center}
+.progress-row span{font-size:12px;color:var(--muted)}
+.progress-track{height:10px;background:var(--panel2);border-radius:99px;overflow:hidden}
+.progress-track i{display:block;height:100%;background:var(--green);border-radius:99px}
+.progress-row b{text-align:right;font-size:12px}
+.record-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.record-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}
+.record-card span{display:block;color:var(--muted);font-size:11px}
+.record-card strong{display:block;font-size:19px;margin-top:7px}
+.trend-up{color:var(--green2)}.trend-down{color:#ffb4b4}.trend-flat{color:#ffd889}
+.load-alert{border-radius:18px;padding:14px;margin-top:12px;line-height:1.45}
+.load-alert.good{background:#203118;color:#d8ffbd}.load-alert.warn{background:#433719;color:#ffe0a3}.load-alert.danger{background:#452529;color:#ffc5c9}
+@media(max-width:430px){
+ .stats-grid,.record-grid{grid-template-columns:repeat(2,1fr)}
+ .bar-chart{gap:4px}
+ .bar-label{font-size:8px}
+ .nav{font-size:8px}
+ .nav span{font-size:18px}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V8</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V9</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -182,7 +218,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V8 ACTIVA</span>
+    <span class="version">V9 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -209,6 +245,36 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   <div id="latest"></div>
 </section>
 
+
+
+<section id="progreso" class="view">
+  <div class="section-head">
+    <div><div class="kicker">EVOLUCIÓN</div><h2>Progreso</h2></div>
+  </div>
+
+  <div id="statsHero" class="stats-hero"></div>
+  <div id="statsGrid" class="stats-grid"></div>
+
+  <div class="section-head"><h3>Kilómetros por semana</h3></div>
+  <div class="chart-card">
+    <div class="chart-title">Últimas 8 semanas</div>
+    <div id="weeklyChart" class="bar-chart"></div>
+  </div>
+
+  <div class="section-head"><h3>Cumplimiento del plan</h3></div>
+  <div class="chart-card">
+    <div id="complianceStats" class="progress-list"></div>
+  </div>
+
+  <div class="section-head"><h3>Récords personales</h3></div>
+  <div id="recordsGrid" class="record-grid"></div>
+
+  <div class="section-head"><h3>Carga y constancia</h3></div>
+  <div id="loadAlert"></div>
+
+  <div class="section-head"><h3>Objetivo de carrera</h3></div>
+  <div id="raceProgress"></div>
+</section>
 
 <section id="plan" class="view">
   <div class="section-head">
@@ -285,6 +351,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 <nav>
   <button class="nav active" data-view="inicio"><span>⌂</span>Inicio</button>
   <button class="nav" data-view="plan"><span>▤</span>Plan</button>
+  <button class="nav" data-view="progreso"><span>↗</span>Progreso</button>
   <button class="nav" data-view="running"><span>◉</span>Running</button>
   <button class="nav" data-view="gym"><span>▣</span>Gym</button>
   <button class="nav" data-view="material"><span>◇</span>Material</button>
@@ -501,6 +568,149 @@ window.movePlan=id=>{
 };
 window.addPlanForDate=date=>openForm("plan",null,date);
 
+
+function startOfWeek(date){
+ const d=new Date(date);d.setHours(12,0,0,0);
+ const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d;
+}
+function endOfWeek(date){const d=startOfWeek(date);d.setDate(d.getDate()+6);return d}
+function runsBetween(start,end){
+ return data.runs.filter(r=>{
+   const d=new Date(r.date+"T12:00:00");
+   return d>=start&&d<=end;
+ });
+}
+function sumKm(runs){return runs.reduce((a,r)=>a+Number(r.distance||0),0)}
+function avgPaceSeconds(runs){
+ const valid=runs.filter(r=>Number(r.distance)>0&&timeToSeconds(r.time)>0);
+ const km=sumKm(valid);
+ if(!km)return 0;
+ return valid.reduce((a,r)=>a+timeToSeconds(r.time),0)/km;
+}
+function paceTextFromSeconds(sec){
+ if(!sec)return "—";
+ return `${Math.floor(sec/60)}:${String(Math.round(sec%60)).padStart(2,"0")}/km`;
+}
+function weeklySeries(count=8){
+ const result=[],now=new Date();
+ for(let i=count-1;i>=0;i--){
+   const mon=startOfWeek(now);mon.setDate(mon.getDate()-i*7);
+   const sun=endOfWeek(mon),runs=runsBetween(mon,sun);
+   result.push({
+     start:isoDate(mon),end:isoDate(sun),km:sumKm(runs),
+     runs:runs.length,pace:avgPaceSeconds(runs)
+   });
+ }
+ return result;
+}
+function longestStreak(){
+ const days=[...new Set([
+   ...data.runs.map(x=>x.date),
+   ...data.gym.map(x=>x.date),
+   ...data.plan.filter(x=>x.status==="done").map(x=>x.date)
+ ])].sort();
+ let best=0,current=0,prev=null;
+ days.forEach(s=>{
+   const d=new Date(s+"T12:00:00");
+   if(prev&&Math.round((d-prev)/86400000)===1)current++;
+   else current=1;
+   best=Math.max(best,current);prev=d;
+ });
+ return best;
+}
+function bestWeeklyKm(){
+ const allDates=data.runs.map(r=>new Date(r.date+"T12:00:00"));
+ if(!allDates.length)return 0;
+ const first=startOfWeek(new Date(Math.min(...allDates)));
+ const last=startOfWeek(new Date());
+ let best=0;
+ for(let d=new Date(first);d<=last;d.setDate(d.getDate()+7)){
+   best=Math.max(best,sumKm(runsBetween(d,endOfWeek(d))));
+ }
+ return best;
+}
+function distanceBest(target,tolerance=.15){
+ const candidates=data.runs.filter(r=>{
+   const km=Number(r.distance||0);
+   return km>=target*(1-tolerance)&&km<=target*(1+tolerance)&&timeToSeconds(r.time)>0;
+ });
+ if(!candidates.length)return null;
+ return candidates.sort((a,b)=>(timeToSeconds(a.time)/Number(a.distance))-(timeToSeconds(b.time)/Number(b.distance)))[0];
+}
+function renderStats(){
+ const series=weeklySeries(8),current=series.at(-1),previous=series.at(-2)||{km:0,runs:0,pace:0};
+ const delta=previous.km?Math.round((current.km-previous.km)/previous.km*100):(current.km?100:0);
+ const last28=new Date();last28.setDate(last28.getDate()-27);last28.setHours(0,0,0,0);
+ const runs28=runsBetween(last28,new Date());
+ const km28=sumKm(runs28),pace28=avgPaceSeconds(runs28);
+ const done28=data.plan.filter(p=>p.date>=isoDate(last28)&&p.date<=isoDate(new Date())&&p.status==="done").length;
+ const planned28=data.plan.filter(p=>p.date>=isoDate(last28)&&p.date<=isoDate(new Date())).length;
+ const compliance=planned28?Math.round(done28/planned28*100):0;
+ const trendClass=delta>5?"trend-up":delta<-5?"trend-down":"trend-flat";
+ const trendText=delta>5?"mejorando":delta<-5?"bajando":"estable";
+
+ $("#statsHero").innerHTML=`<div class="kicker">ÚLTIMOS 28 DÍAS</div>
+   <strong>${km28.toFixed(1).replace(".",",")} km</strong>
+   <p>${runs28.length} carreras · Ritmo medio ${paceTextFromSeconds(pace28)} · Tendencia <span class="${trendClass}">${trendText}</span></p>`;
+
+ const totalTime=data.runs.reduce((a,r)=>a+timeToSeconds(r.time),0)+data.gym.reduce((a,g)=>a+Number(g.duration||0)*60,0);
+ $("#statsGrid").innerHTML=`
+   <div class="stat-tile"><span>Esta semana</span><strong>${current.km.toFixed(1).replace(".",",")} km</strong></div>
+   <div class="stat-tile"><span>Vs. semana anterior</span><strong class="${trendClass}">${delta>0?"+":""}${delta}%</strong></div>
+   <div class="stat-tile"><span>Tiempo total</span><strong>${Math.floor(totalTime/3600)} h ${Math.round((totalTime%3600)/60)} min</strong></div>
+   <div class="stat-tile"><span>Racha máxima</span><strong>${longestStreak()} días</strong></div>`;
+
+ const max=Math.max(...series.map(x=>x.km),1);
+ $("#weeklyChart").innerHTML=series.map(w=>{
+   const h=Math.max(3,Math.round(w.km/max*145));
+   const label=new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit"}).format(new Date(w.start+"T12:00:00"));
+   return `<div class="bar-col"><div class="bar-value">${w.km.toFixed(1).replace(".",",")}</div><div class="bar" style="height:${h}px"></div><div class="bar-label">${label}</div></div>`;
+ }).join("");
+
+ const totalPlan=data.plan.length,done=data.plan.filter(p=>p.status==="done").length,skipped=data.plan.filter(p=>p.status==="skipped").length;
+ const pending=data.plan.filter(p=>!["done","skipped"].includes(p.status)).length;
+ const rows=[
+   ["Completadas",done,totalPlan],
+   ["Omitidas",skipped,totalPlan],
+   ["Pendientes",pending,totalPlan]
+ ];
+ $("#complianceStats").innerHTML=rows.map(([label,value,total])=>{
+   const pct=total?Math.round(value/total*100):0;
+   return `<div class="progress-row"><span>${label}</span><div class="progress-track"><i style="width:${pct}%"></i></div><b>${pct}%</b></div>`;
+ }).join("");
+
+ const best5=distanceBest(5),best10=distanceBest(10),longest=[...data.runs].sort((a,b)=>Number(b.distance)-Number(a.distance))[0];
+ $("#recordsGrid").innerHTML=`
+   <div class="record-card"><span>Mejor 5 km</span><strong>${best5?`${best5.time} · ${best5.pace||calcPace(best5.distance,best5.time)}/km`:"—"}</strong></div>
+   <div class="record-card"><span>Mejor 10 km</span><strong>${best10?`${best10.time} · ${best10.pace||calcPace(best10.distance,best10.time)}/km`:"—"}</strong></div>
+   <div class="record-card"><span>Tirada más larga</span><strong>${longest?Number(longest.distance).toFixed(2).replace(".",",")+" km":"—"}</strong></div>
+   <div class="record-card"><span>Mejor semana</span><strong>${bestWeeklyKm().toFixed(1).replace(".",",")} km</strong></div>`;
+
+ const ratio=previous.km?current.km/previous.km:(current.km?1:0);
+ let cls="good",msg="Carga controlada. Mantén la progresión de forma gradual.";
+ if(ratio>1.3){cls="danger";msg="Has aumentado más de un 30 % respecto a la semana anterior. Conviene vigilar fatiga y recuperación."}
+ else if(ratio>1.15){cls="warn";msg="La carga ha subido de forma notable. Prioriza sueño, hidratación y un rodaje suave."}
+ $("#loadAlert").innerHTML=`<div class="load-alert ${cls}">${msg}</div>`;
+
+ const today=isoDate(new Date());
+ const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
+ if(race){
+   const days=Math.max(0,daysUntil(race.date));
+   const targetKm=parseFloat(String(race.distance||"").replace(",","."))||0;
+   const longestKm=longest?Number(longest.distance):0;
+   const readiness=targetKm?Math.min(100,Math.round(longestKm/targetKm*100)):0;
+   $("#raceProgress").innerHTML=`<div class="card">
+     <div class="card-top"><div><div class="card-title">${race.name}</div><div class="card-date">${fmt(race.date)}</div></div><div class="distance">${days} días</div></div>
+     <div class="stats">
+       <div class="stat"><small>Distancia</small><b>${race.distance||"—"}</b></div>
+       <div class="stat"><small>Tirada más larga</small><b>${longestKm.toFixed(1).replace(".",",")} km</b></div>
+       <div class="stat"><small>Preparación por distancia</small><b>${readiness}%</b></div>
+     </div>
+     <div class="progress"><span style="width:${readiness}%"></span></div>
+   </div>`;
+ }else $("#raceProgress").innerHTML='<div class="empty">No hay ninguna carrera futura registrada.</div>';
+}
+
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -513,7 +723,7 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
- renderToday();renderPlan();
+ renderToday();renderPlan();renderStats();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -656,7 +866,7 @@ $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan()};
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=8").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=9").catch(()=>{}))}
 render();
 </script>
 </body>
