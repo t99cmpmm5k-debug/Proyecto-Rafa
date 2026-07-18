@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Proyecto Rafa">
+  <title>Proyecto Rafa</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">TRAINING BOOK</p>
+      <h1>Proyecto Rafa</h1>
+    </div>
+    <button id="themeBtn" class="icon-btn" aria-label="Cambiar tema">◐</button>
+  </header>
+
+  <main>
+    <section id="inicio" class="view active">
+      <div class="hero">
+        <div>
+          <p class="muted">Objetivo principal</p>
+          <h2>Media Maratón de Murcia</h2>
+          <p class="hero-copy">Constancia, base aeróbica y fuerza.</p>
+        </div>
+        <div class="goal-ring"><span id="goalPercent">0%</span></div>
+      </div>
+
+      <div class="cards metrics">
+        <article class="card">
+          <span>Km esta semana</span>
+          <strong id="weekKm">0,0</strong>
+        </article>
+        <article class="card">
+          <span>Último ritmo Z2</span>
+          <strong id="lastPace">—</strong>
+        </article>
+        <article class="card">
+          <span>FC media Z2</span>
+          <strong id="lastHr">—</strong>
+        </article>
+        <article class="card">
+          <span>Entrenamientos</span>
+          <strong id="totalRuns">0</strong>
+        </article>
+      </div>
+
+      <article class="card next-card">
+        <div>
+          <span>Próximo entrenamiento</span>
+          <strong id="nextWorkout">Tirada larga · 12 km Z2</strong>
+        </div>
+        <button class="ghost-btn" id="editNextBtn">Editar</button>
+      </article>
+
+      <button class="primary-btn full" data-open-form="running">＋ Añadir entrenamiento</button>
+
+      <section class="section-block">
+        <div class="section-title">
+          <h3>Última actividad</h3>
+        </div>
+        <div id="latestRun"></div>
+      </section>
+    </section>
+
+    <section id="running" class="view">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">RUNNING</p>
+          <h2>Historial</h2>
+        </div>
+        <button class="primary-btn small" data-open-form="running">＋ Añadir</button>
+      </div>
+      <div class="filter-row">
+        <button class="chip active" data-filter="Todos">Todos</button>
+        <button class="chip" data-filter="Rodaje Z2">Z2</button>
+        <button class="chip" data-filter="Series">Series</button>
+        <button class="chip" data-filter="Tirada larga">Larga</button>
+        <button class="chip" data-filter="Carrera">Carrera</button>
+      </div>
+      <div id="runList" class="stack"></div>
+    </section>
+
+    <section id="gym" class="view">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">FUERZA</p>
+          <h2>Gimnasio</h2>
+        </div>
+        <button class="primary-btn small" data-open-form="gym">＋ Registrar</button>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span>Última sesión</span>
+          <strong>Torso</strong>
+          <p class="muted">16/07/2026</p>
+        </article>
+      </div>
+      <div id="gymList" class="stack"></div>
+    </section>
+
+    <section id="material" class="view">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">EQUIPO</p>
+          <h2>Material</h2>
+        </div>
+        <button class="primary-btn small" data-open-form="material">＋ Añadir</button>
+      </div>
+      <div id="gearList" class="stack"></div>
+    </section>
+
+    <section id="carreras" class="view">
+      <div class="section-title">
+        <div>
+          <p class="eyebrow">COMPETICIÓN</p>
+          <h2>Carreras</h2>
+        </div>
+        <button class="primary-btn small" data-open-form="race">＋ Añadir</button>
+      </div>
+      <div id="raceList" class="stack"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-view="inicio"><span>⌂</span>Inicio</button>
+    <button class="nav-btn" data-view="running"><span>◉</span>Running</button>
+    <button class="nav-btn" data-view="gym"><span>▣</span>Gym</button>
+    <button class="nav-btn" data-view="material"><span>◇</span>Material</button>
+    <button class="nav-btn" data-view="carreras"><span>★</span>Carreras</button>
+  </nav>
+
+  <dialog id="modal">
+    <form method="dialog" id="dynamicForm">
+      <div class="modal-head">
+        <h2 id="modalTitle">Añadir</h2>
+        <button value="cancel" class="icon-btn">✕</button>
+      </div>
+      <div id="formFields"></div>
+      <button value="default" class="primary-btn full" id="saveBtn">Guardar</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
