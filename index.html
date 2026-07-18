@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V7</title>
+<title>Proyecto Rafa · V8</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -148,11 +148,31 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
  .nav{font-size:9px}
 }
 
+
+.quick-run{background:linear-gradient(145deg,#17231a,#10171d);border:1px solid #42632f;border-radius:22px;padding:16px;margin:14px 0}
+.quick-run h3{margin:0 0 5px}.quick-run p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.compare-box{margin-top:12px;background:var(--panel2);border-radius:15px;padding:12px;border:1px solid var(--line)}
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.compare-grid div{background:#11181e;border-radius:12px;padding:10px}
+.compare-grid small{display:block;color:var(--muted);font-size:10px;margin-bottom:4px}
+.compare-grid b{font-size:14px}
+.match-good{color:var(--green2)}.match-warn{color:#ffd680}
+.prefill-banner{background:#203118;color:var(--green2);border-radius:13px;padding:10px 12px;font-size:13px;font-weight:800;margin-bottom:12px}
+.feeling-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.feeling-choice input{display:none}
+.feeling-choice span{display:block;text-align:center;padding:10px 5px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);font-size:11px;font-weight:800}
+.feeling-choice input:checked+span{background:var(--green);color:#0b1208;border-color:var(--green)}
+@media(max-width:430px){
+ .compare-grid{grid-template-columns:1fr}
+ .feeling-grid{grid-template-columns:repeat(3,1fr)}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V7</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V8</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -162,7 +182,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V7 ACTIVA</span>
+    <span class="version">V8 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -174,6 +194,16 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   <div class="section-head"><h3>Entrenamiento de hoy</h3><button class="btn secondary small" onclick="setView('plan')">Ver semana</button></div>
   <div id="todayWorkout"></div>
   <div id="raceCountdown"></div>
+
+  <div class="quick-run">
+    <h3>Registro rápido de carrera</h3>
+    <p>Introduce distancia, tiempo, pulsaciones y sensaciones. El ritmo y el cumplimiento se calculan automáticamente.</p>
+    <div class="quick-actions">
+      <button class="btn primary" type="button" onclick="openQuickRun()">＋ Registrar carrera</button>
+      <button class="btn secondary" type="button" onclick="repeatLastRun()">Repetir última</button>
+    </div>
+  </div>
+
 
   <div class="section-head"><h3>Última actividad</h3></div>
   <div id="latest"></div>
@@ -328,6 +358,50 @@ function statusLabel(s){return s==="done"?"Completado":s==="skipped"?"Omitido":s
 function calcPace(distance,time){if(!distance||!time)return"—";const p=time.split(":").map(Number),s=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1],pk=Math.round(s/Number(distance));return Math.floor(pk/60)+":"+String(pk%60).padStart(2,"0")}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
 function weekKm(){const n=new Date(),wd=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-wd);return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=m).reduce((a,r)=>a+Number(r.distance||0),0)}
+
+function timeToSeconds(value){
+ const parts=String(value||"").trim().split(":").map(Number);
+ if(parts.some(Number.isNaN))return 0;
+ if(parts.length===2)return parts[0]*60+parts[1];
+ if(parts.length===3)return parts[0]*3600+parts[1]*60+parts[2];
+ return Number(value)||0;
+}
+function secondsToTime(sec){
+ sec=Math.max(0,Math.round(sec||0));
+ const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+ return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${m}:${String(s).padStart(2,"0")}`;
+}
+function runComparison(r){
+ if(!r.planId)return "";
+ const p=data.plan.find(x=>x.id===r.planId);
+ if(!p)return "";
+ const planned=Number(p.distance||0),actual=Number(r.distance||0);
+ const pct=planned?Math.round(actual/planned*100):100;
+ const cls=pct>=95&&pct<=105?"match-good":"match-warn";
+ return `<div class="compare-box"><div class="compare-grid">
+   <div><small>Previsto</small><b>${planned.toFixed(1).replace(".",",")} km</b></div>
+   <div><small>Realizado</small><b>${actual.toFixed(2).replace(".",",")} km</b></div>
+   <div><small>Cumplimiento</small><b class="${cls}">${pct}%</b></div>
+ </div></div>`;
+}
+function latestRun(){return [...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0]||null}
+window.openQuickRun=()=>openForm("run");
+window.repeatLastRun=()=>{
+ const last=latestRun();
+ if(!last){alert("Todavía no tienes ninguna carrera registrada.");return}
+ window.quickRunPreset={...last,id:null,date:new Date().toISOString().slice(0,10),planId:""};
+ openForm("run");
+};
+window.completePlannedRun=id=>{
+ const p=data.plan.find(x=>x.id===id);if(!p)return;
+ window.quickRunPreset={
+   date:p.date,type:p.title,distance:p.distance||"",time:p.duration?secondsToTime(Number(p.duration)*60):"",
+   avgHr:"",maxHr:"",cadence:"",elevation:"",feeling:"Normal",shoes:"ASICS Gel-Nimbus 28",
+   notes:p.notes||"",planId:p.id
+ };
+ openForm("run");
+};
+
 function runCard(r){
  return `<article class="card">
  <div class="card-top"><div><div class="card-title">${r.type}</div><div class="card-date">${fmt(r.date)} · ${r.shoes||"Sin zapatillas"}</div></div><div class="distance">${Number(r.distance).toFixed(2).replace(".",",")} km</div></div>
@@ -340,6 +414,7 @@ function runCard(r){
    <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
  </div>
  ${r.notes?`<p class="note">${r.notes}</p>`:""}
+ ${runComparison(r)}
  <div class="actions"><button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button></div>
  </article>`
 }
@@ -373,7 +448,7 @@ function planCard(p,compact=false){
    <div class="plan-item-meta">${Number(p.distance||0)>0?Number(p.distance).toFixed(1).replace(".",",")+" km · ":""}${p.duration||"—"} min · ${p.intensity||"—"}${p.notes?"<br>"+p.notes:""}</div>
    <span class="status ${p.status||"pending"}">${statusLabel(p.status)}</span>
    ${compact?"":`<div class="plan-actions">
-     <button class="btn primary small" onclick="setPlanStatus('${p.id}','done')">✓ Hecho</button>
+     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:`setPlanStatus('${p.id}','done')`}">✓ Hecho</button>
      <button class="btn secondary small" onclick="movePlan('${p.id}')">Mover</button>
      <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
      <button class="btn danger small" onclick="setPlanStatus('${p.id}','skipped')">Omitir</button>
@@ -410,7 +485,7 @@ function renderToday(){
    <div class="today-title">${p.title}</div>
    <div class="today-meta">${p.sport}${p.distance?` · ${Number(p.distance).toFixed(1).replace(".",",")} km`:""} · ${p.duration||"—"} min<br>${p.intensity||""}${p.notes?` · ${p.notes}`:""}</div>
    <div class="actions">
-     <button class="btn primary small" onclick="setPlanStatus('${p.id}','done')">✓ Marcar completado</button>
+     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:`setPlanStatus('${p.id}','done')`}">✓ Marcar completado</button>
      <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
    </div>
  </div>`).join(""):'<div class="empty">Hoy no tienes entrenamiento planificado.</div>';
@@ -445,15 +520,21 @@ document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.vie
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
 
 const defs={
- run:{title:"entrenamiento",html:x=>`
- <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
- <div class="field"><label>Tipo</label><select name="type">${["Rodaje Z2","Series","Tirada larga","Carrera","Recuperación"].map(v=>`<option ${x?.type===v?"selected":""}>${v}</option>`).join("")}</select></div>
- <div class="two"><div class="field"><label>Distancia (km)</label><input name="distance" type="number" step=".01" required value="${x?.distance??""}"></div><div class="field"><label>Tiempo</label><input name="time" required value="${x?.time||""}"></div></div>
- <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${x?.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${x?.maxHr??""}"></div></div>
- <div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${x?.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${x?.elevation??""}"></div></div>
- <div class="field"><label>Sensaciones</label><select name="feeling">${["Muy bien","Bien","Normal","Pesado","Mal"].map(v=>`<option ${x?.feeling===v?"selected":""}>${v}</option>`).join("")}</select></div>
- <div class="field"><label>Zapatillas</label><input name="shoes" value="${x?.shoes||"ASICS Gel-Nimbus 28"}"></div>
- <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
+ run:{title:"carrera",html:x=>{
+ const q=x||window.quickRunPreset||{};
+ const linked=q.planId?data.plan.find(p=>p.id===q.planId):null;
+ return `${linked?`<div class="prefill-banner">Usando el entrenamiento previsto: ${linked.title} · ${Number(linked.distance||0).toFixed(1).replace(".",",")} km</div>`:""}
+ <input type="hidden" name="planId" value="${q.planId||""}">
+ <div class="field"><label>Fecha</label><input name="date" type="date" required value="${q.date||new Date().toISOString().slice(0,10)}"></div>
+ <div class="field"><label>Tipo</label><input name="type" value="${q.type||"Rodaje"}" placeholder="Ej. Rodaje Z2"></div>
+ <div class="two"><div class="field"><label>Distancia (km)</label><input name="distance" type="number" step=".01" inputmode="decimal" required value="${q.distance??""}" placeholder="8,12"></div><div class="field"><label>Tiempo</label><input name="time" required value="${q.time||""}" placeholder="47:35"></div></div>
+ <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" inputmode="numeric" value="${q.avgHr??""}" placeholder="152"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" inputmode="numeric" value="${q.maxHr??""}" placeholder="171"></div></div>
+ <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
+ <details><summary>Datos opcionales</summary>
+   <div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${q.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${q.elevation??""}"></div></div>
+   <div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div>
+ </details>
+ <div class="field"><label>Notas</label><textarea name="notes">${q.notes||""}</textarea></div>`}},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
  <div class="field"><label>Sesión</label><input name="name" required value="${x?.name||""}"></div>
@@ -484,7 +565,7 @@ const defs={
 };
 function arr(type){return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:type==="plan"?data.plan:data.races}
 function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDate;
- currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):null;
+ currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):(type==="run"&&window.quickRunPreset?window.quickRunPreset:null);
  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
  $("#fields").innerHTML=defs[type].html(item);
  if(type==="gym"){
@@ -492,7 +573,7 @@ function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDat
    renderExerciseLibrary();
    renderGymExerciseEditor();
  }
- $("#modal").showModal()
+ $("#modal").showModal();if(type==="run")window.quickRunPreset=null
 }
 function renderExerciseLibrary(){
  $("#exerciseLibrary").innerHTML=EXERCISES.map((e,i)=>`<button type="button" class="library-btn" onclick="addExercise(${i})"><b>${e.name}</b><small>Paso ${e.step} kg</small></button>`).join("")
@@ -545,12 +626,22 @@ window.removeSet=(ei,si)=>{gymDraftExercises[ei].sets.splice(si,1);renderGymExer
 window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10});else sets.push(structuredClone(sets[sets.length-1]));renderGymExerciseEditor()}
 window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10});renderGymExerciseEditor()}
 
-document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>$("#modal").close();
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;$("#modal").close()};
 window.editItem=(t,id)=>openForm(t,id);
-window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
+window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t==="run")data.plan=data.plan.map(p=>p.actualRunId===id?{...p,status:"pending",actualRunId:""}:p);const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
- if(currentType==="run"){["distance","avgHr","maxHr","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||0);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}
+ if(currentType==="run"){
+   ["distance","avgHr","maxHr","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||0);
+   o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time);
+   if(!o.planId){
+     const match=data.plan.find(p=>p.date===o.date&&p.sport==="Running"&&p.status!=="done");
+     if(match)o.planId=match.id;
+   }
+   if(o.planId)data.plan=data.plan.map(p=>p.id===o.planId?{...p,status:"done",actualRunId:o.id}:p);
+   const shoe=data.gear.find(g=>g.name===o.shoes);
+   if(shoe)shoe.km=Number(shoe.km||0)+o.distance;
+ }
  if(currentType==="gym"){o.exercises=structuredClone(gymDraftExercises)}
  if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}
  if(currentType==="plan"){o.distance=Number(o.distance)||0;o.duration=Number(o.duration)||0;o.status=o.status||"pending"}
@@ -565,7 +656,7 @@ $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan()};
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=7").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=8").catch(()=>{}))}
 render();
 </script>
 </body>
