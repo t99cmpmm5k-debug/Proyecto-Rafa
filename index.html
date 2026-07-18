@@ -3,115 +3,102 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0a0d10">
+<meta name="theme-color" content="#080b0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa V3</title>
+<title>Proyecto Rafa · V4</title>
 <style>
 :root{
-  --bg:#090c0f;--panel:#14191f;--panel2:#1c232b;--line:#2b333d;
-  --text:#f5f7f8;--muted:#9ba6b2;--green:#9eea69;--green2:#cfffaa;
-  --red:#ff8f8f;--shadow:0 10px 30px rgba(0,0,0,.25)
+  --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2a333d;
+  --text:#f5f7f8;--muted:#99a4af;--green:#9fe870;--green2:#d7ffbd;
+  --blue:#77b7ff;--orange:#ffb56b;--red:#ff8d8d;--shadow:0 14px 36px rgba(0,0,0,.28)
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
 body{
   margin:0;background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-  padding-bottom:96px
+  padding-bottom:98px
 }
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-header{
-  position:sticky;top:0;z-index:10;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:calc(18px + env(safe-area-inset-top)) 20px 16px;
-  background:rgba(9,12,15,.92);backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line)
-}
 h1,h2,h3,p{margin:0}
-.kicker{color:var(--green);font-size:12px;letter-spacing:.18em;font-weight:900}
-h1{font-size:28px;margin-top:5px}
-main{max-width:760px;margin:auto;padding:18px}
+header{
+  position:sticky;top:0;z-index:20;
+  padding:calc(16px + env(safe-area-inset-top)) 18px 14px;
+  background:rgba(8,11,14,.92);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center
+}
+.kicker{color:var(--green);font-size:11px;letter-spacing:.18em;font-weight:900}
+h1{font-size:27px;margin-top:5px}
+main{max-width:780px;margin:auto;padding:16px}
 .view{display:none}.view.active{display:block}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin:8px 0 16px}
-.section-head h2{font-size:34px}
-.btn{
-  border:0;border-radius:15px;padding:12px 15px;font-weight:850
-}
-.btn.primary{background:var(--green);color:#0b1207}
-.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-.btn.danger{background:#3b2125;color:#ffc1c1}
-.btn.small{padding:9px 12px;font-size:13px}
-.btn.full{width:100%}
 .hero{
-  background:linear-gradient(145deg,var(--panel),var(--panel2));
-  border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow)
+  position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#141a20,#1b242d);
+  border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow)
 }
-.hero h2{font-size:27px;margin:6px 0 7px}
-.hero p{color:var(--muted)}
-.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-.metric{
-  background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px
+.hero:after{
+  content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+  right:-60px;top:-70px;background:radial-gradient(circle,var(--green) 0%,rgba(159,232,112,.18) 45%,transparent 72%)
 }
-.metric span{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
-.metric strong{font-size:22px}
-.list{display:flex;flex-direction:column;gap:12px}
+.hero h2{font-size:28px;margin:6px 0 8px}.hero p{color:var(--muted)}
+.version{display:inline-block;margin-top:13px;padding:6px 9px;border-radius:999px;background:#21311a;color:var(--green2);font-size:11px;font-weight:900}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:12px}
+.metric{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:15px}
+.metric span{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}.metric strong{font-size:22px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:24px 0 13px}
+.section-head h2{font-size:32px}.section-head h3{font-size:19px}
+.btn{border:0;border-radius:15px;padding:12px 15px;font-weight:850}
+.btn.primary{background:var(--green);color:#0a1206}
+.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#412326;color:#ffc0c0}
+.btn.small{padding:9px 11px;font-size:13px}.btn.full{width:100%}
+.stack{display:flex;flex-direction:column;gap:12px}
 .card{
-  background:linear-gradient(145deg,var(--panel),#11161b);
-  border:1px solid var(--line);border-radius:22px;padding:17px;box-shadow:var(--shadow)
+  background:linear-gradient(145deg,var(--panel),#10151a);
+  border:1px solid var(--line);border-radius:23px;padding:17px;box-shadow:var(--shadow)
 }
-.card-top{display:flex;justify-content:space-between;gap:12px}
-.card-title{font-size:20px;font-weight:900}
-.card-date{color:var(--muted);font-size:13px;margin-top:4px}
-.card-distance{font-size:20px;font-weight:900}
+.card-top{display:flex;justify-content:space-between;gap:12px}.card-title{font-size:20px;font-weight:900}
+.card-date{font-size:13px;color:var(--muted);margin-top:4px}.distance{font-size:20px;font-weight:900}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-.stat{background:var(--panel2);border-radius:14px;padding:11px}
-.stat small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
-.stat b{font-size:14px}
+.stat{background:var(--panel2);border-radius:14px;padding:11px}.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.stat b{font-size:14px}
 .note{color:var(--muted);font-size:14px;line-height:1.45;margin-top:13px}
-.actions{display:flex;gap:9px;margin-top:15px}
-.empty{padding:26px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
+.actions{display:flex;gap:9px;margin-top:15px;flex-wrap:wrap}
+.progress{height:10px;background:var(--panel2);border-radius:999px;overflow:hidden;margin-top:10px}
+.progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--green2))}
+.fab{
+  position:fixed;right:18px;bottom:108px;z-index:18;width:58px;height:58px;border-radius:50%;
+  border:0;background:var(--green);color:#0a1206;font-size:28px;font-weight:900;box-shadow:0 10px 30px rgba(159,232,112,.32)
+}
 nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  position:fixed;bottom:0;left:0;right:0;z-index:30;
   display:grid;grid-template-columns:repeat(5,1fr);
   padding:8px 7px calc(8px + env(safe-area-inset-bottom));
-  background:rgba(9,12,15,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line)
+  background:rgba(8,11,14,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line)
 }
 .nav{background:transparent;border:0;color:var(--muted);font-size:10px;padding:6px 2px}
-.nav span{display:block;font-size:20px;margin-bottom:3px}
-.nav.active{color:var(--green);font-weight:900}
-dialog{
-  width:min(92vw,540px);max-height:88vh;overflow:auto;
-  border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);padding:0
-}
-dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
-form{padding:18px}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.nav span{display:block;font-size:20px;margin-bottom:3px}.nav.active{color:var(--green);font-weight:900}
+dialog{width:min(94vw,560px);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);padding:0}
+dialog::backdrop{background:rgba(0,0,0,.76);backdrop-filter:blur(4px)}
+form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
 .close{width:40px;height:40px;border:0;border-radius:13px;background:var(--panel2);color:var(--text)}
-.field{margin-bottom:12px}
-.field label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px 3px}
-.field input,.field select,.field textarea{
-  width:100%;border:1px solid var(--line);border-radius:14px;padding:13px;
-  background:var(--panel2);color:var(--text)
-}
-.field textarea{min-height:86px;resize:vertical}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.file{display:none}
-.badge{display:inline-block;background:#21311a;color:var(--green2);padding:5px 8px;border-radius:999px;font-size:11px;font-weight:900;margin-top:10px}
-@media(max-width:420px){
-  main{padding:14px}.section-head h2{font-size:31px}.stats{grid-template-columns:repeat(2,1fr)}
-}
+.field{margin-bottom:12px}.field label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px 3px}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--panel2);color:var(--text)}
+.field textarea{min-height:84px;resize:vertical}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.file{display:none}
+.empty{padding:26px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
+.mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.mini-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:15px}
+.mini-card span{display:block;color:var(--muted);font-size:12px}.mini-card strong{display:block;margin-top:7px;font-size:19px}
+@media(max-width:420px){main{padding:14px}.stats{grid-template-columns:repeat(2,1fr)}.section-head h2{font-size:30px}}
 </style>
 </head>
 <body>
 <header>
-  <div>
-    <div class="kicker">TRAINING BOOK · V3</div>
-    <h1>Proyecto Rafa</h1>
-  </div>
+  <div><div class="kicker">TRAINING BOOK · V4</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -120,8 +107,8 @@ form{padding:18px}
   <div class="hero">
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
-    <p>Constancia, base aeróbica y fuerza.</p>
-    <span class="badge">V3 ACTIVA</span>
+    <p>Construir resistencia, fuerza y constancia.</p>
+    <span class="version">V4 ACTIVA</span>
   </div>
 
   <div class="metrics">
@@ -131,9 +118,13 @@ form{padding:18px}
     <div class="metric"><span>Entrenamientos</span><strong id="totalRuns">0</strong></div>
   </div>
 
-  <button class="btn primary full" style="margin-top:14px" data-add="run">＋ Añadir entrenamiento</button>
+  <div class="section-head"><h3>Objetivo semanal</h3></div>
+  <div class="card">
+    <div class="card-top"><div><div class="card-title">25 km</div><div class="card-date">Volumen semanal recomendado</div></div><div class="distance" id="weekProgressText">0%</div></div>
+    <div class="progress"><span id="weekProgressBar" style="width:0%"></span></div>
+  </div>
 
-  <div class="section-head" style="margin-top:24px"><h3>Última actividad</h3></div>
+  <div class="section-head"><h3>Última actividad</h3></div>
   <div id="latest"></div>
 </section>
 
@@ -142,15 +133,20 @@ form{padding:18px}
     <div><div class="kicker">RUNNING</div><h2>Historial</h2></div>
     <button class="btn primary" data-add="run">＋ Añadir</button>
   </div>
-  <div id="runs" class="list"></div>
+  <div id="runs" class="stack"></div>
 </section>
 
 <section id="gym" class="view">
   <div class="section-head">
     <div><div class="kicker">FUERZA</div><h2>Gimnasio</h2></div>
-    <button class="btn primary" data-add="gym">＋ Añadir</button>
+    <button class="btn primary" data-add="gym">＋ Sesión</button>
   </div>
-  <div id="gyms" class="list"></div>
+  <div class="mini-grid">
+    <div class="mini-card"><span>Última sesión</span><strong id="lastGymName">—</strong></div>
+    <div class="mini-card"><span>Sesiones registradas</span><strong id="gymCount">0</strong></div>
+  </div>
+  <div class="section-head"><h3>Historial</h3></div>
+  <div id="gyms" class="stack"></div>
 </section>
 
 <section id="material" class="view">
@@ -158,7 +154,7 @@ form{padding:18px}
     <div><div class="kicker">EQUIPO</div><h2>Material</h2></div>
     <button class="btn primary" data-add="gear">＋ Añadir</button>
   </div>
-  <div id="gear" class="list"></div>
+  <div id="gear" class="stack"></div>
 </section>
 
 <section id="carreras" class="view">
@@ -166,17 +162,17 @@ form{padding:18px}
     <div><div class="kicker">COMPETICIÓN</div><h2>Carreras</h2></div>
     <button class="btn primary" data-add="race">＋ Añadir</button>
   </div>
-  <div id="races" class="list"></div>
+  <div id="races" class="stack"></div>
 
-  <div class="section-head" style="margin-top:28px"><h3>Copias de seguridad</h3></div>
+  <div class="section-head"><h3>Copias de seguridad</h3></div>
   <div class="toolbar">
     <button class="btn secondary" id="exportBtn">Exportar</button>
-    <label class="btn secondary" style="text-align:center">Importar
-      <input class="file" id="importInput" type="file" accept=".json,application/json">
-    </label>
+    <label class="btn secondary" style="text-align:center">Importar<input class="file" id="importInput" type="file" accept=".json,application/json"></label>
   </div>
 </section>
 </main>
+
+<button class="fab" id="fab">＋</button>
 
 <nav>
   <button class="nav active" data-view="inicio"><span>⌂</span>Inicio</button>
@@ -187,261 +183,115 @@ form{padding:18px}
 </nav>
 
 <dialog id="modal">
-  <form id="form">
-    <div class="modal-head">
-      <h2 id="modalTitle">Añadir</h2>
-      <button type="button" class="close" id="closeModal">✕</button>
-    </div>
-    <div id="fields"></div>
-    <button class="btn primary full" type="submit">Guardar</button>
-  </form>
+<form id="form">
+  <div class="modal-head"><h2 id="modalTitle">Añadir</h2><button type="button" class="close" id="closeModal">✕</button></div>
+  <div id="fields"></div>
+  <button class="btn primary full" type="submit">Guardar</button>
+</form>
 </dialog>
 
 <script>
 const KEY="proyectoRafaDataV1";
 const seed={
-  runs:[{
-    id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",
-    pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,
-    shoes:"ASICS Gel-Nimbus 28",
-    notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."
-  }],
-  gym:[{
-    id:"gym-1607",date:"2026-07-16",name:"Torso",
-    notes:"Press banca 20 kg · Remo barra 40 kg · Press militar 20 kg · Elevaciones laterales 15 kg · Fondos asistidos 40 kg · Curl EZ 10 kg · Tríceps polea 20 kg"
-  }],
-  gear:[
-    {id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,notes:"Rodajes suaves y tiradas largas"},
-    {id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,notes:"Series y sesiones rápidas"}
-  ],
-  races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",goal:"Terminar fuerte",notes:"Objetivo principal"}]
+ runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
+ gym:[{id:"gym-1607",date:"2026-07-16",name:"Torso",duration:"45",notes:"Press banca 20 kg · Remo barra 40 kg · Press militar 20 kg · Elevaciones laterales 15 kg · Fondos asistidos 40 kg · Curl EZ 10 kg · Tríceps polea 20 kg"}],
+ gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
+ races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}]
 };
-
 let data;
 try{
-  const saved=JSON.parse(localStorage.getItem(KEY));
-  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);
-}catch{
-  data=structuredClone(seed);
-}
-let currentType=null;
-let editingId=null;
-
+ const saved=JSON.parse(localStorage.getItem(KEY));
+ data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);
+}catch{data=structuredClone(seed)}
+let currentType=null,editingId=null,currentView="inicio";
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
-const formatDate=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
-function calcPace(distance,time){
-  if(!distance||!time)return"—";
-  const p=time.split(":").map(Number);
-  const seconds=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1];
-  const perKm=Math.round(seconds/Number(distance));
-  return Math.floor(perKm/60)+":"+String(perKm%60).padStart(2,"0");
-}
-function save(){
-  localStorage.setItem(KEY,JSON.stringify(data));
-  render();
-}
-function weekKm(){
-  const now=new Date();
-  const weekday=(now.getDay()+6)%7;
-  const monday=new Date(now);
-  monday.setHours(0,0,0,0);
-  monday.setDate(now.getDate()-weekday);
-  return data.runs
-    .filter(r=>new Date(r.date+"T12:00:00")>=monday)
-    .reduce((sum,r)=>sum+Number(r.distance||0),0);
-}
+const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
+function calcPace(distance,time){if(!distance||!time)return"—";const p=time.split(":").map(Number),s=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1],pk=Math.round(s/Number(distance));return Math.floor(pk/60)+":"+String(pk%60).padStart(2,"0")}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function weekKm(){const n=new Date(),wd=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-wd);return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=m).reduce((a,r)=>a+Number(r.distance||0),0)}
 function runCard(r){
-  return `<article class="card">
-    <div class="card-top">
-      <div>
-        <div class="card-title">${r.type}</div>
-        <div class="card-date">${formatDate(r.date)} · ${r.shoes||"Sin zapatillas"}</div>
-      </div>
-      <div class="card-distance">${Number(r.distance).toFixed(2).replace(".",",")} km</div>
-    </div>
-    <div class="stats">
-      <div class="stat"><small>Ritmo</small><b>${r.pace||calcPace(r.distance,r.time)}/km</b></div>
-      <div class="stat"><small>FC media</small><b>${r.avgHr||"—"} ppm</b></div>
-      <div class="stat"><small>Tiempo</small><b>${r.time||"—"}</b></div>
-      <div class="stat"><small>FC máxima</small><b>${r.maxHr||"—"} ppm</b></div>
-    </div>
-    ${r.notes?`<p class="note">${r.notes}</p>`:""}
-    <div class="actions">
-      <button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button>
-      <button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button>
-    </div>
-  </article>`;
+ return `<article class="card">
+ <div class="card-top"><div><div class="card-title">${r.type}</div><div class="card-date">${fmt(r.date)} · ${r.shoes||"Sin zapatillas"}</div></div><div class="distance">${Number(r.distance).toFixed(2).replace(".",",")} km</div></div>
+ <div class="stats">
+   <div class="stat"><small>Ritmo</small><b>${r.pace||calcPace(r.distance,r.time)}/km</b></div>
+   <div class="stat"><small>FC media</small><b>${r.avgHr||"—"} ppm</b></div>
+   <div class="stat"><small>Tiempo</small><b>${r.time||"—"}</b></div>
+   <div class="stat"><small>Cadencia</small><b>${r.cadence||"—"} spm</b></div>
+   <div class="stat"><small>Desnivel</small><b>${r.elevation||"—"} m</b></div>
+   <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
+ </div>
+ ${r.notes?`<p class="note">${r.notes}</p>`:""}
+ <div class="actions"><button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button></div>
+ </article>`
 }
 function genericCard(x,type){
-  const subtitle=type==="gym"
-    ?formatDate(x.date)
-    :type==="gear"
-      ?`${x.type} · ${Number(x.km||0).toFixed(1).replace(".",",")} km`
-      :`${formatDate(x.date)} · ${x.goal||""}`;
-  return `<article class="card">
-    <div class="card-title">${x.name}</div>
-    <div class="card-date">${subtitle}</div>
-    ${x.notes?`<p class="note">${x.notes}</p>`:""}
-    <div class="actions">
-      <button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button>
-      <button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button>
-    </div>
-  </article>`;
+ const subtitle=type==="gym"?`${fmt(x.date)} · ${x.duration||"—"} min`:type==="gear"?`${x.type} · ${Number(x.km||0).toFixed(1).replace(".",",")} km`: `${fmt(x.date)} · ${x.distance||""} · ${x.goal||""}`;
+ let extra="";
+ if(type==="gear"){
+   const max=Number(x.maxKm||700),pct=Math.min(100,Math.round((Number(x.km||0)/max)*100));
+   extra=`<div class="progress"><span style="width:${pct}%"></span></div><p class="note">${pct}% de vida útil estimada.</p>`
+ }
+ return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
 function render(){
-  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
-  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
-  $("#lastPace").textContent=latest?(latest.pace||calcPace(latest.distance,latest.time))+"/km":"—";
-  $("#lastHr").textContent=latest?(latest.avgHr||"—")+" ppm":"—";
-  $("#totalRuns").textContent=data.runs.length;
-
-  $("#latest").innerHTML=latest?runCard(latest):'<div class="empty">Sin entrenamientos.</div>';
-  $("#runs").innerHTML=data.runs.length
-    ?[...data.runs].sort((a,b)=>b.date.localeCompare(a.date)).map(runCard).join("")
-    :'<div class="empty">Sin entrenamientos.</div>';
-  $("#gyms").innerHTML=data.gym.length
-    ?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(x=>genericCard(x,"gym")).join("")
-    :'<div class="empty">Sin sesiones.</div>';
-  $("#gear").innerHTML=data.gear.length
-    ?data.gear.map(x=>genericCard(x,"gear")).join("")
-    :'<div class="empty">Sin material.</div>';
-  $("#races").innerHTML=data.races.length
-    ?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join("")
-    :'<div class="empty">Sin carreras.</div>';
+ const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
+ const wk=weekKm(),pct=Math.min(100,Math.round(wk/25*100));
+ $("#weekKm").textContent=wk.toFixed(1).replace(".",",");
+ $("#lastPace").textContent=latest?(latest.pace||calcPace(latest.distance,latest.time))+"/km":"—";
+ $("#lastHr").textContent=latest?(latest.avgHr||"—")+" ppm":"—";
+ $("#totalRuns").textContent=data.runs.length;
+ $("#weekProgressText").textContent=pct+"%";$("#weekProgressBar").style.width=pct+"%";
+ $("#latest").innerHTML=latest?runCard(latest):'<div class="empty">Sin entrenamientos.</div>';
+ $("#runs").innerHTML=data.runs.length?[...data.runs].sort((a,b)=>b.date.localeCompare(a.date)).map(runCard).join(""):'<div class="empty">Sin entrenamientos.</div>';
+ $("#gyms").innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(x=>genericCard(x,"gym")).join(""):'<div class="empty">Sin sesiones.</div>';
+ const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
+ $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
+ $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
 }
-document.querySelectorAll(".nav").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".nav").forEach(b=>b.classList.remove("active"));
-    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-    btn.classList.add("active");
-    $("#"+btn.dataset.view).classList.add("active");
-    scrollTo({top:0,behavior:"smooth"});
-  });
-});
+function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
+$("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":"run");
 
 const defs={
-  run:{
-    title:"entrenamiento",
-    html:x=>`
-      <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
-      <div class="field"><label>Tipo</label><select name="type">
-        ${["Rodaje Z2","Series","Tirada larga","Carrera","Recuperación"].map(v=>`<option ${x?.type===v?"selected":""}>${v}</option>`).join("")}
-      </select></div>
-      <div class="two">
-        <div class="field"><label>Distancia (km)</label><input name="distance" type="number" step=".01" required value="${x?.distance??""}"></div>
-        <div class="field"><label>Tiempo (mm:ss)</label><input name="time" required value="${x?.time||""}"></div>
-      </div>
-      <div class="two">
-        <div class="field"><label>FC media</label><input name="avgHr" type="number" value="${x?.avgHr??""}"></div>
-        <div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${x?.maxHr??""}"></div>
-      </div>
-      <div class="two">
-        <div class="field"><label>Training Effect</label><input name="te" type="number" step=".1" value="${x?.te??""}"></div>
-        <div class="field"><label>Temperatura</label><input name="temp" type="number" value="${x?.temp??""}"></div>
-      </div>
-      <div class="field"><label>Zapatillas</label><input name="shoes" value="${x?.shoes||"ASICS Gel-Nimbus 28"}"></div>
-      <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`
-  },
-  gym:{
-    title:"sesión de gimnasio",
-    html:x=>`
-      <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
-      <div class="field"><label>Sesión</label><input name="name" required value="${x?.name||""}"></div>
-      <div class="field"><label>Ejercicios, pesos y repeticiones</label><textarea name="notes" required>${x?.notes||""}</textarea></div>`
-  },
-  gear:{
-    title:"material",
-    html:x=>`
-      <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
-      <div class="field"><label>Tipo</label><input name="type" value="${x?.type||"Zapatillas"}"></div>
-      <div class="field"><label>Kilómetros</label><input name="km" type="number" step=".1" value="${x?.km??0}"></div>
-      <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`
-  },
-  race:{
-    title:"carrera",
-    html:x=>`
-      <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
-      <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||""}"></div>
-      <div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||""}"></div>
-      <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`
-  }
+ run:{title:"entrenamiento",html:x=>`
+ <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
+ <div class="field"><label>Tipo</label><select name="type">${["Rodaje Z2","Series","Tirada larga","Carrera","Recuperación"].map(v=>`<option ${x?.type===v?"selected":""}>${v}</option>`).join("")}</select></div>
+ <div class="two"><div class="field"><label>Distancia (km)</label><input name="distance" type="number" step=".01" required value="${x?.distance??""}"></div><div class="field"><label>Tiempo</label><input name="time" required value="${x?.time||""}"></div></div>
+ <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${x?.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${x?.maxHr??""}"></div></div>
+ <div class="two"><div class="field"><label>Training Effect</label><input name="te" type="number" step=".1" value="${x?.te??""}"></div><div class="field"><label>Temperatura</label><input name="temp" type="number" value="${x?.temp??""}"></div></div>
+ <div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${x?.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${x?.elevation??""}"></div></div>
+ <div class="field"><label>Sensaciones</label><select name="feeling">${["Muy bien","Bien","Normal","Pesado","Mal"].map(v=>`<option ${x?.feeling===v?"selected":""}>${v}</option>`).join("")}</select></div>
+ <div class="field"><label>Zapatillas</label><input name="shoes" value="${x?.shoes||"ASICS Gel-Nimbus 28"}"></div>
+ <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
+ gym:{title:"sesión de gimnasio",html:x=>`
+ <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
+ <div class="field"><label>Sesión</label><input name="name" required value="${x?.name||""}"></div>
+ <div class="field"><label>Duración (min)</label><input name="duration" type="number" value="${x?.duration||45}"></div>
+ <div class="field"><label>Ejercicios, pesos y repeticiones</label><textarea name="notes" required>${x?.notes||""}</textarea></div>`},
+ gear:{title:"material",html:x=>`
+ <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
+ <div class="field"><label>Tipo</label><input name="type" value="${x?.type||"Zapatillas"}"></div>
+ <div class="two"><div class="field"><label>Kilómetros actuales</label><input name="km" type="number" step=".1" value="${x?.km??0}"></div><div class="field"><label>Vida útil estimada</label><input name="maxKm" type="number" value="${x?.maxKm??700}"></div></div>
+ <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
+ race:{title:"carrera",html:x=>`
+ <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
+ <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||""}"></div>
+ <div class="field"><label>Distancia</label><input name="distance" value="${x?.distance||""}"></div>
+ <div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||""}"></div>
+ <div class="field"><label>Resultado</label><input name="result" value="${x?.result||""}"></div>
+ <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`}
 };
-function getArray(type){
-  return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:data.races;
-}
-function openForm(type,id=null){
-  currentType=type;
-  editingId=id;
-  const item=id?getArray(type).find(x=>x.id===id):null;
-  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
-  $("#fields").innerHTML=defs[type].html(item);
-  $("#modal").showModal();
-}
-document.querySelectorAll("[data-add]").forEach(btn=>btn.addEventListener("click",()=>openForm(btn.dataset.add)));
-$("#closeModal").addEventListener("click",()=>$("#modal").close());
-
-window.editItem=(type,id)=>openForm(type,id);
-window.removeItem=(type,id)=>{
-  if(!confirm("¿Eliminar este registro?"))return;
-  const key=type==="run"?"runs":type==="gym"?"gym":type==="gear"?"gear":"races";
-  data[key]=data[key].filter(x=>x.id!==id);
-  save();
-};
-
-$("#form").addEventListener("submit",e=>{
-  e.preventDefault();
-  const obj=Object.fromEntries(new FormData(e.currentTarget));
-  obj.id=editingId||uid();
-
-  if(currentType==="run"){
-    obj.distance=Number(obj.distance);
-    obj.avgHr=Number(obj.avgHr)||null;
-    obj.maxHr=Number(obj.maxHr)||null;
-    obj.te=Number(obj.te)||null;
-    obj.temp=Number(obj.temp)||null;
-    obj.pace=calcPace(obj.distance,obj.time);
-  }
-  if(currentType==="gear")obj.km=Number(obj.km)||0;
-
-  const key=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":"races";
-  if(editingId){
-    data[key]=data[key].map(x=>x.id===editingId?obj:x);
-  }else{
-    data[key].push(obj);
-  }
-  save();
-  $("#modal").close();
-});
-
-function exportData(){
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-$("#exportBtn").addEventListener("click",exportData);
-$("#exportTop").addEventListener("click",exportData);
-
-$("#importInput").addEventListener("change",async e=>{
-  const file=e.target.files[0];
-  if(!file)return;
-  try{
-    const imported=JSON.parse(await file.text());
-    if(!imported.runs||!imported.gym||!imported.gear||!imported.races)throw new Error();
-    if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){
-      data=imported;
-      save();
-      alert("Copia importada correctamente.");
-    }
-  }catch{
-    alert("La copia no es válida.");
-  }
-  e.target.value="";
-});
-
+function arr(type){return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:data.races}
+function openForm(type,id=null){currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):null;$("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;$("#fields").innerHTML=defs[type].html(item);$("#modal").showModal()}
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>$("#modal").close();
+window.editItem=(t,id)=>openForm(t,id);
+window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
+$("#form").onsubmit=e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();if(currentType==="run"){["distance","avgHr","maxHr","te","temp","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||null);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":"races";if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);save();$("#modal").close()};
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
+$("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
+$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=4").catch(()=>{}))}
 render();
 </script>
 </body>
