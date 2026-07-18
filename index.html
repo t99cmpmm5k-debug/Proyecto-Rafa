@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V11</title>
+<title>Proyecto Rafa · V11.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -239,7 +239,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V11</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V11.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -249,7 +249,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V11 ACTIVA</span>
+    <span class="version">V11.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -538,7 +538,10 @@ function inferRunCategory(r){
  return "Zona 2";
 }
 function categoryLabel(r){return r.category||inferRunCategory(r)}
-data.runs.forEach(r=>{if(!r.category)r.category=inferRunCategory(r)});
+data.runs.forEach(r=>{
+ if(!r.category)r.category=inferRunCategory(r);
+ if(r.avgCadence==null && r.cadence!=null)r.avgCadence=r.cadence;
+});
 function runCategoryStats(items){
  const km=items.reduce((a,r)=>a+Number(r.distance||0),0),sec=items.reduce((a,r)=>a+timeToSeconds(r.time),0);
  return {count:items.length,km,pace:km?paceTextFromSeconds(sec/km):"—"};
@@ -581,7 +584,7 @@ window.completePlannedRun=id=>{
  const p=data.plan.find(x=>x.id===id);if(!p)return;
  window.quickRunPreset={
    date:p.date,type:p.title,category:inferRunCategory({type:p.title}),distance:p.distance||"",time:p.duration?secondsToTime(Number(p.duration)*60):"",
-   avgHr:"",maxHr:"",cadence:"",elevation:"",feeling:"Normal",shoes:"ASICS Gel-Nimbus 28",
+   avgHr:"",maxHr:"",avgCadence:"",temperature:"",feeling:"Normal",shoes:"ASICS Gel-Nimbus 28",
    notes:p.notes||"",planId:p.id
  };
  openForm("run");
@@ -599,6 +602,11 @@ function runCard(r){
    <div class="stat"><small>Desnivel</small><b>${r.elevation||"—"} m</b></div>
    <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
  </div>
+ ${(r.avgCadence||r.temperature!==undefined&&r.temperature!=="")?`<div class="stats">
+   <div class="stat"><small>Cadencia media</small><b>${r.avgCadence?`${r.avgCadence} ppm`:"—"}</b></div>
+   <div class="stat"><small>Temperatura</small><b>${r.temperature!==undefined&&r.temperature!==""?`${String(r.temperature).replace(".",",")} °C`:"—"}</b></div>
+   <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
+ </div>`:""}
  ${r.notes?`<p class="note">${r.notes}</p>`:""}
  ${runSpecialSummary(r)}
  ${runComparison(r)}
@@ -956,7 +964,7 @@ const defs={
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
  <div id="runDynamicFields"></div>
  <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
- <details><summary>Datos opcionales</summary><div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${q.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${q.elevation??""}"></div></div><div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div></details>
+ <details><summary>Datos opcionales</summary><div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div><div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div></details>
  <div class="field"><label>Notas</label><textarea name="notes">${q.notes||""}</textarea></div>`}},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
@@ -1075,7 +1083,7 @@ $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
  if(currentType==="run"){
    o.category=o.category||inferRunCategory(o);
-   ["distance","avgHr","maxHr","cadence","elevation","tempoDistance","officialDistance","z2Limit"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
+   ["distance","avgHr","maxHr","avgCadence","temperature","tempoDistance","officialDistance","z2Limit"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
    if(o.category==="Series")o.intervals=[...document.querySelectorAll("#intervalRows .split-row")].map(row=>({distance:Number(row.querySelector('[data-int="distance"]').value)||0,time:row.querySelector('[data-int="time"]').value.trim()})).filter(x=>x.distance||x.time);
    o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time);
    if(!o.planId){
@@ -1104,7 +1112,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=11").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=111").catch(()=>{}))}
 render();
 </script>
 </body>
