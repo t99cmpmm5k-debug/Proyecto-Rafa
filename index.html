@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19</title>
+<title>Proyecto Rafa · V19.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -523,17 +523,17 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
 <main>
 <section id="inicio" class="view active">
   <div class="hero">
-    <div class="kicker">OBJETIVO PRINCIPAL</div>
-    <h2>Media Maratón de Murcia</h2>
-    <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V19 ACTIVA</span>
+    <div class="kicker">TU ENTRENAMIENTO</div>
+    <h2>Construye tu mejor versión</h2>
+    <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
+    <span class="version">V19.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -562,6 +562,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 
   <div class="section-head"><h3>Última actividad</h3></div>
   <div id="latest"></div>
+  <div id="firstUseHint" class="z2-note" style="display:none">Empieza registrando tu primer entrenamiento o creando tu planificación semanal.</div>
 </section>
 
 
@@ -899,15 +900,11 @@ const GYM_ROUTINES={
 };
 
 const seed={
- runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
- gym:[{id:"gym-1607",date:"2026-07-16",name:"Torso",duration:"45",exercises:[
-   {name:"Press banca",step:2.5,sets:[{weight:20,reps:10},{weight:20,reps:10},{weight:20,reps:9}]},
-   {name:"Remo barra",step:2.5,sets:[{weight:40,reps:10},{weight:40,reps:10},{weight:40,reps:10}]},
-   {name:"Press militar",step:2.5,sets:[{weight:20,reps:10},{weight:20,reps:9},{weight:20,reps:8}]},
-   {name:"Elevaciones laterales",step:1,sets:[{weight:15,reps:12},{weight:15,reps:12},{weight:15,reps:11}]}
- ],notes:"Sesión de torso."}],
- gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
- races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}],
+ runs:[],
+ gym:[],
+ gear:[],
+ races:[],
+ plan:[],
  templates:[
    {id:"t1",name:"Semana suave",description:"Recuperación y rodajes cómodos.",items:[
      {day:0,sport:"Gimnasio",title:"Fuerza suave",distance:0,duration:35,intensity:"Suave",notes:"Sin llegar al fallo."},
@@ -1810,6 +1807,12 @@ window.startGymRoutine=day=>{
  openForm("gym");
 };
 
+function renderFirstUseHint(){
+ const el=$("#firstUseHint");
+ if(!el)return;
+ const empty=!data.runs.length&&!data.gym.length&&!data.races.length&&!data.gear.length;
+ el.style.display=empty?"block":"none";
+}
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -1824,7 +1827,7 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  renderRaces();
- renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();renderGymPlan();
+ renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();renderGymPlan();renderFirstUseHint();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -2296,7 +2299,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=19").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=191").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
