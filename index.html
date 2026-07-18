@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V16</title>
+<title>Proyecto Rafa · V17</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -457,11 +457,29 @@ nav{
 .last-used{font-size:10px;color:var(--green);margin-top:4px}
 @media(max-width:520px){.gym-days{gap:6px}.gym-day-btn{padding:10px 5px;font-size:12px}}
 
+
+.gym-live-top{position:sticky;top:72px;z-index:12;background:rgba(7,16,12,.96);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:12px}
+.gym-live-progress-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+.gym-live-progress-head strong{font-size:14px}.gym-live-progress-head span{font-size:12px;color:var(--muted)}
+.gym-progress-track{height:10px;background:var(--panel2);border-radius:999px;overflow:hidden}
+.gym-progress-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green2),var(--green));border-radius:999px;transition:width .25s ease}
+.rest-controls{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.rest-controls button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:11px;padding:8px 4px;font-size:11px;font-weight:900}
+.rest-timer{margin-top:10px;display:flex;justify-content:space-between;align-items:center;background:#132019;border-radius:12px;padding:10px 12px}
+.rest-timer strong{font-size:22px;color:var(--green)}.rest-timer span{font-size:11px;color:var(--muted)}
+.series-row.done{opacity:.62;background:#14251a;border-radius:12px}
+.series-row.done .series-num{background:var(--green);color:#07100c}
+.series-check{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);font-size:17px;font-weight:900}
+.series-check.done{background:var(--green);border-color:var(--green);color:#07100c}
+.progression-note{margin-top:10px;padding:10px 12px;border-radius:13px;background:#17281c;border:1px solid #34543d;font-size:11px;color:#d8f3df;line-height:1.4}
+.progression-note strong{color:var(--green)}
+.gym-session-result{margin-top:10px;padding:10px;border-radius:13px;background:var(--panel2);font-size:11px;color:var(--muted)}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V16</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V17</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -471,7 +489,7 @@ nav{
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V16 ACTIVA</span>
+    <span class="version">V17 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -846,7 +864,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes";
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes",restTimerId=null,restSeconds=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -893,6 +911,7 @@ data.runs.forEach(r=>{
  if(r.category==="Tempo")r.category="Zona 2";
  if(r.avgCadence==null && r.cadence!=null)r.avgCadence=r.cadence;
 });
+data.gym.forEach(s=>(s.exercises||[]).forEach(e=>(e.sets||[]).forEach(set=>{if(set.done==null)set.done=false})));
 function runCategoryStats(items){
  const km=items.reduce((a,r)=>a+Number(r.distance||0),0),sec=items.reduce((a,r)=>a+timeToSeconds(r.time),0);
  return {count:items.length,km,pace:km?paceTextFromSeconds(sec/km):"—"};
@@ -963,15 +982,43 @@ function runCard(r){
  <div class="actions"><button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button></div>
  </article>`
 }
+
+function targetRepMinimum(e){
+ const raw=String(e.note||"");
+ const m=raw.match(/(\d+)(?:\s*-\s*(\d+))?/);
+ return m?Number(m[1]):0;
+}
+function progressionForExercise(e){
+ const sets=e.sets||[];
+ if(!sets.length)return "";
+ const allDone=sets.every(s=>s.done!==false);
+ const min=targetRepMinimum(e);
+ const repsOk=min?sets.every(s=>Number(s.reps)>=min):allDone;
+ if(allDone&&repsOk){
+   const inc=Number(e.step)||2.5;
+   if(e.assisted)return `Completado: prueba a reducir la asistencia ${inc} kg la próxima vez.`;
+   return `Completado: prueba a subir ${inc} kg la próxima vez.`;
+ }
+ return "";
+}
+function gymCompletion(session){
+ const sets=(session.exercises||[]).flatMap(e=>e.sets||[]);
+ const done=sets.filter(s=>s.done).length;
+ return {done,total:sets.length,pct:sets.length?Math.round(done/sets.length*100):0};
+}
+
 function gymCard(x){
+ const progress=gymCompletion(x);
  const exercises=(x.exercises||[]).map(e=>{
    const best=Math.max(...(e.sets||[]).map(s=>Number(s.weight)||0),0);
-   const sets=(e.sets||[]).map(s=>`${s.weight} kg × ${s.reps}`).join(" · ");
-   return `<div class="exercise-card"><div class="exercise-head"><div><div class="exercise-title">${e.name}</div><div class="card-date">${sets}</div></div><strong>${best} kg</strong></div></div>`;
+   const sets=(e.sets||[]).map(s=>`${s.done?"✓ ":""}${s.weight} kg × ${s.reps}`).join(" · ");
+   const suggestion=progressionForExercise(e);
+   return `<div class="exercise-card"><div class="exercise-head"><div><div class="exercise-title">${e.name}</div><div class="card-date">${sets}</div></div><strong>${best} kg</strong></div>${suggestion?`<div class="progression-note"><strong>Progresión:</strong> ${suggestion}</div>`:""}</div>`;
  }).join("");
  return `<article class="card">
    <div class="card-title">${x.name}</div>
    <div class="card-date">${fmt(x.date)} · ${x.duration||"—"} min</div>
+   <div class="gym-session-result">${progress.done}/${progress.total} series completadas · ${progress.pct}%</div>
    ${exercises}
    ${x.notes?`<p class="note">${x.notes}</p>`:""}
    <div class="actions"><button class="btn secondary small" onclick="editItem('gym','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('gym','${x.id}')">🗑️ Eliminar</button></div>
@@ -1776,7 +1823,7 @@ function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDat
  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
  $("#fields").innerHTML=defs[type].html(item);
  if(type==="gym"){
-   gymDraftExercises=structuredClone(item?.exercises||[]);
+   gymDraftExercises=structuredClone(item?.exercises||[]);gymDraftExercises.forEach(e=>(e.sets||[]).forEach(s=>{if(s.done==null)s.done=false}));
    renderExerciseLibrary();
    renderGymExerciseEditor();
    window.gymRoutinePreset=null;
@@ -1798,9 +1845,45 @@ function findLastExercise(name){
  for(const s of sessions){const e=(s.exercises||[]).find(x=>x.name===name);if(e)return e}
  return null
 }
+function gymDraftProgress(){
+ const sets=gymDraftExercises.flatMap(e=>e.sets||[]);
+ const done=sets.filter(s=>s.done).length;
+ return {done,total:sets.length,pct:sets.length?Math.round(done/sets.length*100):0};
+}
+function renderRestTimer(){
+ const el=$("#restTimerDisplay");
+ if(!el)return;
+ el.innerHTML=restSeconds>0?`<span>Descanso en curso</span><strong>${Math.floor(restSeconds/60)}:${String(restSeconds%60).padStart(2,"0")}</strong>`:`<span>Temporizador de descanso</span><strong>Listo</strong>`;
+}
+function startRestTimer(seconds){
+ clearInterval(restTimerId);restSeconds=seconds;renderRestTimer();
+ restTimerId=setInterval(()=>{
+   restSeconds--;
+   renderRestTimer();
+   if(restSeconds<=0){
+     clearInterval(restTimerId);restTimerId=null;restSeconds=0;renderRestTimer();
+     if(navigator.vibrate)navigator.vibrate([180,100,180]);
+   }
+ },1000);
+}
+window.startRestTimer=startRestTimer;
 function renderGymExerciseEditor(){
- $("#gymExerciseEditor").innerHTML=gymDraftExercises.map((e,ei)=>`
- <div class="exercise-card">
+ const p=gymDraftProgress();
+ $("#gymExerciseEditor").innerHTML=`
+ <div class="gym-live-top">
+  <div class="gym-live-progress-head"><strong>Progreso de la sesión</strong><span>${p.done}/${p.total} series · ${p.pct}%</span></div>
+  <div class="gym-progress-track"><i style="width:${p.pct}%"></i></div>
+  <div class="rest-controls">
+   <button type="button" onclick="startRestTimer(60)">60 s</button>
+   <button type="button" onclick="startRestTimer(90)">90 s</button>
+   <button type="button" onclick="startRestTimer(120)">2 min</button>
+   <button type="button" onclick="startRestTimer(180)">3 min</button>
+  </div>
+  <div id="restTimerDisplay" class="rest-timer"></div>
+ </div>
+ ${gymDraftExercises.map((e,ei)=>{
+   const suggestion=progressionForExercise(e);
+   return `<div class="exercise-card">
    <div class="exercise-head">
      <div><div class="exercise-title">${e.name}</div><div class="card-date">Paso ${e.step||2.5} kg${e.assisted?" · asistencia":""}</div></div>
      <button type="button" class="btn danger small" onclick="removeExercise(${ei})">Quitar</button>
@@ -1809,7 +1892,7 @@ function renderGymExerciseEditor(){
    <div class="gym-editor-labels"><span></span><span>Peso</span><span>Reps</span><span></span></div>
    <div class="series-list">
      ${(e.sets||[]).map((s,si)=>`
-       <div class="series-row">
+       <div class="series-row ${s.done?"done":""}">
          <div class="series-num">${si+1}</div>
          <div class="stepper">
            <button type="button" onclick="changeWeight(${ei},${si},-1)">−</button>
@@ -1821,23 +1904,29 @@ function renderGymExerciseEditor(){
            <input value="${s.reps}" readonly>
            <button type="button" onclick="changeReps(${ei},${si},1)">＋</button>
          </div>
-         <button type="button" class="remove-series" onclick="removeSet(${ei},${si})">×</button>
+         <button type="button" class="series-check ${s.done?"done":""}" onclick="toggleSetDone(${ei},${si})">${s.done?"✓":"○"}</button>
        </div>`).join("")}
    </div>
+   ${suggestion?`<div class="progression-note"><strong>Siguiente sesión:</strong> ${suggestion}</div>`:""}
    <div class="exercise-toolbar">
      <button type="button" class="btn secondary small" onclick="copyLastSet(${ei})">Copiar serie</button>
      <button type="button" class="btn secondary small" onclick="addSet(${ei})">Añadir serie</button>
    </div>
- </div>`).join("")
+ </div>`}).join("")}`;
+ renderRestTimer();
 }
 window.removeExercise=i=>{gymDraftExercises.splice(i,1);renderGymExerciseEditor()}
 window.changeWeight=(ei,si,dir)=>{const e=gymDraftExercises[ei],step=Number(e.step)||2.5;e.sets[si].weight=Math.max(0,Math.round((Number(e.sets[si].weight)+dir*step)*10)/10);renderGymExerciseEditor()}
 window.changeReps=(ei,si,dir)=>{gymDraftExercises[ei].sets[si].reps=Math.max(0,Number(gymDraftExercises[ei].sets[si].reps)+dir);renderGymExerciseEditor()}
-window.removeSet=(ei,si)=>{gymDraftExercises[ei].sets.splice(si,1);renderGymExerciseEditor()}
-window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10});else sets.push(structuredClone(sets[sets.length-1]));renderGymExerciseEditor()}
-window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10});renderGymExerciseEditor()}
+window.toggleSetDone=(ei,si)=>{
+ const s=gymDraftExercises[ei].sets[si];s.done=!s.done;
+ if(s.done)startRestTimer(90);
+ renderGymExerciseEditor()
+}
+window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10,done:false});else{const c=structuredClone(sets[sets.length-1]);c.done=false;sets.push(c)}renderGymExerciseEditor()}
+window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10,done:false});renderGymExerciseEditor()}
 
-document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;$("#modal").close()};
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
 window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t==="run")data.plan=data.plan.map(p=>p.actualRunId===id?{...p,status:"pending",actualRunId:""}:p);const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
@@ -1873,7 +1962,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=16").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=17").catch(()=>{}))}
 render();
 </script>
 </body>
