@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V15</title>
+<title>Proyecto Rafa · V16</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -439,11 +439,29 @@ nav{
  .hero h2{font-size:27px}
 }
 
+
+.gym-days{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0 14px}
+.gym-day-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:12px 8px;border-radius:16px;font-weight:900}
+.gym-day-btn.active{background:linear-gradient(135deg,#213a28,#17281c);color:var(--green);border-color:#3d6047}
+.gym-plan-card{background:linear-gradient(145deg,#14221a,#0e1712);border:1px solid var(--line);border-radius:22px;padding:15px;margin-bottom:14px}
+.gym-plan-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.gym-plan-head h3{margin:0 0 5px}.gym-plan-head p{margin:0;color:var(--muted);font-size:12px}
+.gym-plan-list{display:grid;gap:8px}
+.gym-plan-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--panel2);border-radius:14px;padding:10px 12px}
+.gym-plan-item strong{font-size:13px}.gym-plan-item span{font-size:11px;color:var(--muted);text-align:right}
+.gym-start-btn{width:100%;margin-top:12px}
+.gym-tip{background:#18261d;border:1px solid #2f4937;border-radius:16px;padding:12px;margin-top:12px;color:#cfe6d6;font-size:12px;line-height:1.45}
+.gym-editor-labels{display:grid;grid-template-columns:34px 1fr 1fr 34px;gap:8px;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;margin:0 0 5px}
+.gym-editor-labels span:nth-child(2),.gym-editor-labels span:nth-child(3){text-align:center}
+.series-row input{font-weight:900}
+.last-used{font-size:10px;color:var(--green);margin-top:4px}
+@media(max-width:520px){.gym-days{gap:6px}.gym-day-btn{padding:10px 5px;font-size:12px}}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V15</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V16</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -453,7 +471,7 @@ nav{
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V15 ACTIVA</span>
+    <span class="version">V16 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -595,9 +613,18 @@ nav{
 
 <section id="gym" class="view">
   <div class="section-head">
-    <div><div class="kicker">FUERZA</div><h2>Gimnasio</h2></div>
-    <button class="btn primary" data-add="gym">＋ Sesión</button>
+    <div><div class="kicker">FUERZA</div><h2>Rutina semanal</h2></div>
+    <button class="btn secondary" data-add="gym">Sesión libre</button>
   </div>
+
+  <div class="gym-days">
+    <button class="gym-day-btn active" data-gym-day="lunes">Lunes</button>
+    <button class="gym-day-btn" data-gym-day="miercoles">Miércoles</button>
+    <button class="gym-day-btn" data-gym-day="viernes">Viernes</button>
+  </div>
+
+  <div id="gymPlan"></div>
+
   <div class="mini-grid">
     <div class="mini-card"><span>Última sesión</span><strong id="lastGymName">—</strong></div>
     <div class="mini-card"><span>Sesiones registradas</span><strong id="gymCount">0</strong></div>
@@ -724,6 +751,49 @@ const EXERCISES=[
  {name:"Curl femoral",step:2.5},
  {name:"Gemelos",step:5}
 ];
+
+const GYM_ROUTINES={
+ lunes:{
+  title:"Lunes · Torso",duration:60,
+  exercises:[
+   {name:"Press banca",sets:4,reps:8,weight:45,step:2.5,note:"6-8 reps"},
+   {name:"Dominadas asistidas",sets:4,reps:8,weight:0,step:5,assisted:true,note:"6-8 reps · asistencia"},
+   {name:"Remo barra",sets:4,reps:8,weight:47.5,step:2.5,note:"45-50 kg"},
+   {name:"Press militar",sets:3,reps:10,weight:20,step:2.5,note:"8-10 reps"},
+   {name:"Elevaciones laterales",sets:3,reps:15,weight:8,step:1,note:"15 reps"},
+   {name:"Fondos asistidos",sets:3,reps:10,weight:0,step:5,assisted:true,note:"RIR 1-2"},
+   {name:"Curl EZ",sets:3,reps:10,weight:25,step:2.5,note:"10 reps"},
+   {name:"Tríceps polea",sets:3,reps:12,weight:0,step:2.5,note:"Moderado"}
+  ]
+ },
+ miercoles:{
+  title:"Miércoles · Pierna",duration:60,
+  exercises:[
+   {name:"Prensa",sets:4,reps:8,weight:150,step:5,note:"8 reps"},
+   {name:"Peso muerto rumano",sets:4,reps:8,weight:60,step:5,note:"8 reps"},
+   {name:"Zancadas",sets:3,reps:10,weight:16,step:2,note:"10 por pierna"},
+   {name:"Curl femoral",sets:3,reps:12,weight:0,step:2.5,note:"Moderado"},
+   {name:"Gemelos",sets:4,reps:15,weight:0,step:5,note:"Pesado"},
+   {name:"Tibial anterior",sets:3,reps:20,weight:0,step:1,note:"Peso corporal"},
+   {name:"Monster Walk",sets:3,reps:15,weight:0,step:1,note:"15 pasos · banda"},
+   {name:"Core",sets:3,reps:15,weight:0,step:1,note:"Elevaciones de piernas"}
+  ]
+ },
+ viernes:{
+  title:"Viernes · Full Body",duration:60,
+  exercises:[
+   {name:"Goblet squat",sets:3,reps:10,weight:32,step:2,note:"10 reps"},
+   {name:"Press inclinado",sets:3,reps:10,weight:22,step:2,note:"10 reps"},
+   {name:"Jalón pecho",sets:3,reps:10,weight:60,step:2.5,note:"10 reps"},
+   {name:"Hip thrust",sets:3,reps:10,weight:80,step:5,note:"10 reps"},
+   {name:"Face pull",sets:3,reps:15,weight:0,step:2.5,note:"Moderado"},
+   {name:"Curl martillo",sets:2,reps:12,weight:14,step:2,note:"12 reps"},
+   {name:"Tríceps cuerda",sets:2,reps:15,weight:0,step:2.5,note:"Moderado"},
+   {name:"Rueda abdominal",sets:3,reps:10,weight:0,step:1,note:"10 reps"}
+  ]
+ }
+};
+
 const seed={
  runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
  gym:[{id:"gym-1607",date:"2026-07-16",name:"Torso",duration:"45",exercises:[
@@ -776,7 +846,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar";
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes";
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -1575,6 +1645,38 @@ function setRaceView(view){
  $("#raceHistoryPanel").classList.toggle("active",view==="history");
 }
 
+
+function routineDraft(day){
+ const r=GYM_ROUTINES[day];
+ return r.exercises.map(ex=>{
+   const last=findLastExercise(ex.name);
+   const baseWeight=last?.sets?.[0]?.weight ?? ex.weight ?? 0;
+   return {
+    name:ex.name,step:ex.step||2.5,assisted:!!ex.assisted,note:ex.note||"",
+    sets:Array.from({length:ex.sets},(_,i)=>{
+      const prior=last?.sets?.[i];
+      return {weight:prior?.weight ?? baseWeight,reps:prior?.reps ?? ex.reps,done:false}
+    })
+   };
+ });
+}
+function renderGymPlan(){
+ const r=GYM_ROUTINES[gymDay];
+ $("#gymPlan").innerHTML=`<div class="gym-plan-card">
+  <div class="gym-plan-head"><div><h3>${r.title}</h3><p>${r.exercises.length} ejercicios · ${r.duration} min aprox.</p></div><span class="race-badge">${gymDay==="lunes"?"TORSO":gymDay==="miercoles"?"PIERNA":"FULL BODY"}</span></div>
+  <div class="gym-plan-list">
+   ${r.exercises.map(e=>`<div class="gym-plan-item"><strong>${e.name}</strong><span>${e.sets} × ${e.note||e.reps}</span></div>`).join("")}
+  </div>
+  <button class="btn primary gym-start-btn" type="button" onclick="startGymRoutine('${gymDay}')">Empezar entrenamiento</button>
+  <div class="gym-tip">Deja 1-2 repeticiones en reserva. Cuando completes todas las repeticiones con buena técnica, aumenta 2,5 kg. Descansa 2-3 min en básicos y 60-90 s en accesorios.</div>
+ </div>`;
+}
+window.startGymRoutine=day=>{
+ const r=GYM_ROUTINES[day];
+ window.gymRoutinePreset={name:r.title,duration:r.duration,exercises:routineDraft(day)};
+ openForm("gym");
+};
+
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -1589,7 +1691,7 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  renderRaces();
- renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();
+ renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();renderGymPlan();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -1597,6 +1699,7 @@ document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilt
 document.querySelectorAll("[data-race-filter]").forEach(b=>b.onclick=()=>{raceFilter=b.dataset.raceFilter;document.querySelectorAll("[data-race-filter]").forEach(x=>x.classList.toggle("active",x===b));renderRaceList()});
 document.querySelectorAll("[data-finished-filter]").forEach(b=>b.onclick=()=>{finishedRaceFilter=b.dataset.finishedFilter;document.querySelectorAll("[data-finished-filter]").forEach(x=>x.classList.toggle("active",x===b));renderFinishedRaces()});
 document.querySelectorAll("[data-race-view]").forEach(b=>b.onclick=()=>setRaceView(b.dataset.raceView));
+document.querySelectorAll("[data-gym-day]").forEach(b=>b.onclick=()=>{gymDay=b.dataset.gymDay;document.querySelectorAll("[data-gym-day]").forEach(x=>x.classList.toggle("active",x===b));renderGymPlan()});
 $("#prevRaceMonth").onclick=()=>{raceMonthOffset--;renderRaceCalendar()};
 $("#nextRaceMonth").onclick=()=>{raceMonthOffset++;renderRaceCalendar()};
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
@@ -1669,13 +1772,14 @@ function renderRunDynamicFields(category,q={}){
 }
 
 function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDate;
- currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):(type==="run"&&window.quickRunPreset?window.quickRunPreset:null);
+ currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):(type==="run"&&window.quickRunPreset?window.quickRunPreset:(type==="gym"&&window.gymRoutinePreset?window.gymRoutinePreset:null));
  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
  $("#fields").innerHTML=defs[type].html(item);
  if(type==="gym"){
    gymDraftExercises=structuredClone(item?.exercises||[]);
    renderExerciseLibrary();
    renderGymExerciseEditor();
+   window.gymRoutinePreset=null;
  }
  $("#modal").showModal();
  if(type==="run"){const q=item||{};renderRunDynamicFields(q.category||inferRunCategory(q),q);document.querySelectorAll('input[name="category"]').forEach(r=>r.addEventListener("change",()=>renderRunDynamicFields(r.value,q)));window.quickRunPreset=null}
@@ -1701,6 +1805,8 @@ function renderGymExerciseEditor(){
      <div><div class="exercise-title">${e.name}</div><div class="card-date">Paso ${e.step||2.5} kg${e.assisted?" · asistencia":""}</div></div>
      <button type="button" class="btn danger small" onclick="removeExercise(${ei})">Quitar</button>
    </div>
+   <div class="last-used">${e.note||""}</div>
+   <div class="gym-editor-labels"><span></span><span>Peso</span><span>Reps</span><span></span></div>
    <div class="series-list">
      ${(e.sets||[]).map((s,si)=>`
        <div class="series-row">
@@ -1767,7 +1873,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=15").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=16").catch(()=>{}))}
 render();
 </script>
 </body>
