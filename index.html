@@ -7,45 +7,46 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V4</title>
+<title>Proyecto Rafa · V5</title>
 <style>
 :root{
-  --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2a333d;
-  --text:#f5f7f8;--muted:#99a4af;--green:#9fe870;--green2:#d7ffbd;
-  --blue:#77b7ff;--orange:#ffb56b;--red:#ff8d8d;--shadow:0 14px 36px rgba(0,0,0,.28)
+  --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
+  --text:#f6f7f8;--muted:#99a4af;--green:#9fe870;--green2:#d8ffbd;
+  --blue:#6eb8ff;--orange:#ffb36a;--red:#ff8e8e;--purple:#b79cff;
+  --shadow:0 16px 40px rgba(0,0,0,.3)
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
 body{
   margin:0;background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-  padding-bottom:98px
+  padding-bottom:102px
 }
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 h1,h2,h3,p{margin:0}
 header{
-  position:sticky;top:0;z-index:20;
+  position:sticky;top:0;z-index:30;
   padding:calc(16px + env(safe-area-inset-top)) 18px 14px;
+  display:flex;justify-content:space-between;align-items:center;
   background:rgba(8,11,14,.92);backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line);
-  display:flex;justify-content:space-between;align-items:center
+  border-bottom:1px solid var(--line)
 }
-.kicker{color:var(--green);font-size:11px;letter-spacing:.18em;font-weight:900}
+.kicker{font-size:11px;letter-spacing:.18em;font-weight:900;color:var(--green)}
 h1{font-size:27px;margin-top:5px}
-main{max-width:780px;margin:auto;padding:16px}
+main{max-width:820px;margin:auto;padding:15px}
 .view{display:none}.view.active{display:block}
 .hero{
   position:relative;overflow:hidden;
-  background:linear-gradient(145deg,#141a20,#1b242d);
-  border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow)
+  background:linear-gradient(145deg,#141a20,#1c252e);
+  border:1px solid var(--line);border-radius:27px;padding:22px;box-shadow:var(--shadow)
 }
 .hero:after{
-  content:"";position:absolute;width:180px;height:180px;border-radius:50%;
-  right:-60px;top:-70px;background:radial-gradient(circle,var(--green) 0%,rgba(159,232,112,.18) 45%,transparent 72%)
+  content:"";position:absolute;width:210px;height:210px;border-radius:50%;
+  right:-70px;top:-85px;background:radial-gradient(circle,var(--green) 0%,rgba(159,232,112,.2) 42%,transparent 72%)
 }
-.hero h2{font-size:28px;margin:6px 0 8px}.hero p{color:var(--muted)}
-.version{display:inline-block;margin-top:13px;padding:6px 9px;border-radius:999px;background:#21311a;color:var(--green2);font-size:11px;font-weight:900}
+.hero h2{font-size:29px;margin:6px 0 8px;max-width:75%}.hero p{color:var(--muted)}
+.version{display:inline-block;margin-top:13px;padding:6px 9px;border-radius:999px;background:#203118;color:var(--green2);font-size:11px;font-weight:900}
 .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:12px}
 .metric{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:15px}
 .metric span{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}.metric strong{font-size:22px}
@@ -54,7 +55,7 @@ main{max-width:780px;margin:auto;padding:16px}
 .btn{border:0;border-radius:15px;padding:12px 15px;font-weight:850}
 .btn.primary{background:var(--green);color:#0a1206}
 .btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-.btn.danger{background:#412326;color:#ffc0c0}
+.btn.danger{background:#422326;color:#ffc1c1}
 .btn.small{padding:9px 11px;font-size:13px}.btn.full{width:100%}
 .stack{display:flex;flex-direction:column;gap:12px}
 .card{
@@ -70,19 +71,19 @@ main{max-width:780px;margin:auto;padding:16px}
 .progress{height:10px;background:var(--panel2);border-radius:999px;overflow:hidden;margin-top:10px}
 .progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--green2))}
 .fab{
-  position:fixed;right:18px;bottom:108px;z-index:18;width:58px;height:58px;border-radius:50%;
-  border:0;background:var(--green);color:#0a1206;font-size:28px;font-weight:900;box-shadow:0 10px 30px rgba(159,232,112,.32)
+  position:fixed;right:18px;bottom:110px;z-index:25;width:59px;height:59px;border-radius:50%;
+  border:0;background:var(--green);color:#0a1206;font-size:29px;font-weight:900;box-shadow:0 10px 30px rgba(159,232,112,.34)
 }
 nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:30;
+  position:fixed;bottom:0;left:0;right:0;z-index:40;
   display:grid;grid-template-columns:repeat(5,1fr);
   padding:8px 7px calc(8px + env(safe-area-inset-bottom));
   background:rgba(8,11,14,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line)
 }
 .nav{background:transparent;border:0;color:var(--muted);font-size:10px;padding:6px 2px}
 .nav span{display:block;font-size:20px;margin-bottom:3px}.nav.active{color:var(--green);font-weight:900}
-dialog{width:min(94vw,560px);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);padding:0}
-dialog::backdrop{background:rgba(0,0,0,.76);backdrop-filter:blur(4px)}
+dialog{width:min(94vw,580px);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);padding:0}
+dialog::backdrop{background:rgba(0,0,0,.77);backdrop-filter:blur(4px)}
 form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
 .close{width:40px;height:40px;border:0;border-radius:13px;background:var(--panel2);color:var(--text)}
 .field{margin-bottom:12px}.field label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px 3px}
@@ -93,12 +94,23 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .mini-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:15px}
 .mini-card span{display:block;color:var(--muted);font-size:12px}.mini-card strong{display:block;margin-top:7px;font-size:19px}
+.chart-wrap{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;overflow:hidden}
+canvas{width:100%;height:190px;display:block}
+.zone-row{display:grid;grid-template-columns:52px 1fr 48px;gap:9px;align-items:center;margin:8px 0}
+.zone-bar{height:10px;background:var(--panel2);border-radius:999px;overflow:hidden}
+.zone-bar span{display:block;height:100%}
+.exercise{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:13px;margin-top:10px}
+.exercise-top{display:flex;justify-content:space-between;gap:12px}.exercise-name{font-weight:900}
+.exercise-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.countdown{font-size:32px;font-weight:950;color:var(--green)}
+.record{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.record:last-child{border-bottom:0}
 @media(max-width:420px){main{padding:14px}.stats{grid-template-columns:repeat(2,1fr)}.section-head h2{font-size:30px}}
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V4</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V5</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -108,7 +120,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V4 ACTIVA</span>
+    <span class="version">V5 ACTIVA</span>
   </div>
 
   <div class="metrics">
@@ -123,6 +135,9 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="card-top"><div><div class="card-title">25 km</div><div class="card-date">Volumen semanal recomendado</div></div><div class="distance" id="weekProgressText">0%</div></div>
     <div class="progress"><span id="weekProgressBar" style="width:0%"></span></div>
   </div>
+
+  <div class="section-head"><h3>Evolución Z2</h3></div>
+  <div class="chart-wrap"><canvas id="z2Chart" width="700" height="220"></canvas></div>
 
   <div class="section-head"><h3>Última actividad</h3></div>
   <div id="latest"></div>
@@ -145,6 +160,8 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="mini-card"><span>Última sesión</span><strong id="lastGymName">—</strong></div>
     <div class="mini-card"><span>Sesiones registradas</span><strong id="gymCount">0</strong></div>
   </div>
+  <div class="section-head"><h3>Progreso por ejercicio</h3></div>
+  <div id="exerciseRecords" class="card"></div>
   <div class="section-head"><h3>Historial</h3></div>
   <div id="gyms" class="stack"></div>
 </section>
@@ -162,6 +179,8 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div><div class="kicker">COMPETICIÓN</div><h2>Carreras</h2></div>
     <button class="btn primary" data-add="race">＋ Añadir</button>
   </div>
+  <div id="raceCountdown" class="card"></div>
+  <div class="section-head"><h3>Calendario</h3></div>
   <div id="races" class="stack"></div>
 
   <div class="section-head"><h3>Copias de seguridad</h3></div>
@@ -193,8 +212,13 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 <script>
 const KEY="proyectoRafaDataV1";
 const seed={
- runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
- gym:[{id:"gym-1607",date:"2026-07-16",name:"Torso",duration:"45",notes:"Press banca 20 kg · Remo barra 40 kg · Press militar 20 kg · Elevaciones laterales 15 kg · Fondos asistidos 40 kg · Curl EZ 10 kg · Tríceps polea 20 kg"}],
+ runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",z1:8,z2:90,z3:1,z4:0,z5:0,notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
+ gym:[{id:"gym-1607",date:"2026-07-16",name:"Torso",duration:"45",exercises:[
+   {name:"Press banca",weight:20,sets:"10·10·9",reps:10},
+   {name:"Remo barra",weight:40,sets:"10·10·10",reps:10},
+   {name:"Press militar",weight:20,sets:"10·9·8",reps:10},
+   {name:"Elevaciones laterales",weight:15,sets:"12·12·11",reps:12}
+ ],notes:"Sesión de torso."}],
  gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
  races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}]
 };
@@ -208,6 +232,7 @@ const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
 function calcPace(distance,time){if(!distance||!time)return"—";const p=time.split(":").map(Number),s=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1],pk=Math.round(s/Number(distance));return Math.floor(pk/60)+":"+String(pk%60).padStart(2,"0")}
+function paceSeconds(p){if(!p)return null;const a=p.split(":").map(Number);return a[0]*60+a[1]}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
 function weekKm(){const n=new Date(),wd=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-wd);return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=m).reduce((a,r)=>a+Number(r.distance||0),0)}
 function runCard(r){
@@ -221,9 +246,15 @@ function runCard(r){
    <div class="stat"><small>Desnivel</small><b>${r.elevation||"—"} m</b></div>
    <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
  </div>
+ ${zoneBars(r)}
  ${r.notes?`<p class="note">${r.notes}</p>`:""}
  <div class="actions"><button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button></div>
  </article>`
+}
+function zoneBars(r){
+ const vals=[r.z1||0,r.z2||0,r.z3||0,r.z4||0,r.z5||0];
+ const colors=["#6eb8ff","#9fe870","#ffdc6e","#ffb36a","#ff8e8e"];
+ return `<div style="margin-top:14px">${vals.map((v,i)=>`<div class="zone-row"><span style="color:var(--muted);font-size:12px">Z${i+1}</span><div class="zone-bar"><span style="width:${Math.min(100,v)}%;background:${colors[i]}"></span></div><b style="font-size:12px">${v}%</b></div>`).join("")}</div>`
 }
 function genericCard(x,type){
  const subtitle=type==="gym"?`${fmt(x.date)} · ${x.duration||"—"} min`:type==="gear"?`${x.type} · ${Number(x.km||0).toFixed(1).replace(".",",")} km`: `${fmt(x.date)} · ${x.distance||""} · ${x.goal||""}`;
@@ -231,6 +262,9 @@ function genericCard(x,type){
  if(type==="gear"){
    const max=Number(x.maxKm||700),pct=Math.min(100,Math.round((Number(x.km||0)/max)*100));
    extra=`<div class="progress"><span style="width:${pct}%"></span></div><p class="note">${pct}% de vida útil estimada.</p>`
+ }
+ if(type==="gym"&&Array.isArray(x.exercises)){
+   extra=x.exercises.map(e=>`<div class="exercise"><div class="exercise-top"><div><div class="exercise-name">${e.name}</div><div class="exercise-meta">${e.sets||""}</div></div><b>${e.weight||0} kg</b></div></div>`).join("")
  }
  return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
@@ -248,6 +282,32 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
+ renderExerciseRecords();renderRaceCountdown();drawZ2Chart();
+}
+function renderExerciseRecords(){
+ const best={};
+ data.gym.forEach(s=>(s.exercises||[]).forEach(e=>{if(!best[e.name]||Number(e.weight)>Number(best[e.name].weight))best[e.name]={weight:Number(e.weight)||0,date:s.date}}));
+ const entries=Object.entries(best);
+ $("#exerciseRecords").innerHTML=entries.length?entries.map(([name,v])=>`<div class="record"><div><b>${name}</b><div class="card-date">${fmt(v.date)}</div></div><strong>${v.weight} kg</strong></div>`).join(""):'<div class="empty">Sin ejercicios estructurados.</div>'
+}
+function renderRaceCountdown(){
+ const upcoming=[...data.races].filter(r=>new Date(r.date+"T23:59:59")>=new Date()).sort((a,b)=>a.date.localeCompare(b.date))[0];
+ if(!upcoming){$("#raceCountdown").innerHTML='<div class="empty">No hay próximas carreras.</div>';return}
+ const days=Math.ceil((new Date(upcoming.date+"T12:00:00")-new Date())/86400000);
+ $("#raceCountdown").innerHTML=`<div class="kicker">PRÓXIMA CARRERA</div><div class="card-title" style="margin-top:7px">${upcoming.name}</div><div class="card-date">${fmt(upcoming.date)} · ${upcoming.distance||""}</div><div class="countdown" style="margin-top:14px">${days} días</div>`
+}
+function drawZ2Chart(){
+ const c=$("#z2Chart"),ctx=c.getContext("2d"),runs=[...data.runs].filter(r=>r.type==="Rodaje Z2"&&paceSeconds(r.pace||calcPace(r.distance,r.time))).sort((a,b)=>a.date.localeCompare(b.date)).slice(-8);
+ ctx.clearRect(0,0,c.width,c.height);
+ ctx.fillStyle="#12171d";ctx.fillRect(0,0,c.width,c.height);
+ if(runs.length<2){ctx.fillStyle="#99a4af";ctx.font="26px sans-serif";ctx.fillText("Añade más rodajes Z2 para ver la evolución",28,110);return}
+ const vals=runs.map(r=>paceSeconds(r.pace||calcPace(r.distance,r.time))),min=Math.min(...vals)-8,max=Math.max(...vals)+8;
+ ctx.strokeStyle="#2b343e";ctx.lineWidth=1;
+ for(let i=0;i<5;i++){const y=25+i*40;ctx.beginPath();ctx.moveTo(35,y);ctx.lineTo(c.width-20,y);ctx.stroke()}
+ ctx.strokeStyle="#9fe870";ctx.lineWidth=5;ctx.lineJoin="round";ctx.lineCap="round";ctx.beginPath();
+ runs.forEach((r,i)=>{const x=40+i*(c.width-80)/(runs.length-1),y=30+(paceSeconds(r.pace||calcPace(r.distance,r.time))-min)/(max-min)*(c.height-70);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});
+ ctx.stroke();
+ runs.forEach((r,i)=>{const x=40+i*(c.width-80)/(runs.length-1),y=30+(paceSeconds(r.pace||calcPace(r.distance,r.time))-min)/(max-min)*(c.height-70);ctx.fillStyle="#d8ffbd";ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill()});
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -263,12 +323,16 @@ const defs={
  <div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${x?.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${x?.elevation??""}"></div></div>
  <div class="field"><label>Sensaciones</label><select name="feeling">${["Muy bien","Bien","Normal","Pesado","Mal"].map(v=>`<option ${x?.feeling===v?"selected":""}>${v}</option>`).join("")}</select></div>
  <div class="field"><label>Zapatillas</label><input name="shoes" value="${x?.shoes||"ASICS Gel-Nimbus 28"}"></div>
+ <div class="two"><div class="field"><label>Z1 %</label><input name="z1" type="number" value="${x?.z1??0}"></div><div class="field"><label>Z2 %</label><input name="z2" type="number" value="${x?.z2??0}"></div></div>
+ <div class="two"><div class="field"><label>Z3 %</label><input name="z3" type="number" value="${x?.z3??0}"></div><div class="field"><label>Z4 %</label><input name="z4" type="number" value="${x?.z4??0}"></div></div>
+ <div class="field"><label>Z5 %</label><input name="z5" type="number" value="${x?.z5??0}"></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
  <div class="field"><label>Sesión</label><input name="name" required value="${x?.name||""}"></div>
  <div class="field"><label>Duración (min)</label><input name="duration" type="number" value="${x?.duration||45}"></div>
- <div class="field"><label>Ejercicios, pesos y repeticiones</label><textarea name="notes" required>${x?.notes||""}</textarea></div>`},
+ <div class="field"><label>Ejercicios (una línea por ejercicio: Nombre | Peso | Series)</label><textarea name="exerciseText">${(x?.exercises||[]).map(e=>`${e.name} | ${e.weight} | ${e.sets||""}`).join("\n")}</textarea></div>
+ <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  gear:{title:"material",html:x=>`
  <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
  <div class="field"><label>Tipo</label><input name="type" value="${x?.type||"Zapatillas"}"></div>
@@ -287,11 +351,19 @@ function openForm(type,id=null){currentType=type;editingId=id;const item=id?arr(
 document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>$("#modal").close();
 window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
-$("#form").onsubmit=e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();if(currentType==="run"){["distance","avgHr","maxHr","te","temp","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||null);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":"races";if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);save();$("#modal").close()};
+$("#form").onsubmit=e=>{
+ e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
+ if(currentType==="run"){["distance","avgHr","maxHr","te","temp","cadence","elevation","z1","z2","z3","z4","z5"].forEach(k=>o[k]=Number(o[k])||0);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}
+ if(currentType==="gym"){o.exercises=(o.exerciseText||"").split("\n").map(s=>s.trim()).filter(Boolean).map(line=>{const [name,weight,sets]=line.split("|").map(x=>x.trim());return{name,weight:Number(weight)||0,sets:sets||""}});delete o.exerciseText}
+ if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}
+ const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":"races";
+ if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);
+ save();$("#modal").close()
+};
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=4").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=5").catch(()=>{}))}
 render();
 </script>
 </body>
