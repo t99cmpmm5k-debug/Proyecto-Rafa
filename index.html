@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V11.1</title>
+<title>Proyecto Rafa · V11.2</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -239,7 +239,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V11.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V11.2</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -249,7 +249,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V11.1 ACTIVA</span>
+    <span class="version">V11.2 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -358,7 +358,6 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <button class="run-tab active" data-run-filter="Todos">Todos</button>
     <button class="run-tab" data-run-filter="Zona 2">Zona 2</button>
     <button class="run-tab" data-run-filter="Series">Series</button>
-    <button class="run-tab" data-run-filter="Tempo">Tempo</button>
     <button class="run-tab" data-run-filter="Tirada larga">Tirada larga</button>
     <button class="run-tab" data-run-filter="Carrera">Carrera</button>
     <button class="run-tab" data-run-filter="Recuperación">Recuperación</button>
@@ -527,11 +526,11 @@ function secondsToTime(sec){
  return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${m}:${String(s).padStart(2,"0")}`;
 }
 
-const RUN_CATEGORIES=["Zona 2","Series","Tempo","Tirada larga","Carrera","Recuperación"];
+const RUN_CATEGORIES=["Zona 2","Series","Tirada larga","Carrera","Recuperación"];
 function inferRunCategory(r){
  const raw=`${r.category||""} ${r.type||""}`.toLowerCase();
  if(raw.includes("serie")||raw.includes("interval"))return "Series";
- if(raw.includes("tempo")||raw.includes("umbral"))return "Tempo";
+ if(raw.includes("tempo")||raw.includes("umbral"))return "Zona 2";
  if(raw.includes("larga")||raw.includes("tirada"))return "Tirada larga";
  if(raw.includes("carrera")||raw.includes("compet"))return "Carrera";
  if(raw.includes("recuper")||raw.includes("regener"))return "Recuperación";
@@ -540,6 +539,7 @@ function inferRunCategory(r){
 function categoryLabel(r){return r.category||inferRunCategory(r)}
 data.runs.forEach(r=>{
  if(!r.category)r.category=inferRunCategory(r);
+ if(r.category==="Tempo")r.category="Zona 2";
  if(r.avgCadence==null && r.cadence!=null)r.avgCadence=r.cadence;
 });
 function runCategoryStats(items){
@@ -553,7 +553,6 @@ function runSpecialSummary(r){
   const best=valid.length?Math.min(...valid.map(x=>timeToSeconds(x.time)/Number(x.distance))):0;
   return `<div class="compare-box"><div class="compare-grid"><div><small>Repeticiones</small><b>${valid.length}</b></div><div><small>Ritmo series</small><b>${km?paceTextFromSeconds(sec/km):"—"}</b></div><div><small>Mejor serie</small><b>${best?paceTextFromSeconds(best):"—"}</b></div></div></div>`;
  }
- if(cat==="Tempo"&&r.tempoDistance)return `<div class="compare-box"><div class="compare-grid"><div><small>Bloque tempo</small><b>${Number(r.tempoDistance).toFixed(1).replace(".",",")} km</b></div><div><small>Tiempo tempo</small><b>${r.tempoTime||"—"}</b></div><div><small>Ritmo tempo</small><b>${calcPace(r.tempoDistance,r.tempoTime)}/km</b></div></div></div>`;
  if(cat==="Tirada larga")return `<div class="compare-box"><div class="compare-grid"><div><small>Hidratación</small><b>${r.hydration||"—"}</b></div><div><small>Nutrición</small><b>${r.nutrition||"—"}</b></div><div><small>Final</small><b>${r.finishFeeling||r.feeling||"—"}</b></div></div></div>`;
  if(cat==="Carrera")return `<div class="compare-box"><div class="compare-grid"><div><small>Distancia oficial</small><b>${r.officialDistance||r.distance||"—"} km</b></div><div><small>Puesto</small><b>${r.position||"—"}</b></div><div><small>Resultado</small><b>${r.result||r.time||"—"}</b></div></div></div>`;
  return "";
@@ -963,8 +962,9 @@ const defs={
  <div class="two"><div class="field"><label>Distancia total (km)</label><input name="distance" type="number" step=".01" required value="${q.distance??""}"></div><div class="field"><label>Tiempo total</label><input name="time" required value="${q.time||""}" placeholder="47:35"></div></div>
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
  <div id="runDynamicFields"></div>
+ <div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div>
  <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
- <details><summary>Datos opcionales</summary><div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div><div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div></details>
+ <details><summary>Otros datos</summary><div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div></details>
  <div class="field"><label>Notas</label><textarea name="notes">${q.notes||""}</textarea></div>`}},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
@@ -1005,7 +1005,6 @@ window.addIntervalRow=()=>{const box=$("#intervalRows");if(!box)return;const row
 function renderRunDynamicFields(category,q={}){
  window.activeRunData=q;const box=$("#runDynamicFields");if(!box)return;
  if(category==="Series")box.innerHTML=intervalRowsHtml(q.intervals||[]);
- else if(category==="Tempo")box.innerHTML=`<div class="run-special"><h4>Bloque tempo</h4><div class="two"><div class="field"><label>Distancia tempo (km)</label><input name="tempoDistance" type="number" step=".1" value="${q.tempoDistance??""}"></div><div class="field"><label>Tiempo tempo</label><input name="tempoTime" value="${q.tempoTime||""}" placeholder="25:00"></div></div></div>`;
  else if(category==="Tirada larga")box.innerHTML=`<div class="run-special"><h4>Tirada larga</h4><div class="two"><div class="field"><label>Hidratación</label><input name="hydration" value="${q.hydration||""}"></div><div class="field"><label>Nutrición</label><input name="nutrition" value="${q.nutrition||""}"></div></div><div class="field"><label>Sensación al final</label><input name="finishFeeling" value="${q.finishFeeling||""}"></div></div>`;
  else if(category==="Carrera")box.innerHTML=`<div class="run-special"><h4>Resultado de carrera</h4><div class="two"><div class="field"><label>Distancia oficial</label><input name="officialDistance" type="number" step=".01" value="${q.officialDistance??q.distance??""}"></div><div class="field"><label>Puesto</label><input name="position" value="${q.position||""}"></div></div><div class="field"><label>Resultado / marca</label><input name="result" value="${q.result||q.time||""}"></div></div>`;
  else if(category==="Zona 2")box.innerHTML=`<div class="run-special"><h4>Control de Zona 2</h4><div class="two"><div class="field"><label>Límite FC objetivo</label><input name="z2Limit" type="number" value="${q.z2Limit??""}"></div><div class="field"><label>Tiempo dentro de zona</label><input name="z2Time" value="${q.z2Time||""}"></div></div></div>`;
@@ -1083,7 +1082,7 @@ $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
  if(currentType==="run"){
    o.category=o.category||inferRunCategory(o);
-   ["distance","avgHr","maxHr","avgCadence","temperature","tempoDistance","officialDistance","z2Limit"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
+   ["distance","avgHr","maxHr","avgCadence","temperature","officialDistance","z2Limit"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
    if(o.category==="Series")o.intervals=[...document.querySelectorAll("#intervalRows .split-row")].map(row=>({distance:Number(row.querySelector('[data-int="distance"]').value)||0,time:row.querySelector('[data-int="time"]').value.trim()})).filter(x=>x.distance||x.time);
    o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time);
    if(!o.planId){
@@ -1112,7 +1111,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=111").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=112").catch(()=>{}))}
 render();
 </script>
 </body>
