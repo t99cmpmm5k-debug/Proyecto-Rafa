@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V7</title>
+<title>Proyecto Rafa · V7.1</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
  integrity="sha256-p4NxAoJBhIINfQ3ynT7tOMiB03yMZQKxQ9S1a5v8GZE=" crossorigin="">
 <style>
@@ -135,11 +135,30 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   .nav span{font-size:18px}
 }
 
+
+.route-map-wrap{position:relative}
+.route-map-toolbar{display:flex;gap:8px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+.route-map-toolbar::-webkit-scrollbar{display:none}
+.route-map-toolbar .btn{white-space:nowrap;flex:0 0 auto}
+#routeMap{height:min(62vh,590px)}
+.route-add-active{background:var(--green)!important;color:#081006!important;border-color:var(--green)!important}
+.route-loading{background:#302b16;color:#ffe58a}
+.route-error{background:#351d1d;color:#ffb5b5}
+.route-marker{background:#fff;border:3px solid #111;border-radius:50%;width:30px;height:30px;
+ display:grid;place-items:center;color:#111;font-weight:900;box-shadow:0 2px 8px #0008}
+.route-map-note{position:absolute;left:10px;right:10px;bottom:10px;z-index:500;
+ background:#111d;border:1px solid #ffffff24;border-radius:13px;padding:9px 11px;
+ color:#fff;font-size:12px;pointer-events:none}
+@media(max-width:520px){
+ #routeMap{height:58vh;min-height:420px}
+ .route-panel{padding:10px}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V7</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V7.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -149,7 +168,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V7 ACTIVA</span>
+    <span class="version">V7.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -191,6 +210,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 </section>
 
 
+
 <section id="rutas" class="view">
   <div class="section-head">
     <div><div class="kicker">PLANIFICADOR</div><h2>Rutas</h2></div>
@@ -200,21 +220,16 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="route-controls">
       <div class="field">
         <label>Nombre de la ruta</label>
-        <input id="routeName" value="Rodaje 10 km" placeholder="Ej. Rodaje 10 km">
+        <input id="routeName" value="Rodaje 10 km" placeholder="Ej. Vía de servicio 10 km">
       </div>
       <div class="field">
         <label>Distancia objetivo</label>
         <select id="routeTarget">
-          <option value="5">5 km</option>
-          <option value="7">7 km</option>
-          <option value="8">8 km</option>
-          <option value="10" selected>10 km</option>
-          <option value="12">12 km</option>
-          <option value="14">14 km</option>
-          <option value="15">15 km</option>
-          <option value="16">16 km</option>
-          <option value="18">18 km</option>
-          <option value="20">20 km</option>
+          <option value="5">5 km</option><option value="7">7 km</option>
+          <option value="8">8 km</option><option value="10" selected>10 km</option>
+          <option value="12">12 km</option><option value="14">14 km</option>
+          <option value="15">15 km</option><option value="16">16 km</option>
+          <option value="18">18 km</option><option value="20">20 km</option>
           <option value="21.1">21,1 km</option>
         </select>
       </div>
@@ -223,23 +238,31 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="route-metrics">
       <div class="route-metric"><span>Distancia</span><strong id="routeDistance">0,00 km</strong></div>
       <div class="route-metric"><span>Objetivo</span><strong id="routeGoal">10 km</strong></div>
-      <div class="route-metric"><span>Diferencia</span><strong id="routeRemaining">10,00 km</strong></div>
+      <div class="route-metric"><span>Diferencia</span><strong id="routeRemaining">Faltan 10,00 km</strong></div>
     </div>
 
-    <div id="routeStatus" class="route-status">Toca el mapa para empezar a dibujar el recorrido.</div>
-    <div id="routeMap"></div>
+    <div id="routeStatus" class="route-status">Pulsa «Añadir punto» y toca el mapa.</div>
 
-    <div class="route-actions">
+    <div class="route-map-toolbar">
+      <button type="button" class="btn primary small" id="routeAddPoint">＋ Añadir punto</button>
+      <button type="button" class="btn secondary small" id="routeLocate">◎ Mi ubicación</button>
       <button type="button" class="btn secondary small" id="routeUndo">↶ Deshacer</button>
       <button type="button" class="btn secondary small" id="routeOutBack">⇄ Ida y vuelta</button>
-      <button type="button" class="btn secondary small" id="routeClose">⌁ Cerrar circuito</button>
       <button type="button" class="btn danger small" id="routeClear">Limpiar</button>
-      <button type="button" class="btn primary small" id="routeSave">Guardar ruta</button>
+    </div>
+
+    <div class="route-map-wrap">
+      <div id="routeMap"></div>
+      <div class="route-map-note">Mueve el mapa normalmente. Para marcar un punto, pulsa primero «Añadir punto». Los marcadores se pueden arrastrar.</div>
+    </div>
+
+    <div class="route-actions">
+      <button type="button" class="btn primary" id="routeSave">Guardar ruta</button>
     </div>
 
     <p class="route-hint">
-      Toca distintos puntos del mapa y la app calculará la distancia total.
-      En esta versión los puntos se unen en línea recta; coloca varios puntos en curvas y cruces para aproximar mejor el recorrido real.
+      La ruta sigue carreteras y caminos transitables. Si el servidor no reconoce algún tramo,
+      mueve el punto o añade otro más cerca del cruce.
     </p>
   </div>
 
@@ -319,7 +342,7 @@ try{
 }catch{data=structuredClone(seed)}
 if(!data.routes)data.routes=[];
 let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[];
-let routeMap=null,routeLine=null,routeMarkers=[],routePoints=[],savedRouteMaps=[];
+let routeMap=null,routeLine=null,routeMarkers=[],routePoints=[],routeGeometry=[],routeDistanceKm=0,savedRouteMaps=[],routeAddMode=false,routeRequestId=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -365,53 +388,125 @@ function genericCard(x,type){
  return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
 
+
 function haversine(a,b){
  const R=6371,rad=x=>x*Math.PI/180;
  const dLat=rad(b[0]-a[0]),dLon=rad(b[1]-a[1]);
  const q=Math.sin(dLat/2)**2+Math.cos(rad(a[0]))*Math.cos(rad(b[0]))*Math.sin(dLon/2)**2;
  return 2*R*Math.asin(Math.sqrt(q));
 }
-function routeKm(points=routePoints){
- let total=0;
- for(let i=1;i<points.length;i++) total+=haversine(points[i-1],points[i]);
- return total;
+function setRouteStatus(message,type="ok"){
+ const el=$("#routeStatus");
+ el.textContent=message;
+ el.classList.toggle("route-loading",type==="loading");
+ el.classList.toggle("route-error",type==="error");
+}
+function markerIcon(number){
+ return L.divIcon({
+   className:"",
+   html:`<div class="route-marker">${number}</div>`,
+   iconSize:[30,30],iconAnchor:[15,15]
+ });
+}
+function setAddMode(on){
+ routeAddMode=on;
+ $("#routeAddPoint").classList.toggle("route-add-active",on);
+ $("#routeAddPoint").textContent=on?"Toca el mapa…":"＋ Añadir punto";
+ if(on)setRouteStatus("Toca el lugar exacto donde quieres añadir el siguiente punto.");
 }
 function initRouteMap(){
  if(routeMap || !window.L) return;
  routeMap=L.map("routeMap",{zoomControl:true}).setView([37.5635,-1.8100],14);
- L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-   maxZoom:19,
-   attribution:'&copy; OpenStreetMap'
- }).addTo(routeMap);
- routeLine=L.polyline([],{color:"#9fe870",weight:5,opacity:.92}).addTo(routeMap);
+
+ const streets=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+   maxZoom:19,attribution:'&copy; OpenStreetMap'
+ });
+ const satellite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{
+   maxZoom:19,attribution:"Esri"
+ });
+ streets.addTo(routeMap);
+ L.control.layers({"Mapa":streets,"Satélite":satellite},null,{position:"topright"}).addTo(routeMap);
+
+ routeLine=L.polyline([],{color:"#36a7ff",weight:6,opacity:.95,lineJoin:"round"}).addTo(routeMap);
+
  routeMap.on("click",e=>{
+   if(!routeAddMode)return;
    routePoints.push([e.latlng.lat,e.latlng.lng]);
-   updateRouteDrawing();
+   setAddMode(false);
+   refreshRoute();
  });
  setTimeout(()=>routeMap.invalidateSize(),100);
 }
+async function requestRoadRoute(){
+ if(routePoints.length<2){
+   routeGeometry=routePoints.slice();
+   routeDistanceKm=0;
+   updateRouteDrawing();
+   return;
+ }
+ const requestId=++routeRequestId;
+ setRouteStatus("Calculando la ruta por carreteras y caminos…","loading");
+
+ // Public pedestrian OSRM server. Coordinates must be longitude,latitude.
+ const coords=routePoints.map(p=>`${p[1]},${p[0]}`).join(";");
+ const url=`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=false`;
+
+ try{
+   const response=await fetch(url);
+   if(!response.ok)throw new Error("routing");
+   const json=await response.json();
+   if(requestId!==routeRequestId)return;
+   if(json.code!=="Ok"||!json.routes?.length)throw new Error("no-route");
+   const r=json.routes[0];
+   routeGeometry=r.geometry.coordinates.map(c=>[c[1],c[0]]);
+   routeDistanceKm=r.distance/1000;
+   updateRouteDrawing();
+   setRouteStatus("Ruta calculada. Puedes añadir otro punto o arrastrar los marcadores.");
+ }catch(err){
+   if(requestId!==routeRequestId)return;
+   // Fallback keeps the app usable if the public routing service is temporarily unavailable.
+   routeGeometry=routePoints.slice();
+   routeDistanceKm=0;
+   for(let i=1;i<routePoints.length;i++)routeDistanceKm+=haversine(routePoints[i-1],routePoints[i]);
+   updateRouteDrawing();
+   setRouteStatus("No se pudo seguir la carretera en este momento. Se muestra una línea provisional; prueba de nuevo o mueve el último punto.","error");
+ }
+}
+function refreshRoute(){
+ renderRouteMarkers();
+ requestRoadRoute();
+}
+function renderRouteMarkers(){
+ if(!routeMap)return;
+ routeMarkers.forEach(m=>m.remove());
+ routeMarkers=routePoints.map((p,i)=>{
+   const m=L.marker(p,{draggable:true,icon:markerIcon(i+1)}).addTo(routeMap);
+   m.on("dragend",()=>{
+     const ll=m.getLatLng();
+     routePoints[i]=[ll.lat,ll.lng];
+     refreshRoute();
+   });
+   return m;
+ });
+}
 function updateRouteDrawing(){
  if(!routeMap)return;
- routeLine.setLatLngs(routePoints);
- routeMarkers.forEach(m=>m.remove());
- routeMarkers=routePoints.map((p,i)=>L.circleMarker(p,{
-   radius:i===0?7:5,color:i===0?"#ffffff":"#9fe870",
-   fillColor:i===0?"#9fe870":"#11171c",fillOpacity:1,weight:2
- }).addTo(routeMap));
- const km=routeKm(),target=Number($("#routeTarget").value||10),diff=target-km;
- $("#routeDistance").textContent=km.toFixed(2).replace(".",",")+" km";
+ routeLine.setLatLngs(routeGeometry);
+ const target=Number($("#routeTarget").value||10),diff=target-routeDistanceKm;
+ $("#routeDistance").textContent=routeDistanceKm.toFixed(2).replace(".",",")+" km";
  $("#routeGoal").textContent=String(target).replace(".",",")+" km";
  $("#routeRemaining").textContent=(diff>=0?"Faltan ":"Sobran ")+Math.abs(diff).toFixed(2).replace(".",",")+" km";
- let msg="Toca el mapa para empezar a dibujar el recorrido.";
- if(routePoints.length){
-   if(Math.abs(diff)<=.15) msg="Ruta prácticamente clavada al objetivo.";
-   else if(diff>0) msg="Añade más recorrido: faltan "+diff.toFixed(2).replace(".",",")+" km.";
-   else msg="Te has pasado "+Math.abs(diff).toFixed(2).replace(".",",")+" km.";
+ if(routeGeometry.length>1){
+   const bounds=routeLine.getBounds();
+   if(bounds.isValid())routeMap.fitBounds(bounds,{padding:[28,28],maxZoom:16});
  }
- $("#routeStatus").textContent=msg;
 }
 function clearRoute(){
- routePoints=[];updateRouteDrawing();
+ routeRequestId++;
+ routePoints=[];routeGeometry=[];routeDistanceKm=0;
+ renderRouteMarkers();updateRouteDrawing();
+ setAddMode(false);
+ setRouteStatus("Pulsa «Añadir punto» y toca el mapa.");
 }
 function renderSavedRoutes(){
  const box=$("#savedRoutes");
@@ -419,13 +514,13 @@ function renderSavedRoutes(){
  box.innerHTML=data.routes.map(r=>`
    <article class="card">
      <div class="card-top">
-       <div><div class="card-title">${r.name}</div><div class="card-date">${r.points.length} puntos marcados</div></div>
+       <div><div class="card-title">${r.name}</div><div class="card-date">${r.points.length} puntos de paso</div></div>
        <div class="distance">${Number(r.distance).toFixed(2).replace(".",",")} km</div>
      </div>
      <div class="stats">
        <div class="stat"><small>Objetivo</small><b>${String(r.target).replace(".",",")} km</b></div>
        <div class="stat"><small>Diferencia</small><b>${Math.abs(Number(r.distance)-Number(r.target)).toFixed(2).replace(".",",")} km</b></div>
-       <div class="stat"><small>Tipo</small><b>${r.closed?"Circuito":"Abierta"}</b></div>
+       <div class="stat"><small>Recorrido</small><b>Por caminos</b></div>
      </div>
      <div id="saved-map-${r.id}" class="saved-route-map"></div>
      <div class="actions">
@@ -439,21 +534,28 @@ function drawSavedRouteMaps(){
  if(!window.L)return;
  savedRouteMaps.forEach(m=>m.remove());savedRouteMaps=[];
  data.routes.forEach(r=>{
-   const el=document.getElementById("saved-map-"+r.id);if(!el||!r.points.length)return;
+   const el=document.getElementById("saved-map-"+r.id);if(!el)return;
+   const geometry=(r.geometry?.length?r.geometry:r.points);
+   if(!geometry?.length)return;
    const m=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false});
    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(m);
-   const line=L.polyline(r.points,{color:"#9fe870",weight:4}).addTo(m);
-   m.fitBounds(line.getBounds(),{padding:[20,20]});
+   const line=L.polyline(geometry,{color:"#36a7ff",weight:5}).addTo(m);
+   m.fitBounds(line.getBounds(),{padding:[18,18]});
    savedRouteMaps.push(m);
  });
 }
 window.loadRoute=id=>{
  const r=data.routes.find(x=>x.id===id);if(!r)return;
- routePoints=structuredClone(r.points);
+ routePoints=structuredClone(r.points||[]);
+ routeGeometry=structuredClone(r.geometry||r.points||[]);
+ routeDistanceKm=Number(r.distance||0);
  $("#routeName").value=r.name;
  $("#routeTarget").value=String(r.target);
  setView("rutas");
- setTimeout(()=>{initRouteMap();updateRouteDrawing();if(routePoints.length)routeMap.fitBounds(routeLine.getBounds(),{padding:[30,30]})},100);
+ setTimeout(()=>{
+   initRouteMap();renderRouteMarkers();updateRouteDrawing();
+   setRouteStatus("Ruta cargada. Puedes mover puntos o añadir otros.");
+ },100);
 };
 window.deleteRoute=id=>{
  if(!confirm("¿Eliminar esta ruta?"))return;
@@ -587,35 +689,56 @@ function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"a
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.routes)x.routes=[];if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
 
+
 $("#routeTarget").addEventListener("change",()=>{
  const target=$("#routeTarget").value;
  $("#routeName").value="Rodaje "+String(target).replace(".",",")+" km";
  updateRouteDrawing();
 });
-$("#routeUndo").addEventListener("click",()=>{routePoints.pop();updateRouteDrawing()});
-$("#routeClear").addEventListener("click",()=>{if(!routePoints.length||confirm("¿Limpiar el recorrido actual?"))clearRoute()});
-$("#routeClose").addEventListener("click",()=>{
- if(routePoints.length<3){alert("Marca al menos tres puntos.");return}
- const first=routePoints[0],last=routePoints[routePoints.length-1];
- if(haversine(first,last)>.01)routePoints.push([...first]);
- updateRouteDrawing();
+$("#routeAddPoint").addEventListener("click",()=>setAddMode(!routeAddMode));
+$("#routeLocate").addEventListener("click",()=>{
+ if(!navigator.geolocation){alert("Este dispositivo no permite obtener la ubicación.");return}
+ setRouteStatus("Buscando tu ubicación…","loading");
+ navigator.geolocation.getCurrentPosition(pos=>{
+   initRouteMap();
+   const p=[pos.coords.latitude,pos.coords.longitude];
+   routeMap.setView(p,16);
+   routePoints.push(p);
+   setAddMode(false);
+   refreshRoute();
+ },()=>setRouteStatus("No se pudo obtener tu ubicación. Revisa los permisos del navegador.","error"),{
+   enableHighAccuracy:true,timeout:10000,maximumAge:30000
+ });
+});
+$("#routeUndo").addEventListener("click",()=>{
+ if(!routePoints.length)return;
+ routePoints.pop();
+ refreshRoute();
+});
+$("#routeClear").addEventListener("click",()=>{
+ if(!routePoints.length||confirm("¿Limpiar el recorrido actual?"))clearRoute();
 });
 $("#routeOutBack").addEventListener("click",()=>{
  if(routePoints.length<2){alert("Marca primero el trayecto de ida.");return}
  const back=routePoints.slice(0,-1).reverse().map(p=>[...p]);
  routePoints=routePoints.concat(back);
- updateRouteDrawing();
+ refreshRoute();
 });
 $("#routeSave").addEventListener("click",()=>{
- if(routePoints.length<2){alert("Marca al menos dos puntos en el mapa.");return}
+ if(routePoints.length<2){alert("Marca al menos el punto de salida y el de destino.");return}
+ if(routeDistanceKm<=0){alert("Espera a que termine de calcularse la ruta.");return}
  const name=$("#routeName").value.trim()||"Ruta sin nombre";
  const target=Number($("#routeTarget").value||10);
- const closed=routePoints.length>2&&haversine(routePoints[0],routePoints[routePoints.length-1])<.02;
- data.routes.push({id:uid(),name,target,distance:routeKm(),points:structuredClone(routePoints),closed,created:new Date().toISOString()});
+ data.routes.push({
+   id:uid(),name,target,distance:routeDistanceKm,
+   points:structuredClone(routePoints),
+   geometry:structuredClone(routeGeometry),
+   created:new Date().toISOString()
+ });
  save();alert("Ruta guardada.");
 });
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=7").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=71").catch(()=>{}))}
 render();
 </script>
 </body>
