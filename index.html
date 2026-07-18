@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V12</title>
+<title>Proyecto Rafa · V13</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -266,11 +266,42 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
  .z2-comparison{grid-template-columns:1fr}
 }
 
+
+.race-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.race-legend span{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;background:var(--panel);border:1px solid var(--line);border-radius:999px;font-size:11px;color:var(--muted)}
+.race-dot{width:10px;height:10px;border-radius:50%}
+.race-5k{--race:#64d66f}.race-10k{--race:#5ba8ff}.race-21k{--race:#ffad55}.race-other{--race:#b784ff}
+.race-calendar-card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;margin-bottom:14px}
+.race-calendar-head{display:grid;grid-template-columns:44px 1fr 44px;gap:9px;align-items:center;margin-bottom:12px}
+.race-calendar-head button{height:42px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:20px}
+.race-calendar-title{text-align:center;font-weight:950;text-transform:capitalize}
+.race-weekdays,.race-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.race-weekdays div{text-align:center;color:var(--muted);font-size:10px;font-weight:900;padding:5px 0}
+.race-day{min-height:76px;background:var(--panel2);border:1px solid transparent;border-radius:13px;padding:7px;position:relative;overflow:hidden}
+.race-day.other-month{opacity:.32}.race-day.today{border-color:var(--green)}
+.race-day-number{font-size:11px;font-weight:900;color:var(--muted);margin-bottom:5px}
+.race-event{display:block;border-left:4px solid var(--race);background:#11191f;border-radius:7px;padding:4px 5px;margin-top:4px;font-size:9px;line-height:1.2;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.race-event b{color:var(--race)}
+.race-next{background:linear-gradient(145deg,#17231a,#10171d);border:1px solid #42632f;border-radius:22px;padding:16px;margin-bottom:14px}
+.race-next .kicker{margin-bottom:6px}.race-next h3{font-size:22px;margin:0 0 7px}
+.race-next-meta{color:var(--muted);line-height:1.45;font-size:13px}
+.race-filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:11px;scrollbar-width:none}.race-filters::-webkit-scrollbar{display:none}
+.race-filter{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:9px 12px;border-radius:999px;font-size:11px;font-weight:900}
+.race-filter.active{background:var(--green);border-color:var(--green);color:#0b1208}
+.race-card{border-left:5px solid var(--race)}
+.race-card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.race-badge{display:inline-flex;background:color-mix(in srgb,var(--race) 18%,transparent);color:var(--race);padding:6px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.race-status{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;margin-top:8px}
+.race-status.prevista{background:#28323b;color:#dbe4ec}.race-status.inscrito{background:#203718;color:#caffaa}.race-status.completada{background:#1d3342;color:#bfe7ff}.race-status.descartada{background:#452529;color:#ffc5c9}
+@media(max-width:520px){
+ .race-day{min-height:65px;padding:5px}.race-event{font-size:8px;padding:3px 4px}.race-day-number{font-size:10px}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V12</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V13</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -280,7 +311,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V12 ACTIVA</span>
+    <span class="version">V13 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -439,10 +470,41 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 
 <section id="carreras" class="view">
   <div class="section-head">
-    <div><div class="kicker">COMPETICIÓN</div><h2>Carreras</h2></div>
+    <div><div class="kicker">COMPETICIÓN</div><h2>Calendario de carreras</h2></div>
     <button class="btn primary" data-add="race">＋ Añadir</button>
   </div>
+
+  <div id="nextRaceCard"></div>
+
+  <div class="race-legend">
+    <span><i class="race-dot" style="background:#64d66f"></i>5K</span>
+    <span><i class="race-dot" style="background:#5ba8ff"></i>10K</span>
+    <span><i class="race-dot" style="background:#ffad55"></i>Media maratón / 21K</span>
+    <span><i class="race-dot" style="background:#b784ff"></i>Otras</span>
+  </div>
+
+  <div class="race-calendar-card">
+    <div class="race-calendar-head">
+      <button type="button" id="prevRaceMonth">‹</button>
+      <div class="race-calendar-title" id="raceCalendarTitle">Mes</div>
+      <button type="button" id="nextRaceMonth">›</button>
+    </div>
+    <div class="race-weekdays">
+      <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
+    </div>
+    <div id="raceCalendar" class="race-calendar"></div>
+  </div>
+
+  <div class="section-head"><h3>Próximas carreras</h3></div>
+  <div class="race-filters">
+    <button class="race-filter active" data-race-filter="Todas">Todas</button>
+    <button class="race-filter" data-race-filter="5K">5K</button>
+    <button class="race-filter" data-race-filter="10K">10K</button>
+    <button class="race-filter" data-race-filter="21K">21K</button>
+    <button class="race-filter" data-race-filter="Otras">Otras</button>
+  </div>
   <div id="races" class="stack"></div>
+
   <div class="section-head"><h3>Copias de seguridad</h3></div>
   <div class="toolbar">
     <button class="btn secondary" id="exportBtn">Exportar</button>
@@ -541,7 +603,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos";
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas";
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -1083,6 +1145,80 @@ function renderZ2Progress(){
  $("#z2WeatherNote").innerHTML=`<div class="z2-note">${note}</div>`;
 }
 
+
+function raceDistanceType(r){
+ const raw=String(r.distanceType||r.distance||"").toLowerCase().replace(",",".");
+ const n=parseFloat(raw);
+ if(raw.includes("media")||raw.includes("21")||(n>=20&&n<=22))return "21K";
+ if(raw.includes("10")||(n>=9.5&&n<=10.5))return "10K";
+ if(raw.includes("5")||(n>=4.5&&n<=5.5))return "5K";
+ return "Otras";
+}
+data.races.forEach(r=>{if(!r.distanceType)r.distanceType=raceDistanceType(r);if(!r.status)r.status=r.result?"completada":"prevista"});
+function raceClass(r){
+ const t=raceDistanceType(r);
+ return t==="5K"?"race-5k":t==="10K"?"race-10k":t==="21K"?"race-21k":"race-other";
+}
+function raceStatusLabel(s){
+ return s==="inscrito"?"Inscrito":s==="completada"?"Completada":s==="descartada"?"Descartada":"Prevista";
+}
+function raceCard(r){
+ const days=daysUntil(r.date),type=raceDistanceType(r),status=r.status||"prevista";
+ const countdown=status==="completada"?"Finalizada":days>=0?`${days} días`:"Pasada";
+ return `<article class="card race-card ${raceClass(r)}">
+   <div class="race-card-top">
+    <div><span class="race-badge">${type}</span><div class="card-title" style="margin-top:8px">${r.name}</div><div class="card-date">${fmt(r.date)}${r.location?` · ${r.location}`:""}</div></div>
+    <div class="distance">${countdown}</div>
+   </div>
+   <span class="race-status ${status}">${raceStatusLabel(status)}</span>
+   <div class="stats">
+    <div class="stat"><small>Distancia</small><b>${r.distance||type}</b></div>
+    <div class="stat"><small>Objetivo</small><b>${r.goal||"—"}</b></div>
+    <div class="stat"><small>Resultado</small><b>${r.result||"—"}</b></div>
+   </div>
+   ${r.notes?`<p class="note">${r.notes}</p>`:""}
+   <div class="actions"><button class="btn secondary small" onclick="editItem('race','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('race','${r.id}')">🗑️ Eliminar</button></div>
+ </article>`;
+}
+function currentRaceMonth(){
+ const d=new Date();d.setDate(1);d.setHours(12,0,0,0);d.setMonth(d.getMonth()+raceMonthOffset);return d;
+}
+function renderRaceCalendar(){
+ const month=currentRaceMonth();
+ $("#raceCalendarTitle").textContent=new Intl.DateTimeFormat("es-ES",{month:"long",year:"numeric"}).format(month);
+ const year=month.getFullYear(),m=month.getMonth();
+ const first=new Date(year,m,1,12),offset=(first.getDay()+6)%7;
+ const gridStart=new Date(year,m,1-offset,12);
+ const today=isoDate(new Date());
+ const cells=[];
+ for(let i=0;i<42;i++){
+   const d=new Date(gridStart);d.setDate(gridStart.getDate()+i);
+   const iso=isoDate(d);
+   const events=[...data.races].filter(r=>r.date===iso).sort((a,b)=>raceDistanceType(a).localeCompare(raceDistanceType(b)));
+   cells.push(`<div class="race-day ${d.getMonth()!==m?"other-month":""} ${iso===today?"today":""}">
+    <div class="race-day-number">${d.getDate()}</div>
+    ${events.map(r=>`<button type="button" class="race-event ${raceClass(r)}" onclick="editItem('race','${r.id}')" title="${r.name}"><b>${raceDistanceType(r)}</b> ${r.name}</button>`).join("")}
+   </div>`);
+ }
+ $("#raceCalendar").innerHTML=cells.join("");
+}
+function renderRaceList(){
+ const today=isoDate(new Date());
+ const all=[...data.races].sort((a,b)=>a.date.localeCompare(b.date));
+ const filtered=all.filter(r=>raceFilter==="Todas"||raceDistanceType(r)===raceFilter);
+ $("#races").innerHTML=filtered.length?filtered.map(raceCard).join(""):'<div class="empty">No hay carreras en este filtro.</div>';
+ const next=all.find(r=>r.date>=today&&(r.status||"prevista")!=="descartada"&&(r.status||"prevista")!=="completada");
+ $("#nextRaceCard").innerHTML=next?`<div class="race-next ${raceClass(next)}">
+   <div class="kicker">PRÓXIMA CARRERA · ${raceDistanceType(next)}</div>
+   <h3>${next.name}</h3>
+   <div class="race-next-meta">${fmt(next.date)}${next.location?` · ${next.location}`:""}<br>Faltan <strong>${Math.max(0,daysUntil(next.date))} días</strong>${next.goal?` · Objetivo: ${next.goal}`:""}</div>
+ </div>`:'';
+}
+function renderRaces(){
+ renderRaceCalendar();
+ renderRaceList();
+}
+
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -1096,12 +1232,15 @@ function render(){
  $("#gyms").innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(gymCard).join(""):'<div class="empty">Sin sesiones.</div>';
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
- $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
+ renderRaces();
  renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
+document.querySelectorAll("[data-race-filter]").forEach(b=>b.onclick=()=>{raceFilter=b.dataset.raceFilter;document.querySelectorAll("[data-race-filter]").forEach(x=>x.classList.toggle("active",x===b));renderRaceList()});
+$("#prevRaceMonth").onclick=()=>{raceMonthOffset--;renderRaceCalendar()};
+$("#nextRaceMonth").onclick=()=>{raceMonthOffset++;renderRaceCalendar()};
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
 
 const defs={
@@ -1132,11 +1271,17 @@ const defs={
  <div class="two"><div class="field"><label>Kilómetros actuales</label><input name="km" type="number" step=".1" value="${x?.km??0}"></div><div class="field"><label>Vida útil estimada</label><input name="maxKm" type="number" value="${x?.maxKm??700}"></div></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  race:{title:"carrera",html:x=>`
- <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
- <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||""}"></div>
- <div class="field"><label>Distancia</label><input name="distance" value="${x?.distance||""}"></div>
- <div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||""}"></div>
- <div class="field"><label>Resultado</label><input name="result" value="${x?.result||""}"></div>
+ <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}" placeholder="Ej. 10K de Murcia"></div>
+ <div class="two"><div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||""}"></div><div class="field"><label>Localidad</label><input name="location" value="${x?.location||""}" placeholder="Ej. Murcia"></div></div>
+ <div class="field"><label>Distancia</label><select name="distanceType">
+   ${["5K","10K","21K","Otras"].map(v=>`<option value="${v}" ${(x?.distanceType||raceDistanceType(x||{}))===v?"selected":""}>${v==="21K"?"Media maratón / 21K":v}</option>`).join("")}
+ </select></div>
+ <div class="field"><label>Distancia mostrada</label><input name="distance" value="${x?.distance||""}" placeholder="Ej. 10 km"></div>
+ <div class="field"><label>Estado</label><select name="status">
+   ${["prevista","inscrito","completada","descartada"].map(v=>`<option value="${v}" ${(x?.status||"prevista")===v?"selected":""}>${raceStatusLabel(v)}</option>`).join("")}
+ </select></div>
+ <div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||""}" placeholder="Ej. Bajar de 50 minutos"></div>
+ <div class="field"><label>Resultado</label><input name="result" value="${x?.result||""}" placeholder="Añadir al terminar"></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  plan:{title:"sesión planificada",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||window.pendingPlanDate||new Date().toISOString().slice(0,10)}"></div>
@@ -1264,7 +1409,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=12").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=13").catch(()=>{}))}
 render();
 </script>
 </body>
