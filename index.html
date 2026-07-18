@@ -7,9 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V7.3</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
- integrity="sha256-p4NxAoJBhIINfQ3ynT7tOMiB03yMZQKxQ9S1a5v8GZE=" crossorigin="">
+<title>Proyecto Rafa · V6</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -77,7 +75,7 @@ main{max-width:820px;margin:auto;padding:15px}
 }
 nav{
   position:fixed;bottom:0;left:0;right:0;z-index:40;
-  display:grid;grid-template-columns:repeat(6,1fr);
+  display:grid;grid-template-columns:repeat(5,1fr);
   padding:8px 7px calc(8px + env(safe-area-inset-bottom));
   background:rgba(8,11,14,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line)
 }
@@ -114,98 +112,11 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   .series-row{grid-template-columns:30px 1fr 1fr 36px}
   .stepper{grid-template-columns:32px 1fr 32px}
 }
-
-.route-panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;margin-bottom:14px}
-.route-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.route-controls .field{margin:0}
-.route-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
-.route-metric{background:var(--panel2);border-radius:14px;padding:11px}
-.route-metric span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
-.route-metric strong{font-size:17px}
-#routeMap{height:430px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0f151a}
-.route-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.route-hint{font-size:13px;color:var(--muted);line-height:1.45;margin-top:10px}
-.route-status{padding:10px 12px;border-radius:13px;background:#203118;color:var(--green2);font-size:13px;font-weight:800;margin-bottom:12px}
-.saved-route-map{height:180px;border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
-@media(max-width:520px){
-  #routeMap{height:390px}
-  .route-controls{grid-template-columns:1fr}
-  .route-metrics{grid-template-columns:repeat(3,1fr)}
-  .nav{font-size:9px}
-  .nav span{font-size:18px}
-}
-
-
-.route-map-wrap{position:relative}
-.route-map-toolbar{display:flex;gap:8px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
-.route-map-toolbar::-webkit-scrollbar{display:none}
-.route-map-toolbar .btn{white-space:nowrap;flex:0 0 auto}
-#routeMap{height:min(62vh,590px)}
-.route-add-active{background:var(--green)!important;color:#081006!important;border-color:var(--green)!important}
-.route-loading{background:#302b16;color:#ffe58a}
-.route-error{background:#351d1d;color:#ffb5b5}
-.route-marker{background:#fff;border:3px solid #111;border-radius:50%;width:30px;height:30px;
- display:grid;place-items:center;color:#111;font-weight:900;box-shadow:0 2px 8px #0008}
-.route-map-note{position:absolute;left:10px;right:10px;bottom:10px;z-index:500;
- background:#111d;border:1px solid #ffffff24;border-radius:13px;padding:9px 11px;
- color:#fff;font-size:12px;pointer-events:none}
-@media(max-width:520px){
- #routeMap{height:58vh;min-height:420px}
- .route-panel{padding:10px}
-}
-
-
-.route-map-wrap.fullscreen-map{
- position:fixed;
- inset:0;
- z-index:9999;
- background:#0b1014;
- padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
- display:flex;
- flex-direction:column;
-}
-.route-map-wrap.fullscreen-map #routeMap{
- flex:1;
- height:auto!important;
- min-height:0!important;
- border-radius:0;
- border:0;
-}
-.route-map-wrap.fullscreen-map .route-map-note{display:none}
-.route-fullscreen-bar{
- display:none;
- align-items:center;
- justify-content:space-between;
- gap:10px;
- padding:10px 12px;
- background:#0b1014;
- border-bottom:1px solid var(--line);
-}
-.route-map-wrap.fullscreen-map .route-fullscreen-bar{display:flex}
-.route-fullscreen-title{font-weight:900}
-#routeFullscreenBtn{
- position:absolute;
- right:12px;
- bottom:12px;
- z-index:600;
- width:54px;
- height:54px;
- border-radius:50%;
- border:0;
- background:var(--green);
- color:#0b1208;
- font-size:24px;
- font-weight:900;
- box-shadow:0 8px 24px #0008;
-}
-.route-map-wrap.fullscreen-map #routeFullscreenBtn{display:none}
-body.route-map-open{overflow:hidden}
-
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V7.3</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V6</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -215,7 +126,7 @@ body.route-map-open{overflow:hidden}
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V7.3 ACTIVA</span>
+    <span class="version">V6 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -256,72 +167,6 @@ body.route-map-open{overflow:hidden}
   <div id="gear" class="stack"></div>
 </section>
 
-
-
-<section id="rutas" class="view">
-  <div class="section-head">
-    <div><div class="kicker">PLANIFICADOR</div><h2>Rutas</h2></div>
-  </div>
-
-  <div class="route-panel">
-    <div class="route-controls">
-      <div class="field">
-        <label>Nombre de la ruta</label>
-        <input id="routeName" value="Rodaje 10 km" placeholder="Ej. Vía de servicio 10 km">
-      </div>
-      <div class="field">
-        <label>Distancia objetivo</label>
-        <select id="routeTarget">
-          <option value="5">5 km</option><option value="7">7 km</option>
-          <option value="8">8 km</option><option value="10" selected>10 km</option>
-          <option value="12">12 km</option><option value="14">14 km</option>
-          <option value="15">15 km</option><option value="16">16 km</option>
-          <option value="18">18 km</option><option value="20">20 km</option>
-          <option value="21.1">21,1 km</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="route-metrics">
-      <div class="route-metric"><span>Distancia</span><strong id="routeDistance">0,00 km</strong></div>
-      <div class="route-metric"><span>Objetivo</span><strong id="routeGoal">10 km</strong></div>
-      <div class="route-metric"><span>Diferencia</span><strong id="routeRemaining">Faltan 10,00 km</strong></div>
-    </div>
-
-    <div id="routeStatus" class="route-status">Pulsa «Añadir punto» y toca el mapa.</div>
-
-    <div class="route-map-toolbar">
-      <button type="button" class="btn primary small" id="routeAddPoint">＋ Añadir punto</button>
-      <button type="button" class="btn secondary small" id="routeLocate">◎ Mi ubicación</button>
-      <button type="button" class="btn secondary small" id="routeUndo">↶ Deshacer</button>
-      <button type="button" class="btn secondary small" id="routeOutBack">⇄ Ida y vuelta</button>
-      <button type="button" class="btn danger small" id="routeClear">Limpiar</button>
-    </div>
-
-    <div class="route-map-wrap" id="routeMapWrap">
-      <div class="route-fullscreen-bar">
-        <div class="route-fullscreen-title">Planificar ruta</div>
-        <button type="button" class="btn secondary small" id="routeExitFullscreen">✕ Cerrar</button>
-      </div>
-      <div id="routeMap"></div>
-      <button type="button" id="routeFullscreenBtn" aria-label="Abrir mapa a pantalla completa">⛶</button>
-      <div class="route-map-note">Toca el botón ⛶ para abrir el mapa a pantalla completa.</div>
-    </div>
-
-    <div class="route-actions">
-      <button type="button" class="btn primary" id="routeSave">Guardar ruta</button>
-    </div>
-
-    <p class="route-hint">
-      La ruta sigue carreteras y caminos transitables. Si el servidor no reconoce algún tramo,
-      mueve el punto o añade otro más cerca del cruce.
-    </p>
-  </div>
-
-  <div class="section-head"><h3>Rutas guardadas</h3></div>
-  <div id="savedRoutes" class="stack"></div>
-</section>
-
 <section id="carreras" class="view">
   <div class="section-head">
     <div><div class="kicker">COMPETICIÓN</div><h2>Carreras</h2></div>
@@ -343,7 +188,6 @@ body.route-map-open{overflow:hidden}
   <button class="nav" data-view="running"><span>◉</span>Running</button>
   <button class="nav" data-view="gym"><span>▣</span>Gym</button>
   <button class="nav" data-view="material"><span>◇</span>Material</button>
-  <button class="nav" data-view="rutas"><span>⌁</span>Rutas</button>
   <button class="nav" data-view="carreras"><span>★</span>Carreras</button>
 </nav>
 
@@ -355,8 +199,6 @@ body.route-map-open{overflow:hidden}
 </form>
 </dialog>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 const KEY="proyectoRafaDataV1";
 const EXERCISES=[
@@ -384,17 +226,14 @@ const seed={
    {name:"Elevaciones laterales",step:1,sets:[{weight:15,reps:12},{weight:15,reps:12},{weight:15,reps:11}]}
  ],notes:"Sesión de torso."}],
  gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
- races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}],
- routes:[]
+ races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}]
 };
 let data;
 try{
  const saved=JSON.parse(localStorage.getItem(KEY));
- data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed); if(!data.routes)data.routes=[];
+ data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);
 }catch{data=structuredClone(seed)}
-if(!data.routes)data.routes=[];
 let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[];
-let routeMap=null,routeLine=null,routeMarkers=[],routePoints=[],routeGeometry=[],routeDistanceKm=0,savedRouteMaps=[],routeAddMode=false,routeRequestId=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -439,197 +278,6 @@ function genericCard(x,type){
  }
  return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
-
-
-function haversine(a,b){
- const R=6371,rad=x=>x*Math.PI/180;
- const dLat=rad(b[0]-a[0]),dLon=rad(b[1]-a[1]);
- const q=Math.sin(dLat/2)**2+Math.cos(rad(a[0]))*Math.cos(rad(b[0]))*Math.sin(dLon/2)**2;
- return 2*R*Math.asin(Math.sqrt(q));
-}
-function setRouteStatus(message,type="ok"){
- const el=$("#routeStatus");
- el.textContent=message;
- el.classList.toggle("route-loading",type==="loading");
- el.classList.toggle("route-error",type==="error");
-}
-function markerIcon(number){
- return L.divIcon({
-   className:"",
-   html:`<div class="route-marker">${number}</div>`,
-   iconSize:[30,30],iconAnchor:[15,15]
- });
-}
-function setAddMode(on){
- routeAddMode=on;
- $("#routeAddPoint").classList.toggle("route-add-active",on);
- $("#routeAddPoint").textContent=on?"Toca el mapa…":"＋ Añadir punto";
- if(on)setRouteStatus("Toca el lugar exacto donde quieres añadir el siguiente punto.");
-}
-function initRouteMap(){
- if(routeMap || !window.L) return;
- routeMap=L.map("routeMap",{zoomControl:true,preferCanvas:true}).setView([37.5635,-1.8100],14);
-
- const streets=L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{
-   subdomains:"abcd",maxZoom:20,
-   attribution:'&copy; OpenStreetMap &copy; CARTO',
-   crossOrigin:true,
-   updateWhenIdle:false,
-   keepBuffer:4
- });
- const osm=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
-   maxZoom:19,attribution:'&copy; OpenStreetMap',crossOrigin:true,keepBuffer:4
- });
- const satellite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{
-   maxZoom:19,attribution:"Esri",crossOrigin:true,keepBuffer:4
- });
-
- streets.addTo(routeMap);
- L.control.layers({"Mapa claro":streets,"OpenStreetMap":osm,"Satélite":satellite},null,{position:"topright"}).addTo(routeMap);
-
- routeLine=L.polyline([],{color:"#36a7ff",weight:6,opacity:.95,lineJoin:"round"}).addTo(routeMap);
-
- routeMap.on("click",e=>{
-   if(!routeAddMode)return;
-   routePoints.push([e.latlng.lat,e.latlng.lng]);
-   setAddMode(false);
-   refreshRoute();
- });
-
- const repairMap=()=>{
-   if(!routeMap)return;
-   routeMap.invalidateSize({pan:false,debounceMoveend:true});
- };
- [100,350,800,1500].forEach(ms=>setTimeout(repairMap,ms));
- window.addEventListener("resize",repairMap);
- window.visualViewport?.addEventListener("resize",repairMap);
- new ResizeObserver(repairMap).observe(document.getElementById("routeMap"));
-}
-async function requestRoadRoute(){
- if(routePoints.length<2){
-   routeGeometry=routePoints.slice();
-   routeDistanceKm=0;
-   updateRouteDrawing();
-   return;
- }
- const requestId=++routeRequestId;
- setRouteStatus("Calculando la ruta por carreteras y caminos…","loading");
-
- // Public pedestrian OSRM server. Coordinates must be longitude,latitude.
- const coords=routePoints.map(p=>`${p[1]},${p[0]}`).join(";");
- const url=`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=false`;
-
- try{
-   const response=await fetch(url);
-   if(!response.ok)throw new Error("routing");
-   const json=await response.json();
-   if(requestId!==routeRequestId)return;
-   if(json.code!=="Ok"||!json.routes?.length)throw new Error("no-route");
-   const r=json.routes[0];
-   routeGeometry=r.geometry.coordinates.map(c=>[c[1],c[0]]);
-   routeDistanceKm=r.distance/1000;
-   updateRouteDrawing();
-   setRouteStatus("Ruta calculada. Puedes añadir otro punto o arrastrar los marcadores.");
- }catch(err){
-   if(requestId!==routeRequestId)return;
-   // Fallback keeps the app usable if the public routing service is temporarily unavailable.
-   routeGeometry=routePoints.slice();
-   routeDistanceKm=0;
-   for(let i=1;i<routePoints.length;i++)routeDistanceKm+=haversine(routePoints[i-1],routePoints[i]);
-   updateRouteDrawing();
-   setRouteStatus("No se pudo seguir la carretera en este momento. Se muestra una línea provisional; prueba de nuevo o mueve el último punto.","error");
- }
-}
-function refreshRoute(){
- renderRouteMarkers();
- requestRoadRoute();
-}
-function renderRouteMarkers(){
- if(!routeMap)return;
- routeMarkers.forEach(m=>m.remove());
- routeMarkers=routePoints.map((p,i)=>{
-   const m=L.marker(p,{draggable:true,icon:markerIcon(i+1)}).addTo(routeMap);
-   m.on("dragend",()=>{
-     const ll=m.getLatLng();
-     routePoints[i]=[ll.lat,ll.lng];
-     refreshRoute();
-   });
-   return m;
- });
-}
-function updateRouteDrawing(){
- if(!routeMap)return;
- routeLine.setLatLngs(routeGeometry);
- const target=Number($("#routeTarget").value||10),diff=target-routeDistanceKm;
- $("#routeDistance").textContent=routeDistanceKm.toFixed(2).replace(".",",")+" km";
- $("#routeGoal").textContent=String(target).replace(".",",")+" km";
- $("#routeRemaining").textContent=(diff>=0?"Faltan ":"Sobran ")+Math.abs(diff).toFixed(2).replace(".",",")+" km";
- if(routeGeometry.length>1){
-   const bounds=routeLine.getBounds();
-   if(bounds.isValid())routeMap.fitBounds(bounds,{padding:[28,28],maxZoom:16});
- }
-}
-function clearRoute(){
- routeRequestId++;
- routePoints=[];routeGeometry=[];routeDistanceKm=0;
- renderRouteMarkers();updateRouteDrawing();
- setAddMode(false);
- setRouteStatus("Pulsa «Añadir punto» y toca el mapa.");
-}
-function renderSavedRoutes(){
- const box=$("#savedRoutes");
- if(!data.routes.length){box.innerHTML='<div class="empty">Todavía no has guardado ninguna ruta.</div>';return}
- box.innerHTML=data.routes.map(r=>`
-   <article class="card">
-     <div class="card-top">
-       <div><div class="card-title">${r.name}</div><div class="card-date">${r.points.length} puntos de paso</div></div>
-       <div class="distance">${Number(r.distance).toFixed(2).replace(".",",")} km</div>
-     </div>
-     <div class="stats">
-       <div class="stat"><small>Objetivo</small><b>${String(r.target).replace(".",",")} km</b></div>
-       <div class="stat"><small>Diferencia</small><b>${Math.abs(Number(r.distance)-Number(r.target)).toFixed(2).replace(".",",")} km</b></div>
-       <div class="stat"><small>Recorrido</small><b>Por caminos</b></div>
-     </div>
-     <div id="saved-map-${r.id}" class="saved-route-map"></div>
-     <div class="actions">
-       <button class="btn secondary small" onclick="loadRoute('${r.id}')">Abrir</button>
-       <button class="btn danger small" onclick="deleteRoute('${r.id}')">Eliminar</button>
-     </div>
-   </article>`).join("");
- setTimeout(drawSavedRouteMaps,80);
-}
-function drawSavedRouteMaps(){
- if(!window.L)return;
- savedRouteMaps.forEach(m=>m.remove());savedRouteMaps=[];
- data.routes.forEach(r=>{
-   const el=document.getElementById("saved-map-"+r.id);if(!el)return;
-   const geometry=(r.geometry?.length?r.geometry:r.points);
-   if(!geometry?.length)return;
-   const m=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false});
-   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:20,crossOrigin:true}).addTo(m);
-   const line=L.polyline(geometry,{color:"#36a7ff",weight:5}).addTo(m);
-   m.fitBounds(line.getBounds(),{padding:[18,18]});
-   savedRouteMaps.push(m);
- });
-}
-window.loadRoute=id=>{
- const r=data.routes.find(x=>x.id===id);if(!r)return;
- routePoints=structuredClone(r.points||[]);
- routeGeometry=structuredClone(r.geometry||r.points||[]);
- routeDistanceKm=Number(r.distance||0);
- $("#routeName").value=r.name;
- $("#routeTarget").value=String(r.target);
- setView("rutas");
- setTimeout(()=>{
-   initRouteMap();renderRouteMarkers();updateRouteDrawing();
-   setRouteStatus("Ruta cargada. Puedes mover puntos o añadir otros.");
- },100);
-};
-window.deleteRoute=id=>{
- if(!confirm("¿Eliminar esta ruta?"))return;
- data.routes=data.routes.filter(x=>x.id!==id);save();
-};
-
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -642,11 +290,10 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
- renderSavedRoutes();
 }
-function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));if(v==="rutas"){[80,350,900].forEach(ms=>setTimeout(()=>{initRouteMap();routeMap?.invalidateSize({pan:false});updateRouteDrawing()},ms));}scrollTo({top:0,behavior:"smooth"})}
+function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
-$("#fab").onclick=()=>{if(currentView==="rutas"){setView("rutas");return}openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":"run")};
+$("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":"run");
 
 const defs={
  run:{title:"entrenamiento",html:x=>`
@@ -755,77 +402,8 @@ $("#form").onsubmit=e=>{
 };
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
-$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.routes)x.routes=[];if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
-
-
-
-function setRouteFullscreen(open){
- const wrap=$("#routeMapWrap");
- wrap.classList.toggle("fullscreen-map",open);
- document.body.classList.toggle("route-map-open",open);
- setTimeout(()=>routeMap?.invalidateSize({pan:false}),80);
- setTimeout(()=>routeMap?.invalidateSize({pan:false}),350);
-}
-$("#routeFullscreenBtn").addEventListener("click",()=>setRouteFullscreen(true));
-$("#routeExitFullscreen").addEventListener("click",()=>setRouteFullscreen(false));
-document.addEventListener("keydown",e=>{if(e.key==="Escape")setRouteFullscreen(false)});
-
-$("#routeTarget").addEventListener("change",()=>{
- const target=$("#routeTarget").value;
- $("#routeName").value="Rodaje "+String(target).replace(".",",")+" km";
- updateRouteDrawing();
-});
-$("#routeAddPoint").addEventListener("click",()=>setAddMode(!routeAddMode));
-$("#routeLocate").addEventListener("click",()=>{
- if(!navigator.geolocation){setRouteStatus("Este dispositivo no permite obtener la ubicación.","error");return}
- setRouteStatus("Buscando tu ubicación…","loading");
- const timer=setTimeout(()=>{
-   setRouteStatus("La ubicación está tardando demasiado. Puedes mover el mapa manualmente y añadir el punto.","error");
- },8000);
- navigator.geolocation.getCurrentPosition(pos=>{
-   clearTimeout(timer);
-   initRouteMap();
-   const p=[pos.coords.latitude,pos.coords.longitude];
-   routeMap.setView(p,16);
-   routePoints.push(p);
-   setAddMode(false);
-   refreshRoute();
- },()=>{
-   clearTimeout(timer);
-   setRouteStatus("No se pudo obtener tu ubicación. Revisa los permisos o mueve el mapa manualmente.","error");
- },{
-   enableHighAccuracy:false,timeout:7000,maximumAge:120000
- });
-});
-$("#routeUndo").addEventListener("click",()=>{
- if(!routePoints.length)return;
- routePoints.pop();
- refreshRoute();
-});
-$("#routeClear").addEventListener("click",()=>{
- if(!routePoints.length||confirm("¿Limpiar el recorrido actual?"))clearRoute();
-});
-$("#routeOutBack").addEventListener("click",()=>{
- if(routePoints.length<2){alert("Marca primero el trayecto de ida.");return}
- const back=routePoints.slice(0,-1).reverse().map(p=>[...p]);
- routePoints=routePoints.concat(back);
- refreshRoute();
-});
-$("#routeSave").addEventListener("click",()=>{
- if(routePoints.length<2){alert("Marca al menos el punto de salida y el de destino.");return}
- if(routeDistanceKm<=0){alert("Espera a que termine de calcularse la ruta.");return}
- const name=$("#routeName").value.trim()||"Ruta sin nombre";
- const target=Number($("#routeTarget").value||10);
- data.routes.push({
-   id:uid(),name,target,distance:routeDistanceKm,
-   points:structuredClone(routePoints),
-   geometry:structuredClone(routeGeometry),
-   created:new Date().toISOString()
- });
- save();alert("Ruta guardada.");
-});
-
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=73").catch(()=>{}))}
+$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=6").catch(()=>{}))}
 render();
 </script>
 </body>

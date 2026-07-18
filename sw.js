@@ -1,4 +1,4 @@
-const CACHE="proyecto-rafa-v7-3";
+const CACHE="proyecto-rafa-v6";
 self.addEventListener("install",event=>{
   self.skipWaiting();
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(["./","./index.html"])));
@@ -10,8 +10,6 @@ self.addEventListener("activate",event=>{
   ]));
 });
 self.addEventListener("fetch",event=>{
-  const url=new URL(event.request.url);
-  if(url.origin!==self.location.origin)return;
   if(event.request.mode==="navigate"){
     event.respondWith(fetch(event.request).then(response=>{
       const copy=response.clone();
