@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V10</title>
+<title>Proyecto Rafa · V11</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -221,11 +221,25 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 .recommend-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#203718;color:#caffaa;font-size:10px;font-weight:900;margin-bottom:8px}
 @media(max-width:430px){.template-grid{grid-template-columns:1fr}}
 
+
+.run-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}.run-tabs::-webkit-scrollbar{display:none}
+.run-tab{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:900}
+.run-tab.active{background:var(--green);border-color:var(--green);color:#0b1208}
+.run-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}.run-overview .metric{padding:12px}.run-overview .metric span{font-size:10px}.run-overview .metric strong{font-size:18px}
+.run-category-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#22303a;color:#d9ebf6;font-size:10px;font-weight:900;margin-bottom:8px}
+.run-category-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.run-category-choice input{display:none}
+.run-category-choice span{display:block;text-align:center;padding:12px 7px;background:var(--panel2);border:1px solid var(--line);border-radius:13px;font-size:11px;font-weight:900;line-height:1.2}
+.run-category-choice input:checked+span{background:var(--green);color:#0b1208;border-color:var(--green)}
+.run-special{margin-top:10px;padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:15px}.run-special h4{margin:0 0 10px;font-size:14px}
+.split-list{display:flex;flex-direction:column;gap:8px}.split-row{display:grid;grid-template-columns:42px 1fr 1fr 38px;gap:7px;align-items:center}.split-row span{font-size:12px;color:var(--muted)}.split-row input{min-width:0}
+.category-empty{padding:22px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+@media(max-width:430px){.run-category-picker{grid-template-columns:repeat(2,1fr)}.split-row{grid-template-columns:34px 1fr 1fr 34px}}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V10</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V11</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -235,7 +249,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V10 ACTIVA</span>
+    <span class="version">V11 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -337,8 +351,22 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 
 <section id="running" class="view">
   <div class="section-head">
-    <div><div class="kicker">RUNNING</div><h2>Historial</h2></div>
+    <div><div class="kicker">RUNNING</div><h2>Entrenamientos</h2></div>
     <button class="btn primary" data-add="run">＋ Añadir</button>
+  </div>
+  <div class="run-tabs">
+    <button class="run-tab active" data-run-filter="Todos">Todos</button>
+    <button class="run-tab" data-run-filter="Zona 2">Zona 2</button>
+    <button class="run-tab" data-run-filter="Series">Series</button>
+    <button class="run-tab" data-run-filter="Tempo">Tempo</button>
+    <button class="run-tab" data-run-filter="Tirada larga">Tirada larga</button>
+    <button class="run-tab" data-run-filter="Carrera">Carrera</button>
+    <button class="run-tab" data-run-filter="Recuperación">Recuperación</button>
+  </div>
+  <div class="run-overview">
+    <div class="metric"><span>Sesiones</span><strong id="runFilterCount">0</strong></div>
+    <div class="metric"><span>Kilómetros</span><strong id="runFilterKm">0</strong></div>
+    <div class="metric"><span>Ritmo medio</span><strong id="runFilterPace">—</strong></div>
   </div>
   <div id="runs" class="stack"></div>
 </section>
@@ -468,7 +496,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0;
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos";
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -498,6 +526,36 @@ function secondsToTime(sec){
  const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
  return h?`${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${m}:${String(s).padStart(2,"0")}`;
 }
+
+const RUN_CATEGORIES=["Zona 2","Series","Tempo","Tirada larga","Carrera","Recuperación"];
+function inferRunCategory(r){
+ const raw=`${r.category||""} ${r.type||""}`.toLowerCase();
+ if(raw.includes("serie")||raw.includes("interval"))return "Series";
+ if(raw.includes("tempo")||raw.includes("umbral"))return "Tempo";
+ if(raw.includes("larga")||raw.includes("tirada"))return "Tirada larga";
+ if(raw.includes("carrera")||raw.includes("compet"))return "Carrera";
+ if(raw.includes("recuper")||raw.includes("regener"))return "Recuperación";
+ return "Zona 2";
+}
+function categoryLabel(r){return r.category||inferRunCategory(r)}
+data.runs.forEach(r=>{if(!r.category)r.category=inferRunCategory(r)});
+function runCategoryStats(items){
+ const km=items.reduce((a,r)=>a+Number(r.distance||0),0),sec=items.reduce((a,r)=>a+timeToSeconds(r.time),0);
+ return {count:items.length,km,pace:km?paceTextFromSeconds(sec/km):"—"};
+}
+function runSpecialSummary(r){
+ const cat=categoryLabel(r);
+ if(cat==="Series"&&Array.isArray(r.intervals)&&r.intervals.length){
+  const valid=r.intervals.filter(x=>Number(x.distance)>0&&timeToSeconds(x.time)>0),km=valid.reduce((a,x)=>a+Number(x.distance),0),sec=valid.reduce((a,x)=>a+timeToSeconds(x.time),0);
+  const best=valid.length?Math.min(...valid.map(x=>timeToSeconds(x.time)/Number(x.distance))):0;
+  return `<div class="compare-box"><div class="compare-grid"><div><small>Repeticiones</small><b>${valid.length}</b></div><div><small>Ritmo series</small><b>${km?paceTextFromSeconds(sec/km):"—"}</b></div><div><small>Mejor serie</small><b>${best?paceTextFromSeconds(best):"—"}</b></div></div></div>`;
+ }
+ if(cat==="Tempo"&&r.tempoDistance)return `<div class="compare-box"><div class="compare-grid"><div><small>Bloque tempo</small><b>${Number(r.tempoDistance).toFixed(1).replace(".",",")} km</b></div><div><small>Tiempo tempo</small><b>${r.tempoTime||"—"}</b></div><div><small>Ritmo tempo</small><b>${calcPace(r.tempoDistance,r.tempoTime)}/km</b></div></div></div>`;
+ if(cat==="Tirada larga")return `<div class="compare-box"><div class="compare-grid"><div><small>Hidratación</small><b>${r.hydration||"—"}</b></div><div><small>Nutrición</small><b>${r.nutrition||"—"}</b></div><div><small>Final</small><b>${r.finishFeeling||r.feeling||"—"}</b></div></div></div>`;
+ if(cat==="Carrera")return `<div class="compare-box"><div class="compare-grid"><div><small>Distancia oficial</small><b>${r.officialDistance||r.distance||"—"} km</b></div><div><small>Puesto</small><b>${r.position||"—"}</b></div><div><small>Resultado</small><b>${r.result||r.time||"—"}</b></div></div></div>`;
+ return "";
+}
+
 function runComparison(r){
  if(!r.planId)return "";
  const p=data.plan.find(x=>x.id===r.planId);
@@ -522,7 +580,7 @@ window.repeatLastRun=()=>{
 window.completePlannedRun=id=>{
  const p=data.plan.find(x=>x.id===id);if(!p)return;
  window.quickRunPreset={
-   date:p.date,type:p.title,distance:p.distance||"",time:p.duration?secondsToTime(Number(p.duration)*60):"",
+   date:p.date,type:p.title,category:inferRunCategory({type:p.title}),distance:p.distance||"",time:p.duration?secondsToTime(Number(p.duration)*60):"",
    avgHr:"",maxHr:"",cadence:"",elevation:"",feeling:"Normal",shoes:"ASICS Gel-Nimbus 28",
    notes:p.notes||"",planId:p.id
  };
@@ -531,6 +589,7 @@ window.completePlannedRun=id=>{
 
 function runCard(r){
  return `<article class="card">
+ <span class="run-category-badge">${categoryLabel(r)}</span>
  <div class="card-top"><div><div class="card-title">${r.type}</div><div class="card-date">${fmt(r.date)} · ${r.shoes||"Sin zapatillas"}</div></div><div class="distance">${Number(r.distance).toFixed(2).replace(".",",")} km</div></div>
  <div class="stats">
    <div class="stat"><small>Ritmo</small><b>${r.pace||calcPace(r.distance,r.time)}/km</b></div>
@@ -541,6 +600,7 @@ function runCard(r){
    <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
  </div>
  ${r.notes?`<p class="note">${r.notes}</p>`:""}
+ ${runSpecialSummary(r)}
  ${runComparison(r)}
  <div class="actions"><button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button></div>
  </article>`
@@ -870,7 +930,9 @@ function render(){
  $("#lastHr").textContent=latest?(latest.avgHr||"—")+" ppm":"—";
  $("#totalRuns").textContent=data.runs.length;
  $("#latest").innerHTML=latest?runCard(latest):'<div class="empty">Sin entrenamientos.</div>';
- $("#runs").innerHTML=data.runs.length?[...data.runs].sort((a,b)=>b.date.localeCompare(a.date)).map(runCard).join(""):'<div class="empty">Sin entrenamientos.</div>';
+ const filteredRuns=[...data.runs].filter(r=>runFilter==="Todos"||categoryLabel(r)===runFilter).sort((a,b)=>b.date.localeCompare(a.date));
+ const rs=runCategoryStats(filteredRuns);$("#runFilterCount").textContent=rs.count;$("#runFilterKm").textContent=rs.km.toFixed(1).replace(".",",");$("#runFilterPace").textContent=rs.pace;
+ $("#runs").innerHTML=filteredRuns.length?filteredRuns.map(runCard).join(""):`<div class="category-empty">No hay entrenamientos en ${runFilter}.</div>`;
  $("#gyms").innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(gymCard).join(""):'<div class="empty">Sin sesiones.</div>';
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
@@ -879,23 +941,22 @@ function render(){
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
+document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
 
 const defs={
- run:{title:"carrera",html:x=>{
- const q=x||window.quickRunPreset||{};
- const linked=q.planId?data.plan.find(p=>p.id===q.planId):null;
+ run:{title:"entrenamiento de running",html:x=>{
+ const q=x||window.quickRunPreset||{},linked=q.planId?data.plan.find(p=>p.id===q.planId):null,cat=q.category||inferRunCategory(q);
  return `${linked?`<div class="prefill-banner">Usando el entrenamiento previsto: ${linked.title} · ${Number(linked.distance||0).toFixed(1).replace(".",",")} km</div>`:""}
  <input type="hidden" name="planId" value="${q.planId||""}">
+ <div class="field"><label>Tipo de entrenamiento</label><div class="run-category-picker">${RUN_CATEGORIES.map(v=>`<label class="run-category-choice"><input type="radio" name="category" value="${v}" ${cat===v?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${q.date||new Date().toISOString().slice(0,10)}"></div>
- <div class="field"><label>Tipo</label><input name="type" value="${q.type||"Rodaje"}" placeholder="Ej. Rodaje Z2"></div>
- <div class="two"><div class="field"><label>Distancia (km)</label><input name="distance" type="number" step=".01" inputmode="decimal" required value="${q.distance??""}" placeholder="8,12"></div><div class="field"><label>Tiempo</label><input name="time" required value="${q.time||""}" placeholder="47:35"></div></div>
- <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" inputmode="numeric" value="${q.avgHr??""}" placeholder="152"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" inputmode="numeric" value="${q.maxHr??""}" placeholder="171"></div></div>
+ <div class="field"><label>Nombre</label><input name="type" value="${q.type||cat}" placeholder="Ej. Rodaje Z2 suave"></div>
+ <div class="two"><div class="field"><label>Distancia total (km)</label><input name="distance" type="number" step=".01" required value="${q.distance??""}"></div><div class="field"><label>Tiempo total</label><input name="time" required value="${q.time||""}" placeholder="47:35"></div></div>
+ <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
+ <div id="runDynamicFields"></div>
  <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
- <details><summary>Datos opcionales</summary>
-   <div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${q.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${q.elevation??""}"></div></div>
-   <div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div>
- </details>
+ <details><summary>Datos opcionales</summary><div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${q.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${q.elevation??""}"></div></div><div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div></details>
  <div class="field"><label>Notas</label><textarea name="notes">${q.notes||""}</textarea></div>`}},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
@@ -926,6 +987,24 @@ const defs={
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`}
 };
 function arr(type){return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:type==="plan"?data.plan:data.races}
+
+function intervalRowsHtml(intervals=[]){
+ const rows=intervals.length?intervals:[{distance:1,time:""}];
+ return `<div class="run-special"><h4>Series</h4><div id="intervalRows" class="split-list">${rows.map((x,i)=>`<div class="split-row"><span>${i+1}</span><input data-int="distance" type="number" step=".01" value="${x.distance??1}" placeholder="km"><input data-int="time" value="${x.time||""}" placeholder="tiempo"><button type="button" class="btn danger small" onclick="this.parentElement.remove();renumberIntervals()">×</button></div>`).join("")}</div><div class="actions"><button type="button" class="btn secondary small" onclick="addIntervalRow()">＋ Serie</button></div><div class="field"><label>Recuperación entre series</label><input name="recovery" value="${window.activeRunData?.recovery||""}" placeholder="Ej. 2 min"></div></div>`;
+}
+window.renumberIntervals=()=>document.querySelectorAll("#intervalRows .split-row").forEach((r,i)=>r.querySelector("span").textContent=i+1);
+window.addIntervalRow=()=>{const box=$("#intervalRows");if(!box)return;const row=document.createElement("div");row.className="split-row";row.innerHTML=`<span>${box.children.length+1}</span><input data-int="distance" type="number" step=".01" value="1"><input data-int="time" placeholder="tiempo"><button type="button" class="btn danger small" onclick="this.parentElement.remove();renumberIntervals()">×</button>`;box.appendChild(row)};
+function renderRunDynamicFields(category,q={}){
+ window.activeRunData=q;const box=$("#runDynamicFields");if(!box)return;
+ if(category==="Series")box.innerHTML=intervalRowsHtml(q.intervals||[]);
+ else if(category==="Tempo")box.innerHTML=`<div class="run-special"><h4>Bloque tempo</h4><div class="two"><div class="field"><label>Distancia tempo (km)</label><input name="tempoDistance" type="number" step=".1" value="${q.tempoDistance??""}"></div><div class="field"><label>Tiempo tempo</label><input name="tempoTime" value="${q.tempoTime||""}" placeholder="25:00"></div></div></div>`;
+ else if(category==="Tirada larga")box.innerHTML=`<div class="run-special"><h4>Tirada larga</h4><div class="two"><div class="field"><label>Hidratación</label><input name="hydration" value="${q.hydration||""}"></div><div class="field"><label>Nutrición</label><input name="nutrition" value="${q.nutrition||""}"></div></div><div class="field"><label>Sensación al final</label><input name="finishFeeling" value="${q.finishFeeling||""}"></div></div>`;
+ else if(category==="Carrera")box.innerHTML=`<div class="run-special"><h4>Resultado de carrera</h4><div class="two"><div class="field"><label>Distancia oficial</label><input name="officialDistance" type="number" step=".01" value="${q.officialDistance??q.distance??""}"></div><div class="field"><label>Puesto</label><input name="position" value="${q.position||""}"></div></div><div class="field"><label>Resultado / marca</label><input name="result" value="${q.result||q.time||""}"></div></div>`;
+ else if(category==="Zona 2")box.innerHTML=`<div class="run-special"><h4>Control de Zona 2</h4><div class="two"><div class="field"><label>Límite FC objetivo</label><input name="z2Limit" type="number" value="${q.z2Limit??""}"></div><div class="field"><label>Tiempo dentro de zona</label><input name="z2Time" value="${q.z2Time||""}"></div></div></div>`;
+ else if(category==="Recuperación")box.innerHTML=`<div class="run-special"><h4>Recuperación</h4><div class="field"><label>Objetivo</label><input name="recoveryGoal" value="${q.recoveryGoal||""}"></div></div>`;
+ else box.innerHTML="";
+}
+
 function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDate;
  currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):(type==="run"&&window.quickRunPreset?window.quickRunPreset:null);
  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
@@ -935,7 +1014,8 @@ function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDat
    renderExerciseLibrary();
    renderGymExerciseEditor();
  }
- $("#modal").showModal();if(type==="run")window.quickRunPreset=null
+ $("#modal").showModal();
+ if(type==="run"){const q=item||{};renderRunDynamicFields(q.category||inferRunCategory(q),q);document.querySelectorAll('input[name="category"]').forEach(r=>r.addEventListener("change",()=>renderRunDynamicFields(r.value,q)));window.quickRunPreset=null}
 }
 function renderExerciseLibrary(){
  $("#exerciseLibrary").innerHTML=EXERCISES.map((e,i)=>`<button type="button" class="library-btn" onclick="addExercise(${i})"><b>${e.name}</b><small>Paso ${e.step} kg</small></button>`).join("")
@@ -994,7 +1074,9 @@ window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t=
 $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
  if(currentType==="run"){
-   ["distance","avgHr","maxHr","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||0);
+   o.category=o.category||inferRunCategory(o);
+   ["distance","avgHr","maxHr","cadence","elevation","tempoDistance","officialDistance","z2Limit"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
+   if(o.category==="Series")o.intervals=[...document.querySelectorAll("#intervalRows .split-row")].map(row=>({distance:Number(row.querySelector('[data-int="distance"]').value)||0,time:row.querySelector('[data-int="time"]').value.trim()})).filter(x=>x.distance||x.time);
    o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time);
    if(!o.planId){
      const match=data.plan.find(p=>p.date===o.date&&p.sport==="Running"&&p.status!=="done");
@@ -1022,7 +1104,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=10").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=11").catch(()=>{}))}
 render();
 </script>
 </body>

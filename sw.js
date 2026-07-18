@@ -1,22 +1,4 @@
-const CACHE="proyecto-rafa-v10";
-self.addEventListener("install",event=>{
-  self.skipWaiting();
-  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(["./","./index.html"])));
-});
-self.addEventListener("activate",event=>{
-  event.waitUntil(Promise.all([
-    caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),
-    self.clients.claim()
-  ]));
-});
-self.addEventListener("fetch",event=>{
-  if(event.request.mode==="navigate"){
-    event.respondWith(fetch(event.request).then(response=>{
-      const copy=response.clone();
-      caches.open(CACHE).then(cache=>cache.put("./index.html",copy));
-      return response;
-    }).catch(()=>caches.match("./index.html")));
-    return;
-  }
-  event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)));
-});
+const CACHE="proyecto-rafa-v11";
+self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html"])))});
+self.addEventListener("activate",e=>{e.waitUntil(Promise.all([caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))),self.clients.claim()]))});
+self.addEventListener("fetch",e=>{if(e.request.mode==="navigate"){e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(CACHE).then(x=>x.put("./index.html",c));return r}).catch(()=>caches.match("./index.html")));return}e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))});
