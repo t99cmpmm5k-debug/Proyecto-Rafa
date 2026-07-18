@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V9</title>
+<title>Proyecto Rafa · V10</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -204,11 +204,28 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
  .nav span{font-size:18px}
 }
 
+
+.coach-card{background:linear-gradient(145deg,#17231a,#10171d);border:1px solid #42632f;border-radius:22px;padding:16px;margin-bottom:14px}
+.coach-card h3{margin:0 0 8px}.coach-card p{color:var(--muted);line-height:1.5;margin:0}
+.coach-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.coach-tip{background:var(--panel2);border:1px solid var(--line);border-radius:15px;padding:12px;line-height:1.45}
+.coach-tip strong{display:block;margin-bottom:4px}
+.template-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.template-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}
+.template-card h4{margin:0 0 5px}.template-card p{font-size:12px;color:var(--muted);line-height:1.4;min-height:34px}
+.template-card .actions{margin-top:10px}
+.week-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.week-review{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:15px;margin-top:12px}
+.week-review strong{display:block;font-size:19px;margin-bottom:5px}
+.week-review p{margin:0;color:var(--muted);line-height:1.5}
+.recommend-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#203718;color:#caffaa;font-size:10px;font-weight:900;margin-bottom:8px}
+@media(max-width:430px){.template-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V9</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V10</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -218,7 +235,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V9 ACTIVA</span>
+    <span class="version">V10 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -253,6 +270,9 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   </div>
 
   <div id="statsHero" class="stats-hero"></div>
+
+  <div class="section-head"><h3>Entrenador inteligente</h3></div>
+  <div id="coachCard" class="coach-card"></div>
   <div id="statsGrid" class="stats-grid"></div>
 
   <div class="section-head"><h3>Kilómetros por semana</h3></div>
@@ -282,6 +302,11 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <button class="btn primary" data-add="plan">＋ Sesión</button>
   </div>
 
+  <div class="week-tools">
+    <button class="btn primary small" type="button" id="duplicateWeek">Duplicar semana</button>
+    <button class="btn secondary small" type="button" id="clearWeek">Vaciar semana</button>
+  </div>
+
   <div class="week-nav">
     <button type="button" id="prevWeek">‹</button>
     <div class="week-title" id="weekTitle">Semana</div>
@@ -301,6 +326,13 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 
   <div class="section-head"><h3>Calendario semanal</h3></div>
   <div id="weekPlan" class="week-grid"></div>
+
+  <div class="section-head"><h3>Plantillas</h3></div>
+  <div id="templateGrid" class="template-grid"></div>
+
+  <div class="section-head"><h3>Resumen automático</h3></div>
+  <div id="weekReview" class="week-review"></div>
+
 </section>
 
 <section id="running" class="view">
@@ -394,6 +426,34 @@ const seed={
  ],notes:"Sesión de torso."}],
  gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
  races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}],
+ templates:[
+   {id:"t1",name:"Semana suave",description:"Recuperación y rodajes cómodos.",items:[
+     {day:0,sport:"Gimnasio",title:"Fuerza suave",distance:0,duration:35,intensity:"Suave",notes:"Sin llegar al fallo."},
+     {day:1,sport:"Running",title:"Rodaje Z2",distance:6,duration:38,intensity:"Suave",notes:"Muy cómodo."},
+     {day:3,sport:"Running",title:"Rodaje progresivo corto",distance:5,duration:32,intensity:"Moderada",notes:"Últimos 10 minutos algo más vivos."},
+     {day:5,sport:"Running",title:"Tirada larga suave",distance:9,duration:58,intensity:"Suave",notes:"Controlando pulsaciones."}
+   ]},
+   {id:"t2",name:"Semana normal",description:"Equilibrio entre fuerza, calidad y tirada larga.",items:[
+     {day:0,sport:"Gimnasio",title:"Fuerza torso",distance:0,duration:45,intensity:"Moderada",notes:"Sesión completa."},
+     {day:1,sport:"Running",title:"Rodaje Z2",distance:8,duration:48,intensity:"Suave",notes:"Ritmo controlado."},
+     {day:2,sport:"Gimnasio",title:"Fuerza pierna",distance:0,duration:45,intensity:"Moderada",notes:"Sin fallo muscular."},
+     {day:3,sport:"Running",title:"Series",distance:7,duration:45,intensity:"Alta",notes:"Calentamiento + bloques."},
+     {day:5,sport:"Running",title:"Tirada larga",distance:12,duration:75,intensity:"Suave",notes:"Constante."}
+   ]},
+   {id:"t3",name:"Semana de carga",description:"Más volumen, manteniendo solo una sesión intensa.",items:[
+     {day:0,sport:"Gimnasio",title:"Fuerza torso",distance:0,duration:45,intensity:"Moderada",notes:"Técnica limpia."},
+     {day:1,sport:"Running",title:"Rodaje Z2",distance:9,duration:54,intensity:"Suave",notes:"Sin forzar."},
+     {day:2,sport:"Gimnasio",title:"Fuerza pierna",distance:0,duration:45,intensity:"Moderada",notes:"Carga media."},
+     {day:3,sport:"Running",title:"Tempo controlado",distance:8,duration:47,intensity:"Alta",notes:"Bloque central sostenido."},
+     {day:5,sport:"Running",title:"Tirada larga",distance:14,duration:88,intensity:"Suave",notes:"Comer e hidratar bien."}
+   ]},
+   {id:"t4",name:"Semana pre-carrera",description:"Baja el volumen y mantiene chispa.",items:[
+     {day:0,sport:"Gimnasio",title:"Activación ligera",distance:0,duration:30,intensity:"Suave",notes:"Sin agujetas."},
+     {day:1,sport:"Running",title:"Rodaje fácil",distance:6,duration:37,intensity:"Suave",notes:"Soltar piernas."},
+     {day:3,sport:"Running",title:"Activación con rectas",distance:5,duration:30,intensity:"Moderada",notes:"4 rectas cortas."},
+     {day:5,sport:"Descanso",title:"Descanso",distance:0,duration:0,intensity:"Descanso",notes:"Preparar material."}
+   ]}
+ ],
  plan:[
    {id:"p1",date:"2026-07-20",sport:"Gimnasio",title:"Fuerza · torso",distance:0,duration:45,intensity:"Moderada",status:"pending",notes:"Sesión de 45 minutos."},
    {id:"p2",date:"2026-07-21",sport:"Running",title:"Rodaje suave Z2",distance:8,duration:48,intensity:"Suave",status:"pending",notes:"Mantener pulsaciones controladas."},
@@ -405,9 +465,9 @@ const seed={
 let data;
 try{
  const saved=JSON.parse(localStorage.getItem(KEY));
- data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];
+ data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
-if(!data.plan)data.plan=[];
+if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
@@ -637,6 +697,98 @@ function distanceBest(target,tolerance=.15){
  if(!candidates.length)return null;
  return candidates.sort((a,b)=>(timeToSeconds(a.time)/Number(a.distance))-(timeToSeconds(b.time)/Number(b.distance)))[0];
 }
+
+function hardSessionsInRange(start,end){
+ return data.plan.filter(p=>{
+   const d=new Date(p.date+"T12:00:00");
+   return d>=start&&d<=end&&["Alta"].includes(p.intensity)&&p.status!=="skipped";
+ }).length;
+}
+function nextLongRunSuggestion(){
+ const weeks=weeklySeries(3);
+ const last=weeks.at(-1),prev=weeks.at(-2)||{km:0};
+ const longest=[...data.runs].sort((a,b)=>Number(b.distance)-Number(a.distance))[0];
+ const currentLong=longest?Number(longest.distance):8;
+ if(prev.km && last.km>prev.km*1.25)return Math.max(6,Math.round(currentLong*0.9));
+ if(last.km===0)return Math.max(6,Math.round(currentLong*0.8));
+ return Math.round((currentLong+1)*2)/2;
+}
+function renderCoach(){
+ const series=weeklySeries(3),cur=series.at(-1),prev=series.at(-2)||{km:0};
+ const ratio=prev.km?cur.km/prev.km:1;
+ const mon=startOfWeek(new Date()),sun=endOfWeek(mon);
+ const hard=hardSessionsInRange(mon,sun);
+ const tips=[];
+ if(ratio>1.3)tips.push(["Carga alta","Has subido más de un 30 % frente a la semana anterior. Reduce intensidad o volumen en la próxima sesión."]);
+ else if(ratio>1.15)tips.push(["Carga en aumento","La progresión es notable. Mantén el siguiente rodaje en zona cómoda."]);
+ else tips.push(["Carga controlada","La evolución semanal está dentro de un rango razonable."]);
+ if(hard>=3)tips.push(["Demasiadas sesiones duras","Tienes tres o más sesiones intensas esta semana. Conviene sustituir una por rodaje suave o descanso."]);
+ else if(hard===2)tips.push(["Intensidad equilibrada","Dos sesiones exigentes pueden ser asumibles si están separadas y recuperas bien."]);
+ else tips.push(["Intensidad prudente","La semana no acumula exceso de sesiones duras."]);
+ tips.push(["Próxima tirada larga",`Propuesta orientativa: ${nextLongRunSuggestion().toFixed(1).replace(".",",")} km, siempre que te notes recuperado.`]);
+ $("#coachCard").innerHTML=`<span class="recommend-badge">RECOMENDACIÓN ACTUAL</span><h3>${tips[0][0]}</h3><p>${tips[0][1]}</p><div class="coach-list">${tips.slice(1).map(t=>`<div class="coach-tip"><strong>${t[0]}</strong>${t[1]}</div>`).join("")}</div>`;
+}
+function renderTemplates(){
+ $("#templateGrid").innerHTML=(data.templates||[]).map(t=>`
+  <div class="template-card">
+   <h4>${t.name}</h4><p>${t.description}</p>
+   <div class="actions"><button class="btn primary small" onclick="applyTemplate('${t.id}')">Aplicar</button></div>
+  </div>`).join("");
+}
+window.applyTemplate=id=>{
+ const t=(data.templates||[]).find(x=>x.id===id);if(!t)return;
+ if(!confirm(`¿Aplicar la plantilla "${t.name}" a la semana seleccionada?`))return;
+ const mon=selectedMonday();
+ const start=isoDate(mon),end=isoDate(datePlus(mon,6));
+ data.plan=data.plan.filter(p=>p.date<start||p.date>end);
+ t.items.forEach(it=>{
+   data.plan.push({
+     id:uid(),date:isoDate(datePlus(mon,it.day)),sport:it.sport,title:it.title,
+     distance:it.distance,duration:it.duration,intensity:it.intensity,
+     status:"pending",notes:it.notes||""
+   });
+ });
+ save();
+};
+function duplicateCurrentWeek(){
+ const mon=selectedMonday(),next=datePlus(mon,7);
+ const start=isoDate(mon),end=isoDate(datePlus(mon,6));
+ const items=data.plan.filter(p=>p.date>=start&&p.date<=end);
+ if(!items.length){alert("No hay sesiones que duplicar.");return}
+ if(!confirm("¿Copiar esta semana a la siguiente?"))return;
+ const nextStart=isoDate(next),nextEnd=isoDate(datePlus(next,6));
+ data.plan=data.plan.filter(p=>p.date<nextStart||p.date>nextEnd);
+ items.forEach(p=>{
+   const dayOffset=Math.round((new Date(p.date+"T12:00:00")-mon)/86400000);
+   data.plan.push({...p,id:uid(),date:isoDate(datePlus(next,dayOffset)),status:"pending",actualRunId:""});
+ });
+ save();
+}
+function clearCurrentWeek(){
+ const mon=selectedMonday(),start=isoDate(mon),end=isoDate(datePlus(mon,6));
+ if(!confirm("¿Vaciar completamente la semana seleccionada?"))return;
+ data.plan=data.plan.filter(p=>p.date<start||p.date>end);save();
+}
+function renderWeekReview(){
+ const mon=selectedMonday(),start=isoDate(mon),end=isoDate(datePlus(mon,6));
+ const items=data.plan.filter(p=>p.date>=start&&p.date<=end);
+ const done=items.filter(p=>p.status==="done").length;
+ const plannedKm=items.reduce((a,p)=>a+Number(p.distance||0),0);
+ const actualRuns=data.runs.filter(r=>r.date>=start&&r.date<=end);
+ const actualKm=sumKm(actualRuns);
+ const hard=items.filter(p=>p.intensity==="Alta"&&p.status!=="skipped").length;
+ let title="Semana todavía sin datos";
+ let msg="Añade o aplica una plantilla para empezar.";
+ if(items.length){
+   const pct=Math.round(done/items.length*100);
+   title=`${pct}% de cumplimiento`;
+   msg=`Has completado ${done} de ${items.length} sesiones. Previsto: ${plannedKm.toFixed(1).replace(".",",")} km. Realizado: ${actualKm.toFixed(1).replace(".",",")} km.`;
+   if(hard>=3)msg+=" La intensidad prevista es elevada.";
+   else if(done===items.length)msg+=" Semana completada.";
+ }
+ $("#weekReview").innerHTML=`<strong>${title}</strong><p>${msg}</p>`;
+}
+
 function renderStats(){
  const series=weeklySeries(8),current=series.at(-1),previous=series.at(-2)||{km:0,runs:0,pace:0};
  const delta=previous.km?Math.round((current.km-previous.km)/previous.km*100):(current.km?100:0);
@@ -723,7 +875,7 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
- renderToday();renderPlan();renderStats();
+ renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -861,12 +1013,16 @@ $("#form").onsubmit=e=>{
 };
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
-$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.plan)x.plan=[];if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
+$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.plan)x.plan=[];if(!x.templates)x.templates=structuredClone(seed.templates||[]);if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
 
-$("#prevWeek").onclick=()=>{weekOffset--;renderPlan()};
-$("#nextWeek").onclick=()=>{weekOffset++;renderPlan()};
+$("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
+$("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=9").catch(()=>{}))}
+
+$("#duplicateWeek").onclick=duplicateCurrentWeek;
+$("#clearWeek").onclick=clearCurrentWeek;
+
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=10").catch(()=>{}))}
 render();
 </script>
 </body>
