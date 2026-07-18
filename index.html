@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V13</title>
+<title>Proyecto Rafa · V14.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -297,11 +297,58 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
  .race-day{min-height:65px;padding:5px}.race-event{font-size:8px;padding:3px 4px}.race-day-number{font-size:10px}
 }
 
+
+.finished-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.finished-summary .card-mini{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px}
+.finished-summary .card-mini span{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.finished-summary .card-mini strong{font-size:18px}
+.finished-filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:11px;scrollbar-width:none}.finished-filters::-webkit-scrollbar{display:none}
+.finished-filter{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:9px 12px;border-radius:999px;font-size:11px;font-weight:900}
+.finished-filter.active{background:#dfefff;border-color:#dfefff;color:#0b1208}
+.finished-insight{background:linear-gradient(145deg,#1a2128,#10161b);border:1px solid #2f4453;border-radius:22px;padding:15px;margin:12px 0}
+.finished-insight h3{margin:0 0 7px;font-size:18px}
+.finished-insight p{margin:0;color:var(--muted);line-height:1.45;font-size:13px}
+.finished-insight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.finished-insight-grid div{background:var(--panel2);border-radius:14px;padding:10px}
+.finished-insight-grid small{display:block;color:var(--muted);font-size:9px;margin-bottom:4px}
+.finished-insight-grid b{font-size:14px}
+.finished-card{position:relative;border-left:6px solid var(--race)}
+.pb-pill{position:absolute;right:12px;top:12px;background:#fff0a8;color:#473500;border-radius:999px;padding:6px 8px;font-size:10px;font-weight:900}
+.finished-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.finished-time{font-size:26px;font-weight:950;line-height:1}
+.finished-meta{color:var(--muted);font-size:12px;margin-top:5px}
+.finished-history-empty{padding:24px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+@media(max-width:560px){
+ .finished-summary{grid-template-columns:repeat(2,1fr)}
+ .finished-insight-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+
+.finished-chart-card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;margin:12px 0}
+.finished-chart-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.finished-chart-head h4{margin:0;font-size:16px}
+.finished-chart-head span{font-size:11px;color:var(--muted)}
+.finished-chart-wrap svg{display:block;width:100%;height:auto}
+.finished-chart-grid{stroke:#ffffff18;stroke-width:1}
+.finished-chart-line{fill:none;stroke:var(--race);stroke-width:4}
+.finished-chart-dot{fill:var(--race);stroke:#0b1014;stroke-width:2}
+.finished-chart-label{fill:#9aa6af;font-size:9px}
+.finished-pb-hero{background:linear-gradient(145deg,#2d2714,#17130a);border:1px solid #6a5620;border-radius:22px;padding:16px;margin:12px 0}
+.finished-pb-hero .kicker{color:#ffd66d}
+.finished-pb-hero h3{font-size:23px;margin:5px 0}
+.finished-pb-meta{color:#d7c790;font-size:13px;line-height:1.45}
+.finished-comparison-bars{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.finished-bar-row{display:grid;grid-template-columns:72px 1fr 62px;gap:9px;align-items:center}
+.finished-bar-row span{font-size:11px;color:var(--muted)}
+.finished-bar-track{height:12px;background:var(--panel2);border-radius:999px;overflow:hidden}
+.finished-bar-track i{display:block;height:100%;border-radius:999px;background:var(--race)}
+.finished-bar-row b{text-align:right;font-size:11px}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V13</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V14.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -311,7 +358,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V13 ACTIVA</span>
+    <span class="version">V14.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -505,6 +552,20 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   </div>
   <div id="races" class="stack"></div>
 
+  <div class="section-head"><h3>Carreras terminadas</h3></div>
+  <div id="finishedSummary" class="finished-summary"></div>
+  <div class="finished-filters">
+    <button class="finished-filter active" data-finished-filter="Todas">Todas</button>
+    <button class="finished-filter" data-finished-filter="5K">5K</button>
+    <button class="finished-filter" data-finished-filter="10K">10K</button>
+    <button class="finished-filter" data-finished-filter="21K">21K</button>
+    <button class="finished-filter" data-finished-filter="Otras">Otras</button>
+  </div>
+  <div id="finishedInsight"></div>
+  <div id="finishedPbHero"></div>
+  <div id="finishedChart"></div>
+  <div id="finishedRaces" class="stack"></div>
+
   <div class="section-head"><h3>Copias de seguridad</h3></div>
   <div class="toolbar">
     <button class="btn secondary" id="exportBtn">Exportar</button>
@@ -603,7 +664,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas";
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas";
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -1146,6 +1207,47 @@ function renderZ2Progress(){
 }
 
 
+
+function completedRace(r){
+ const status=r.status||"prevista";
+ return status==="completada" || (!!r.result && status!=="descartada");
+}
+function raceStandardKm(r){
+ const t=raceDistanceType(r);
+ if(t==="5K")return 5;
+ if(t==="10K")return 10;
+ if(t==="21K")return 21.097;
+ const raw=String(r.distance||"").toLowerCase().replace(",",".");
+ const n=parseFloat(raw);
+ return Number.isFinite(n)&&n>0?n:0;
+}
+function raceResultSeconds(r){
+ const s=timeToSeconds(r.result||"");
+ return s||0;
+}
+function racePaceText(r){
+ const sec=raceResultSeconds(r),km=raceStandardKm(r);
+ return sec&&km?paceTextFromSeconds(sec/km):"—";
+}
+function formatRaceTime(sec){
+ if(!sec)return "—";
+ return secondsToTime(sec);
+}
+function finishedRacesByType(type="Todas"){
+ const arr=[...data.races].filter(r=>completedRace(r));
+ return type==="Todas"?arr:arr.filter(r=>raceDistanceType(r)===type);
+}
+function pbRace(type){
+ const items=finishedRacesByType(type).filter(r=>raceResultSeconds(r)>0);
+ if(!items.length)return null;
+ return items.sort((a,b)=>raceResultSeconds(a)-raceResultSeconds(b))[0];
+}
+function pbIdsMap(){
+ const map={};
+ ["5K","10K","21K","Otras"].forEach(t=>{const pb=pbRace(t);if(pb)map[pb.id]=true});
+ return map;
+}
+
 function raceDistanceType(r){
  const raw=String(r.distanceType||r.distance||"").toLowerCase().replace(",",".");
  const n=parseFloat(raw);
@@ -1214,9 +1316,124 @@ function renderRaceList(){
    <div class="race-next-meta">${fmt(next.date)}${next.location?` · ${next.location}`:""}<br>Faltan <strong>${Math.max(0,daysUntil(next.date))} días</strong>${next.goal?` · Objetivo: ${next.goal}`:""}</div>
  </div>`:'';
 }
+
+function finishedRaceCard(r,pbMap){
+ const type=raceDistanceType(r),isPb=!!pbMap[r.id],sec=raceResultSeconds(r);
+ return `<article class="card finished-card ${raceClass(r)}">
+   ${isPb?'<span class="pb-pill">PB</span>':""}
+   <div class="finished-top">
+     <div><span class="race-badge">${type}</span><div class="card-title" style="margin-top:8px">${r.name}</div><div class="finished-meta">${fmt(r.date)}${r.location?` · ${r.location}`:""}</div></div>
+     <div class="finished-time">${r.result||"—"}</div>
+   </div>
+   <div class="stats">
+     <div class="stat"><small>Distancia</small><b>${r.distance||type}</b></div>
+     <div class="stat"><small>Ritmo medio</small><b>${racePaceText(r)}</b></div>
+     <div class="stat"><small>Puesto</small><b>${r.position||"—"}</b></div>
+   </div>
+   ${r.notes?`<p class="note">${r.notes}</p>`:""}
+   <div class="actions"><button class="btn secondary small" onclick="editItem('race','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('race','${r.id}')">🗑️ Eliminar</button></div>
+ </article>`;
+}
+function renderFinishedSummary(){
+ const done=finishedRacesByType("Todas");
+ const best5=pbRace("5K"),best10=pbRace("10K"),best21=pbRace("21K");
+ $("#finishedSummary").innerHTML=`
+   <div class="card-mini"><span>Terminadas</span><strong>${done.length}</strong></div>
+   <div class="card-mini"><span>Mejor 5K</span><strong>${best5?best5.result:"—"}</strong></div>
+   <div class="card-mini"><span>Mejor 10K</span><strong>${best10?best10.result:"—"}</strong></div>
+   <div class="card-mini"><span>Mejor 21K</span><strong>${best21?best21.result:"—"}</strong></div>`;
+}
+function renderFinishedInsight(){
+ const items=finishedRacesByType(finishedRaceFilter).sort((a,b)=>a.date.localeCompare(b.date)).filter(r=>raceResultSeconds(r)>0);
+ if(!items.length){
+   $("#finishedInsight").innerHTML='<div class="finished-history-empty">Todavía no hay carreras terminadas en este filtro.</div>';
+   return;
+ }
+ const first=items[0], last=items[items.length-1], best=items.slice().sort((a,b)=>raceResultSeconds(a)-raceResultSeconds(b))[0];
+ const diff=raceResultSeconds(last)-raceResultSeconds(first);
+ const better=diff<0;
+ const title=finishedRaceFilter==="Todas"?"Resumen de tu historial":"Comparativa de "+finishedRaceFilter;
+ const compareLabel=items.length>=2?(better?`${formatRaceTime(Math.abs(diff))} mejor que la primera`:`${formatRaceTime(Math.abs(diff))} peor que la primera`):"Solo una carrera registrada";
+ $("#finishedInsight").innerHTML=`<div class="finished-insight">
+   <h3>${title}</h3>
+   <p>${items.length} carrera${items.length===1?"":"s"} registrada${items.length===1?"":"s"}${finishedRaceFilter!=="Todas"?` en ${finishedRaceFilter}`:""} · ${compareLabel}</p>
+   <div class="finished-insight-grid">
+     <div><small>Primera</small><b>${first.result||"—"}</b></div>
+     <div><small>Última</small><b>${last.result||"—"}</b></div>
+     <div><small>Mejor marca</small><b>${best.result||"—"}</b></div>
+     <div><small>Ritmo PB</small><b>${racePaceText(best)}</b></div>
+   </div>
+ </div>`;
+}
+
+function finishedChartColor(type){
+ return type==="5K"?"#64d66f":type==="10K"?"#5ba8ff":type==="21K"?"#ffad55":"#b784ff";
+}
+function renderFinishedPbHero(){
+ const type=finishedRaceFilter==="Todas"?"10K":finishedRaceFilter;
+ const pb=pbRace(type);
+ if(!pb){
+   $("#finishedPbHero").innerHTML="";
+   return;
+ }
+ const items=finishedRacesByType(type).filter(r=>raceResultSeconds(r)>0).sort((a,b)=>a.date.localeCompare(b.date));
+ const first=items[0],improvement=first?raceResultSeconds(first)-raceResultSeconds(pb):0;
+ $("#finishedPbHero").innerHTML=`<div class="finished-pb-hero ${raceClass(pb)}">
+   <div class="kicker">MEJOR MARCA · ${type}</div>
+   <h3>${pb.result}</h3>
+   <div class="finished-pb-meta">${pb.name} · ${fmt(pb.date)}${pb.location?` · ${pb.location}`:""}<br>
+   Ritmo medio: <strong>${racePaceText(pb)}</strong>${improvement>0?` · Mejora total: <strong>${formatRaceTime(improvement)}</strong>`:""}</div>
+ </div>`;
+}
+function renderFinishedChart(){
+ const items=finishedRacesByType(finishedRaceFilter).filter(r=>raceResultSeconds(r)>0).sort((a,b)=>a.date.localeCompare(b.date));
+ if(items.length<2){
+   $("#finishedChart").innerHTML="";
+   return;
+ }
+ const type=finishedRaceFilter==="Todas"?raceDistanceType(items[0]):finishedRaceFilter;
+ const W=720,H=270,pL=44,pR=24,pT=24,pB=40;
+ const secs=items.map(r=>raceResultSeconds(r));
+ const min=Math.min(...secs),max=Math.max(...secs);
+ const x=i=>pL+i*((W-pL-pR)/(items.length-1));
+ const y=v=>pT+(v-min)/Math.max(1,max-min)*(H-pT-pB);
+ const pts=items.map((r,i)=>`${x(i)},${y(raceResultSeconds(r))}`).join(" ");
+ const grid=[0,.25,.5,.75,1].map(t=>{
+   const gy=pT+t*(H-pT-pB);
+   return `<line class="finished-chart-grid" x1="${pL}" y1="${gy}" x2="${W-pR}" y2="${gy}"/>`;
+ }).join("");
+ const dots=items.map((r,i)=>`<circle class="finished-chart-dot" cx="${x(i)}" cy="${y(raceResultSeconds(r))}" r="5"><title>${r.name}: ${r.result}</title></circle>`).join("");
+ const labels=items.map((r,i)=>`<text class="finished-chart-label" x="${x(i)}" y="${H-14}" text-anchor="middle">${new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit"}).format(new Date(r.date+"T12:00:00"))}</text>`).join("");
+ const fastest=Math.min(...secs),slowest=Math.max(...secs);
+ const bars=items.map(r=>{
+   const width=Math.max(8,Math.round((slowest-raceResultSeconds(r))/Math.max(1,slowest-fastest)*100));
+   return `<div class="finished-bar-row"><span>${fmt(r.date)}</span><div class="finished-bar-track"><i style="width:${width}%;background:${finishedChartColor(raceDistanceType(r))}"></i></div><b>${r.result}</b></div>`;
+ }).join("");
+ $("#finishedChart").innerHTML=`<div class="finished-chart-card ${raceClass(items[0])}">
+   <div class="finished-chart-head"><h4>Evolución de marcas</h4><span>${items.length} carreras</span></div>
+   <div class="finished-chart-wrap"><svg viewBox="0 0 ${W} ${H}" aria-label="Gráfico de evolución de tiempos">
+    ${grid}<polyline class="finished-chart-line" points="${pts}"/>${dots}${labels}
+    <text class="finished-chart-label" x="8" y="${pT+6}">Más rápido</text>
+    <text class="finished-chart-label" x="8" y="${H-pB}">Más lento</text>
+   </svg></div>
+   <div class="finished-comparison-bars">${bars}</div>
+ </div>`;
+}
+
+function renderFinishedRaces(){
+ const pbMap=pbIdsMap();
+ const items=finishedRacesByType(finishedRaceFilter).sort((a,b)=>b.date.localeCompare(a.date));
+ $("#finishedRaces").innerHTML=items.length?items.map(r=>finishedRaceCard(r,pbMap)).join(""):'<div class="finished-history-empty">Aún no hay carreras terminadas.</div>';
+ renderFinishedSummary();
+ renderFinishedInsight();
+ renderFinishedPbHero();
+ renderFinishedChart();
+}
+
 function renderRaces(){
  renderRaceCalendar();
  renderRaceList();
+ renderFinishedRaces();
 }
 
 function render(){
@@ -1239,6 +1456,7 @@ function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
 document.querySelectorAll("[data-race-filter]").forEach(b=>b.onclick=()=>{raceFilter=b.dataset.raceFilter;document.querySelectorAll("[data-race-filter]").forEach(x=>x.classList.toggle("active",x===b));renderRaceList()});
+document.querySelectorAll("[data-finished-filter]").forEach(b=>b.onclick=()=>{finishedRaceFilter=b.dataset.finishedFilter;document.querySelectorAll("[data-finished-filter]").forEach(x=>x.classList.toggle("active",x===b));renderFinishedRaces()});
 $("#prevRaceMonth").onclick=()=>{raceMonthOffset--;renderRaceCalendar()};
 $("#nextRaceMonth").onclick=()=>{raceMonthOffset++;renderRaceCalendar()};
 $("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
@@ -1281,7 +1499,7 @@ const defs={
    ${["prevista","inscrito","completada","descartada"].map(v=>`<option value="${v}" ${(x?.status||"prevista")===v?"selected":""}>${raceStatusLabel(v)}</option>`).join("")}
  </select></div>
  <div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||""}" placeholder="Ej. Bajar de 50 minutos"></div>
- <div class="field"><label>Resultado</label><input name="result" value="${x?.result||""}" placeholder="Añadir al terminar"></div>
+ <div class="two"><div class="field"><label>Tiempo oficial</label><input name="result" value="${x?.result||""}" placeholder="Ej. 49:55"></div><div class="field"><label>Puesto</label><input name="position" value="${x?.position||""}" placeholder="Ej. 36"></div></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  plan:{title:"sesión planificada",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||window.pendingPlanDate||new Date().toISOString().slice(0,10)}"></div>
@@ -1409,7 +1627,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=13").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=141").catch(()=>{}))}
 render();
 </script>
 </body>
