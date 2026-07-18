@@ -7,13 +7,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V5</title>
+<title>Proyecto Rafa · V6</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
   --text:#f6f7f8;--muted:#99a4af;--green:#9fe870;--green2:#d8ffbd;
-  --blue:#6eb8ff;--orange:#ffb36a;--red:#ff8e8e;--purple:#b79cff;
-  --shadow:0 16px 40px rgba(0,0,0,.3)
+  --red:#ff8e8e;--shadow:0 16px 40px rgba(0,0,0,.3)
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
@@ -82,7 +81,7 @@ nav{
 }
 .nav{background:transparent;border:0;color:var(--muted);font-size:10px;padding:6px 2px}
 .nav span{display:block;font-size:20px;margin-bottom:3px}.nav.active{color:var(--green);font-weight:900}
-dialog{width:min(94vw,580px);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);padding:0}
+dialog{width:min(96vw,620px);max-height:92vh;overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--panel);color:var(--text);padding:0}
 dialog::backdrop{background:rgba(0,0,0,.77);backdrop-filter:blur(4px)}
 form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
 .close{width:40px;height:40px;border:0;border-radius:13px;background:var(--panel2);color:var(--text)}
@@ -94,23 +93,30 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .mini-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:15px}
 .mini-card span{display:block;color:var(--muted);font-size:12px}.mini-card strong{display:block;margin-top:7px;font-size:19px}
-.chart-wrap{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;overflow:hidden}
-canvas{width:100%;height:190px;display:block}
-.zone-row{display:grid;grid-template-columns:52px 1fr 48px;gap:9px;align-items:center;margin:8px 0}
-.zone-bar{height:10px;background:var(--panel2);border-radius:999px;overflow:hidden}
-.zone-bar span{display:block;height:100%}
-.exercise{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:13px;margin-top:10px}
-.exercise-top{display:flex;justify-content:space-between;gap:12px}.exercise-name{font-weight:900}
-.exercise-meta{font-size:12px;color:var(--muted);margin-top:4px}
-.countdown{font-size:32px;font-weight:950;color:var(--green)}
-.record{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
-.record:last-child{border-bottom:0}
-@media(max-width:420px){main{padding:14px}.stats{grid-template-columns:repeat(2,1fr)}.section-head h2{font-size:30px}}
+.exercise-card{background:var(--panel2);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.exercise-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.exercise-title{font-weight:900;font-size:17px}
+.series-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.series-row{display:grid;grid-template-columns:36px 1fr 1fr 40px;gap:8px;align-items:center}
+.stepper{display:grid;grid-template-columns:36px 1fr 36px;gap:5px;align-items:center}
+.stepper button{border:0;border-radius:10px;background:#26303a;color:var(--text);height:38px;font-weight:900}
+.stepper input{text-align:center;padding:9px!important}
+.series-num{color:var(--muted);font-weight:800}
+.remove-series{border:0;border-radius:10px;background:#3b2226;color:#ffc1c1;height:38px}
+.exercise-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.library-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.library-btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:13px;padding:12px;text-align:left}
+.library-btn small{display:block;color:var(--muted);margin-top:3px}
+@media(max-width:420px){
+  main{padding:14px}.stats{grid-template-columns:repeat(2,1fr)}.section-head h2{font-size:30px}
+  .series-row{grid-template-columns:30px 1fr 1fr 36px}
+  .stepper{grid-template-columns:32px 1fr 32px}
+}
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V5</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V6</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -120,25 +126,14 @@ canvas{width:100%;height:190px;display:block}
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V5 ACTIVA</span>
+    <span class="version">V6 ACTIVA</span>
   </div>
-
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
     <div class="metric"><span>Último ritmo Z2</span><strong id="lastPace">—</strong></div>
     <div class="metric"><span>FC media Z2</span><strong id="lastHr">—</strong></div>
     <div class="metric"><span>Entrenamientos</span><strong id="totalRuns">0</strong></div>
   </div>
-
-  <div class="section-head"><h3>Objetivo semanal</h3></div>
-  <div class="card">
-    <div class="card-top"><div><div class="card-title">25 km</div><div class="card-date">Volumen semanal recomendado</div></div><div class="distance" id="weekProgressText">0%</div></div>
-    <div class="progress"><span id="weekProgressBar" style="width:0%"></span></div>
-  </div>
-
-  <div class="section-head"><h3>Evolución Z2</h3></div>
-  <div class="chart-wrap"><canvas id="z2Chart" width="700" height="220"></canvas></div>
-
   <div class="section-head"><h3>Última actividad</h3></div>
   <div id="latest"></div>
 </section>
@@ -160,8 +155,6 @@ canvas{width:100%;height:190px;display:block}
     <div class="mini-card"><span>Última sesión</span><strong id="lastGymName">—</strong></div>
     <div class="mini-card"><span>Sesiones registradas</span><strong id="gymCount">0</strong></div>
   </div>
-  <div class="section-head"><h3>Progreso por ejercicio</h3></div>
-  <div id="exerciseRecords" class="card"></div>
   <div class="section-head"><h3>Historial</h3></div>
   <div id="gyms" class="stack"></div>
 </section>
@@ -179,10 +172,7 @@ canvas{width:100%;height:190px;display:block}
     <div><div class="kicker">COMPETICIÓN</div><h2>Carreras</h2></div>
     <button class="btn primary" data-add="race">＋ Añadir</button>
   </div>
-  <div id="raceCountdown" class="card"></div>
-  <div class="section-head"><h3>Calendario</h3></div>
   <div id="races" class="stack"></div>
-
   <div class="section-head"><h3>Copias de seguridad</h3></div>
   <div class="toolbar">
     <button class="btn secondary" id="exportBtn">Exportar</button>
@@ -211,13 +201,29 @@ canvas{width:100%;height:190px;display:block}
 
 <script>
 const KEY="proyectoRafaDataV1";
+const EXERCISES=[
+ {name:"Press banca",step:2.5},
+ {name:"Remo barra",step:2.5},
+ {name:"Press militar",step:2.5},
+ {name:"Elevaciones laterales",step:1},
+ {name:"Fondos asistidos",step:5,assisted:true},
+ {name:"Curl EZ",step:2.5},
+ {name:"Tríceps polea",step:2.5},
+ {name:"Jalón al pecho",step:2.5},
+ {name:"Prensa",step:5},
+ {name:"Peso muerto",step:5},
+ {name:"Sentadilla",step:5},
+ {name:"Extensión de cuádriceps",step:2.5},
+ {name:"Curl femoral",step:2.5},
+ {name:"Gemelos",step:5}
+];
 const seed={
- runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",z1:8,z2:90,z3:1,z4:0,z5:0,notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
+ runs:[{id:"run-1707",date:"2026-07-17",type:"Rodaje Z2",distance:7.02,time:"40:06",pace:"5:42",avgHr:147,maxHr:155,te:3.4,temp:33,shoes:"ASICS Gel-Nimbus 28",cadence:173,elevation:41,feeling:"Bien",notes:"90 % del tiempo en Z2. Buen control de pulsaciones con calor."}],
  gym:[{id:"gym-1607",date:"2026-07-16",name:"Torso",duration:"45",exercises:[
-   {name:"Press banca",weight:20,sets:"10·10·9",reps:10},
-   {name:"Remo barra",weight:40,sets:"10·10·10",reps:10},
-   {name:"Press militar",weight:20,sets:"10·9·8",reps:10},
-   {name:"Elevaciones laterales",weight:15,sets:"12·12·11",reps:12}
+   {name:"Press banca",step:2.5,sets:[{weight:20,reps:10},{weight:20,reps:10},{weight:20,reps:9}]},
+   {name:"Remo barra",step:2.5,sets:[{weight:40,reps:10},{weight:40,reps:10},{weight:40,reps:10}]},
+   {name:"Press militar",step:2.5,sets:[{weight:20,reps:10},{weight:20,reps:9},{weight:20,reps:8}]},
+   {name:"Elevaciones laterales",step:1,sets:[{weight:15,reps:12},{weight:15,reps:12},{weight:15,reps:11}]}
  ],notes:"Sesión de torso."}],
  gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
  races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}]
@@ -227,12 +233,11 @@ try{
  const saved=JSON.parse(localStorage.getItem(KEY));
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);
 }catch{data=structuredClone(seed)}
-let currentType=null,editingId=null,currentView="inicio";
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[];
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
 function calcPace(distance,time){if(!distance||!time)return"—";const p=time.split(":").map(Number),s=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1],pk=Math.round(s/Number(distance));return Math.floor(pk/60)+":"+String(pk%60).padStart(2,"0")}
-function paceSeconds(p){if(!p)return null;const a=p.split(":").map(Number);return a[0]*60+a[1]}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
 function weekKm(){const n=new Date(),wd=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-wd);return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=m).reduce((a,r)=>a+Number(r.distance||0),0)}
 function runCard(r){
@@ -246,68 +251,45 @@ function runCard(r){
    <div class="stat"><small>Desnivel</small><b>${r.elevation||"—"} m</b></div>
    <div class="stat"><small>Sensaciones</small><b>${r.feeling||"—"}</b></div>
  </div>
- ${zoneBars(r)}
  ${r.notes?`<p class="note">${r.notes}</p>`:""}
  <div class="actions"><button class="btn secondary small" onclick="editItem('run','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('run','${r.id}')">🗑️ Eliminar</button></div>
  </article>`
 }
-function zoneBars(r){
- const vals=[r.z1||0,r.z2||0,r.z3||0,r.z4||0,r.z5||0];
- const colors=["#6eb8ff","#9fe870","#ffdc6e","#ffb36a","#ff8e8e"];
- return `<div style="margin-top:14px">${vals.map((v,i)=>`<div class="zone-row"><span style="color:var(--muted);font-size:12px">Z${i+1}</span><div class="zone-bar"><span style="width:${Math.min(100,v)}%;background:${colors[i]}"></span></div><b style="font-size:12px">${v}%</b></div>`).join("")}</div>`
+function gymCard(x){
+ const exercises=(x.exercises||[]).map(e=>{
+   const best=Math.max(...(e.sets||[]).map(s=>Number(s.weight)||0),0);
+   const sets=(e.sets||[]).map(s=>`${s.weight} kg × ${s.reps}`).join(" · ");
+   return `<div class="exercise-card"><div class="exercise-head"><div><div class="exercise-title">${e.name}</div><div class="card-date">${sets}</div></div><strong>${best} kg</strong></div></div>`;
+ }).join("");
+ return `<article class="card">
+   <div class="card-title">${x.name}</div>
+   <div class="card-date">${fmt(x.date)} · ${x.duration||"—"} min</div>
+   ${exercises}
+   ${x.notes?`<p class="note">${x.notes}</p>`:""}
+   <div class="actions"><button class="btn secondary small" onclick="editItem('gym','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('gym','${x.id}')">🗑️ Eliminar</button></div>
+ </article>`;
 }
 function genericCard(x,type){
- const subtitle=type==="gym"?`${fmt(x.date)} · ${x.duration||"—"} min`:type==="gear"?`${x.type} · ${Number(x.km||0).toFixed(1).replace(".",",")} km`: `${fmt(x.date)} · ${x.distance||""} · ${x.goal||""}`;
+ const subtitle=type==="gear"?`${x.type} · ${Number(x.km||0).toFixed(1).replace(".",",")} km`:`${fmt(x.date)} · ${x.distance||""} · ${x.goal||""}`;
  let extra="";
  if(type==="gear"){
    const max=Number(x.maxKm||700),pct=Math.min(100,Math.round((Number(x.km||0)/max)*100));
    extra=`<div class="progress"><span style="width:${pct}%"></span></div><p class="note">${pct}% de vida útil estimada.</p>`
  }
- if(type==="gym"&&Array.isArray(x.exercises)){
-   extra=x.exercises.map(e=>`<div class="exercise"><div class="exercise-top"><div><div class="exercise-name">${e.name}</div><div class="exercise-meta">${e.sets||""}</div></div><b>${e.weight||0} kg</b></div></div>`).join("")
- }
  return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
- const wk=weekKm(),pct=Math.min(100,Math.round(wk/25*100));
- $("#weekKm").textContent=wk.toFixed(1).replace(".",",");
+ $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
  $("#lastPace").textContent=latest?(latest.pace||calcPace(latest.distance,latest.time))+"/km":"—";
  $("#lastHr").textContent=latest?(latest.avgHr||"—")+" ppm":"—";
  $("#totalRuns").textContent=data.runs.length;
- $("#weekProgressText").textContent=pct+"%";$("#weekProgressBar").style.width=pct+"%";
  $("#latest").innerHTML=latest?runCard(latest):'<div class="empty">Sin entrenamientos.</div>';
  $("#runs").innerHTML=data.runs.length?[...data.runs].sort((a,b)=>b.date.localeCompare(a.date)).map(runCard).join(""):'<div class="empty">Sin entrenamientos.</div>';
- $("#gyms").innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(x=>genericCard(x,"gym")).join(""):'<div class="empty">Sin sesiones.</div>';
+ $("#gyms").innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(gymCard).join(""):'<div class="empty">Sin sesiones.</div>';
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
- renderExerciseRecords();renderRaceCountdown();drawZ2Chart();
-}
-function renderExerciseRecords(){
- const best={};
- data.gym.forEach(s=>(s.exercises||[]).forEach(e=>{if(!best[e.name]||Number(e.weight)>Number(best[e.name].weight))best[e.name]={weight:Number(e.weight)||0,date:s.date}}));
- const entries=Object.entries(best);
- $("#exerciseRecords").innerHTML=entries.length?entries.map(([name,v])=>`<div class="record"><div><b>${name}</b><div class="card-date">${fmt(v.date)}</div></div><strong>${v.weight} kg</strong></div>`).join(""):'<div class="empty">Sin ejercicios estructurados.</div>'
-}
-function renderRaceCountdown(){
- const upcoming=[...data.races].filter(r=>new Date(r.date+"T23:59:59")>=new Date()).sort((a,b)=>a.date.localeCompare(b.date))[0];
- if(!upcoming){$("#raceCountdown").innerHTML='<div class="empty">No hay próximas carreras.</div>';return}
- const days=Math.ceil((new Date(upcoming.date+"T12:00:00")-new Date())/86400000);
- $("#raceCountdown").innerHTML=`<div class="kicker">PRÓXIMA CARRERA</div><div class="card-title" style="margin-top:7px">${upcoming.name}</div><div class="card-date">${fmt(upcoming.date)} · ${upcoming.distance||""}</div><div class="countdown" style="margin-top:14px">${days} días</div>`
-}
-function drawZ2Chart(){
- const c=$("#z2Chart"),ctx=c.getContext("2d"),runs=[...data.runs].filter(r=>r.type==="Rodaje Z2"&&paceSeconds(r.pace||calcPace(r.distance,r.time))).sort((a,b)=>a.date.localeCompare(b.date)).slice(-8);
- ctx.clearRect(0,0,c.width,c.height);
- ctx.fillStyle="#12171d";ctx.fillRect(0,0,c.width,c.height);
- if(runs.length<2){ctx.fillStyle="#99a4af";ctx.font="26px sans-serif";ctx.fillText("Añade más rodajes Z2 para ver la evolución",28,110);return}
- const vals=runs.map(r=>paceSeconds(r.pace||calcPace(r.distance,r.time))),min=Math.min(...vals)-8,max=Math.max(...vals)+8;
- ctx.strokeStyle="#2b343e";ctx.lineWidth=1;
- for(let i=0;i<5;i++){const y=25+i*40;ctx.beginPath();ctx.moveTo(35,y);ctx.lineTo(c.width-20,y);ctx.stroke()}
- ctx.strokeStyle="#9fe870";ctx.lineWidth=5;ctx.lineJoin="round";ctx.lineCap="round";ctx.beginPath();
- runs.forEach((r,i)=>{const x=40+i*(c.width-80)/(runs.length-1),y=30+(paceSeconds(r.pace||calcPace(r.distance,r.time))-min)/(max-min)*(c.height-70);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});
- ctx.stroke();
- runs.forEach((r,i)=>{const x=40+i*(c.width-80)/(runs.length-1),y=30+(paceSeconds(r.pace||calcPace(r.distance,r.time))-min)/(max-min)*(c.height-70);ctx.fillStyle="#d8ffbd";ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill()});
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -319,19 +301,16 @@ const defs={
  <div class="field"><label>Tipo</label><select name="type">${["Rodaje Z2","Series","Tirada larga","Carrera","Recuperación"].map(v=>`<option ${x?.type===v?"selected":""}>${v}</option>`).join("")}</select></div>
  <div class="two"><div class="field"><label>Distancia (km)</label><input name="distance" type="number" step=".01" required value="${x?.distance??""}"></div><div class="field"><label>Tiempo</label><input name="time" required value="${x?.time||""}"></div></div>
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${x?.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${x?.maxHr??""}"></div></div>
- <div class="two"><div class="field"><label>Training Effect</label><input name="te" type="number" step=".1" value="${x?.te??""}"></div><div class="field"><label>Temperatura</label><input name="temp" type="number" value="${x?.temp??""}"></div></div>
  <div class="two"><div class="field"><label>Cadencia</label><input name="cadence" type="number" value="${x?.cadence??""}"></div><div class="field"><label>Desnivel positivo</label><input name="elevation" type="number" value="${x?.elevation??""}"></div></div>
  <div class="field"><label>Sensaciones</label><select name="feeling">${["Muy bien","Bien","Normal","Pesado","Mal"].map(v=>`<option ${x?.feeling===v?"selected":""}>${v}</option>`).join("")}</select></div>
  <div class="field"><label>Zapatillas</label><input name="shoes" value="${x?.shoes||"ASICS Gel-Nimbus 28"}"></div>
- <div class="two"><div class="field"><label>Z1 %</label><input name="z1" type="number" value="${x?.z1??0}"></div><div class="field"><label>Z2 %</label><input name="z2" type="number" value="${x?.z2??0}"></div></div>
- <div class="two"><div class="field"><label>Z3 %</label><input name="z3" type="number" value="${x?.z3??0}"></div><div class="field"><label>Z4 %</label><input name="z4" type="number" value="${x?.z4??0}"></div></div>
- <div class="field"><label>Z5 %</label><input name="z5" type="number" value="${x?.z5??0}"></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
  <div class="field"><label>Sesión</label><input name="name" required value="${x?.name||""}"></div>
  <div class="field"><label>Duración (min)</label><input name="duration" type="number" value="${x?.duration||45}"></div>
- <div class="field"><label>Ejercicios (una línea por ejercicio: Nombre | Peso | Series)</label><textarea name="exerciseText">${(x?.exercises||[]).map(e=>`${e.name} | ${e.weight} | ${e.sets||""}`).join("\n")}</textarea></div>
+ <div class="field"><label>Añadir ejercicio</label><div class="library-grid" id="exerciseLibrary"></div></div>
+ <div id="gymExerciseEditor"></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  gear:{title:"material",html:x=>`
  <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
@@ -347,14 +326,75 @@ const defs={
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`}
 };
 function arr(type){return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:data.races}
-function openForm(type,id=null){currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):null;$("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;$("#fields").innerHTML=defs[type].html(item);$("#modal").showModal()}
+function openForm(type,id=null){
+ currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):null;
+ $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
+ $("#fields").innerHTML=defs[type].html(item);
+ if(type==="gym"){
+   gymDraftExercises=structuredClone(item?.exercises||[]);
+   renderExerciseLibrary();
+   renderGymExerciseEditor();
+ }
+ $("#modal").showModal()
+}
+function renderExerciseLibrary(){
+ $("#exerciseLibrary").innerHTML=EXERCISES.map((e,i)=>`<button type="button" class="library-btn" onclick="addExercise(${i})"><b>${e.name}</b><small>Paso ${e.step} kg</small></button>`).join("")
+}
+window.addExercise=i=>{
+ const ex=EXERCISES[i];
+ const last=findLastExercise(ex.name);
+ gymDraftExercises.push({name:ex.name,step:ex.step,assisted:!!ex.assisted,sets:last?.sets?.length?structuredClone(last.sets):[{weight:last?.sets?.[0]?.weight||0,reps:last?.sets?.[0]?.reps||10}]});
+ renderGymExerciseEditor()
+};
+function findLastExercise(name){
+ const sessions=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date));
+ for(const s of sessions){const e=(s.exercises||[]).find(x=>x.name===name);if(e)return e}
+ return null
+}
+function renderGymExerciseEditor(){
+ $("#gymExerciseEditor").innerHTML=gymDraftExercises.map((e,ei)=>`
+ <div class="exercise-card">
+   <div class="exercise-head">
+     <div><div class="exercise-title">${e.name}</div><div class="card-date">Paso ${e.step||2.5} kg${e.assisted?" · asistencia":""}</div></div>
+     <button type="button" class="btn danger small" onclick="removeExercise(${ei})">Quitar</button>
+   </div>
+   <div class="series-list">
+     ${(e.sets||[]).map((s,si)=>`
+       <div class="series-row">
+         <div class="series-num">${si+1}</div>
+         <div class="stepper">
+           <button type="button" onclick="changeWeight(${ei},${si},-1)">−</button>
+           <input value="${s.weight}" readonly>
+           <button type="button" onclick="changeWeight(${ei},${si},1)">＋</button>
+         </div>
+         <div class="stepper">
+           <button type="button" onclick="changeReps(${ei},${si},-1)">−</button>
+           <input value="${s.reps}" readonly>
+           <button type="button" onclick="changeReps(${ei},${si},1)">＋</button>
+         </div>
+         <button type="button" class="remove-series" onclick="removeSet(${ei},${si})">×</button>
+       </div>`).join("")}
+   </div>
+   <div class="exercise-toolbar">
+     <button type="button" class="btn secondary small" onclick="copyLastSet(${ei})">Copiar serie</button>
+     <button type="button" class="btn secondary small" onclick="addSet(${ei})">Añadir serie</button>
+   </div>
+ </div>`).join("")
+}
+window.removeExercise=i=>{gymDraftExercises.splice(i,1);renderGymExerciseEditor()}
+window.changeWeight=(ei,si,dir)=>{const e=gymDraftExercises[ei],step=Number(e.step)||2.5;e.sets[si].weight=Math.max(0,Math.round((Number(e.sets[si].weight)+dir*step)*10)/10);renderGymExerciseEditor()}
+window.changeReps=(ei,si,dir)=>{gymDraftExercises[ei].sets[si].reps=Math.max(0,Number(gymDraftExercises[ei].sets[si].reps)+dir);renderGymExerciseEditor()}
+window.removeSet=(ei,si)=>{gymDraftExercises[ei].sets.splice(si,1);renderGymExerciseEditor()}
+window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10});else sets.push(structuredClone(sets[sets.length-1]));renderGymExerciseEditor()}
+window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10});renderGymExerciseEditor()}
+
 document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>$("#modal").close();
 window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
- if(currentType==="run"){["distance","avgHr","maxHr","te","temp","cadence","elevation","z1","z2","z3","z4","z5"].forEach(k=>o[k]=Number(o[k])||0);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}
- if(currentType==="gym"){o.exercises=(o.exerciseText||"").split("\n").map(s=>s.trim()).filter(Boolean).map(line=>{const [name,weight,sets]=line.split("|").map(x=>x.trim());return{name,weight:Number(weight)||0,sets:sets||""}});delete o.exerciseText}
+ if(currentType==="run"){["distance","avgHr","maxHr","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||0);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}
+ if(currentType==="gym"){o.exercises=structuredClone(gymDraftExercises)}
  if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}
  const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":"races";
  if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);
@@ -363,7 +403,7 @@ $("#form").onsubmit=e=>{
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=5").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=6").catch(()=>{}))}
 render();
 </script>
 </body>
