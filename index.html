@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V6</title>
+<title>Proyecto Rafa · V7</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -75,7 +75,7 @@ main{max-width:820px;margin:auto;padding:15px}
 }
 nav{
   position:fixed;bottom:0;left:0;right:0;z-index:40;
-  display:grid;grid-template-columns:repeat(5,1fr);
+  display:grid;grid-template-columns:repeat(6,1fr);
   padding:8px 7px calc(8px + env(safe-area-inset-bottom));
   background:rgba(8,11,14,.95);backdrop-filter:blur(18px);border-top:1px solid var(--line)
 }
@@ -112,11 +112,47 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
   .series-row{grid-template-columns:30px 1fr 1fr 36px}
   .stepper{grid-template-columns:32px 1fr 32px}
 }
+
+.today-card{background:linear-gradient(145deg,#17231a,#11191f);border:1px solid #3b5a2b;border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+.today-card.done{border-color:#477936}.today-card.skipped{border-color:#744045;opacity:.82}
+.today-label{font-size:11px;letter-spacing:.15em;color:var(--green);font-weight:900}
+.today-title{font-size:25px;font-weight:950;margin-top:7px}
+.today-meta{color:var(--muted);margin-top:7px;line-height:1.45}
+.week-nav{display:grid;grid-template-columns:44px 1fr 44px;gap:9px;align-items:center;margin-bottom:13px}
+.week-nav button{height:44px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:20px}
+.week-title{text-align:center;font-weight:900}
+.plan-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}
+.plan-summary .metric{padding:13px}.plan-summary .metric strong{font-size:19px}
+.week-grid{display:flex;flex-direction:column;gap:10px}
+.plan-day{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:14px}
+.plan-day-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.plan-date{font-weight:900}.plan-date small{display:block;color:var(--muted);font-weight:600;margin-top:3px}
+.plan-item{margin-top:10px;padding:12px;background:var(--panel2);border-radius:15px;border-left:4px solid var(--green)}
+.plan-item.done{border-left-color:#6ecc52}.plan-item.skipped{border-left-color:#d16a74;opacity:.7}.plan-item.moved{border-left-color:#f2bc5c}
+.plan-item-title{font-weight:900}.plan-item-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
+.status{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;margin-top:8px}
+.status.pending{background:#28323b;color:#dbe4ec}.status.done{background:#203718;color:#caffaa}
+.status.skipped{background:#452529;color:#ffc5c9}.status.moved{background:#433719;color:#ffe0a3}
+.plan-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.plan-actions .btn{padding:8px 10px;font-size:12px}
+.race-countdown{margin-top:13px;background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:15px}
+.race-countdown strong{display:block;font-size:24px;margin-top:5px}
+.compliance-ring{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:15px;margin-top:12px}
+.ring{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) var(--pct),var(--panel2) 0);position:relative;font-weight:900}
+.ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--panel)}
+.ring span{position:relative;z-index:1}
+@media(max-width:420px){
+ .plan-summary{grid-template-columns:repeat(3,1fr)}
+ .plan-summary .metric span{font-size:10px}
+ .plan-summary .metric strong{font-size:17px}
+ .nav{font-size:9px}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V6</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V7</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -126,7 +162,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V6 ACTIVA</span>
+    <span class="version">V7 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -134,8 +170,41 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="metric"><span>FC media Z2</span><strong id="lastHr">—</strong></div>
     <div class="metric"><span>Entrenamientos</span><strong id="totalRuns">0</strong></div>
   </div>
+
+  <div class="section-head"><h3>Entrenamiento de hoy</h3><button class="btn secondary small" onclick="setView('plan')">Ver semana</button></div>
+  <div id="todayWorkout"></div>
+  <div id="raceCountdown"></div>
+
   <div class="section-head"><h3>Última actividad</h3></div>
   <div id="latest"></div>
+</section>
+
+
+<section id="plan" class="view">
+  <div class="section-head">
+    <div><div class="kicker">PLANIFICACIÓN</div><h2>Mi semana</h2></div>
+    <button class="btn primary" data-add="plan">＋ Sesión</button>
+  </div>
+
+  <div class="week-nav">
+    <button type="button" id="prevWeek">‹</button>
+    <div class="week-title" id="weekTitle">Semana</div>
+    <button type="button" id="nextWeek">›</button>
+  </div>
+
+  <div class="plan-summary">
+    <div class="metric"><span>Completadas</span><strong id="planDone">0/0</strong></div>
+    <div class="metric"><span>Km previstos</span><strong id="planKm">0</strong></div>
+    <div class="metric"><span>Cumplimiento</span><strong id="planPct">0%</strong></div>
+  </div>
+
+  <div class="compliance-ring">
+    <div class="ring" id="planRing" style="--pct:0%"><span id="ringPct">0%</span></div>
+    <div><strong id="planMessage">Empieza a planificar tu semana</strong><p class="note" id="planSubmessage">Añade tus entrenamientos y marca los completados.</p></div>
+  </div>
+
+  <div class="section-head"><h3>Calendario semanal</h3></div>
+  <div id="weekPlan" class="week-grid"></div>
 </section>
 
 <section id="running" class="view">
@@ -185,6 +254,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 
 <nav>
   <button class="nav active" data-view="inicio"><span>⌂</span>Inicio</button>
+  <button class="nav" data-view="plan"><span>▤</span>Plan</button>
   <button class="nav" data-view="running"><span>◉</span>Running</button>
   <button class="nav" data-view="gym"><span>▣</span>Gym</button>
   <button class="nav" data-view="material"><span>◇</span>Material</button>
@@ -226,17 +296,35 @@ const seed={
    {name:"Elevaciones laterales",step:1,sets:[{weight:15,reps:12},{weight:15,reps:12},{weight:15,reps:11}]}
  ],notes:"Sesión de torso."}],
  gear:[{id:"g1",name:"ASICS Gel-Nimbus 28",type:"Zapatillas",km:7.02,maxKm:700,notes:"Rodajes suaves y tiradas largas"},{id:"g2",name:"Adidas Adizero Evo SL",type:"Zapatillas",km:0,maxKm:600,notes:"Series y sesiones rápidas"}],
- races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}]
+ races:[{id:"r1",name:"Media Maratón de Murcia",date:"2027-02-01",distance:"21,1 km",goal:"Terminar fuerte",result:"",notes:"Objetivo principal"}],
+ plan:[
+   {id:"p1",date:"2026-07-20",sport:"Gimnasio",title:"Fuerza · torso",distance:0,duration:45,intensity:"Moderada",status:"pending",notes:"Sesión de 45 minutos."},
+   {id:"p2",date:"2026-07-21",sport:"Running",title:"Rodaje suave Z2",distance:8,duration:48,intensity:"Suave",status:"pending",notes:"Mantener pulsaciones controladas."},
+   {id:"p3",date:"2026-07-22",sport:"Gimnasio",title:"Fuerza · pierna",distance:0,duration:45,intensity:"Moderada",status:"pending",notes:"Sin llegar al fallo."},
+   {id:"p4",date:"2026-07-23",sport:"Running",title:"Series cortas",distance:7,duration:45,intensity:"Alta",status:"pending",notes:"Calentamiento + bloques + vuelta a la calma."},
+   {id:"p5",date:"2026-07-25",sport:"Running",title:"Tirada larga",distance:12,duration:75,intensity:"Suave",status:"pending",notes:"Ritmo cómodo y constante."}
+ ]
 };
 let data;
 try{
  const saved=JSON.parse(localStorage.getItem(KEY));
- data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);
+ data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];
 }catch{data=structuredClone(seed)}
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[];
+if(!data.plan)data.plan=[];
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
+
+const isoDate=d=>{const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,10)}
+function mondayOf(date=new Date()){
+ const d=new Date(date);d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d
+}
+function selectedMonday(){const d=mondayOf();d.setDate(d.getDate()+weekOffset*7);return d}
+function datePlus(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function daysUntil(date){return Math.ceil((new Date(date+"T12:00:00")-new Date())/86400000)}
+function statusLabel(s){return s==="done"?"Completado":s==="skipped"?"Omitido":s==="moved"?"Movido":"Pendiente"}
+
 function calcPace(distance,time){if(!distance||!time)return"—";const p=time.split(":").map(Number),s=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1],pk=Math.round(s/Number(distance));return Math.floor(pk/60)+":"+String(pk%60).padStart(2,"0")}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
 function weekKm(){const n=new Date(),wd=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-wd);return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=m).reduce((a,r)=>a+Number(r.distance||0),0)}
@@ -278,6 +366,66 @@ function genericCard(x,type){
  }
  return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
+
+function planCard(p,compact=false){
+ return `<div class="plan-item ${p.status||"pending"}">
+   <div class="plan-item-title">${p.sport} · ${p.title}</div>
+   <div class="plan-item-meta">${Number(p.distance||0)>0?Number(p.distance).toFixed(1).replace(".",",")+" km · ":""}${p.duration||"—"} min · ${p.intensity||"—"}${p.notes?"<br>"+p.notes:""}</div>
+   <span class="status ${p.status||"pending"}">${statusLabel(p.status)}</span>
+   ${compact?"":`<div class="plan-actions">
+     <button class="btn primary small" onclick="setPlanStatus('${p.id}','done')">✓ Hecho</button>
+     <button class="btn secondary small" onclick="movePlan('${p.id}')">Mover</button>
+     <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
+     <button class="btn danger small" onclick="setPlanStatus('${p.id}','skipped')">Omitir</button>
+   </div>`}
+ </div>`
+}
+function renderPlan(){
+ const mon=selectedMonday(),sun=datePlus(mon,6);
+ $("#weekTitle").textContent=`${fmt(isoDate(mon))} – ${fmt(isoDate(sun))}`;
+ const start=isoDate(mon),end=isoDate(sun);
+ const items=data.plan.filter(p=>p.date>=start&&p.date<=end);
+ const done=items.filter(p=>p.status==="done").length;
+ const pct=items.length?Math.round(done/items.length*100):0;
+ const km=items.reduce((a,p)=>a+Number(p.distance||0),0);
+ $("#planDone").textContent=`${done}/${items.length}`;
+ $("#planKm").textContent=km.toFixed(1).replace(".",",");
+ $("#planPct").textContent=pct+"%";
+ $("#ringPct").textContent=pct+"%";$("#planRing").style.setProperty("--pct",pct+"%");
+ $("#planMessage").textContent=pct===100&&items.length?"Semana completada":pct>=75?"Muy buena constancia":pct>=40?"Vas avanzando":"Empieza por la siguiente sesión";
+ $("#planSubmessage").textContent=items.length?`${items.length-done} sesiones pendientes esta semana.`:"No hay sesiones planificadas.";
+ const names=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+ $("#weekPlan").innerHTML=names.map((name,i)=>{
+   const d=isoDate(datePlus(mon,i)),dayItems=items.filter(p=>p.date===d);
+   return `<div class="plan-day">
+     <div class="plan-day-head"><div class="plan-date">${name}<small>${fmt(d)}</small></div><button class="btn secondary small" onclick="addPlanForDate('${d}')">＋</button></div>
+     ${dayItems.length?dayItems.map(p=>planCard(p)).join(""):'<p class="note">Descanso o sin sesión planificada.</p>'}
+   </div>`;
+ }).join("");
+}
+function renderToday(){
+ const today=isoDate(new Date()),items=data.plan.filter(p=>p.date===today);
+ $("#todayWorkout").innerHTML=items.length?items.map(p=>`<div class="today-card ${p.status||"pending"}">
+   <div class="today-label">HOY · ${statusLabel(p.status).toUpperCase()}</div>
+   <div class="today-title">${p.title}</div>
+   <div class="today-meta">${p.sport}${p.distance?` · ${Number(p.distance).toFixed(1).replace(".",",")} km`:""} · ${p.duration||"—"} min<br>${p.intensity||""}${p.notes?` · ${p.notes}`:""}</div>
+   <div class="actions">
+     <button class="btn primary small" onclick="setPlanStatus('${p.id}','done')">✓ Marcar completado</button>
+     <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
+   </div>
+ </div>`).join(""):'<div class="empty">Hoy no tienes entrenamiento planificado.</div>';
+ const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
+ $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
+}
+window.setPlanStatus=(id,status)=>{data.plan=data.plan.map(p=>p.id===id?{...p,status}:p);save()};
+window.movePlan=id=>{
+ const p=data.plan.find(x=>x.id===id);if(!p)return;
+ const next=prompt("Nueva fecha (AAAA-MM-DD)",p.date);
+ if(!next||!/^\d{4}-\d{2}-\d{2}$/.test(next))return;
+ p.date=next;p.status="moved";save();
+};
+window.addPlanForDate=date=>openForm("plan",null,date);
+
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -290,10 +438,11 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
+ renderToday();renderPlan();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
-$("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":"run");
+$("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
 
 const defs={
  run:{title:"entrenamiento",html:x=>`
@@ -323,10 +472,18 @@ const defs={
  <div class="field"><label>Distancia</label><input name="distance" value="${x?.distance||""}"></div>
  <div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||""}"></div>
  <div class="field"><label>Resultado</label><input name="result" value="${x?.result||""}"></div>
+ <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
+ plan:{title:"sesión planificada",html:x=>`
+ <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||window.pendingPlanDate||new Date().toISOString().slice(0,10)}"></div>
+ <div class="field"><label>Deporte</label><select name="sport">${["Running","Gimnasio","Natación","Pádel","Descanso","Otro"].map(v=>`<option ${x?.sport===v?"selected":""}>${v}</option>`).join("")}</select></div>
+ <div class="field"><label>Entrenamiento</label><input name="title" required value="${x?.title||""}" placeholder="Ej. Rodaje Z2"></div>
+ <div class="two"><div class="field"><label>Distancia prevista (km)</label><input name="distance" type="number" step=".1" value="${x?.distance??0}"></div><div class="field"><label>Duración prevista (min)</label><input name="duration" type="number" value="${x?.duration??45}"></div></div>
+ <div class="field"><label>Intensidad</label><select name="intensity">${["Muy suave","Suave","Moderada","Alta","Descanso"].map(v=>`<option ${x?.intensity===v?"selected":""}>${v}</option>`).join("")}</select></div>
+ <div class="field"><label>Estado</label><select name="status">${["pending","done","skipped","moved"].map(v=>`<option value="${v}" ${x?.status===v?"selected":""}>${statusLabel(v)}</option>`).join("")}</select></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`}
 };
-function arr(type){return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:data.races}
-function openForm(type,id=null){
+function arr(type){return type==="run"?data.runs:type==="gym"?data.gym:type==="gear"?data.gear:type==="plan"?data.plan:data.races}
+function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDate;
  currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):null;
  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
  $("#fields").innerHTML=defs[type].html(item);
@@ -390,20 +547,25 @@ window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10});renderGym
 
 document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>$("#modal").close();
 window.editItem=(t,id)=>openForm(t,id);
-window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
+window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
  if(currentType==="run"){["distance","avgHr","maxHr","cadence","elevation"].forEach(k=>o[k]=Number(o[k])||0);o.distance=Number(o.distance);o.pace=calcPace(o.distance,o.time)}
  if(currentType==="gym"){o.exercises=structuredClone(gymDraftExercises)}
  if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}
- const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":"races";
+ if(currentType==="plan"){o.distance=Number(o.distance)||0;o.duration=Number(o.duration)||0;o.status=o.status||"pending"}
+ const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":currentType==="plan"?"plan":"races";
  if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);
  save();$("#modal").close()
 };
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href)}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
-$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=6").catch(()=>{}))}
+$("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.plan)x.plan=[];if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
+
+$("#prevWeek").onclick=()=>{weekOffset--;renderPlan()};
+$("#nextWeek").onclick=()=>{weekOffset++;renderPlan()};
+
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=7").catch(()=>{}))}
 render();
 </script>
 </body>
