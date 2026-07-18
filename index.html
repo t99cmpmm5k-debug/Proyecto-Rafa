@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V11.2</title>
+<title>Proyecto Rafa · V12</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -235,11 +235,42 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 .category-empty{padding:22px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
 @media(max-width:430px){.run-category-picker{grid-template-columns:repeat(2,1fr)}.split-row{grid-template-columns:34px 1fr 1fr 34px}}
 
+
+.z2-progress{display:none;margin-bottom:14px}
+.z2-progress.active{display:block}
+.z2-hero{background:linear-gradient(145deg,#17231a,#10171d);border:1px solid #42632f;border-radius:22px;padding:16px}
+.z2-hero-title{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.z2-hero h3{margin:0 0 5px}.z2-hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.z2-trend{font-size:12px;font-weight:900;padding:7px 10px;border-radius:999px;white-space:nowrap}
+.z2-trend.up{background:#203718;color:#caffaa}.z2-trend.flat{background:#433719;color:#ffe0a3}.z2-trend.down{background:#452529;color:#ffc5c9}
+.z2-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:13px}
+.z2-summary div{background:var(--panel2);border-radius:13px;padding:10px}
+.z2-summary small{display:block;color:var(--muted);font-size:9px;margin-bottom:5px}
+.z2-summary b{font-size:14px}
+.z2-chart-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:12px}
+.z2-chart-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.z2-chart-head h4{margin:0;font-size:15px}.z2-chart-head span{font-size:11px;color:var(--muted)}
+.z2-chart-wrap{width:100%;overflow:hidden}
+.z2-chart-wrap svg{display:block;width:100%;height:auto}
+.z2-axis{stroke:#ffffff1f;stroke-width:1}.z2-line-pace{fill:none;stroke:#9fe870;stroke-width:3}.z2-line-hr{fill:none;stroke:#62b4ff;stroke-width:2;stroke-dasharray:5 5}
+.z2-dot-pace{fill:#9fe870}.z2-dot-hr{fill:#62b4ff}.z2-label{fill:#9aa6af;font-size:9px}
+.z2-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:11px;color:var(--muted)}
+.z2-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.z2-comparison{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.z2-comparison-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px}
+.z2-comparison-card span{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.z2-comparison-card strong{font-size:17px}
+.z2-note{margin-top:10px;padding:11px 12px;border-radius:14px;background:#24303a;color:#d8e8f4;font-size:12px;line-height:1.45}
+@media(max-width:520px){
+ .z2-summary{grid-template-columns:repeat(2,1fr)}
+ .z2-comparison{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V11.2</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V12</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -249,7 +280,7 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="kicker">OBJETIVO PRINCIPAL</div>
     <h2>Media Maratón de Murcia</h2>
     <p>Construir resistencia, fuerza y constancia.</p>
-    <span class="version">V11.2 ACTIVA</span>
+    <span class="version">V12 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -367,6 +398,21 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
     <div class="metric"><span>Kilómetros</span><strong id="runFilterKm">0</strong></div>
     <div class="metric"><span>Ritmo medio</span><strong id="runFilterPace">—</strong></div>
   </div>
+
+  <div id="z2Progress" class="z2-progress">
+    <div id="z2Hero" class="z2-hero"></div>
+    <div class="z2-chart-card">
+      <div class="z2-chart-head"><h4>Evolución Zona 2</h4><span>Últimas 10 sesiones</span></div>
+      <div id="z2Chart" class="z2-chart-wrap"></div>
+      <div class="z2-legend">
+        <span><i style="background:#9fe870"></i>Ritmo medio</span>
+        <span><i style="background:#62b4ff"></i>FC media</span>
+      </div>
+    </div>
+    <div id="z2Comparison" class="z2-comparison"></div>
+    <div id="z2WeatherNote"></div>
+  </div>
+
   <div id="runs" class="stack"></div>
 </section>
 
@@ -930,6 +976,113 @@ function renderStats(){
  }else $("#raceProgress").innerHTML='<div class="empty">No hay ninguna carrera futura registrada.</div>';
 }
 
+
+function z2Runs(){
+ return [...data.runs]
+   .filter(r=>categoryLabel(r)==="Zona 2"&&Number(r.distance)>0&&timeToSeconds(r.time)>0)
+   .sort((a,b)=>a.date.localeCompare(b.date));
+}
+function paceSecondsForRun(r){
+ const km=Number(r.distance||0),sec=timeToSeconds(r.time);
+ return km&&sec?sec/km:0;
+}
+function avgNumber(items,key){
+ const valid=items.map(x=>Number(x[key])).filter(v=>Number.isFinite(v)&&v>0);
+ return valid.length?valid.reduce((a,b)=>a+b,0)/valid.length:0;
+}
+function formatPaceDelta(seconds){
+ if(!Number.isFinite(seconds)||seconds===0)return "Sin cambios";
+ const sign=seconds<0?"más rápido":"más lento";
+ return `${Math.abs(Math.round(seconds))} s/km ${sign}`;
+}
+function z2TrendData(items){
+ if(items.length<2)return {paceDelta:0,hrDelta:0,cadDelta:0,tempDelta:0,label:"Sin datos suficientes",cls:"flat"};
+ const windowSize=Math.min(3,Math.floor(items.length/2));
+ const first=items.slice(0,windowSize),last=items.slice(-windowSize);
+ const paceFirst=first.reduce((a,r)=>a+paceSecondsForRun(r),0)/first.length;
+ const paceLast=last.reduce((a,r)=>a+paceSecondsForRun(r),0)/last.length;
+ const hrFirst=avgNumber(first,"avgHr"),hrLast=avgNumber(last,"avgHr");
+ const cadFirst=avgNumber(first,"avgCadence"),cadLast=avgNumber(last,"avgCadence");
+ const tempFirst=avgNumber(first,"temperature"),tempLast=avgNumber(last,"temperature");
+ const paceDelta=paceLast-paceFirst;
+ const hrDelta=(hrFirst&&hrLast)?hrLast-hrFirst:0;
+ const cadDelta=(cadFirst&&cadLast)?cadLast-cadFirst:0;
+ const tempDelta=(tempFirst&&tempLast)?tempLast-tempFirst:0;
+ let label="Estable",cls="flat";
+ if(paceDelta<=-5 && hrDelta<=3){label="Mejorando";cls="up"}
+ else if(paceDelta>=8 && hrDelta>=2){label="Más exigente";cls="down"}
+ return {paceDelta,hrDelta,cadDelta,tempDelta,label,cls,paceFirst,paceLast,hrFirst,hrLast,cadFirst,cadLast,tempFirst,tempLast};
+}
+function renderZ2Chart(items){
+ const box=$("#z2Chart");
+ const recent=items.slice(-10);
+ if(recent.length<2){
+   box.innerHTML='<div class="category-empty">Necesitas al menos dos sesiones de Zona 2 para ver la evolución.</div>';
+   return;
+ }
+ const W=720,H=260,padL=42,padR=32,padT=20,padB=38;
+ const paces=recent.map(paceSecondsForRun),hrs=recent.map(r=>Number(r.avgHr)||0);
+ const pMin=Math.min(...paces),pMax=Math.max(...paces);
+ const hrValid=hrs.filter(Boolean),hMin=hrValid.length?Math.min(...hrValid):120,hMax=hrValid.length?Math.max(...hrValid):180;
+ const x=i=>padL+i*((W-padL-padR)/(recent.length-1));
+ const yP=v=>padT+(v-pMin)/Math.max(1,pMax-pMin)*(H-padT-padB);
+ const yH=v=>padT+(hMax-v)/Math.max(1,hMax-hMin)*(H-padT-padB);
+ const pacePts=recent.map((r,i)=>`${x(i)},${yP(paceSecondsForRun(r))}`).join(" ");
+ const hrPts=recent.map((r,i)=>`${x(i)},${yH(Number(r.avgHr)||hMin)}`).join(" ");
+ const grid=[0,.25,.5,.75,1].map(t=>{
+   const y=padT+t*(H-padT-padB);
+   return `<line class="z2-axis" x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}"/>`;
+ }).join("");
+ const dates=recent.map((r,i)=>`<text class="z2-label" x="${x(i)}" y="${H-12}" text-anchor="middle">${new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit"}).format(new Date(r.date+"T12:00:00"))}</text>`).join("");
+ const paceDots=recent.map((r,i)=>`<circle class="z2-dot-pace" cx="${x(i)}" cy="${yP(paceSecondsForRun(r))}" r="4"><title>${r.date}: ${r.pace||calcPace(r.distance,r.time)}/km</title></circle>`).join("");
+ const hrDots=recent.map((r,i)=>Number(r.avgHr)?`<circle class="z2-dot-hr" cx="${x(i)}" cy="${yH(Number(r.avgHr))}" r="3"><title>${r.avgHr} ppm</title></circle>`:"").join("");
+ box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución del ritmo y pulsaciones en Zona 2">
+   ${grid}
+   <polyline class="z2-line-pace" points="${pacePts}"/>
+   <polyline class="z2-line-hr" points="${hrPts}"/>
+   ${paceDots}${hrDots}${dates}
+   <text class="z2-label" x="8" y="${padT+8}">Más rápido</text>
+   <text class="z2-label" x="8" y="${H-padB}">Más lento</text>
+ </svg>`;
+}
+function renderZ2Progress(){
+ const wrap=$("#z2Progress");
+ const show=runFilter==="Zona 2";
+ wrap.classList.toggle("active",show);
+ if(!show)return;
+ const items=z2Runs();
+ if(!items.length){
+   $("#z2Hero").innerHTML='<h3>Progreso Zona 2</h3><p>Aún no hay sesiones suficientes para calcular una tendencia.</p>';
+   $("#z2Chart").innerHTML='<div class="category-empty">Registra sesiones de Zona 2 con tiempo, distancia y pulsaciones.</div>';
+   $("#z2Comparison").innerHTML="";
+   $("#z2WeatherNote").innerHTML="";
+   return;
+ }
+ const trend=z2TrendData(items);
+ const last=items.at(-1);
+ const avgPace=items.reduce((a,r)=>a+paceSecondsForRun(r),0)/items.length;
+ const avgHr=avgNumber(items,"avgHr");
+ const avgCad=avgNumber(items,"avgCadence");
+ const avgTemp=avgNumber(items,"temperature");
+ $("#z2Hero").innerHTML=`<div class="z2-hero-title"><div><h3>Progreso Zona 2</h3><p>${items.length} sesiones analizadas · Última: ${fmt(last.date)}</p></div><span class="z2-trend ${trend.cls}">${trend.label}</span></div>
+ <div class="z2-summary">
+  <div><small>Ritmo medio</small><b>${paceTextFromSeconds(avgPace)}</b></div>
+  <div><small>FC media</small><b>${avgHr?Math.round(avgHr)+" ppm":"—"}</b></div>
+  <div><small>Cadencia media</small><b>${avgCad?Math.round(avgCad)+" ppm":"—"}</b></div>
+  <div><small>Temperatura media</small><b>${avgTemp?avgTemp.toFixed(1).replace(".",",")+" °C":"—"}</b></div>
+ </div>`;
+ renderZ2Chart(items);
+ $("#z2Comparison").innerHTML=`
+  <div class="z2-comparison-card"><span>Primera vs. últimas sesiones</span><strong>${formatPaceDelta(trend.paceDelta)}</strong></div>
+  <div class="z2-comparison-card"><span>Cambio de pulsaciones</span><strong>${trend.hrDelta?`${trend.hrDelta>0?"+":""}${Math.round(trend.hrDelta)} ppm`:"Sin datos"}</strong></div>
+  <div class="z2-comparison-card"><span>Cambio de cadencia</span><strong>${trend.cadDelta?`${trend.cadDelta>0?"+":""}${Math.round(trend.cadDelta)} ppm`:"Sin datos"}</strong></div>
+  <div class="z2-comparison-card"><span>Última sesión</span><strong>${last.pace||calcPace(last.distance,last.time)}/km · ${last.avgHr||"—"} ppm</strong></div>`;
+ const hot=items.filter(r=>Number(r.temperature)>=28).length;
+ let note="La comparación es más fiable cuando las sesiones tienen una temperatura y un recorrido parecidos.";
+ if(hot)note+=` ${hot} sesión${hot===1?"":"es"} se registraron con 28 °C o más, lo que puede elevar pulsaciones y empeorar el ritmo.`;
+ $("#z2WeatherNote").innerHTML=`<div class="z2-note">${note}</div>`;
+}
+
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -944,7 +1097,7 @@ function render(){
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
  $("#races").innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>genericCard(x,"race")).join(""):'<div class="empty">Sin carreras.</div>';
- renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();
+ renderToday();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();
 }
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -1111,7 +1264,7 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=112").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=12").catch(()=>{}))}
 render();
 </script>
 </body>
