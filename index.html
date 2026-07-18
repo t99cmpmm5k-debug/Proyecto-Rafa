@@ -1,153 +1,18 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b0d10">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Proyecto Rafa">
-  <title>Proyecto Rafa</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header class="topbar">
-    <div>
-      <p class="eyebrow">TRAINING BOOK</p>
-      <h1>Proyecto Rafa</h1>
-    </div>
-    <button id="themeBtn" class="icon-btn" aria-label="Cambiar tema">◐</button>
-  </header>
-
-  <main>
-    <section id="inicio" class="view active">
-      <div class="hero">
-        <div>
-          <p class="muted">Objetivo principal</p>
-          <h2>Media Maratón de Murcia</h2>
-          <p class="hero-copy">Constancia, base aeróbica y fuerza.</p>
-        </div>
-        <div class="goal-ring"><span id="goalPercent">0%</span></div>
-      </div>
-
-      <div class="cards metrics">
-        <article class="card">
-          <span>Km esta semana</span>
-          <strong id="weekKm">0,0</strong>
-        </article>
-        <article class="card">
-          <span>Último ritmo Z2</span>
-          <strong id="lastPace">—</strong>
-        </article>
-        <article class="card">
-          <span>FC media Z2</span>
-          <strong id="lastHr">—</strong>
-        </article>
-        <article class="card">
-          <span>Entrenamientos</span>
-          <strong id="totalRuns">0</strong>
-        </article>
-      </div>
-
-      <article class="card next-card">
-        <div>
-          <span>Próximo entrenamiento</span>
-          <strong id="nextWorkout">Tirada larga · 12 km Z2</strong>
-        </div>
-        <button class="ghost-btn" id="editNextBtn">Editar</button>
-      </article>
-
-      <button class="primary-btn full" data-open-form="running">＋ Añadir entrenamiento</button>
-
-      <section class="section-block">
-        <div class="section-title">
-          <h3>Última actividad</h3>
-        </div>
-        <div id="latestRun"></div>
-      </section>
-    </section>
-
-    <section id="running" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">RUNNING</p>
-          <h2>Historial</h2>
-        </div>
-        <button class="primary-btn small" data-open-form="running">＋ Añadir</button>
-      </div>
-      <div class="filter-row">
-        <button class="chip active" data-filter="Todos">Todos</button>
-        <button class="chip" data-filter="Rodaje Z2">Z2</button>
-        <button class="chip" data-filter="Series">Series</button>
-        <button class="chip" data-filter="Tirada larga">Larga</button>
-        <button class="chip" data-filter="Carrera">Carrera</button>
-      </div>
-      <div id="runList" class="stack"></div>
-    </section>
-
-    <section id="gym" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">FUERZA</p>
-          <h2>Gimnasio</h2>
-        </div>
-        <button class="primary-btn small" data-open-form="gym">＋ Registrar</button>
-      </div>
-      <div class="cards">
-        <article class="card">
-          <span>Última sesión</span>
-          <strong>Torso</strong>
-          <p class="muted">16/07/2026</p>
-        </article>
-      </div>
-      <div id="gymList" class="stack"></div>
-    </section>
-
-    <section id="material" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">EQUIPO</p>
-          <h2>Material</h2>
-        </div>
-        <button class="primary-btn small" data-open-form="material">＋ Añadir</button>
-      </div>
-      <div id="gearList" class="stack"></div>
-    </section>
-
-    <section id="carreras" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">COMPETICIÓN</p>
-          <h2>Carreras</h2>
-        </div>
-        <button class="primary-btn small" data-open-form="race">＋ Añadir</button>
-      </div>
-      <div id="raceList" class="stack"></div>
-    </section>
-  </main>
-
-  <nav class="bottom-nav">
-    <button class="nav-btn active" data-view="inicio"><span>⌂</span>Inicio</button>
-    <button class="nav-btn" data-view="running"><span>◉</span>Running</button>
-    <button class="nav-btn" data-view="gym"><span>▣</span>Gym</button>
-    <button class="nav-btn" data-view="material"><span>◇</span>Material</button>
-    <button class="nav-btn" data-view="carreras"><span>★</span>Carreras</button>
-  </nav>
-
-  <dialog id="modal">
-    <form method="dialog" id="dynamicForm">
-      <div class="modal-head">
-        <h2 id="modalTitle">Añadir</h2>
-        <button value="cancel" class="icon-btn">✕</button>
-      </div>
-      <div id="formFields"></div>
-      <button value="default" class="primary-btn full" id="saveBtn">Guardar</button>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0d10"><meta name="apple-mobile-web-app-capable" content="yes"><title>Proyecto Rafa V2</title><style>
+:root{--bg:#0b0d10;--s:#15191e;--s2:#1d232a;--t:#f4f7fa;--m:#9aa5b1;--a:#9fe870;--b:#2a323b;--d:#ff8a8a;color-scheme:dark}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--t);padding-bottom:92px}button,input,select,textarea{font:inherit}button{cursor:pointer}header{position:sticky;top:0;z-index:5;padding:calc(16px + env(safe-area-inset-top)) 17px 13px;background:#0b0d10e8;backdrop-filter:blur(16px);border-bottom:1px solid var(--b);display:flex;justify-content:space-between;align-items:center}h1,h2,h3,p{margin:0}.eye{font-size:11px;letter-spacing:.16em;color:var(--a);font-weight:800}.muted{color:var(--m)}main{max-width:760px;margin:auto;padding:15px}.view{display:none}.view.on{display:block}.hero,.card,.item{background:linear-gradient(145deg,var(--s),var(--s2));border:1px solid var(--b);border-radius:20px}.hero{padding:20px;margin-bottom:12px}.hero h2{font-size:25px;margin:5px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{padding:15px}.card span{display:block;color:var(--m);font-size:12px;margin-bottom:7px}.card strong{font-size:21px}.head{display:flex;justify-content:space-between;align-items:center;margin:21px 0 11px}.btn{border:0;border-radius:13px;padding:11px 13px;font-weight:800}.pri{background:var(--a);color:#0d1408}.sec{background:var(--s2);color:var(--t)}.del{background:#3a2023;color:#ffb2b2}.small{padding:8px 10px;font-size:13px}.full{width:100%;margin-top:12px}.list{display:flex;flex-direction:column;gap:10px}.item{padding:15px}.top{display:flex;justify-content:space-between;gap:12px}.title{font-size:17px;font-weight:800}.date{font-size:12px;color:var(--m);margin-top:3px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.stat{background:#ffffff0a;padding:9px;border-radius:12px}.stat small{display:block;color:var(--m);font-size:10px}.stat b{font-size:13px}.note{font-size:13px;color:var(--m);margin-top:9px;line-height:1.4}.actions{display:flex;gap:8px;margin-top:11px}nav{position:fixed;left:0;right:0;bottom:0;z-index:9;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 5px calc(8px + env(safe-area-inset-bottom));background:#0b0d10f0;border-top:1px solid var(--b);backdrop-filter:blur(16px)}.nav{background:transparent;border:0;color:var(--m);font-size:10px;padding:5px}.nav span{display:block;font-size:18px}.nav.on{color:var(--a);font-weight:800}dialog{width:min(92vw,540px);max-height:88vh;overflow:auto;border:1px solid var(--b);border-radius:22px;background:var(--s);color:var(--t);padding:0}dialog::backdrop{background:#000b}form{padding:18px}.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.x{width:40px;height:40px;border:0;border-radius:12px;background:var(--s2);color:var(--t)}.field{margin-bottom:10px}.field label{display:block;color:var(--m);font-size:12px;margin:0 0 5px 3px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--b);background:var(--s2);color:var(--t);border-radius:13px;padding:12px}.field textarea{min-height:78px}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.empty{text-align:center;color:var(--m);padding:22px;border:1px dashed var(--b);border-radius:16px}.hide{display:none}
+</style></head><body><header><div><p class="eye">TRAINING BOOK · V2</p><h1>Proyecto Rafa</h1></div><button class="btn sec small" id="backupTop">Copia</button></header><main>
+<section id="inicio" class="view on"><div class="hero"><p class="muted">Objetivo principal</p><h2>Media Maratón de Murcia</h2><p class="muted">Constancia, base aeróbica y fuerza.</p></div><div class="grid"><div class="card"><span>Km esta semana</span><strong id="wk">0,0</strong></div><div class="card"><span>Último ritmo Z2</span><strong id="lp">—</strong></div><div class="card"><span>FC media Z2</span><strong id="lh">—</strong></div><div class="card"><span>Entrenamientos</span><strong id="tr">0</strong></div></div><button class="btn pri full" data-add="run">＋ Añadir entrenamiento</button><div class="head"><h3>Última actividad</h3></div><div id="latest"></div></section>
+<section id="running" class="view"><div class="head"><div><p class="eye">RUNNING</p><h2>Entrenamientos</h2></div><button class="btn pri small" data-add="run">＋ Añadir</button></div><div id="runs" class="list"></div></section>
+<section id="gym" class="view"><div class="head"><div><p class="eye">FUERZA</p><h2>Gimnasio</h2></div><button class="btn pri small" data-add="gym">＋ Añadir</button></div><div id="gyms" class="list"></div></section>
+<section id="material" class="view"><div class="head"><div><p class="eye">EQUIPO</p><h2>Material</h2></div><button class="btn pri small" data-add="gear">＋ Añadir</button></div><div id="gear" class="list"></div></section>
+<section id="carreras" class="view"><div class="head"><div><p class="eye">COMPETICIÓN</p><h2>Carreras</h2></div><button class="btn pri small" data-add="race">＋ Añadir</button></div><div id="races" class="list"></div><div class="head"><h3>Copias de seguridad</h3></div><div class="tools"><button class="btn sec" id="export">Exportar</button><label class="btn sec" style="text-align:center">Importar<input id="import" class="hide" type="file" accept="application/json,.json"></label></div></section></main>
+<nav><button class="nav on" data-view="inicio"><span>⌂</span>Inicio</button><button class="nav" data-view="running"><span>◉</span>Running</button><button class="nav" data-view="gym"><span>▣</span>Gym</button><button class="nav" data-view="material"><span>◇</span>Material</button><button class="nav" data-view="carreras"><span>★</span>Carreras</button></nav>
+<dialog id="modal"><form id="form"><div class="mh"><h2 id="mt">Añadir</h2><button class="x" type="button" id="close">✕</button></div><div id="fields"></div><button class="btn pri full">Guardar</button></form></dialog>
+<script>
+const K='proyectoRafaDataV1',fresh={nextWorkout:'Tirada larga · 12 km Z2',runs:[{id:'r1707',date:'2026-07-17',type:'Rodaje Z2',distance:7.02,time:'40:06',pace:'5:42',avgHr:147,maxHr:155,te:3.4,temp:33,shoes:'ASICS Gel-Nimbus 28',notes:'90 % del tiempo en Z2. Buen control de pulsaciones con calor.'}],gym:[{id:'g1607',date:'2026-07-16',name:'Torso',notes:'Press banca 20 kg · Remo barra 40 kg · Press militar 20 kg · Elevaciones laterales 15 kg · Fondos asistidos 40 kg · Curl EZ 10 kg · Tríceps polea 20 kg'}],gear:[{id:'z1',name:'ASICS Gel-Nimbus 28',type:'Zapatillas',km:7.02,notes:'Rodajes suaves y tiradas largas'},{id:'z2',name:'Adidas Adizero Evo SL',type:'Zapatillas',km:0,notes:'Series y sesiones rápidas'}],races:[{id:'c1',name:'Media Maratón de Murcia',date:'2027-02-01',goal:'Terminar fuerte',notes:'Objetivo principal'}]};let data;try{data=JSON.parse(localStorage.getItem(K))||structuredClone(fresh)}catch{data=structuredClone(fresh)}let mode='',eid=null;const $=s=>document.querySelector(s),uuid=()=>crypto.randomUUID?.()||Date.now()+Math.random(),save=()=>{localStorage.setItem(K,JSON.stringify(data));render()},fmt=d=>new Intl.DateTimeFormat('es-ES').format(new Date(d+'T12:00:00'));function pace(d,t){if(!d||!t)return'—';let a=t.split(':').map(Number),s=a.length===3?a[0]*3600+a[1]*60+a[2]:a[0]*60+a[1],p=Math.round(s/d);return Math.floor(p/60)+':'+String(p%60).padStart(2,'0')}function wkm(){let n=new Date(),day=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-day);return data.runs.filter(r=>new Date(r.date+'T12:00:00')>=m).reduce((s,r)=>s+Number(r.distance||0),0)}
+function rc(r){return `<article class="item"><div class="top"><div><div class="title">${r.type}</div><div class="date">${fmt(r.date)} · ${r.shoes||'Sin zapatillas'}</div></div><div class="title">${Number(r.distance).toFixed(2).replace('.',',')} km</div></div><div class="stats"><div class="stat"><small>Ritmo</small><b>${r.pace||pace(r.distance,r.time)}/km</b></div><div class="stat"><small>FC media</small><b>${r.avgHr||'—'} ppm</b></div><div class="stat"><small>Tiempo</small><b>${r.time||'—'}</b></div></div>${r.notes?`<p class="note">${r.notes}</p>`:''}<div class="actions"><button class="btn sec small" onclick="edit('run','${r.id}')">Editar</button><button class="btn del small" onclick="removeItem('run','${r.id}')">Eliminar</button></div></article>`}function sc(x,t){let sub=t==='gym'?fmt(x.date):t==='gear'?`${x.type} · ${Number(x.km||0).toFixed(1).replace('.',',')} km`:`${fmt(x.date)} · ${x.goal||''}`;return `<article class="item"><div class="title">${x.name}</div><div class="date">${sub}</div>${x.notes?`<p class="note">${x.notes}</p>`:''}<div class="actions"><button class="btn sec small" onclick="edit('${t}','${x.id}')">Editar</button><button class="btn del small" onclick="removeItem('${t}','${x.id}')">Eliminar</button></div></article>`}
+function render(){let l=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];$('#wk').textContent=wkm().toFixed(1).replace('.',',');$('#lp').textContent=l?(l.pace||pace(l.distance,l.time))+'/km':'—';$('#lh').textContent=l?(l.avgHr||'—')+' ppm':'—';$('#tr').textContent=data.runs.length;$('#latest').innerHTML=l?rc(l):'<div class="empty">Sin entrenamientos.</div>';$('#runs').innerHTML=data.runs.length?[...data.runs].sort((a,b)=>b.date.localeCompare(a.date)).map(rc).join(''):'<div class="empty">Sin entrenamientos.</div>';$('#gyms').innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(x=>sc(x,'gym')).join(''):'<div class="empty">Sin sesiones.</div>';$('#gear').innerHTML=data.gear.length?data.gear.map(x=>sc(x,'gear')).join(''):'<div class="empty">Sin material.</div>';$('#races').innerHTML=data.races.length?[...data.races].sort((a,b)=>a.date.localeCompare(b.date)).map(x=>sc(x,'race')).join(''):'<div class="empty">Sin carreras.</div>'}
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav,.view').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.view).classList.add('on');scrollTo({top:0,behavior:'smooth'})});
+const defs={run:{title:'Entrenamiento',html:x=>`<div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div><div class="field"><label>Tipo</label><select name="type">${['Rodaje Z2','Series','Tirada larga','Carrera','Recuperación'].map(v=>`<option ${x?.type===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="two"><div class="field"><label>Distancia</label><input name="distance" type="number" step=".01" required value="${x?.distance??''}"></div><div class="field"><label>Tiempo</label><input name="time" required value="${x?.time||''}"></div></div><div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${x?.avgHr??''}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${x?.maxHr??''}"></div></div><div class="two"><div class="field"><label>Training Effect</label><input name="te" type="number" step=".1" value="${x?.te??''}"></div><div class="field"><label>Temperatura</label><input name="temp" type="number" value="${x?.temp??''}"></div></div><div class="field"><label>Zapatillas</label><input name="shoes" value="${x?.shoes||'ASICS Gel-Nimbus 28'}"></div><div class="field"><label>Notas</label><textarea name="notes">${x?.notes||''}</textarea></div>`},gym:{title:'Gimnasio',html:x=>`<div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div><div class="field"><label>Sesión</label><input name="name" required value="${x?.name||''}"></div><div class="field"><label>Ejercicios, pesos y repeticiones</label><textarea name="notes" required>${x?.notes||''}</textarea></div>`},gear:{title:'Material',html:x=>`<div class="field"><label>Nombre</label><input name="name" required value="${x?.name||''}"></div><div class="field"><label>Tipo</label><input name="type" value="${x?.type||'Zapatillas'}"></div><div class="field"><label>Kilómetros</label><input name="km" type="number" step=".1" value="${x?.km??0}"></div><div class="field"><label>Notas</label><textarea name="notes">${x?.notes||''}</textarea></div>`},race:{title:'Carrera',html:x=>`<div class="field"><label>Nombre</label><input name="name" required value="${x?.name||''}"></div><div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||''}"></div><div class="field"><label>Objetivo</label><input name="goal" value="${x?.goal||''}"></div><div class="field"><label>Notas</label><textarea name="notes">${x?.notes||''}</textarea></div>`}};
+function openForm(t,id=null){mode=t;eid=id;let a=t==='run'?data.runs:t==='gym'?data.gym:t==='gear'?data.gear:data.races,x=id?a.find(i=>i.id===id):null;$('#mt').textContent=(id?'Editar ':'Añadir ')+defs[t].title;$('#fields').innerHTML=defs[t].html(x);$('#modal').showModal()}document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>openForm(b.dataset.add));$('#close').onclick=()=>$('#modal').close();window.edit=(t,id)=>openForm(t,id);window.removeItem=(t,id)=>{if(!confirm('¿Eliminar este registro?'))return;let k=t==='run'?'runs':t==='gym'?'gym':t==='gear'?'gear':'races';data[k]=data[k].filter(x=>x.id!==id);save()};$('#form').onsubmit=e=>{e.preventDefault();let o=Object.fromEntries(new FormData(e.target));o.id=eid||uuid();if(mode==='run'){o.distance=Number(o.distance);o.avgHr=Number(o.avgHr)||null;o.maxHr=Number(o.maxHr)||null;o.te=Number(o.te)||null;o.temp=Number(o.temp)||null;o.pace=pace(o.distance,o.time)}if(mode==='gear')o.km=Number(o.km)||0;let k=mode==='run'?'runs':mode==='gym'?'gym':mode==='gear'?'gear':'races';data[k]=eid?data[k].map(x=>x.id===eid?o:x):[...data[k],o];save();$('#modal').close()};function exp(){let b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Proyecto-Rafa-copia-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}$('#export').onclick=exp;$('#backupTop').onclick=exp;$('#import').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let o=JSON.parse(await f.text());if(!o.runs||!o.gym||!o.gear||!o.races)throw 0;if(confirm('¿Sustituir los datos actuales?')){data=o;save();alert('Copia importada correctamente')}}catch{alert('Copia no válida')}e.target.value=''};render();
+</script></body></html>
