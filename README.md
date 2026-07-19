@@ -16,3 +16,4 @@ Aplicación web personal para registrar:
 5. Guarda y espera uno o dos minutos.
 
 Los datos se guardan en el navegador del dispositivo mediante `localStorage`.
+Actualizacion V19.5
