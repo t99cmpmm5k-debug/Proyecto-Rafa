@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.4.1</title>
+<title>Proyecto Rafa · V19.5</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -90,24 +90,35 @@ form{padding:18px}.modal-head{display:flex;justify-content:space-between;align-i
 .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .mini-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:15px}
 .mini-card span{display:block;color:var(--muted);font-size:12px}.mini-card strong{display:block;margin-top:7px;font-size:19px}
-.exercise-card{background:var(--panel2);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.exercise-card{background:var(--panel2);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px;overflow:hidden}
 .exercise-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .exercise-title{font-weight:900;font-size:17px}
 .series-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
-.series-row{display:grid;grid-template-columns:36px 1fr 1fr 40px;gap:8px;align-items:center}
-.stepper{display:grid;grid-template-columns:36px 1fr 36px;gap:5px;align-items:center}
-.stepper button{border:0;border-radius:10px;background:#26303a;color:var(--text);height:38px;font-weight:900}
-.stepper input{text-align:center;padding:9px!important}
-.series-num{color:var(--muted);font-weight:800}
+.series-row{display:grid;grid-template-columns:30px minmax(0,1fr) 36px;gap:8px;align-items:center;padding:7px 0}
+.series-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;min-width:0}
+.metric-stepper{min-width:0}
+.metric-stepper label{display:block;text-align:center;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;margin-bottom:4px}
+.stepper{display:grid;grid-template-columns:30px minmax(0,1fr) 30px;gap:4px;align-items:center;min-width:0}
+.stepper button{border:0;border-radius:9px;background:#26303a;color:var(--text);height:36px;min-width:0;padding:0;font-weight:900;font-size:16px}
+.stepper input{width:100%;min-width:0;text-align:center;padding:8px 3px!important;font-size:16px}
+.series-num{color:var(--muted);font-weight:800;text-align:center}
 .remove-series{border:0;border-radius:10px;background:#3b2226;color:#ffc1c1;height:38px}
 .exercise-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.library-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.library-btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:13px;padding:12px;text-align:left}
-.library-btn small{display:block;color:var(--muted);margin-top:3px}
+.exercise-picker{margin-bottom:12px}
+.exercise-picker-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:14px;padding:12px 14px;font-weight:900}
+.exercise-picker-panel{display:none;margin-top:8px;padding:10px;border:1px solid var(--line);border-radius:14px;background:#101c15}
+.exercise-picker-panel.open{display:block}
+.exercise-search{margin-bottom:8px}
+.library-grid{display:grid;grid-template-columns:1fr;gap:6px;max-height:260px;overflow:auto}
+.library-btn{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:11px;padding:9px 11px;text-align:left}
+.library-btn small{display:block;color:var(--muted);margin:0;white-space:nowrap}
 @media(max-width:420px){
   main{padding:14px}.stats{grid-template-columns:repeat(2,1fr)}.section-head h2{font-size:30px}
-  .series-row{grid-template-columns:30px 1fr 1fr 36px}
-  .stepper{grid-template-columns:32px 1fr 32px}
+  .series-row{grid-template-columns:26px minmax(0,1fr) 34px;gap:6px}
+  .series-controls{gap:6px}
+  .stepper{grid-template-columns:28px minmax(0,1fr) 28px;gap:3px}
+  .stepper button{height:34px;font-size:15px}
+  .stepper input{font-size:15px;padding:7px 2px!important}
 }
 
 .today-card{background:linear-gradient(145deg,#17231a,#11191f);border:1px solid #3b5a2b;border-radius:24px;padding:18px;box-shadow:var(--shadow)}
@@ -448,8 +459,6 @@ nav{
 .gym-plan-item strong{font-size:13px}.gym-plan-item span{font-size:11px;color:var(--muted);text-align:right}
 .gym-start-btn{width:100%;margin-top:12px}
 .gym-tip{background:#18261d;border:1px solid #2f4937;border-radius:16px;padding:12px;margin-top:12px;color:#cfe6d6;font-size:12px;line-height:1.45}
-.gym-editor-labels{display:grid;grid-template-columns:34px 1fr 1fr 34px;gap:8px;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;margin:0 0 5px}
-.gym-editor-labels span:nth-child(2),.gym-editor-labels span:nth-child(3){text-align:center}
 .series-row input{font-weight:900}
 .last-used{font-size:10px;color:var(--green);margin-top:4px}
 @media(max-width:520px){.gym-days{gap:6px}.gym-day-btn{padding:10px 5px;font-size:12px}}
@@ -549,7 +558,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.4.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.5</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -559,7 +568,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.4.1 ACTIVA</span>
+    <span class="version">V19.5 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -2081,7 +2090,13 @@ const defs={
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
  <div class="field"><label>Sesión</label><input name="name" required value="${x?.name||""}"></div>
  <div class="field"><label>Duración (min)</label><input name="duration" type="number" value="${x?.duration||45}"></div>
- <div class="field"><label>Añadir ejercicio</label><div class="library-grid" id="exerciseLibrary"></div></div>
+ <div class="exercise-picker">
+  <button type="button" class="exercise-picker-toggle" onclick="toggleExercisePicker()"><span>＋ Añadir ejercicio</span><span id="exercisePickerArrow">⌄</span></button>
+  <div class="exercise-picker-panel" id="exercisePickerPanel">
+   <input id="exerciseSearch" class="exercise-search" placeholder="Buscar ejercicio…" oninput="renderExerciseLibrary(this.value)">
+   <div class="library-grid" id="exerciseLibrary"></div>
+  </div>
+ </div>
  <div id="gymExerciseEditor"></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  gear:{title:"material",html:x=>`
@@ -2147,14 +2162,24 @@ function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDat
    window.quickRunPreset=null;
  }
 }
-function renderExerciseLibrary(){
- $("#exerciseLibrary").innerHTML=EXERCISES.map((e,i)=>`<button type="button" class="library-btn" onclick="addExercise(${i})"><b>${e.name}</b><small>Paso ${e.step} kg</small></button>`).join("")
+function renderExerciseLibrary(query=""){
+ const box=$("#exerciseLibrary");if(!box)return;
+ const q=String(query||"").trim().toLowerCase();
+ const rows=EXERCISES.map((e,i)=>({e,i})).filter(x=>!q||x.e.name.toLowerCase().includes(q));
+ box.innerHTML=rows.length?rows.map(({e,i})=>`<button type="button" class="library-btn" onclick="addExercise(${i})"><b>${e.name}</b><small>Paso ${e.step} kg</small></button>`).join(""):'<div class="empty">No se encontró ningún ejercicio.</div>'
 }
+window.toggleExercisePicker=()=>{
+ const panel=$("#exercisePickerPanel"),arrow=$("#exercisePickerArrow");if(!panel)return;
+ const open=panel.classList.toggle("open");if(arrow)arrow.textContent=open?"⌃":"⌄";
+ if(open){renderExerciseLibrary($("#exerciseSearch")?.value||"");setTimeout(()=>$("#exerciseSearch")?.focus(),50)}
+};
 window.addExercise=i=>{
  const ex=EXERCISES[i];
  const last=findLastExercise(ex.name);
  gymDraftExercises.push({name:ex.name,step:ex.step,assisted:!!ex.assisted,sets:last?.sets?.length?structuredClone(last.sets):[{weight:last?.sets?.[0]?.weight||0,reps:last?.sets?.[0]?.reps||10}]});
- renderGymExerciseEditor()
+ renderGymExerciseEditor();
+ const panel=$("#exercisePickerPanel");if(panel)panel.classList.remove("open");
+ const arrow=$("#exercisePickerArrow");if(arrow)arrow.textContent="⌄";
 };
 function findLastExercise(name){
  const sessions=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date));
@@ -2205,20 +2230,21 @@ function renderGymExerciseEditor(){
      <button type="button" class="btn danger small" onclick="removeExercise(${ei})">Quitar</button>
    </div>
    <div class="last-used">${e.note||""}</div>
-   <div class="gym-editor-labels"><span></span><span>Peso</span><span>Reps</span><span></span></div>
    <div class="series-list">
      ${(e.sets||[]).map((s,si)=>`
        <div class="series-row ${s.done?"done":""}">
          <div class="series-num">${si+1}</div>
-         <div class="stepper">
+         <div class="series-controls">
+          <div class="metric-stepper"><label>Peso</label><div class="stepper">
            <button type="button" onclick="changeWeight(${ei},${si},-1)">−</button>
            <input value="${s.weight}" readonly>
            <button type="button" onclick="changeWeight(${ei},${si},1)">＋</button>
-         </div>
-         <div class="stepper">
+          </div></div>
+          <div class="metric-stepper"><label>Reps</label><div class="stepper">
            <button type="button" onclick="changeReps(${ei},${si},-1)">−</button>
            <input value="${s.reps}" readonly>
            <button type="button" onclick="changeReps(${ei},${si},1)">＋</button>
+          </div></div>
          </div>
          <button type="button" class="series-check ${s.done?"done":""}" onclick="toggleSetDone(${ei},${si})">${s.done?"✓":"○"}</button>
        </div>`).join("")}
