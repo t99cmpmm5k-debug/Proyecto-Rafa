@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.2</title>
+<title>Proyecto Rafa · V19.3</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -527,12 +527,32 @@ nav{grid-template-columns:repeat(6,1fr)!important}
  .more-grid{grid-template-columns:1fr 1fr}
 }
 
+
+.run-view-tools{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:14px 0 10px}
+.run-view-switch{display:flex;gap:6px;background:#0b120e;padding:4px;border:1px solid var(--line);border-radius:14px}
+.run-view-btn{border:0;background:transparent;color:var(--muted);padding:9px 13px;border-radius:10px;font-weight:800;cursor:pointer}
+.run-view-btn.active{background:var(--green);color:#071008}
+.run-table-filters{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:8px;margin:10px 0 12px}
+.run-table-filters select,.run-table-filters input{width:100%;background:#101a15;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px}
+.run-table-wrap{overflow:auto;border:1px solid var(--line);border-radius:17px;background:#0d1611;box-shadow:0 12px 35px rgba(0,0,0,.18)}
+.run-history-table{width:100%;border-collapse:collapse;min-width:920px;font-size:12px}
+.run-history-table th{position:sticky;top:0;z-index:1;background:#16251c;color:var(--green);text-align:left;padding:12px 10px;white-space:nowrap;border-bottom:1px solid var(--line)}
+.run-history-table td{padding:11px 10px;border-bottom:1px solid #1b2a21;white-space:nowrap}
+.run-history-table tbody tr{cursor:pointer;transition:.15s}
+.run-history-table tbody tr:hover{background:#142119}
+.run-history-table tbody tr:last-child td{border-bottom:0}
+.run-table-type{font-weight:850;color:#fff}.run-table-sub{font-size:10px;color:var(--muted);display:block;margin-top:2px}
+.table-empty{padding:26px;text-align:center;color:var(--muted)}
+.series-table-note{margin:8px 0 12px;color:var(--muted);font-size:11px}
+.shoe-pill{display:inline-block;padding:5px 8px;border:1px solid var(--line);border-radius:999px;font-size:10px;color:#d7e7db}
+@media(max-width:700px){.run-table-filters{grid-template-columns:1fr 1fr}.run-table-filters .wide{grid-column:1/-1}.run-view-tools{align-items:stretch}.run-view-switch{width:100%}.run-view-btn{flex:1}.run-table-wrap{margin-left:-4px;margin-right:-4px}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.2</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.3</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -542,7 +562,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.2 ACTIVA</span>
+    <span class="version">V19.3 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -698,7 +718,21 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div id="z2WeatherNote"></div>
   </div>
 
-  <div id="runs" class="stack"></div>
+  <div class="run-view-tools">
+    <div><div class="kicker">HISTORIAL</div><strong>Compara tus entrenamientos</strong></div>
+    <div class="run-view-switch">
+      <button class="run-view-btn active" type="button" data-run-view="table">▤ Tabla</button>
+      <button class="run-view-btn" type="button" data-run-view="cards">▦ Tarjetas</button>
+    </div>
+  </div>
+  <div id="runTableFilters" class="run-table-filters">
+    <select id="runShoeFilter" class="wide"><option value="Todas">Todas las zapatillas</option><option>Adidas Adizero EVO SL</option><option>ASICS Gel-Nimbus 28</option><option>Sin especificar</option></select>
+    <input id="runDateFrom" type="date" aria-label="Desde">
+    <input id="runDateTo" type="date" aria-label="Hasta">
+    <button class="btn secondary small" type="button" id="clearRunFilters">Limpiar</button>
+  </div>
+  <div id="runTableView"></div>
+  <div id="runs" class="stack" style="display:none"></div>
 </section>
 
 <section id="gym" class="view">
@@ -956,7 +990,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes",restTimerId=null,restSeconds=0;
+let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",runHistoryView="table",runShoeFilter="Todas",runDateFrom="",runDateTo="",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes",restTimerId=null,restSeconds=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
@@ -1825,6 +1859,42 @@ function renderFirstUseHint(){
  const empty=!data.runs.length&&!data.gym.length&&!data.races.length&&!data.gear.length;
  el.style.display=empty?"block":"none";
 }
+
+function filteredRunHistory(){
+ return [...data.runs].filter(r=>{
+   if(runFilter!=="Todos"&&categoryLabel(r)!==runFilter)return false;
+   const shoe=r.shoes||"Sin especificar";
+   if(runShoeFilter!=="Todas"&&shoe!==runShoeFilter)return false;
+   if(runDateFrom&&r.date<runDateFrom)return false;
+   if(runDateTo&&r.date>runDateTo)return false;
+   return true;
+ }).sort((a,b)=>b.date.localeCompare(a.date));
+}
+function seriesMetrics(r){
+ const valid=(r.intervals||[]).filter(x=>Number(x.distance)>0&&timeToSeconds(x.time)>0);
+ if(!valid.length)return {reps:"—",structure:"—",avg:"—",best:"—",recovery:r.recovery||"—"};
+ const km=valid.reduce((a,x)=>a+Number(x.distance),0),sec=valid.reduce((a,x)=>a+timeToSeconds(x.time),0);
+ const best=Math.min(...valid.map(x=>timeToSeconds(x.time)/Number(x.distance)));
+ const ds=[...new Set(valid.map(x=>Number(x.distance)))];
+ return {reps:valid.length,structure:`${valid.length} × ${ds.length===1?ds[0].toString().replace('.',',')+' km':'variable'}`,avg:paceTextFromSeconds(sec/km),best:paceTextFromSeconds(best),recovery:r.recovery||"—"};
+}
+function renderRunHistory(items){
+ const cards=$("#runs"),table=$("#runTableView"),filters=$("#runTableFilters");
+ cards.style.display=runHistoryView==="cards"?"grid":"none";
+ table.style.display=runHistoryView==="table"?"block":"none";
+ filters.style.display=runHistoryView==="table"?"grid":"none";
+ cards.innerHTML=items.length?items.map(runCard).join(""):`<div class="category-empty">No hay entrenamientos con estos filtros.</div>`;
+ if(runHistoryView!=="table")return;
+ if(!items.length){table.innerHTML='<div class="run-table-wrap"><div class="table-empty">No hay entrenamientos con estos filtros.</div></div>';return}
+ const seriesMode=runFilter==="Series";
+ const head=seriesMode?`<tr><th>Fecha</th><th>Entrenamiento</th><th>Series</th><th>Ritmo series</th><th>Mejor</th><th>Recuperación</th><th>FC media</th><th>Zapatillas</th></tr>`:`<tr><th>Fecha</th><th>Tipo</th><th>Distancia</th><th>Tiempo</th><th>Ritmo</th><th>FC media</th><th>FC máx.</th><th>Cadencia</th><th>Zapatillas</th><th>Sensaciones</th></tr>`;
+ const rows=items.map(r=>{
+   const shoe=r.shoes||"Sin especificar",pace=r.pace||calcPace(r.distance,r.time);
+   if(seriesMode){const m=seriesMetrics(r);return `<tr onclick="editItem('run','${r.id}')"><td>${fmt(r.date)}</td><td><span class="run-table-type">${r.type||'Series'}</span><span class="run-table-sub">${Number(r.distance||0).toFixed(2).replace('.',',')} km · ${r.time||'—'}</span></td><td>${m.structure}</td><td>${m.avg}/km</td><td>${m.best}/km</td><td>${m.recovery}</td><td>${r.avgHr||'—'} ppm</td><td><span class="shoe-pill">${shoe}</span></td></tr>`}
+   return `<tr onclick="editItem('run','${r.id}')"><td>${fmt(r.date)}</td><td><span class="run-table-type">${categoryLabel(r)}</span><span class="run-table-sub">${r.type||''}</span></td><td>${Number(r.distance||0).toFixed(2).replace('.',',')} km</td><td>${r.time||'—'}</td><td>${pace?pace+'/km':'—'}</td><td>${r.avgHr||'—'} ppm</td><td>${r.maxHr||'—'} ppm</td><td>${r.avgCadence||r.cadence||'—'}</td><td><span class="shoe-pill">${shoe}</span></td><td>${r.feeling||'—'}</td></tr>`;
+ }).join('');
+ table.innerHTML=`${seriesMode?'<div class="series-table-note">Pulsa sobre una fila para ver o editar todos los tiempos de las series.</div>':''}<div class="run-table-wrap"><table class="run-history-table"><thead>${head}</thead><tbody>${rows}</tbody></table></div>`;
+}
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
  $("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
@@ -1832,9 +1902,9 @@ function render(){
  $("#lastHr").textContent=latest?(latest.avgHr||"—")+" ppm":"—";
  $("#totalRuns").textContent=data.runs.length;
  $("#latest").innerHTML=latest?runCard(latest):'<div class="empty">Sin entrenamientos.</div>';
- const filteredRuns=[...data.runs].filter(r=>runFilter==="Todos"||categoryLabel(r)===runFilter).sort((a,b)=>b.date.localeCompare(a.date));
+ const filteredRuns=filteredRunHistory();
  const rs=runCategoryStats(filteredRuns);$("#runFilterCount").textContent=rs.count;$("#runFilterKm").textContent=rs.km.toFixed(1).replace(".",",");$("#runFilterPace").textContent=rs.pace;
- $("#runs").innerHTML=filteredRuns.length?filteredRuns.map(runCard).join(""):`<div class="category-empty">No hay entrenamientos en ${runFilter}.</div>`;
+ renderRunHistory(filteredRuns);
  $("#gyms").innerHTML=data.gym.length?[...data.gym].sort((a,b)=>b.date.localeCompare(a.date)).map(gymCard).join(""):'<div class="empty">Sin sesiones.</div>';
  const lg=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date))[0];$("#lastGymName").textContent=lg?.name||"—";$("#gymCount").textContent=data.gym.length;
  $("#gear").innerHTML=data.gear.length?data.gear.map(x=>genericCard(x,"gear")).join(""):'<div class="empty">Sin material.</div>';
@@ -1844,6 +1914,11 @@ function render(){
 function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
+document.querySelectorAll("[data-run-view]").forEach(b=>b.onclick=()=>{runHistoryView=b.dataset.runView;document.querySelectorAll("[data-run-view]").forEach(x=>x.classList.toggle("active",x===b));render()});
+$("#runShoeFilter").onchange=e=>{runShoeFilter=e.target.value;render()};
+$("#runDateFrom").onchange=e=>{runDateFrom=e.target.value;render()};
+$("#runDateTo").onchange=e=>{runDateTo=e.target.value;render()};
+$("#clearRunFilters").onclick=()=>{runShoeFilter="Todas";runDateFrom="";runDateTo="";$("#runShoeFilter").value="Todas";$("#runDateFrom").value="";$("#runDateTo").value="";render()};
 document.querySelectorAll("[data-race-filter]").forEach(b=>b.onclick=()=>{raceFilter=b.dataset.raceFilter;document.querySelectorAll("[data-race-filter]").forEach(x=>x.classList.toggle("active",x===b));renderRaceList()});
 document.querySelectorAll("[data-finished-filter]").forEach(b=>b.onclick=()=>{finishedRaceFilter=b.dataset.finishedFilter;document.querySelectorAll("[data-finished-filter]").forEach(x=>x.classList.toggle("active",x===b));renderFinishedRaces()});
 document.querySelectorAll("[data-race-view]").forEach(b=>b.onclick=()=>setRaceView(b.dataset.raceView));
@@ -1985,7 +2060,7 @@ const defs={
  <div class="two"><div class="field"><label>Calorías totales</label><input name="totalCalories" type="number" value="${q.totalCalories??""}"></div><div class="field"><label>Pérdida líquidos (ml)</label><input name="fluidLoss" type="number" value="${q.fluidLoss??""}"></div></div>
  </details>
  <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
- <details><summary>Otros datos</summary><div class="field"><label>Zapatillas</label><input name="shoes" value="${q.shoes||"ASICS Gel-Nimbus 28"}"></div></details>
+ <details open><summary>Material utilizado</summary><div class="field"><label>Zapatillas</label><select name="shoes"><option value="Adidas Adizero EVO SL" ${q.shoes==="Adidas Adizero EVO SL"?"selected":""}>Adidas Adizero EVO SL</option><option value="ASICS Gel-Nimbus 28" ${(!q.shoes||q.shoes==="ASICS Gel-Nimbus 28")?"selected":""}>ASICS Gel-Nimbus 28</option><option value="Sin especificar" ${q.shoes==="Sin especificar"?"selected":""}>Sin especificar</option></select></div></details>
  <div class="field"><label>Notas</label><textarea name="notes">${q.notes||""}</textarea></div>`}},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
