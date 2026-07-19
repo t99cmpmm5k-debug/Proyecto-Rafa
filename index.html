@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.4</title>
+<title>Proyecto Rafa · V19.4.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -549,7 +549,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.4</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.4.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -559,7 +559,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.4 ACTIVA</span>
+    <span class="version">V19.4.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -987,10 +987,10 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
-recalcGearKm();
 let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",runHistoryView="table",runShoeFilter="Todas",runDateFrom="",runDateTo="",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes",restTimerId=null,restSeconds=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
+recalcGearKm();
 const fmt=d=>new Intl.DateTimeFormat("es-ES").format(new Date(d+"T12:00:00"));
 
 const isoDate=d=>{const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,10)}
