@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.3</title>
+<title>Proyecto Rafa · V19.4</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -69,10 +69,7 @@ main{max-width:820px;margin:auto;padding:15px}
 .actions{display:flex;gap:9px;margin-top:15px;flex-wrap:wrap}
 .progress{height:10px;background:var(--panel2);border-radius:999px;overflow:hidden;margin-top:10px}
 .progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--green2))}
-.fab{
-  position:fixed;right:18px;bottom:110px;z-index:25;width:59px;height:59px;border-radius:50%;
-  border:0;background:var(--green);color:#0a1206;font-size:29px;font-weight:900;box-shadow:0 10px 30px rgba(159,232,112,.34)
-}
+
 nav{
   position:fixed;bottom:0;left:0;right:0;z-index:40;
   display:grid;grid-template-columns:repeat(7,1fr);
@@ -482,8 +479,8 @@ nav{
  box-shadow:0 12px 32px rgba(0,0,0,.2)
 }
 .garmin-import-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.garmin-import h3{margin:0 0 5px}.garmin-import p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
-.garmin-import-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.garmin-import h3{margin:0;font-size:18px}.garmin-import p{display:none}
+.garmin-import-actions{display:grid;grid-template-columns:1.35fr .65fr;gap:8px;margin-top:10px}.garmin-import-actions .btn{padding:10px 12px;border-radius:13px;font-size:14px}
 .garmin-status{display:none;margin-top:12px;background:var(--panel2);border-radius:14px;padding:11px 12px;font-size:12px;color:var(--muted);line-height:1.45}
 .garmin-status.active{display:block}
 .garmin-status strong{color:var(--green)}
@@ -505,7 +502,7 @@ nav{
 .ocr-result-grid div{background:#101a15;border-radius:12px;padding:9px}
 .ocr-result-grid small{display:block;color:var(--muted);font-size:9px;margin-bottom:4px}
 .ocr-result-grid b{font-size:13px}
-@media(max-width:520px){.garmin-import-actions{grid-template-columns:1fr}.ocr-result-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.garmin-import-actions{grid-template-columns:1.25fr .75fr}.ocr-result-grid{grid-template-columns:1fr 1fr}}
 
 
 .more-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:12px}
@@ -552,7 +549,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.3</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.4</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -562,7 +559,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.3 ACTIVA</span>
+    <span class="version">V19.4 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -675,11 +672,11 @@ nav{grid-template-columns:repeat(6,1fr)!important}
   </div>
   <div class="garmin-import">
     <div class="garmin-import-head">
-      <div><div class="kicker">IMPORTACIÓN RÁPIDA</div><h3>Capturas de Garmin</h3><p>Selecciona todas las capturas de una misma actividad. La app unirá los datos que Garmin muestra, sin promediar ni inventar valores.</p></div>
+      <div><div class="kicker">IMPORTAR ENTRENAMIENTO</div><h3>Garmin o registro manual</h3><p>Selecciona todas las capturas de una misma actividad.</p></div>
     </div>
     <div class="garmin-import-actions">
       <button class="btn primary" type="button" id="garminImportBtn">Subir capturas</button>
-      <button class="btn secondary" type="button" onclick="openForm('run')">Registro manual</button>
+      <button class="btn secondary" type="button" onclick="openForm('run')">Manual</button>
     </div>
     <input id="garminFileInput" class="file" type="file" accept="image/*" multiple>
     <details id="garminCaptures" class="garmin-captures"><summary>Ver capturas originales <span id="garminCaptureCount" class="garmin-count"></span></summary><div id="garminGallery" class="garmin-gallery"></div></details>
@@ -862,7 +859,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 
 </main>
 
-<button class="fab" id="fab">＋</button>
+
 
 <nav>
   <button class="nav active" data-view="inicio"><span>⌂</span>Inicio</button>
@@ -990,6 +987,7 @@ try{
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
 if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
+recalcGearKm();
 let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",runHistoryView="table",runShoeFilter="Todas",runDateFrom="",runDateTo="",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes",restTimerId=null,restSeconds=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
@@ -1005,7 +1003,29 @@ function daysUntil(date){return Math.ceil((new Date(date+"T12:00:00")-new Date()
 function statusLabel(s){return s==="done"?"Completado":s==="skipped"?"Omitido":s==="moved"?"Movido":"Pendiente"}
 
 function calcPace(distance,time){if(!distance||!time)return"—";const p=time.split(":").map(Number),s=p.length===3?p[0]*3600+p[1]*60+p[2]:p[0]*60+p[1],pk=Math.round(s/Number(distance));return Math.floor(pk/60)+":"+String(pk%60).padStart(2,"0")}
-function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function ensureGearBaselines(){
+ const defaults=[
+   {name:"Adidas Adizero EVO SL",type:"Zapatillas",maxKm:650},
+   {name:"ASICS Gel-Nimbus 28",type:"Zapatillas",maxKm:750}
+ ];
+ data.gear=data.gear||[];
+ defaults.forEach(d=>{if(!data.gear.some(g=>g.name===d.name))data.gear.push({...d,id:uid(),baseKm:0,km:0,notes:"Kilometraje actualizado automáticamente desde Running."})});
+ data.gear=data.gear.map(g=>{
+   if(g.baseKm==null){
+     const assigned=(data.runs||[]).filter(r=>r.shoes===g.name).reduce((sum,r)=>sum+(Number(r.distance)||0),0);
+     g.baseKm=Math.max(0,(Number(g.km)||0)-assigned);
+   }
+   return g;
+ });
+}
+function recalcGearKm(){
+ ensureGearBaselines();
+ data.gear=(data.gear||[]).map(g=>{
+   const automatic=(data.runs||[]).filter(r=>r.shoes===g.name).reduce((sum,r)=>sum+(Number(r.distance)||0),0);
+   return {...g,km:Math.round(((Number(g.baseKm)||0)+automatic)*100)/100,automaticKm:Math.round(automatic*100)/100};
+ });
+}
+function save(){recalcGearKm();localStorage.setItem(KEY,JSON.stringify(data));render()}
 function weekKm(){const n=new Date(),wd=(n.getDay()+6)%7,m=new Date(n);m.setHours(0,0,0,0);m.setDate(n.getDate()-wd);return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=m).reduce((a,r)=>a+Number(r.distance||0),0)}
 
 function timeToSeconds(value){
@@ -1156,7 +1176,7 @@ function genericCard(x,type){
  let extra="";
  if(type==="gear"){
    const max=Number(x.maxKm||700),pct=Math.min(100,Math.round((Number(x.km||0)/max)*100));
-   extra=`<div class="progress"><span style="width:${pct}%"></span></div><p class="note">${pct}% de vida útil estimada.</p>`
+   extra=`<div class="progress"><span style="width:${pct}%"></span></div><p class="note">${pct}% de vida útil estimada · ${Number(x.automaticKm||0).toFixed(1).replace(".",",")} km añadidos desde entrenamientos.</p>`
  }
  return `<article class="card"><div class="card-title">${x.name}</div><div class="card-date">${subtitle}</div>${extra}${x.notes?`<p class="note">${x.notes}</p>`:""}<div class="actions"><button class="btn secondary small" onclick="editItem('${type}','${x.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('${type}','${x.id}')">🗑️ Eliminar</button></div></article>`
 }
@@ -1945,12 +1965,7 @@ $("#garminFileInput").onchange=async e=>{
 };
 $("#prevRaceMonth").onclick=()=>{raceMonthOffset--;renderRaceCalendar()};
 $("#nextRaceMonth").onclick=()=>{raceMonthOffset++;renderRaceCalendar()};
-function updateFab(){
- const fab=$("#fab");
- const hidden=["inicio","progreso","mas"].includes(currentView);
- fab.style.display=hidden?"none":"block";
-}
-$("#fab").onclick=()=>openForm(currentView==="gym"?"gym":currentView==="material"?"gear":currentView==="carreras"?"race":currentView==="plan"?"plan":"run");
+function updateFab(){}
 
 
 function normalizeOcrText(raw){
@@ -2072,7 +2087,7 @@ const defs={
  gear:{title:"material",html:x=>`
  <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}"></div>
  <div class="field"><label>Tipo</label><input name="type" value="${x?.type||"Zapatillas"}"></div>
- <div class="two"><div class="field"><label>Kilómetros actuales</label><input name="km" type="number" step=".1" value="${x?.km??0}"></div><div class="field"><label>Vida útil estimada</label><input name="maxKm" type="number" value="${x?.maxKm??700}"></div></div>
+ <div class="two"><div class="field"><label>Kilómetros iniciales/manuales</label><input name="baseKm" type="number" step=".1" value="${x?.baseKm??x?.km??0}"></div><div class="field"><label>Vida útil estimada</label><input name="maxKm" type="number" value="${x?.maxKm??700}"></div></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  race:{title:"carrera",html:x=>`
  <div class="field"><label>Nombre</label><input name="name" required value="${x?.name||""}" placeholder="Ej. 10K de Murcia"></div>
@@ -2242,11 +2257,9 @@ $("#form").onsubmit=e=>{
      if(match)o.planId=match.id;
    }
    if(o.planId)data.plan=data.plan.map(p=>p.id===o.planId?{...p,status:"done",actualRunId:o.id}:p);
-   const shoe=data.gear.find(g=>g.name===o.shoes);
-   if(shoe)shoe.km=Number(shoe.km||0)+o.distance;
  }
  if(currentType==="gym"){o.exercises=structuredClone(gymDraftExercises)}
- if(currentType==="gear"){o.km=Number(o.km)||0;o.maxKm=Number(o.maxKm)||700}
+ if(currentType==="gear"){o.baseKm=Number(o.baseKm)||0;o.km=o.baseKm;o.maxKm=Number(o.maxKm)||700}
  if(currentType==="plan"){o.distance=Number(o.distance)||0;o.duration=Number(o.duration)||0;o.status=o.status||"pending"}
  const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":currentType==="plan"?"plan":"races";
  if(editingId)data[k]=data[k].map(x=>x.id===editingId?o:x);else data[k].push(o);
