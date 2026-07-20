@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.8</title>
+<title>Proyecto Rafa · V20</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -554,7 +554,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 @media(max-width:700px){.run-table-filters{grid-template-columns:1fr 1fr}.run-table-filters .wide{grid-column:1/-1}.run-view-tools{align-items:stretch}.run-view-switch{width:100%}.run-view-btn{flex:1}.run-table-wrap{margin-left:-4px;margin-right:-4px}}
 
 
-/* V19.8 · Descubrir carreras de asfalto */
+/* V20 · Descubrir carreras de asfalto */
 .race-source-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 14px}
 .race-source-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px;border-radius:14px;font-weight:850}
 .race-source-btn.active{background:var(--green);color:#0a1206;border-color:transparent}
@@ -577,12 +577,18 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .discovery-note{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 14px}
 @media(max-width:560px){.discovery-grid{grid-template-columns:1fr}.race-detail-list{grid-template-columns:1fr 1fr}}
 
+
+.plan-import-card{background:linear-gradient(145deg,#17231a,#10171d);border:1px solid #42632f;border-radius:22px;padding:16px;margin-bottom:14px}
+.plan-import-card h3{margin:5px 0 7px}.plan-import-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.plan-import-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.plan-import-status{display:none;margin-top:12px;padding:11px 12px;border-radius:14px;background:var(--panel2);font-size:12px;line-height:1.45}
+.plan-import-status.show{display:block}.plan-import-status.ok{border:1px solid #42632f;color:#d8ffbd}.plan-import-status.error{border:1px solid #744045;color:#ffc5c9}
+.imported-plan-badge{display:inline-flex;padding:4px 7px;border-radius:999px;background:#203718;color:#caffaa;font-size:9px;font-weight:900;margin-left:6px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.8</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V20</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -592,7 +598,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.8 ACTIVA</span>
+    <span class="version">V20 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -668,6 +674,18 @@ nav{grid-template-columns:repeat(6,1fr)!important}
   <div class="week-tools">
     <button class="btn primary small" type="button" id="duplicateWeek">Duplicar semana</button>
     <button class="btn secondary small" type="button" id="clearWeek">Vaciar semana</button>
+  </div>
+
+  <div class="plan-import-card">
+    <div class="kicker">IMPORTAR PLAN</div>
+    <h3>Subir rutina creada para Rafa</h3>
+    <p>Selecciona el archivo <strong>.rafa</strong> que acompaña al PDF. Añadirá la semana al calendario y cargará los ejercicios dentro del Gym actual, sin cambiar su estructura.</p>
+    <div class="plan-import-actions">
+      <button class="btn primary" type="button" id="rafaImportBtn">Subir archivo .rafa</button>
+      <button class="btn secondary" type="button" id="rafaExampleBtn">Probar plan de ejemplo</button>
+    </div>
+    <input id="rafaPlanInput" class="file" type="file" accept=".rafa,application/json">
+    <div id="rafaImportStatus" class="plan-import-status"></div>
   </div>
 
   <div class="week-nav">
@@ -1042,7 +1060,7 @@ try{
  const saved=JSON.parse(localStorage.getItem(KEY));
  data=saved&&saved.runs&&saved.gym&&saved.gear&&saved.races?saved:structuredClone(seed);if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
 }catch{data=structuredClone(seed)}
-if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);
+if(!data.plan)data.plan=[];if(!data.templates)data.templates=structuredClone(seed.templates||[]);if(!data.importedPlans)data.importedPlans=[];
 let currentType=null,editingId=null,currentView="inicio",gymDraftExercises=[],weekOffset=0,runFilter="Todos",runHistoryView="table",runShoeFilter="Todas",runDateFrom="",runDateTo="",raceMonthOffset=0,raceFilter="Todas",finishedRaceFilter="Todas",raceView="calendar",gymDay="lunes",restTimerId=null,restSeconds=0;
 const $=s=>document.querySelector(s);
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
@@ -1243,7 +1261,7 @@ function planCard(p,compact=false){
    <div class="plan-item-meta">${Number(p.distance||0)>0?Number(p.distance).toFixed(1).replace(".",",")+" km · ":""}${p.duration||"—"} min · ${p.intensity||"—"}${p.notes?"<br>"+p.notes:""}</div>
    <span class="status ${p.status||"pending"}">${statusLabel(p.status)}</span>
    ${compact?"":`<div class="plan-actions">
-     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:`setPlanStatus('${p.id}','done')`}">✓ Hecho</button>
+     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:p.sport==='Gimnasio'&&p.gymRoutine?`startPlannedGym('${p.id}')`:`setPlanStatus('${p.id}','done')`}">${p.sport==='Gimnasio'&&p.gymRoutine?'Abrir rutina':'✓ Hecho'}</button>
      <button class="btn secondary small" onclick="movePlan('${p.id}')">Mover</button>
      <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
      <button class="btn danger small" onclick="setPlanStatus('${p.id}','skipped')">Omitir</button>
@@ -1280,7 +1298,7 @@ function renderToday(){
    <div class="today-title">${p.title}</div>
    <div class="today-meta">${p.sport}${p.distance?` · ${Number(p.distance).toFixed(1).replace(".",",")} km`:""} · ${p.duration||"—"} min<br>${p.intensity||""}${p.notes?` · ${p.notes}`:""}</div>
    <div class="actions">
-     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:`setPlanStatus('${p.id}','done')`}">✓ Marcar completado</button>
+     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:p.sport==='Gimnasio'&&p.gymRoutine?`startPlannedGym('${p.id}')`:`setPlanStatus('${p.id}','done')`}">${p.sport==='Gimnasio'&&p.gymRoutine?'Abrir rutina':'✓ Marcar completado'}</button>
      <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
    </div>
  </div>`).join(""):'<div class="empty">Hoy no tienes entrenamiento planificado.</div>';
@@ -1296,6 +1314,65 @@ window.movePlan=id=>{
 };
 window.addPlanForDate=date=>openForm("plan",null,date);
 
+
+
+const RAFA_EXAMPLE={
+  format:"proyecto-rafa-plan",version:1,name:"Semana de prueba Run + Gym",weekStart:"2026-07-20",
+  sessions:[
+    {date:"2026-07-20",sport:"gym",title:"Torso",duration:60,notes:"Mantén 1-2 repeticiones en reserva.",exercises:[
+      {name:"Press banca",sets:4,reps:8,restSeconds:120,note:"6-8 repeticiones"},
+      {name:"Remo barra",sets:4,reps:10,restSeconds:120},
+      {name:"Press militar",sets:3,reps:10,restSeconds:90}
+    ]},
+    {date:"2026-07-21",sport:"running",title:"Rodaje Z2",category:"Zona 2",distance:8,duration:48,intensity:"Suave",notes:"Ritmo cómodo y pulsaciones controladas."},
+    {date:"2026-07-22",sport:"gym",title:"Pierna",duration:60,exercises:[
+      {name:"Prensa",sets:4,reps:8,restSeconds:150},
+      {name:"Peso muerto rumano",sets:4,reps:8,restSeconds:150},
+      {name:"Curl femoral",sets:3,reps:12,restSeconds:90}
+    ]},
+    {date:"2026-07-23",sport:"running",title:"6 × 800 m",category:"Series",distance:7,duration:50,intensity:"Alta",notes:"15 min de calentamiento · 6 × 800 m · 2 min al trote · 10 min suaves."},
+    {date:"2026-07-24",sport:"gym",title:"Full Body",duration:55,exercises:[
+      {name:"Goblet squat",sets:3,reps:10,restSeconds:90},
+      {name:"Press inclinado",sets:3,reps:10,restSeconds:90},
+      {name:"Jalón al pecho",sets:3,reps:10,restSeconds:90}
+    ]},
+    {date:"2026-07-26",sport:"running",title:"Tirada larga",category:"Tirada larga",distance:12,duration:75,intensity:"Suave",notes:"Toda la sesión a ritmo cómodo."}
+  ]
+};
+function normalizeRafaExercise(ex){
+ const count=Math.max(1,Number(ex.sets)||1),reps=Math.max(0,Number(ex.reps)||0);
+ const known=EXERCISES.find(x=>x.name.toLowerCase()===String(ex.name||"").toLowerCase());
+ return {name:String(ex.name||"Ejercicio"),step:Number(ex.step)||known?.step||2.5,assisted:!!ex.assisted,note:ex.note||`${count} × ${reps}${ex.restSeconds?` · descanso ${ex.restSeconds}s`:""}`,restSeconds:Number(ex.restSeconds)||0,sets:Array.from({length:count},()=>({weight:Number(ex.weight)||0,reps,done:false}))};
+}
+function validateRafaPlan(raw){
+ if(!raw||raw.format!=="proyecto-rafa-plan"||!Array.isArray(raw.sessions))throw new Error("El archivo no tiene el formato de Proyecto Rafa.");
+ if(!raw.sessions.length)throw new Error("El plan no contiene sesiones.");
+ raw.sessions.forEach((x,i)=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(x.date||""))throw new Error(`La sesión ${i+1} no tiene una fecha válida.`);if(!["running","gym"].includes(String(x.sport||"").toLowerCase()))throw new Error(`La sesión ${i+1} debe ser running o gym.`)});
+ return raw;
+}
+function importRafaPlan(raw){
+ const plan=validateRafaPlan(raw),importId=uid();
+ const dates=plan.sessions.map(x=>x.date).sort(),start=dates[0],end=dates.at(-1);
+ const existing=data.plan.filter(p=>p.date>=start&&p.date<=end);
+ if(existing.length&&!confirm(`Ya tienes ${existing.length} sesiones entre ${fmt(start)} y ${fmt(end)}. ¿Añadir el nuevo plan sin borrar las actuales?`))return false;
+ plan.sessions.forEach(ses=>{
+   const gym=String(ses.sport).toLowerCase()==="gym";
+   data.plan.push({id:uid(),importId,date:ses.date,sport:gym?"Gimnasio":"Running",title:ses.title|| (gym?"Rutina Gym":"Entrenamiento Running"),distance:gym?0:Number(ses.distance)||0,duration:Number(ses.duration)||0,intensity:ses.intensity||(gym?"Moderada":"Suave"),status:"pending",notes:ses.notes||"",category:ses.category||"",gymRoutine:gym?{name:ses.title||"Rutina Gym",duration:Number(ses.duration)||60,exercises:(ses.exercises||[]).map(normalizeRafaExercise)}:null});
+ });
+ data.importedPlans.push({id:importId,name:plan.name||"Plan importado",weekStart:plan.weekStart||start,importedAt:new Date().toISOString(),sessions:plan.sessions.length});
+ save();
+ const monday=mondayOf(new Date(start+"T12:00:00")),nowMon=mondayOf();weekOffset=Math.round((monday-nowMon)/(7*86400000));renderPlan();
+ return {name:plan.name||"Plan importado",count:plan.sessions.length,start,end};
+}
+function showRafaStatus(message,type="ok"){
+ const el=$("#rafaImportStatus");el.className=`plan-import-status show ${type}`;el.innerHTML=message;
+}
+window.startPlannedGym=id=>{
+ const p=data.plan.find(x=>x.id===id);if(!p?.gymRoutine)return;
+ window.activeGymPlanId=id;
+ window.gymRoutinePreset={name:p.gymRoutine.name||p.title,duration:p.gymRoutine.duration||p.duration||60,date:p.date,notes:p.notes||"",exercises:structuredClone(p.gymRoutine.exercises||[])};
+ openForm("gym");
+};
 
 function startOfWeek(date){
  const d=new Date(date);d.setHours(12,0,0,0);
@@ -2359,7 +2436,7 @@ window.toggleSetDone=(ei,si)=>{
 window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10,done:false});else{const c=structuredClone(sets[sets.length-1]);c.done=false;sets.push(c)}renderGymExerciseEditor()}
 window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10,done:false});renderGymExerciseEditor()}
 
-document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;window.activeGymPlanId=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
 window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t==="run")data.plan=data.plan.map(p=>p.actualRunId===id?{...p,status:"pending",actualRunId:""}:p);const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
@@ -2375,7 +2452,10 @@ $("#form").onsubmit=e=>{
    }
    if(o.planId)data.plan=data.plan.map(p=>p.id===o.planId?{...p,status:"done",actualRunId:o.id}:p);
  }
- if(currentType==="gym"){o.exercises=structuredClone(gymDraftExercises)}
+ if(currentType==="gym"){
+   o.exercises=structuredClone(gymDraftExercises);
+   if(window.activeGymPlanId){o.planId=window.activeGymPlanId;data.plan=data.plan.map(p=>p.id===window.activeGymPlanId?{...p,status:"done",actualGymId:o.id}:p);window.activeGymPlanId=null;}
+ }
  if(currentType==="gear"){o.baseKm=Number(o.baseKm)||0;o.km=o.baseKm;o.maxKm=Number(o.maxKm)||700}
  if(currentType==="plan"){o.distance=Number(o.distance)||0;o.duration=Number(o.duration)||0;o.status=o.status||"pending"}
  const k=currentType==="run"?"runs":currentType==="gym"?"gym":currentType==="gear"?"gear":currentType==="plan"?"plan":"races";
@@ -2385,6 +2465,18 @@ $("#form").onsubmit=e=>{
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);localStorage.setItem("proyectoRafaLastBackup",String(Date.now()));renderBackupStatus()}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.plan)x.plan=[];if(!x.templates)x.templates=structuredClone(seed.templates||[]);if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
+
+
+$("#rafaImportBtn").onclick=()=>$("#rafaPlanInput").click();
+$("#rafaPlanInput").onchange=async e=>{
+ const f=e.target.files?.[0];if(!f)return;
+ try{const result=importRafaPlan(JSON.parse(await f.text()));if(result)showRafaStatus(`<strong>${result.name}</strong><br>${result.count} sesiones añadidas · ${fmt(result.start)}–${fmt(result.end)}. Las rutinas de Gym se abrirán con tus controles habituales de peso, repeticiones y series.`)}
+ catch(err){showRafaStatus(err?.message||"No se pudo importar el archivo.","error")}
+ e.target.value="";
+};
+$("#rafaExampleBtn").onclick=()=>{
+ try{const result=importRafaPlan(structuredClone(RAFA_EXAMPLE));if(result)showRafaStatus(`<strong>Prueba cargada correctamente</strong><br>${result.count} sesiones añadidas. Ve a la semana del 20 de julio y pulsa «Abrir rutina» en un día de Gym.`)}catch(err){showRafaStatus(err?.message||"No se pudo cargar el ejemplo.","error")}
+};
 
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
