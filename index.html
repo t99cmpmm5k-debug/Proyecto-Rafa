@@ -688,7 +688,6 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <p>Selecciona el archivo <strong>.rafa</strong> que acompaña al PDF. Añadirá la semana al calendario y cargará los ejercicios dentro del Gym actual, sin cambiar su estructura.</p>
     <div class="plan-import-actions">
       <button class="btn primary" type="button" id="rafaImportBtn">Subir archivo .rafa</button>
-      <button class="btn secondary" type="button" id="rafaExampleBtn">Probar plan de ejemplo</button>
     </div>
     <input id="rafaPlanInput" class="file" type="file" accept=".rafa,application/json">
     <div id="rafaImportStatus" class="plan-import-status"></div>
@@ -966,7 +965,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </dialog>
 
 <script>
-const KEY="proyectoRafaDataV1";
+const KEY="proyectoRafaDataV20Clean";
 const EXERCISES=[
  {name:"Press banca",step:2.5},
  {name:"Remo barra",step:2.5},
@@ -1060,13 +1059,7 @@ const seed={
      {day:5,sport:"Descanso",title:"Descanso",distance:0,duration:0,intensity:"Descanso",notes:"Preparar material."}
    ]}
  ],
- plan:[
-   {id:"p1",date:"2026-07-20",sport:"Gimnasio",title:"Fuerza · torso",distance:0,duration:45,intensity:"Moderada",status:"pending",notes:"Sesión de 45 minutos."},
-   {id:"p2",date:"2026-07-21",sport:"Running",title:"Rodaje suave Z2",distance:8,duration:48,intensity:"Suave",status:"pending",notes:"Mantener pulsaciones controladas."},
-   {id:"p3",date:"2026-07-22",sport:"Gimnasio",title:"Fuerza · pierna",distance:0,duration:45,intensity:"Moderada",status:"pending",notes:"Sin llegar al fallo."},
-   {id:"p4",date:"2026-07-23",sport:"Running",title:"Series cortas",distance:7,duration:45,intensity:"Alta",status:"pending",notes:"Calentamiento + bloques + vuelta a la calma."},
-   {id:"p5",date:"2026-07-25",sport:"Running",title:"Tirada larga",distance:12,duration:75,intensity:"Suave",status:"pending",notes:"Ritmo cómodo y constante."}
- ]
+ plan:[]
 };
 let data;
 try{
@@ -2508,15 +2501,6 @@ $("#rafaPlanInput").onchange=async e=>{
  try{const result=importRafaPlan(JSON.parse(await f.text()));if(result)showRafaStatus(`<strong>${result.name}</strong><br>${result.count} sesiones añadidas · ${fmt(result.start)}–${fmt(result.end)}. Las rutinas aparecerán automáticamente en Gym con tus controles habituales de peso, repeticiones y series.`)}
  catch(err){showRafaStatus(err?.message||"No se pudo importar el archivo.","error")}
  e.target.value="";
-};
-$("#rafaExampleBtn").onclick=()=>{
- try{
-  const example=structuredClone(RAFA_EXAMPLE),base=mondayOf();
-  example.weekStart=isoDate(base);
-  example.sessions.forEach((x,i)=>{const original=new Date(x.date+"T12:00:00"),day=(original.getDay()+6)%7;x.date=isoDate(datePlus(base,day))});
-  const result=importRafaPlan(example);
-  if(result)showRafaStatus(`<strong>Prueba cargada correctamente</strong><br>${result.count} sesiones añadidas en la semana actual. Entra en Gym: verás todas las rutinas importadas en «Rutinas del plan».`);
- }catch(err){showRafaStatus(err?.message||"No se pudo cargar el ejemplo.","error")}
 };
 
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
