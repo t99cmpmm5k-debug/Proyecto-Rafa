@@ -1,4 +1,4 @@
-const CACHE="proyecto-rafa-v20-1";
+const CACHE="proyecto-rafa-v20-2";
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html"])));
