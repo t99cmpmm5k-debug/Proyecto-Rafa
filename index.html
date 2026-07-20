@@ -689,7 +689,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="plan-import-actions">
       <button class="btn primary" type="button" id="rafaImportBtn">Subir archivo .rafa</button>
     </div>
-    <input id="rafaPlanInput" class="file" type="file" accept=".rafa,application/json">
+    <input id="rafaPlanInput" class="file" type="file" >
     <div id="rafaImportStatus" class="plan-import-status"></div>
   </div>
 
@@ -2514,7 +2514,7 @@ $("#clearWeek").onclick=clearCurrentWeek;
 document.querySelectorAll("[data-discovery-area]").forEach(b=>b.onclick=()=>{discoveryArea=b.dataset.discoveryArea;document.querySelectorAll("[data-discovery-area]").forEach(x=>x.classList.toggle("active",x===b));renderRaceDiscovery()});
 $("#discoveryDistance").onchange=renderRaceDiscovery;$("#discoveryMonth").onchange=renderRaceDiscovery;$("#closeRaceDetail").onclick=()=>$("#raceDetailDialog").close();
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=202").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=204").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
