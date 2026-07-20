@@ -583,12 +583,18 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .plan-import-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.plan-import-status{display:none;margin-top:12px;padding:11px 12px;border-radius:14px;background:var(--panel2);font-size:12px;line-height:1.45}
 .plan-import-status.show{display:block}.plan-import-status.ok{border:1px solid #42632f;color:#d8ffbd}.plan-import-status.error{border:1px solid #744045;color:#ffc5c9}
 .imported-plan-badge{display:inline-flex;padding:4px 7px;border-radius:999px;background:#203718;color:#caffaa;font-size:9px;font-weight:900;margin-left:6px}
+
+.today-module-card{background:linear-gradient(145deg,#18231b,#10171d);border:1px solid #42632f;border-radius:22px;padding:16px;margin-bottom:16px}
+.today-module-card.running{border-color:#315a78}.today-module-card.done{opacity:.72;border-color:#41505a}
+.today-module-label{font-size:10px;font-weight:900;letter-spacing:.12em;color:var(--lime);margin-bottom:6px}.today-module-card.running .today-module-label{color:#8bc9ff}
+.today-module-title{font-size:23px;font-weight:950;margin-bottom:5px}.today-module-meta{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:13px}
+.plan-readonly-note{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--panel2);color:var(--muted);font-size:12px;margin-bottom:12px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V20</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V20.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -598,7 +604,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V20 ACTIVA</span>
+    <span class="version">V20.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -706,6 +712,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
   </div>
 
   <div class="section-head"><h3>Calendario semanal</h3></div>
+  <div class="plan-readonly-note">Aquí consultas y organizas la semana. Para entrenar, entra en Running o Gym.</div>
   <div id="weekPlan" class="week-grid"></div>
 
   <div class="section-head"><h3>Plantillas</h3></div>
@@ -721,6 +728,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div><div class="kicker">RUNNING</div><h2>Entrenamientos</h2></div>
     <button class="btn primary" data-add="run">＋ Añadir</button>
   </div>
+  <div id="runningTodayPlan"></div>
   <div class="garmin-import">
     <div class="garmin-import-head">
       <div><div class="kicker">IMPORTAR ENTRENAMIENTO</div><h3>Garmin o registro manual</h3><p>Selecciona todas las capturas de una misma actividad.</p></div>
@@ -788,6 +796,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div><div class="kicker">FUERZA</div><h2>Rutina semanal</h2></div>
     <button class="btn secondary" data-add="gym">Sesión libre</button>
   </div>
+  <div id="gymTodayPlan"></div>
 
   <div class="gym-days">
     <button class="gym-day-btn active" data-gym-day="lunes">Lunes</button>
@@ -1260,12 +1269,6 @@ function planCard(p,compact=false){
    <div class="plan-item-title">${p.sport} · ${p.title}</div>
    <div class="plan-item-meta">${Number(p.distance||0)>0?Number(p.distance).toFixed(1).replace(".",",")+" km · ":""}${p.duration||"—"} min · ${p.intensity||"—"}${p.notes?"<br>"+p.notes:""}</div>
    <span class="status ${p.status||"pending"}">${statusLabel(p.status)}</span>
-   ${compact?"":`<div class="plan-actions">
-     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:p.sport==='Gimnasio'&&p.gymRoutine?`startPlannedGym('${p.id}')`:`setPlanStatus('${p.id}','done')`}">${p.sport==='Gimnasio'&&p.gymRoutine?'Abrir rutina':'✓ Hecho'}</button>
-     <button class="btn secondary small" onclick="movePlan('${p.id}')">Mover</button>
-     <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
-     <button class="btn danger small" onclick="setPlanStatus('${p.id}','skipped')">Omitir</button>
-   </div>`}
  </div>`
 }
 function renderPlan(){
@@ -1291,19 +1294,31 @@ function renderPlan(){
    </div>`;
  }).join("");
 }
+function todayAction(p){
+ if(p.status==="done")return `<button class="btn secondary small" type="button" onclick="setView('${p.sport==='Gimnasio'?'gym':'running'}')">Ver módulo</button>`;
+ if(p.sport==="Gimnasio"&&p.gymRoutine)return `<button class="btn primary" type="button" onclick="startPlannedGym('${p.id}')">Empezar rutina</button>`;
+ if(p.sport==="Running")return `<button class="btn primary" type="button" onclick="setView('running')">Ir a Running</button>`;
+ return `<button class="btn primary small" type="button" onclick="setPlanStatus('${p.id}','done')">Marcar completado</button>`;
+}
 function renderToday(){
  const today=isoDate(new Date()),items=data.plan.filter(p=>p.date===today);
  $("#todayWorkout").innerHTML=items.length?items.map(p=>`<div class="today-card ${p.status||"pending"}">
    <div class="today-label">HOY · ${statusLabel(p.status).toUpperCase()}</div>
    <div class="today-title">${p.title}</div>
    <div class="today-meta">${p.sport}${p.distance?` · ${Number(p.distance).toFixed(1).replace(".",",")} km`:""} · ${p.duration||"—"} min<br>${p.intensity||""}${p.notes?` · ${p.notes}`:""}</div>
-   <div class="actions">
-     <button class="btn primary small" onclick="${p.sport==='Running'?`completePlannedRun('${p.id}')`:p.sport==='Gimnasio'&&p.gymRoutine?`startPlannedGym('${p.id}')`:`setPlanStatus('${p.id}','done')`}">${p.sport==='Gimnasio'&&p.gymRoutine?'Abrir rutina':'✓ Marcar completado'}</button>
-     <button class="btn secondary small" onclick="editItem('plan','${p.id}')">Editar</button>
-   </div>
+   <div class="actions">${todayAction(p)}</div>
  </div>`).join(""):'<div class="empty">Hoy no tienes entrenamiento planificado.</div>';
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
+ renderModuleToday();
+}
+function renderModuleToday(){
+ const today=isoDate(new Date());
+ const gym=data.plan.find(p=>p.date===today&&p.sport==="Gimnasio"&&p.gymRoutine);
+ const run=data.plan.find(p=>p.date===today&&p.sport==="Running");
+ const gymEl=$("#gymTodayPlan"),runEl=$("#runningTodayPlan");
+ if(gymEl)gymEl.innerHTML=gym?`<div class="today-module-card ${gym.status==='done'?'done':''}"><div class="today-module-label">RUTINA DE HOY · ${statusLabel(gym.status).toUpperCase()}</div><div class="today-module-title">${gym.title}</div><div class="today-module-meta">${gym.gymRoutine.exercises.length} ejercicios · ${gym.gymRoutine.exercises.reduce((n,e)=>n+(e.sets?.length||0),0)} series · ${gym.duration||60} min aprox.</div>${gym.status==='done'?`<button class="btn secondary" type="button" onclick="openForm('gym')">Registrar otra sesión</button>`:`<button class="btn primary" type="button" onclick="startPlannedGym('${gym.id}')">Empezar rutina</button>`}</div>`:'<div class="empty">Hoy no tienes una rutina de gimnasio planificada. Puedes usar tu rutina semanal o iniciar una sesión libre.</div>';
+ if(runEl)runEl.innerHTML=run?`<div class="today-module-card running ${run.status==='done'?'done':''}"><div class="today-module-label">ENTRENAMIENTO DE HOY · ${statusLabel(run.status).toUpperCase()}</div><div class="today-module-title">${run.title}</div><div class="today-module-meta">${run.distance?Number(run.distance).toFixed(1).replace(".",",")+" km · ":""}${run.duration||"—"} min · ${run.intensity||"—"}${run.notes?`<br>${run.notes}`:""}</div>${run.status==='done'?`<button class="btn secondary" type="button" onclick="openForm('run')">Registrar otra carrera</button>`:`<button class="btn primary" type="button" onclick="completePlannedRun('${run.id}')">Registrar entrenamiento</button>`}</div>`:'<div class="empty">Hoy no tienes un entrenamiento de running planificado. Puedes registrar una carrera manualmente o importar Garmin.</div>';
 }
 window.setPlanStatus=(id,status)=>{data.plan=data.plan.map(p=>p.id===id?{...p,status}:p);save()};
 window.movePlan=id=>{
@@ -2470,12 +2485,12 @@ $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{
 $("#rafaImportBtn").onclick=()=>$("#rafaPlanInput").click();
 $("#rafaPlanInput").onchange=async e=>{
  const f=e.target.files?.[0];if(!f)return;
- try{const result=importRafaPlan(JSON.parse(await f.text()));if(result)showRafaStatus(`<strong>${result.name}</strong><br>${result.count} sesiones añadidas · ${fmt(result.start)}–${fmt(result.end)}. Las rutinas de Gym se abrirán con tus controles habituales de peso, repeticiones y series.`)}
+ try{const result=importRafaPlan(JSON.parse(await f.text()));if(result)showRafaStatus(`<strong>${result.name}</strong><br>${result.count} sesiones añadidas · ${fmt(result.start)}–${fmt(result.end)}. Las rutinas aparecerán automáticamente en Gym con tus controles habituales de peso, repeticiones y series.`)}
  catch(err){showRafaStatus(err?.message||"No se pudo importar el archivo.","error")}
  e.target.value="";
 };
 $("#rafaExampleBtn").onclick=()=>{
- try{const result=importRafaPlan(structuredClone(RAFA_EXAMPLE));if(result)showRafaStatus(`<strong>Prueba cargada correctamente</strong><br>${result.count} sesiones añadidas. Ve a la semana del 20 de julio y pulsa «Abrir rutina» en un día de Gym.`)}catch(err){showRafaStatus(err?.message||"No se pudo cargar el ejemplo.","error")}
+ try{const result=importRafaPlan(structuredClone(RAFA_EXAMPLE));if(result)showRafaStatus(`<strong>Prueba cargada correctamente</strong><br>${result.count} sesiones añadidas. Ve a Gym el día correspondiente para iniciar la rutina cargada.`)}catch(err){showRafaStatus(err?.message||"No se pudo cargar el ejemplo.","error")}
 };
 
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
