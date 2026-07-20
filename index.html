@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.6</title>
+<title>Proyecto Rafa · V19.8</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -554,7 +554,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 @media(max-width:700px){.run-table-filters{grid-template-columns:1fr 1fr}.run-table-filters .wide{grid-column:1/-1}.run-view-tools{align-items:stretch}.run-view-switch{width:100%}.run-view-btn{flex:1}.run-table-wrap{margin-left:-4px;margin-right:-4px}}
 
 
-/* V19.6 · Descubrir carreras cercanas */
+/* V19.8 · Descubrir carreras de asfalto */
 .race-source-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 14px}
 .race-source-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px;border-radius:14px;font-weight:850}
 .race-source-btn.active{background:var(--green);color:#0a1206;border-color:transparent}
@@ -582,7 +582,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.6</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.8</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -592,7 +592,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.6 ACTIVA</span>
+    <span class="version">V19.8 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -804,7 +804,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 
   <div class="race-view-switch">
     <button type="button" class="race-view-btn active" data-race-view="calendar">Mi calendario</button>
-    <button type="button" class="race-view-btn" data-race-view="discover">Descubrir</button>
+    <button type="button" class="race-view-btn" data-race-view="discover">Descubrir asfalto</button>
     <button type="button" class="race-view-btn" data-race-view="history">Historial</button>
   </div>
   <div id="raceCalendarPanel" class="race-view-panel active">
@@ -842,8 +842,8 @@ nav{grid-template-columns:repeat(6,1fr)!important}
   </div>
 
   <div id="raceDiscoverPanel" class="race-view-panel">
-    <div class="section-head"><div><div class="kicker">CERCA DE PUERTO LUMBRERAS</div><h3>Descubrir carreras</h3></div></div>
-    <p class="discovery-note">Catálogo inicial de pruebas publicadas en calendarios de Murcia y Almería. Pulsa una carrera para ver distancias, localidad, fuente y añadirla a tu calendario.</p>
+    <div class="section-head"><div><div class="kicker">CERCA DE PUERTO LUMBRERAS</div><h3>Descubrir carreras de asfalto</h3></div><span class="race-badge" style="--race:#64d66f">SOLO ASFALTO</span></div>
+    <p class="discovery-note">Catálogo personal centrado únicamente en carreras de asfalto de Murcia y Almería. Pulsa una prueba para ver sus distancias, localidad, fuente y añadirla a tu calendario.</p>
     <div class="race-source-switch">
       <button type="button" class="race-source-btn active" data-discovery-area="Todas">Todas</button>
       <button type="button" class="race-source-btn" data-discovery-area="Murcia">Murcia</button>
@@ -851,7 +851,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
       <button type="button" class="race-source-btn" data-discovery-area="Cercanas">Más cercanas</button>
     </div>
     <div class="race-discovery-toolbar">
-      <select id="discoveryDistance"><option value="Todas">Todas las distancias</option><option value="5K">5K</option><option value="10K">10K</option><option value="Otras">Otras</option></select>
+      <select id="discoveryDistance"><option value="Todas">Todas las distancias</option><option value="5K">5K</option><option value="10K">10K</option><option value="21K">Media maratón</option><option value="Otras">Otras distancias</option></select>
       <select id="discoveryMonth"><option value="Todas">Todos los meses</option><option value="2026-08">Agosto 2026</option><option value="2026-09">Septiembre 2026</option><option value="2026-10">Octubre 2026</option></select>
     </div>
     <div id="raceDiscovery" class="discovery-grid"></div>
@@ -1719,7 +1719,6 @@ function raceCard(r){
 const discoveryRaces=[
  {id:"disc-garrucha-2026",name:"Circuito de Carreras Populares · Garrucha",date:"2026-08-08",location:"Garrucha",province:"Almería",area:"Almería",distanceType:"Otras",distances:["7,25 km","3,62 km"],time:"19:00",surface:"Asfalto",source:"Cruzando la Meta",url:"https://www.cruzandolameta.es/carreras/proximas/",near:true,poster:"GARRUCHA 2026"},
  {id:"disc-librilla-2026",name:"XVIII Carrera Popular Nocturna Villa de Librilla",date:"2026-08-15",location:"Librilla",province:"Murcia",area:"Murcia",distanceType:"10K",distances:["10 km"],time:"Por confirmar",surface:"Asfalto",source:"Alcanza tu Meta",url:"https://www.alcanzatumeta.es/calendario.php",near:false,poster:"LIBRILLA 10K"},
- {id:"disc-jumilla-2026",name:"46 Cross Urbano Fiestas del Vino",date:"2026-08-15",location:"Jumilla",province:"Murcia",area:"Murcia",distanceType:"Otras",distances:["Distancias por categoría"],time:"Por confirmar",surface:"Urbano",source:"Alcanza tu Meta",url:"https://www.alcanzatumeta.es/calendario.php",near:false,poster:"JUMILLA 2026"},
  {id:"disc-almeria-sep-2026",name:"Circuito Diputación de Almería · Prueba de septiembre",date:"2026-09-13",location:"Provincia de Almería",province:"Almería",area:"Almería",distanceType:"5K",distances:["7,65 km","5 km no competitiva"],time:"19:00 adultos",surface:"Asfalto",source:"Circuito Carreras Populares Almería",url:"https://carreraspopularesalmeria.com/?page_id=226",near:true,poster:"CIRCUITO ALMERÍA"},
  {id:"disc-aguilas-2026",name:"Carrera popular Ciudad de Águilas",date:"2026-09-27",location:"Águilas",province:"Murcia",area:"Murcia",distanceType:"10K",distances:["5 km","10 km"],time:"Por confirmar",surface:"Asfalto",source:"A Sus Puestos",url:"https://www.asuspuestos.com/",near:true,poster:"ÁGUILAS 5K · 10K",provisional:true},
  {id:"disc-cuevas-2026",name:"Circuito Diputación de Almería · Cuevas del Almanzora",date:"2026-10-03",location:"Cuevas del Almanzora",province:"Almería",area:"Almería",distanceType:"Otras",distances:["7,68 km","3,84 km"],time:"18:30",surface:"Asfalto",source:"Cruzando la Meta",url:"https://www.cruzandolameta.es/carreras/proximas/",near:true,poster:"CUEVAS 2026",provisional:true}
@@ -1727,16 +1726,17 @@ const discoveryRaces=[
 let discoveryArea="Todas";
 function discoveryRaceMatches(r){
  const d=$("#discoveryDistance")?.value||"Todas",m=$("#discoveryMonth")?.value||"Todas";
+ const asphaltOnly=String(r.surface||"").toLowerCase()==="asfalto";
  const areaOk=discoveryArea==="Todas"||(discoveryArea==="Cercanas"?r.near:r.area===discoveryArea);
- const distOk=d==="Todas"||r.distanceType===d||r.distances.some(x=>d==="5K"?/\b5([,.]0)?\s*km/i.test(x):d==="10K"?/\b10([,.]0)?\s*km/i.test(x):false);
- return areaOk&&distOk&&(m==="Todas"||r.date.startsWith(m));
+ const distOk=d==="Todas"||r.distanceType===d||r.distances.some(x=>d==="5K"?/\b5([,.]0)?\s*km/i.test(x):d==="10K"?/\b10([,.]0)?\s*km/i.test(x):d==="21K"?/(21([,.]1)?|media marat[oó]n)\s*km?/i.test(x):false);
+ return asphaltOnly&&areaOk&&distOk&&(m==="Todas"||r.date.startsWith(m));
 }
 function renderRaceDiscovery(){
  const host=$("#raceDiscovery");if(!host)return;
  const items=discoveryRaces.filter(discoveryRaceMatches).sort((a,b)=>a.date.localeCompare(b.date));
  host.innerHTML=items.length?items.map(r=>`<article class="discovery-card">
    <div class="poster">${r.poster}</div><div class="kicker">${r.area.toUpperCase()} · ${fmt(r.date)}</div><h4>${r.name}</h4>
-   <div class="discovery-meta">📍 ${r.location} · ${r.surface}${r.provisional?"<br>Datos provisionales: confirma en la fuente oficial.":""}</div>
+   <div class="discovery-meta">📍 ${r.location} · 🛣️ ${r.surface}${r.provisional?"<br>Datos provisionales: confirma en la fuente oficial.":""}</div>
    <div class="discovery-distances">${r.distances.map(x=>`<span>${x}</span>`).join("")}</div>
    <div class="discovery-actions"><button class="btn secondary small" type="button" onclick="openDiscoveryRace('${r.id}')">Ver ficha</button><button class="btn primary small" type="button" onclick="addDiscoveryRace('${r.id}')">＋ Calendario</button></div>
  </article>`).join(""):'<div class="empty">No hay carreras con estos filtros.</div>';
@@ -1745,7 +1745,7 @@ window.openDiscoveryRace=id=>{
  const r=discoveryRaces.find(x=>x.id===id);if(!r)return;
  $("#raceDetailTitle").textContent=r.name;
  $("#raceDetailBody").innerHTML=`<div class="race-detail-poster">${r.poster}</div>
- <div class="race-detail-list"><div class="race-detail-item"><small>Fecha</small><strong>${fmt(r.date)}</strong></div><div class="race-detail-item"><small>Hora</small><strong>${r.time}</strong></div><div class="race-detail-item"><small>Localidad</small><strong>${r.location}</strong></div><div class="race-detail-item"><small>Provincia</small><strong>${r.province}</strong></div><div class="race-detail-item"><small>Distancias</small><strong>${r.distances.join(" · ")}</strong></div><div class="race-detail-item"><small>Tipo</small><strong>${r.surface}</strong></div></div>
+ <div class="race-detail-list"><div class="race-detail-item"><small>Fecha</small><strong>${fmt(r.date)}</strong></div><div class="race-detail-item"><small>Hora</small><strong>${r.time}</strong></div><div class="race-detail-item"><small>Localidad</small><strong>${r.location}</strong></div><div class="race-detail-item"><small>Provincia</small><strong>${r.province}</strong></div><div class="race-detail-item"><small>Distancias</small><strong>${r.distances.join(" · ")}</strong></div><div class="race-detail-item"><small>Superficie</small><strong>🛣️ ${r.surface}</strong></div></div>
  ${r.provisional?'<p class="note">Esta ficha es una vista previa. Verifica fecha, distancias y apertura de inscripciones en la fuente enlazada.</p>':''}
  <div class="actions"><button class="btn primary" onclick="addDiscoveryRace('${r.id}')">＋ Añadir a mi calendario</button><a class="btn secondary" href="${r.url}" target="_blank" rel="noopener">Ver fuente / cartel</a></div>`;
  $("#raceDetailDialog").showModal();
