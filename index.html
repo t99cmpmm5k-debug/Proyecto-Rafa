@@ -593,7 +593,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.9.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.9.2</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -683,14 +683,14 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 
   <div class="plan-import">
     <div class="plan-import-head">
-      <div><div class="kicker">IMPORTAR RUTINA</div><h3>Subir plan de Run + Gym</h3><p>Lee un PDF o TXT semanal y prepara automáticamente la planificación. Las sesiones de fuerza también pasan al apartado Gym con sus series y repeticiones.</p></div>
+      <div><div class="kicker">IMPORTAR RUTINA</div><h3>Subir plan de Run + Gym</h3><p>Lee un archivo de plan de Proyecto Rafa, TXT o PDF y prepara automáticamente la planificación. Las sesiones de fuerza también pasan al apartado Gym con sus series y repeticiones.</p></div>
       <span class="race-badge">NUEVO</span>
     </div>
     <div class="plan-import-actions">
       <button class="btn primary" type="button" id="planImportBtn">Subir archivo</button>
       <button class="btn secondary" type="button" id="planPasteBtn">Pegar texto</button>
     </div>
-    <input id="planImportInput" type="file" accept=".pdf,.txt,text/plain,application/pdf">
+    <input id="planImportInput" type="file" accept=".rafa-plan.json,.json,.txt,.pdf,text/plain,application/json,application/pdf">
     <div class="import-options">
       <label>Semana de destino<select id="planImportWeek"><option value="current">Semana mostrada</option><option value="next">Semana siguiente</option></select></label>
       <label>Al confirmar<select id="planImportMode"><option value="replace">Sustituir esa semana</option><option value="merge">Añadir sin borrar</option></select></label>
@@ -2480,19 +2480,35 @@ function parseMultiWeekPlan(text){
  return out.filter(x=>x.sport==="Running"||x.sport==="Gimnasio");
 }
 function parseWeeklyPlan(text){return parseMultiWeekPlan(text)}
-async function textFromPlanFile(file){
- if(file.type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf")){
+function normalizeRafaPlanJson(raw){
+ const obj=typeof raw==="string"?JSON.parse(raw):raw;
+ if(!obj||!Array.isArray(obj.sessions))throw new Error("Archivo de plan no válido");
+ const dayMap={lunes:0,martes:1,"miércoles":2,miercoles:2,jueves:3,viernes:4,"sábado":5,sabado:5,domingo:6};
+ return obj.sessions.map((s,i)=>{
+  const sport=/gym|gimnas|fuerza/i.test(String(s.sport||s.type||""))?"Gimnasio":"Running";
+  const day=Number.isInteger(s.day)?s.day:dayMap[String(s.day||"").toLowerCase()];
+  if(day===undefined||day<0||day>6)throw new Error(`Día no válido en la sesión ${i+1}`);
+  const exercises=(s.exercises||[]).map(e=>({
+   name:String(e.name||"Ejercicio"),step:Number(e.step)||2.5,note:String(e.note||e.notes||"Importado"),
+   sets:Array.isArray(e.sets)?e.sets.map(st=>({weight:Number(st.weight)||0,reps:Number(st.reps)||0,done:false})):Array.from({length:Number(e.setsCount||e.series||0)},()=>({weight:Number(e.weight)||0,reps:Number(e.reps)||0,done:false}))
+  }));
+  return {day,weekOffset:Number(s.weekOffset||s.week||1)-1,sport,title:String(s.title||s.name||(sport==="Gimnasio"?"Sesión de fuerza":"Entrenamiento de running")),distance:Number(s.distance)||0,duration:Number(s.duration)||45,intensity:String(s.intensity||"Moderada"),notes:String(s.notes||s.description||""),exercises};
+ }).filter(x=>x.weekOffset>=0);
+}
+async function readPlanFile(file){
+ const lower=file.name.toLowerCase();
+ if(file.type==="application/json"||lower.endsWith(".json"))return normalizeRafaPlanJson(await file.text());
+ if(file.type==="application/pdf"||lower.endsWith(".pdf")){
   const pdfjs=await import("https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/+esm");
   const pdf=await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer()),disableWorker:true}).promise;let pages=[];
   for(let i=1;i<=pdf.numPages;i++){
-   const pg=await pdf.getPage(i),ct=await pg.getTextContent();
-   const rows=[];
+   const pg=await pdf.getPage(i),ct=await pg.getTextContent();const rows=[];
    ct.items.forEach(item=>{const y=Math.round((item.transform?.[5]||0)/3)*3;let row=rows.find(r=>Math.abs(r.y-y)<=3);if(!row){row={y,items:[]};rows.push(row)}row.items.push({x:item.transform?.[4]||0,text:item.str})});
    rows.sort((a,b)=>b.y-a.y);pages.push(rows.map(r=>r.items.sort((a,b)=>a.x-b.x).map(x=>x.text).join(" ").replace(/\s+/g," ").trim()).filter(Boolean).join("\n"));
   }
-  return pages.join("\n");
+  return parseWeeklyPlan(pages.join("\n"));
  }
- return await file.text();
+ return parseWeeklyPlan(await file.text());
 }
 function showImportedReview(items){pendingImportedPlan=items;const host=$("#planImportReview"),status=$("#planImportStatus");status.classList.add("show");
  if(!items.length){status.textContent="No he podido detectar días y entrenamientos. Prueba a pegar el texto o revisa que aparezcan los días de la semana.";host.innerHTML="";$("#planImportConfirmWrap").style.display="none";return}
@@ -2504,7 +2520,7 @@ function showImportedReview(items){pendingImportedPlan=items;const host=$("#plan
 }
 $("#planImportBtn").onclick=()=>$("#planImportInput").click();
 $("#planPasteBtn").onclick=()=>{const text=prompt("Pega aquí la planificación semanal o completa:");if(text)showImportedReview(parseWeeklyPlan(text))};
-$("#planImportInput").onchange=async e=>{const file=e.target.files[0];if(!file)return;const st=$("#planImportStatus");st.classList.add("show");st.textContent="Leyendo el archivo…";try{showImportedReview(parseWeeklyPlan(await textFromPlanFile(file)))}catch(err){console.error(err);st.textContent="No se pudo leer el archivo. Prueba a pegar el texto del plan."}e.target.value=""};
+$("#planImportInput").onchange=async e=>{const file=e.target.files[0];if(!file)return;const st=$("#planImportStatus");st.classList.add("show");st.textContent="Leyendo el archivo…";try{showImportedReview(await readPlanFile(file))}catch(err){console.error(err);st.textContent="No se pudo leer ese archivo. Para máxima fiabilidad usa el archivo .rafa-plan.json que acompaña al PDF."}e.target.value=""};
 $("#planImportConfirm").onclick=()=>{
  if(!pendingImportedPlan.length)return;let start=weekStart(weekOffset);if($("#planImportWeek").value==="next")start=datePlus(start,7);
  const maxWeek=Math.max(...pendingImportedPlan.map(x=>Number(x.weekOffset||0))),startIso=isoDate(start),endIso=isoDate(datePlus(start,maxWeek*7+6));
