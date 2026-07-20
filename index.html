@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.9.1</title>
+<title>Proyecto Rafa · V19.9.3</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -593,7 +593,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.9.2</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.9.3</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -603,7 +603,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.9.1 ACTIVA</span>
+    <span class="version">V19.9.3 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -1992,23 +1992,22 @@ function importedGymForDay(day){
  return data.plan.find(p=>p.date===date&&p.sport==="Gimnasio"&&(p.exercises||[]).length);
 }
 function renderGymPlan(){
- const imported=importedGymForDay(gymDay);
- if(imported){
-   const exercises=imported.exercises||[];
-   $("#gymPlan").innerHTML=`<div class="gym-plan-card">
-    <div class="gym-plan-head"><div><div class="kicker">RUTINA IMPORTADA</div><h3>${imported.title}</h3><p>${fmt(imported.date)} · ${exercises.length} ejercicios · ${imported.duration||45} min aprox.</p></div><span class="race-badge">PLAN</span></div>
-    <div class="gym-plan-list">${exercises.map(e=>`<div class="gym-plan-item"><strong>${e.name}</strong><span>${e.sets.length} × ${e.sets[0]?.reps||"—"}${e.rest?` · ${e.rest}`:""}</span></div>`).join("")}</div>
-    <button class="btn primary gym-start-btn" type="button" onclick="startImportedGym('${imported.id}')">Empezar rutina importada</button>
-    <div class="gym-tip">La rutina viene del archivo semanal. Al guardar la sesión quedará vinculada al plan y se marcará como completada.</div>
-   </div>`;return;
- }
  const r=GYM_ROUTINES[gymDay];
+ const imported=importedGymForDay(gymDay);
+ const importedHtml=imported?`<div class="gym-plan-card" style="margin-top:12px">
+  <div class="gym-plan-head"><div><div class="kicker">RUTINA IMPORTADA</div><h3>${imported.title}</h3><p>${fmt(imported.date)} · ${(imported.exercises||[]).length} ejercicios · ${imported.duration||45} min aprox.</p></div><span class="race-badge">PLAN</span></div>
+  <div class="gym-plan-list">${(imported.exercises||[]).map(e=>`<div class="gym-plan-item"><strong>${e.name}</strong><span>${e.sets.length} × ${e.sets[0]?.reps||"—"}${e.rest?` · ${e.rest}`:""}</span></div>`).join("")}</div>
+  <button class="btn secondary gym-start-btn" type="button" onclick="startImportedGym('${imported.id}')">Empezar rutina importada</button>
+  <div class="gym-tip">Esta rutina se ha añadido desde el plan semanal sin sustituir tu rutina habitual.</div>
+ </div>`:"";
  $("#gymPlan").innerHTML=`<div class="gym-plan-card">
   <div class="gym-plan-head"><div><h3>${r.title}</h3><p>${r.exercises.length} ejercicios · ${r.duration} min aprox.</p></div><span class="race-badge">${gymDay==="lunes"?"TORSO":gymDay==="miercoles"?"PIERNA":"FULL BODY"}</span></div>
-  <div class="gym-plan-list">${r.exercises.map(e=>`<div class="gym-plan-item"><strong>${e.name}</strong><span>${e.sets} × ${e.note||e.reps}</span></div>`).join("")}</div>
+  <div class="gym-plan-list">
+   ${r.exercises.map(e=>`<div class="gym-plan-item"><strong>${e.name}</strong><span>${e.sets} × ${e.note||e.reps}</span></div>`).join("")}
+  </div>
   <button class="btn primary gym-start-btn" type="button" onclick="startGymRoutine('${gymDay}')">Empezar entrenamiento</button>
-  <div class="gym-tip">Deja 1-2 repeticiones en reserva. Cuando completes todas las repeticiones con buena técnica, aumenta 2,5 kg.</div>
- </div>`;
+  <div class="gym-tip">Deja 1-2 repeticiones en reserva. Cuando completes todas las repeticiones con buena técnica, aumenta 2,5 kg. Descansa 2-3 min en básicos y 60-90 s en accesorios.</div>
+ </div>${importedHtml}`;
 }
 window.startImportedGym=id=>{
  const p=data.plan.find(x=>x.id===id);if(!p)return;
