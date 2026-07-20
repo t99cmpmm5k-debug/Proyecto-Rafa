@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.9</title>
+<title>Proyecto Rafa · V19.9.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -593,7 +593,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.9</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.9.1</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -603,7 +603,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.8 ACTIVA</span>
+    <span class="version">V19.9.1 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -2425,48 +2425,94 @@ function parseGymExercises(lines){
  });
  return out;
 }
-function parseWeeklyPlan(text){
- const lines=normalizePlanText(text).split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
- for(const line of lines){const day=dayIndexFromLine(line);if(day!==null){if(current)chunks.push(current);current={day,head:line,lines:[]};}else if(current)current.lines.push(line)}if(current)chunks.push(current);
- return chunks.map(c=>{
-  const body=c.lines.join(" "),low=(c.head+" "+body).toLowerCase();
-  const gym=/gimnas|fuerza|press|sentadilla|remo|curl|jal[oó]n|peso muerto|hip thrust|zancada|tr[ií]ceps|b[ií]ceps/.test(low);
-  const sport=gym?"Gimnasio":"Running";
-  const km=(body.match(/(\d+(?:[.,]\d+)?)\s*km\b/i)||[])[1];
-  const duration=(body.match(/(\d+)\s*(?:min|minutos)\b/i)||[])[1];
-  let title=c.head.replace(/^.*?(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\s*[:\-]?\s*/i,"").trim();
-  if(!title)title=gym?"Sesión de fuerza":(/series|\d+\s*[x×]\s*\d+/i.test(body)?"Series":/tirada larga/i.test(body)?"Tirada larga":/z2|zona 2/i.test(body)?"Rodaje Z2":"Entrenamiento de running");
-  const exercises=gym?parseGymExercises(c.lines):[];
-  return {day:c.day,sport,title,distance:Number(String(km||0).replace(",","."))||0,duration:Number(duration)||45,intensity:/series|tempo|umbral|fuerte|alta/i.test(low)?"Alta":/suave|z2|zona 2/i.test(low)?"Suave":"Moderada",notes:body,exercises};
- }).filter(x=>x.sport==="Running"||x.exercises.length||/gimnas|fuerza/i.test(x.notes));
+function sessionFromChunk(day,head,lines,weekOffset=0){
+ const body=lines.join(" "),low=(head+" "+body).toLowerCase();
+ const gym=/gimnas|\bgym\b|fuerza|press|sentadilla|remo|curl|jal[oó]n|peso muerto|hip thrust|zancada|tr[ií]ceps|b[ií]ceps|torso|pierna|full body/.test(low);
+ const sport=gym?"Gimnasio":"Running";
+ const km=(body.match(/(\d+(?:[.,]\d+)?)\s*km\b/i)||[])[1];
+ const duration=(body.match(/(\d+)\s*(?:min|minutos)\b/i)||[])[1] || (head.match(/(\d+)\s*(?:min|minutos)\b/i)||[])[1];
+ let title=head.replace(/^.*?(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\s*[:\-]?\s*/i,"").trim();
+ if(!title)title=gym?"Sesión de fuerza":(/series|\d+\s*[x×]\s*\d+/i.test(body)?"Series":/tirada|rodaje largo/i.test(body)?"Tirada larga":/z2|zona 2|suave/i.test(body)?"Rodaje suave":"Entrenamiento de running");
+ const exercises=gym?parseGymExercises(lines):[];
+ return {day,weekOffset,sport,title,distance:Number(String(km||0).replace(",","."))||0,duration:Number(duration)||45,intensity:/series|tempo|umbral|fuerte|alta|calidad|pista/i.test(low)?"Alta":/suave|z2|zona 2|largo/i.test(low)?"Suave":"Moderada",notes:body||head,exercises};
 }
+function parseSingleWeek(text){
+ const lines=normalizePlanText(text).split("\n").map(x=>x.trim()).filter(Boolean),chunks=[];let current=null;
+ for(const line of lines){const day=dayIndexFromLine(line);if(day!==null){if(current)chunks.push(current);current={day,head:line,lines:[]};}else if(current)current.lines.push(line)}if(current)chunks.push(current);
+ return chunks.map(c=>sessionFromChunk(c.day,c.head,c.lines,0)).filter(x=>x.sport==="Running"||x.exercises.length||/gimnas|gym|fuerza|torso|pierna|full body/i.test(x.notes));
+}
+function parseFixedStructure(text){
+ const m=text.match(/ESTRUCTURA SEMANAL FIJA([\s\S]*?)(?=SEMANA\s*1\b)/i);if(!m)return[];
+ const rows=normalizePlanText(m[1]).split("\n").map(x=>x.trim()).filter(Boolean),out=[];
+ rows.forEach(line=>{
+  const day=dayIndexFromLine(line);if(day===null)return;
+  const after=line.replace(/^.*?(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\s*[:\-]?\s*/i,"").trim();
+  const parts=after.split(/\s*\+\s*/).map(x=>x.trim()).filter(Boolean);
+  parts.forEach(part=>{
+   const low=part.toLowerCase();
+   if(/nataci[oó]n|p[aá]del|descanso/.test(low)&&!/running|rodaje|gym|gimnas/.test(low))return;
+   if(/gym|gimnas|torso|pierna|full body|fuerza/.test(low))out.push(sessionFromChunk(day,`${["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"][day]} - ${part}`,[],0));
+   else if(/running|rodaje|carrera|series|calidad/.test(low))out.push(sessionFromChunk(day,`${["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"][day]} - ${part}`,[],0));
+  });
+ });
+ return out;
+}
+function parseMultiWeekPlan(text){
+ const norm=normalizePlanText(text),matches=[...norm.matchAll(/(?:^|\n)SEMANA\s*(\d+)(?:\s*\([^\n]*\))?\s*\n?/gim)];
+ if(!matches.length)return parseSingleWeek(norm);
+ const fixed=parseFixedStructure(norm),out=[];
+ matches.forEach((m,i)=>{
+  const weekNum=Number(m[1]),start=m.index+m[0].length,end=i+1<matches.length?matches[i+1].index:norm.length;
+  const section=norm.slice(start,end).trim();
+  const lines=section.split("\n").map(x=>x.trim()).filter(Boolean);
+  const weekSessions=fixed.map(x=>({...structuredClone(x),weekOffset:weekNum-1}));
+  let current=null,chunks=[];
+  for(const line of lines){const day=dayIndexFromLine(line);if(day!==null){if(current)chunks.push(current);current={day,head:line,lines:[]};}else if(current)current.lines.push(line)}if(current)chunks.push(current);
+  chunks.forEach(c=>{
+   const specific=sessionFromChunk(c.day,c.head,c.lines,weekNum-1);
+   if(specific.sport==="Running"){
+    for(let j=weekSessions.length-1;j>=0;j--)if(weekSessions[j].day===specific.day&&weekSessions[j].sport==="Running")weekSessions.splice(j,1);
+   }
+   weekSessions.push(specific);
+  });
+  out.push(...weekSessions);
+ });
+ return out.filter(x=>x.sport==="Running"||x.sport==="Gimnasio");
+}
+function parseWeeklyPlan(text){return parseMultiWeekPlan(text)}
 async function textFromPlanFile(file){
  if(file.type==="application/pdf"||file.name.toLowerCase().endsWith(".pdf")){
   const pdfjs=await import("https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/+esm");
-  const pdf=await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer()),disableWorker:true}).promise;let text="";
-  for(let i=1;i<=pdf.numPages;i++){const pg=await pdf.getPage(i),ct=await pg.getTextContent();text+=ct.items.map(x=>x.str).join(" ")+"\n"}return text;
+  const pdf=await pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer()),disableWorker:true}).promise;let pages=[];
+  for(let i=1;i<=pdf.numPages;i++){
+   const pg=await pdf.getPage(i),ct=await pg.getTextContent();
+   const rows=[];
+   ct.items.forEach(item=>{const y=Math.round((item.transform?.[5]||0)/3)*3;let row=rows.find(r=>Math.abs(r.y-y)<=3);if(!row){row={y,items:[]};rows.push(row)}row.items.push({x:item.transform?.[4]||0,text:item.str})});
+   rows.sort((a,b)=>b.y-a.y);pages.push(rows.map(r=>r.items.sort((a,b)=>a.x-b.x).map(x=>x.text).join(" ").replace(/\s+/g," ").trim()).filter(Boolean).join("\n"));
+  }
+  return pages.join("\n");
  }
  return await file.text();
 }
 function showImportedReview(items){pendingImportedPlan=items;const host=$("#planImportReview"),status=$("#planImportStatus");status.classList.add("show");
  if(!items.length){status.textContent="No he podido detectar días y entrenamientos. Prueba a pegar el texto o revisa que aparezcan los días de la semana.";host.innerHTML="";$("#planImportConfirmWrap").style.display="none";return}
- status.innerHTML=`<strong>${items.length} sesiones detectadas.</strong> Revisa el resumen antes de importar.`;
+ const weeks=Math.max(...items.map(x=>Number(x.weekOffset||0)))+1;
+ status.innerHTML=`<strong>${items.length} sesiones detectadas${weeks>1?` en ${weeks} semanas`:""}.</strong> Revisa el resumen antes de importar.`;
  const dayNames=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
- host.innerHTML=items.map(x=>`<div class="import-review-item ${x.sport==="Gimnasio"?"gym":""}"><strong>${dayNames[x.day]} · ${x.sport} · ${x.title}</strong><small>${x.sport==="Gimnasio"?`${x.exercises.length} ejercicios · ${x.exercises.reduce((a,e)=>a+e.sets.length,0)} series`: `${x.distance||"—"} km · ${x.duration} min`}<br>${x.notes.slice(0,140)}${x.notes.length>140?"…":""}</small></div>`).join("");
+ host.innerHTML=items.map(x=>`<div class="import-review-item ${x.sport==="Gimnasio"?"gym":""}"><strong>${weeks>1?`Semana ${Number(x.weekOffset||0)+1} · `:""}${dayNames[x.day]} · ${x.sport} · ${x.title}</strong><small>${x.sport==="Gimnasio"?`${x.exercises.length?`${x.exercises.length} ejercicios · ${x.exercises.reduce((a,e)=>a+e.sets.length,0)} series`:"Rutina detectada, pero el archivo no detalla ejercicios"}`: `${x.distance||"—"} km · ${x.duration} min`}<br>${x.notes.slice(0,140)}${x.notes.length>140?"…":""}</small></div>`).join("");
  $("#planImportConfirmWrap").style.display="flex";
 }
 $("#planImportBtn").onclick=()=>$("#planImportInput").click();
-$("#planPasteBtn").onclick=()=>{const text=prompt("Pega aquí la planificación semanal:");if(text)showImportedReview(parseWeeklyPlan(text))};
-$("#planImportInput").onchange=async e=>{const file=e.target.files[0];if(!file)return;const st=$("#planImportStatus");st.classList.add("show");st.textContent="Leyendo el archivo…";try{showImportedReview(parseWeeklyPlan(await textFromPlanFile(file)))}catch(err){st.textContent="No se pudo leer el archivo. Prueba a pegar el texto del plan."}e.target.value=""};
+$("#planPasteBtn").onclick=()=>{const text=prompt("Pega aquí la planificación semanal o completa:");if(text)showImportedReview(parseWeeklyPlan(text))};
+$("#planImportInput").onchange=async e=>{const file=e.target.files[0];if(!file)return;const st=$("#planImportStatus");st.classList.add("show");st.textContent="Leyendo el archivo…";try{showImportedReview(parseWeeklyPlan(await textFromPlanFile(file)))}catch(err){console.error(err);st.textContent="No se pudo leer el archivo. Prueba a pegar el texto del plan."}e.target.value=""};
 $("#planImportConfirm").onclick=()=>{
  if(!pendingImportedPlan.length)return;let start=weekStart(weekOffset);if($("#planImportWeek").value==="next")start=datePlus(start,7);
- const startIso=isoDate(start),endIso=isoDate(datePlus(start,6));if($("#planImportMode").value==="replace")data.plan=data.plan.filter(p=>p.date<startIso||p.date>endIso);
- pendingImportedPlan.forEach(x=>data.plan.push({...x,id:uid(),date:isoDate(datePlus(start,x.day)),status:"pending",source:"Archivo importado"}));
- pendingImportedPlan=[];save();$("#planImportReview").innerHTML="";$("#planImportConfirmWrap").style.display="none";$("#planImportStatus").innerHTML="<strong>Plan importado.</strong> Running ya está en la semana y las rutinas de fuerza están disponibles en Gym.";renderPlan();renderGymPlan();
+ const maxWeek=Math.max(...pendingImportedPlan.map(x=>Number(x.weekOffset||0))),startIso=isoDate(start),endIso=isoDate(datePlus(start,maxWeek*7+6));
+ if($("#planImportMode").value==="replace")data.plan=data.plan.filter(p=>p.date<startIso||p.date>endIso);
+ pendingImportedPlan.forEach(x=>data.plan.push({...x,id:uid(),date:isoDate(datePlus(start,Number(x.weekOffset||0)*7+x.day)),status:"pending",source:"Archivo importado"}));
+ pendingImportedPlan=[];save();$("#planImportReview").innerHTML="";$("#planImportConfirmWrap").style.display="none";$("#planImportStatus").innerHTML="<strong>Plan importado.</strong> Running ya está en la planificación y las rutinas de fuerza están disponibles en Gym.";renderPlan();renderGymPlan();
 };
 
-document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
-window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t==="run")data.plan=data.plan.map(p=>p.actualRunId===id?{...p,status:"pending",actualRunId:""}:p);const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
