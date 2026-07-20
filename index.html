@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V19.5</title>
+<title>Proyecto Rafa · V19.6</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -553,12 +553,36 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .shoe-pill{display:inline-block;padding:5px 8px;border:1px solid var(--line);border-radius:999px;font-size:10px;color:#d7e7db}
 @media(max-width:700px){.run-table-filters{grid-template-columns:1fr 1fr}.run-table-filters .wide{grid-column:1/-1}.run-view-tools{align-items:stretch}.run-view-switch{width:100%}.run-view-btn{flex:1}.run-table-wrap{margin-left:-4px;margin-right:-4px}}
 
+
+/* V19.6 · Descubrir carreras cercanas */
+.race-source-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 14px}
+.race-source-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px;border-radius:14px;font-weight:850}
+.race-source-btn.active{background:var(--green);color:#0a1206;border-color:transparent}
+.race-discovery-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.race-discovery-toolbar select{width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:11px}
+.discovery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.discovery-card{position:relative;overflow:hidden;background:linear-gradient(145deg,#142019,#10151a);border:1px solid #314839;border-radius:22px;padding:16px;min-height:210px;display:flex;flex-direction:column;gap:9px}
+.discovery-card .poster{height:80px;border-radius:14px;background:linear-gradient(135deg,#20361f,#0f1914);display:flex;align-items:center;justify-content:center;font-weight:950;letter-spacing:.08em;color:var(--green);text-align:center;padding:8px}
+.discovery-card h4{font-size:17px;line-height:1.15;margin:0}
+.discovery-meta{font-size:12px;color:var(--muted);line-height:1.45}
+.discovery-distances{display:flex;gap:6px;flex-wrap:wrap}
+.discovery-distances span{font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:#203118;color:var(--green2)}
+.discovery-actions{margin-top:auto;display:flex;gap:7px}
+.discovery-actions button,.discovery-actions a{flex:1;text-align:center;text-decoration:none}
+.race-detail-dialog{width:min(92vw,560px);max-height:88vh;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:24px;padding:0;overflow:auto}
+.race-detail-dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(4px)}
+.race-detail-head{position:sticky;top:0;background:rgba(18,23,29,.96);padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;z-index:2}
+.race-detail-body{padding:18px}.race-detail-poster{min-height:180px;border-radius:18px;background:linear-gradient(145deg,#223e22,#101713);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--green);font-size:24px;font-weight:950;padding:20px;margin-bottom:16px}
+.race-detail-list{display:grid;grid-template-columns:1fr 1fr;gap:9px}.race-detail-item{background:var(--panel2);padding:12px;border-radius:14px}.race-detail-item small{display:block;color:var(--muted);margin-bottom:5px}
+.discovery-note{color:var(--muted);font-size:12px;line-height:1.45;margin:8px 0 14px}
+@media(max-width:560px){.discovery-grid{grid-template-columns:1fr}.race-detail-list{grid-template-columns:1fr 1fr}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V19.5</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V19.6</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -568,7 +592,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V19.5 ACTIVA</span>
+    <span class="version">V19.6 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -779,7 +803,8 @@ nav{grid-template-columns:repeat(6,1fr)!important}
   </div>
 
   <div class="race-view-switch">
-    <button type="button" class="race-view-btn active" data-race-view="calendar">Calendario</button>
+    <button type="button" class="race-view-btn active" data-race-view="calendar">Mi calendario</button>
+    <button type="button" class="race-view-btn" data-race-view="discover">Descubrir</button>
     <button type="button" class="race-view-btn" data-race-view="history">Historial</button>
   </div>
   <div id="raceCalendarPanel" class="race-view-panel active">
@@ -814,6 +839,22 @@ nav{grid-template-columns:repeat(6,1fr)!important}
   </div>
   <div id="races" class="stack"></div>
 
+  </div>
+
+  <div id="raceDiscoverPanel" class="race-view-panel">
+    <div class="section-head"><div><div class="kicker">CERCA DE PUERTO LUMBRERAS</div><h3>Descubrir carreras</h3></div></div>
+    <p class="discovery-note">Catálogo inicial de pruebas publicadas en calendarios de Murcia y Almería. Pulsa una carrera para ver distancias, localidad, fuente y añadirla a tu calendario.</p>
+    <div class="race-source-switch">
+      <button type="button" class="race-source-btn active" data-discovery-area="Todas">Todas</button>
+      <button type="button" class="race-source-btn" data-discovery-area="Murcia">Murcia</button>
+      <button type="button" class="race-source-btn" data-discovery-area="Almería">Almería</button>
+      <button type="button" class="race-source-btn" data-discovery-area="Cercanas">Más cercanas</button>
+    </div>
+    <div class="race-discovery-toolbar">
+      <select id="discoveryDistance"><option value="Todas">Todas las distancias</option><option value="5K">5K</option><option value="10K">10K</option><option value="Otras">Otras</option></select>
+      <select id="discoveryMonth"><option value="Todas">Todos los meses</option><option value="2026-08">Agosto 2026</option><option value="2026-09">Septiembre 2026</option><option value="2026-10">Octubre 2026</option></select>
+    </div>
+    <div id="raceDiscovery" class="discovery-grid"></div>
   </div>
   <div id="raceHistoryPanel" class="race-view-panel">
   <div class="section-head"><h3>Carreras terminadas</h3></div>
@@ -869,6 +910,12 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </main>
 
 
+
+
+<dialog id="raceDetailDialog" class="race-detail-dialog">
+  <div class="race-detail-head"><div><div class="kicker">FICHA DE CARRERA</div><h3 id="raceDetailTitle">Carrera</h3></div><button type="button" class="btn secondary small" id="closeRaceDetail">✕</button></div>
+  <div id="raceDetailBody" class="race-detail-body"></div>
+</dialog>
 
 <nav>
   <button class="nav active" data-view="inicio"><span>⌂</span>Inicio</button>
@@ -1668,6 +1715,48 @@ function raceCard(r){
    <div class="actions"><button class="btn secondary small" onclick="editItem('race','${r.id}')">✏️ Editar</button><button class="btn danger small" onclick="removeItem('race','${r.id}')">🗑️ Eliminar</button></div>
  </article>`;
 }
+
+const discoveryRaces=[
+ {id:"disc-garrucha-2026",name:"Circuito de Carreras Populares · Garrucha",date:"2026-08-08",location:"Garrucha",province:"Almería",area:"Almería",distanceType:"Otras",distances:["7,25 km","3,62 km"],time:"19:00",surface:"Asfalto",source:"Cruzando la Meta",url:"https://www.cruzandolameta.es/carreras/proximas/",near:true,poster:"GARRUCHA 2026"},
+ {id:"disc-librilla-2026",name:"XVIII Carrera Popular Nocturna Villa de Librilla",date:"2026-08-15",location:"Librilla",province:"Murcia",area:"Murcia",distanceType:"10K",distances:["10 km"],time:"Por confirmar",surface:"Asfalto",source:"Alcanza tu Meta",url:"https://www.alcanzatumeta.es/calendario.php",near:false,poster:"LIBRILLA 10K"},
+ {id:"disc-jumilla-2026",name:"46 Cross Urbano Fiestas del Vino",date:"2026-08-15",location:"Jumilla",province:"Murcia",area:"Murcia",distanceType:"Otras",distances:["Distancias por categoría"],time:"Por confirmar",surface:"Urbano",source:"Alcanza tu Meta",url:"https://www.alcanzatumeta.es/calendario.php",near:false,poster:"JUMILLA 2026"},
+ {id:"disc-almeria-sep-2026",name:"Circuito Diputación de Almería · Prueba de septiembre",date:"2026-09-13",location:"Provincia de Almería",province:"Almería",area:"Almería",distanceType:"5K",distances:["7,65 km","5 km no competitiva"],time:"19:00 adultos",surface:"Asfalto",source:"Circuito Carreras Populares Almería",url:"https://carreraspopularesalmeria.com/?page_id=226",near:true,poster:"CIRCUITO ALMERÍA"},
+ {id:"disc-aguilas-2026",name:"Carrera popular Ciudad de Águilas",date:"2026-09-27",location:"Águilas",province:"Murcia",area:"Murcia",distanceType:"10K",distances:["5 km","10 km"],time:"Por confirmar",surface:"Asfalto",source:"A Sus Puestos",url:"https://www.asuspuestos.com/",near:true,poster:"ÁGUILAS 5K · 10K",provisional:true},
+ {id:"disc-cuevas-2026",name:"Circuito Diputación de Almería · Cuevas del Almanzora",date:"2026-10-03",location:"Cuevas del Almanzora",province:"Almería",area:"Almería",distanceType:"Otras",distances:["7,68 km","3,84 km"],time:"18:30",surface:"Asfalto",source:"Cruzando la Meta",url:"https://www.cruzandolameta.es/carreras/proximas/",near:true,poster:"CUEVAS 2026",provisional:true}
+];
+let discoveryArea="Todas";
+function discoveryRaceMatches(r){
+ const d=$("#discoveryDistance")?.value||"Todas",m=$("#discoveryMonth")?.value||"Todas";
+ const areaOk=discoveryArea==="Todas"||(discoveryArea==="Cercanas"?r.near:r.area===discoveryArea);
+ const distOk=d==="Todas"||r.distanceType===d||r.distances.some(x=>d==="5K"?/\b5([,.]0)?\s*km/i.test(x):d==="10K"?/\b10([,.]0)?\s*km/i.test(x):false);
+ return areaOk&&distOk&&(m==="Todas"||r.date.startsWith(m));
+}
+function renderRaceDiscovery(){
+ const host=$("#raceDiscovery");if(!host)return;
+ const items=discoveryRaces.filter(discoveryRaceMatches).sort((a,b)=>a.date.localeCompare(b.date));
+ host.innerHTML=items.length?items.map(r=>`<article class="discovery-card">
+   <div class="poster">${r.poster}</div><div class="kicker">${r.area.toUpperCase()} · ${fmt(r.date)}</div><h4>${r.name}</h4>
+   <div class="discovery-meta">📍 ${r.location} · ${r.surface}${r.provisional?"<br>Datos provisionales: confirma en la fuente oficial.":""}</div>
+   <div class="discovery-distances">${r.distances.map(x=>`<span>${x}</span>`).join("")}</div>
+   <div class="discovery-actions"><button class="btn secondary small" type="button" onclick="openDiscoveryRace('${r.id}')">Ver ficha</button><button class="btn primary small" type="button" onclick="addDiscoveryRace('${r.id}')">＋ Calendario</button></div>
+ </article>`).join(""):'<div class="empty">No hay carreras con estos filtros.</div>';
+}
+window.openDiscoveryRace=id=>{
+ const r=discoveryRaces.find(x=>x.id===id);if(!r)return;
+ $("#raceDetailTitle").textContent=r.name;
+ $("#raceDetailBody").innerHTML=`<div class="race-detail-poster">${r.poster}</div>
+ <div class="race-detail-list"><div class="race-detail-item"><small>Fecha</small><strong>${fmt(r.date)}</strong></div><div class="race-detail-item"><small>Hora</small><strong>${r.time}</strong></div><div class="race-detail-item"><small>Localidad</small><strong>${r.location}</strong></div><div class="race-detail-item"><small>Provincia</small><strong>${r.province}</strong></div><div class="race-detail-item"><small>Distancias</small><strong>${r.distances.join(" · ")}</strong></div><div class="race-detail-item"><small>Tipo</small><strong>${r.surface}</strong></div></div>
+ ${r.provisional?'<p class="note">Esta ficha es una vista previa. Verifica fecha, distancias y apertura de inscripciones en la fuente enlazada.</p>':''}
+ <div class="actions"><button class="btn primary" onclick="addDiscoveryRace('${r.id}')">＋ Añadir a mi calendario</button><a class="btn secondary" href="${r.url}" target="_blank" rel="noopener">Ver fuente / cartel</a></div>`;
+ $("#raceDetailDialog").showModal();
+};
+window.addDiscoveryRace=id=>{
+ const r=discoveryRaces.find(x=>x.id===id);if(!r)return;
+ if(data.races.some(x=>x.sourceId===id)){alert("Esta carrera ya está en tu calendario.");return;}
+ data.races.push({id:uid(),sourceId:id,name:r.name,date:r.date,location:r.location,distance:r.distances.join(" · "),distanceType:r.distanceType,status:"prevista",goal:"",result:"",notes:`Fuente: ${r.source} · ${r.url}`});
+ save();alert("Carrera añadida a tu calendario.");
+};
+
 function currentRaceMonth(){
  const d=new Date();d.setDate(1);d.setHours(12,0,0,0);d.setMonth(d.getMonth()+raceMonthOffset);return d;
 }
@@ -1847,7 +1936,9 @@ function setRaceView(view){
  raceView=view;
  document.querySelectorAll("[data-race-view]").forEach(b=>b.classList.toggle("active",b.dataset.raceView===view));
  $("#raceCalendarPanel").classList.toggle("active",view==="calendar");
+ $("#raceDiscoverPanel").classList.toggle("active",view==="discover");
  $("#raceHistoryPanel").classList.toggle("active",view==="history");
+ if(view==="discover")renderRaceDiscovery();
 }
 
 
@@ -2302,7 +2393,11 @@ $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=191").catch(()=>{}))}
+
+document.querySelectorAll("[data-discovery-area]").forEach(b=>b.onclick=()=>{discoveryArea=b.dataset.discoveryArea;document.querySelectorAll("[data-discovery-area]").forEach(x=>x.classList.toggle("active",x===b));renderRaceDiscovery()});
+$("#discoveryDistance").onchange=renderRaceDiscovery;$("#discoveryMonth").onchange=renderRaceDiscovery;$("#closeRaceDetail").onclick=()=>$("#raceDetailDialog").close();
+
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=196").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
