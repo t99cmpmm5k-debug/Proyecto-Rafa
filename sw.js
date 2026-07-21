@@ -1,4 +1,4 @@
-const CACHE="corredor-solido-v21-inicio-d";
+const CACHE="corredor-solido-v21.1-inicio";
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html"])));
