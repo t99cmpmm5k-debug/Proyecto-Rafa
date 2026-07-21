@@ -1,4 +1,4 @@
-const CACHE="proyecto-rafa-v20-8-professional-charts";
+const CACHE="proyecto-corredor-solido-v20.9-8-professional-charts";
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html"])));

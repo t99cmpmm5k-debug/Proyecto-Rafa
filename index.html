@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#080b0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V20.5</title>
+<meta name="apple-mobile-web-app-title" content="Corredor Sólido">
+<title>Corredor Sólido · V20.9</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -634,6 +634,16 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 @media(orientation:portrait) and (max-width:700px){.orientation-tip{display:block}}
 @media(max-width:430px){.evolution-tabs{grid-template-columns:repeat(2,1fr)}.evolution-toolbar{grid-template-columns:1fr}}
 
+
+/* Inicio Corredor Sólido · Diseño D */
+.brand-head{min-width:0;text-align:left}.brand-name{font-size:18px;font-weight:950;letter-spacing:.035em;white-space:nowrap}.brand-name span{color:var(--green)}.brand-sub{margin-top:3px;color:var(--muted);font-size:10px;letter-spacing:.02em}
+.home-motivation{display:flex;justify-content:center;align-items:flex-start;gap:10px;text-align:center;padding:22px 8px 18px}.home-motivation .quote-mark{color:var(--green);font-size:44px;line-height:.75;font-weight:950}.home-motivation h2{font-size:23px;letter-spacing:-.55px}.home-motivation p{margin-top:7px;color:var(--muted);font-size:15px}
+.today-stage{margin-top:4px}.today-stage .today-card{position:relative;text-align:center;padding:26px 20px 20px;border-radius:28px;background:radial-gradient(circle at 50% 15%,rgba(168,240,122,.11),transparent 35%),linear-gradient(155deg,#121b16,#090f0c);border:1px solid #56803b;box-shadow:0 20px 55px rgba(0,0,0,.36),inset 0 0 55px rgba(120,220,73,.025)}
+.today-stage .today-label{display:inline-flex;border:1px solid #6ca84a;border-radius:999px;padding:7px 15px;color:var(--green);letter-spacing:.08em;background:rgba(90,150,56,.08)}
+.today-stage .today-title{font-size:39px;letter-spacing:-1.35px;margin-top:17px}.today-stage .today-distance{font-size:31px;color:var(--green);font-weight:950;margin-top:6px}.today-stage .today-icon{font-size:29px;color:var(--green);margin-top:14px}.today-stage .today-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:22px 0 18px;border-top:1px solid var(--line);padding-top:17px}.today-stage .today-stat{padding:0 8px;border-right:1px solid var(--line)}.today-stage .today-stat:last-child{border-right:0}.today-stage .today-stat b{display:block;font-size:14px}.today-stage .today-stat span{display:block;color:var(--muted);font-size:10px;margin-top:5px}.today-stage .actions{margin-top:0}.today-stage .actions .btn{width:100%;padding:16px;font-size:17px;border-radius:16px}
+.next-stage{margin-top:21px}.next-heading{color:var(--muted);font-size:11px;letter-spacing:.08em;margin:0 0 9px 4px}.next-card{display:flex;align-items:center;gap:13px;background:linear-gradient(145deg,#141b18,#0d1310);border:1px solid var(--line);border-radius:19px;padding:13px 14px}.next-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#6842a6,#3e236d);font-size:23px}.next-info{flex:1}.next-info strong{display:block;font-size:16px}.next-info span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.next-arrow{color:var(--muted);font-size:24px}.home-empty{padding:28px 20px;text-align:center;border:1px solid #38533e;border-radius:25px;background:linear-gradient(145deg,#131e17,#0d1410)}.home-empty h3{font-size:24px;margin-bottom:8px}.home-empty p{color:var(--muted);line-height:1.5;margin-bottom:17px}
+@media(max-width:430px){header{padding-left:14px;padding-right:14px}.brand-name{font-size:16px}.brand-sub{font-size:9px}.today-stage .today-title{font-size:35px}.today-stage .today-distance{font-size:28px}.today-stage .today-stat{padding:0 4px}.today-stage .today-stat b{font-size:12px}}
+
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -672,46 +682,20 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V20.6</div><h1>Proyecto Rafa</h1></div>
+  <div class="brand-head"><div class="brand-name">CORREDOR <span>SÓLIDO</span></div><div class="brand-sub">Entrena con criterio. Progresa con datos.</div></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
 <main>
 <section id="inicio" class="view active">
-  <div class="hero">
-    <div class="kicker">TU ENTRENAMIENTO</div>
-    <h2>Construye tu mejor versión</h2>
-    <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V20.6 ACTIVA</span>
+  <div class="home-motivation">
+    <span class="quote-mark">“</span>
+    <div><h2>Construye tu mejor versión.</h2><p>Cada día cuenta.</p></div>
   </div>
-  <div class="metrics">
-    <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
-    <div class="metric"><span>Último ritmo Z2</span><strong id="lastPace">—</strong></div>
-    <div class="metric"><span>FC media Z2</span><strong id="lastHr">—</strong></div>
-    <div class="metric"><span>Entrenamientos</span><strong id="totalRuns">0</strong></div>
-  </div>
-  <div class="home-focus">
-    <div class="focus-card"><small>FOCO ACTUAL</small><strong>Mejorar eficiencia en Zona 2</strong></div>
-    <div class="focus-card"><small>CONSTANCIA</small><strong id="consistencyScore">—</strong></div>
-  </div>
-
-  <div class="section-head"><h3>Entrenamiento de hoy</h3><button class="btn secondary small" onclick="setView('plan')">Ver semana</button></div>
-  <div id="todayWorkout"></div>
+  <div id="todayWorkout" class="today-stage"></div>
+  <div id="nextWorkout" class="next-stage"></div>
   <div id="raceCountdown"></div>
-
-  <div class="quick-run">
-    <h3>Registro rápido de carrera</h3>
-    <p>Introduce distancia, tiempo, pulsaciones y sensaciones. El ritmo y el cumplimiento se calculan automáticamente.</p>
-    <div class="quick-actions">
-      <button class="btn primary" type="button" onclick="openQuickRun()">＋ Registrar carrera</button>
-      <button class="btn secondary" type="button" onclick="repeatLastRun()">Repetir última</button>
-    </div>
-  </div>
-
-
-  <div class="section-head"><h3>Última actividad</h3></div>
-  <div id="latest"></div>
-  <div id="firstUseHint" class="z2-note" style="display:none">Empieza registrando tu primer entrenamiento o creando tu planificación semanal.</div>
+  <div id="firstUseHint" class="z2-note" style="display:none">Empieza creando tu planificación semanal para que la aplicación pueda decirte qué toca hoy.</div>
 </section>
 
 
@@ -1365,13 +1349,31 @@ function todayAction(p){
  return `<button class="btn primary small" type="button" onclick="setPlanStatus('${p.id}','done')">Marcar completado</button>`;
 }
 function renderToday(){
- const today=isoDate(new Date()),items=data.plan.filter(p=>p.date===today);
- $("#todayWorkout").innerHTML=items.length?items.map(p=>`<div class="today-card ${p.status||"pending"}">
-   <div class="today-label">HOY · ${statusLabel(p.status).toUpperCase()}</div>
-   <div class="today-title">${p.title}</div>
-   <div class="today-meta">${p.sport}${p.distance?` · ${Number(p.distance).toFixed(1).replace(".",",")} km`:""} · ${p.duration||"—"} min<br>${p.intensity||""}${p.notes?` · ${p.notes}`:""}</div>
-   <div class="actions">${todayAction(p)}</div>
- </div>`).join(""):'<div class="empty">Hoy no tienes entrenamiento planificado.</div>';
+ const today=isoDate(new Date());
+ const items=data.plan.filter(p=>p.date===today);
+ const primary=items[0];
+ if(primary){
+   const isRun=primary.sport==="Running";
+   const distance=primary.distance?`${Number(primary.distance).toFixed(1).replace(".",",")} km`:"";
+   const pace=(primary.intensity||"").match(/\d:\d{2}\s*[–-]\s*\d:\d{2}/)?.[0] || (primary.intensity||"Objetivo del plan");
+   const zone=/z2|zona 2/i.test(`${primary.title} ${primary.intensity}`)?"ZONA 2":(primary.intensity||"CONTROLADO");
+   $("#todayWorkout").innerHTML=`<div class="today-card ${primary.status||"pending"}">
+     <div class="today-label">HOY TOCA</div>
+     <div class="today-icon">${isRun?'🏃':'🏋️'}</div>
+     <div class="today-title">${primary.title}</div>
+     ${distance?`<div class="today-distance">${distance}</div>`:""}
+     <div class="today-stats">
+       <div class="today-stat"><b>${pace}</b><span>${isRun?'RITMO':'INTENSIDAD'}</span></div>
+       <div class="today-stat"><b>${zone}</b><span>${isRun?'FC':'OBJETIVO'}</span></div>
+       <div class="today-stat"><b>${primary.duration||'—'}${primary.duration?' min':''}</b><span>DURACIÓN</span></div>
+     </div>
+     <div class="actions">${todayAction(primary)}</div>
+   </div>`;
+ }else{
+   $("#todayWorkout").innerHTML=`<div class="home-empty"><h3>Hoy toca recuperar.</h3><p>No hay entrenamiento planificado para hoy. Aprovecha para descansar o revisa la semana.</p><button class="btn primary" onclick="setView('plan')">VER PLAN</button></div>`;
+ }
+ const future=data.plan.filter(p=>p.date>today&&p.status!=="done").sort((a,b)=>a.date.localeCompare(b.date))[0];
+ $("#nextWorkout").innerHTML=future?`<div class="next-heading">PRÓXIMO ENTRENAMIENTO</div><div class="next-card" onclick="setView('plan')"><div class="next-icon">${future.sport==='Running'?'🏃':'🏋️'}</div><div class="next-info"><strong>${future.title}</strong><span>${fmt(future.date)}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="next-arrow">›</div></div>`:"";
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
  renderModuleToday();
