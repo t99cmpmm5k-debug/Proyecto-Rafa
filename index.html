@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.8 · Excel por filas corregido</title>
+<title>Corredor Sólido · V22.9 · Excel por filas definitivo</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1683,7 +1683,37 @@ function parseDuration(content){
 }
 function parsePace(content){const m=String(content||"").match(/\b(\d{1,2}:\d{2})(?:\s*-\s*(\d{1,2}:\d{2}))?\s*(?:\/\s*km|min\s*\/\s*km)?/i);return m?`${m[1]}${m[2]?`-${m[2]}`:""}/km`:""}
 function parsePlanSessions(rawText,baseMonday){
- const raw=normalizePlanText(rawText);let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
+ const source=String(rawText||"");
+ const canonical=[];
+ source.split(/\r?\n/).forEach(line=>{
+  if(!line.startsWith("@@SESSION\t"))return;
+  try{
+   const x=JSON.parse(line.slice(10));
+   if(!x.date)return;
+   const sport=x.sport||"Running";
+   const isRest=sport==="Descanso";
+   const isGym=sport==="Gimnasio";
+   const combined=[x.type,x.title,x.objective].filter(Boolean).join(" · ");
+   let title=detectSessionTitle(combined||sport);
+   if(isRest)title="Descanso";
+   if(isGym&&!title.startsWith("Fuerza"))title="Fuerza";
+   const detailTitle=String(x.title||"").trim();
+   if(isGym&&detailTitle&&/superior|inferior/i.test(detailTitle))title=`Fuerza · ${detailTitle}`;
+   const notesParts=[];
+   if(detailTitle&&!title.toLowerCase().includes(detailTitle.toLowerCase()))notesParts.push(detailTitle);
+   if(x.objective)notesParts.push(String(x.objective).trim());
+   const notes=[...new Set(notesParts.filter(Boolean))].join(" · ")||title;
+   canonical.push({
+    id:uid(),date:x.date,sport,title,
+    distance:isGym||isRest?0:(Number(x.distance)||0),
+    duration:Number(x.duration)||0,
+    intensity:isGym||isRest?String(x.objective||"").trim():String(x.pace||x.objective||"").trim(),
+    status:"pending",notes,category:isRest?"Descanso":title
+   });
+  }catch(e){}
+ });
+ if(canonical.length)return canonical;
+ const raw=normalizePlanText(source);let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
  for(const line of lines){const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);if(day!==null||date){if(current)chunks.push(current);current={day,date,text:line}}else if(current)current.text+=` · ${line}`}
  if(current)chunks.push(current);if(!chunks.length)lines.filter(x=>x.length>3).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
  return chunks.map((c,i)=>{
@@ -1765,14 +1795,20 @@ async function extractExcelText(file){
     const dur=String(get(iDur)??"").trim();
     const pace=String(get(iPace)??"").trim();
     const obj=String(get(iObj)??"").trim();
-    const prefix=[day,displayIsoForImport(dateIso)].filter(Boolean).join(" ");
-    const parts=[sport,type,title];
-    if(dist)parts.push(/km/i.test(dist)?dist:`${dist} km`);
-    if(dur)parts.push(/min/i.test(dur)?`Duración ${dur}`:`Duración ${dur} min`);
-    if(pace)parts.push(pace);
-    if(obj)parts.push(obj);
-    const clean=parts.map(v=>String(v).trim()).filter(Boolean).filter((v,i,a)=>a.findIndex(x=>x.toLowerCase()===v.toLowerCase())===i);
-    if(prefix||clean.length)sessions.push(`${prefix}${prefix&&clean.length?" · ":""}${clean.join(" · ")}`);
+    if(!dateIso)continue;
+    const sportClean=/descanso/i.test(sport)?"Descanso":/gimnasio|gym|fuerza/i.test(`${sport} ${type}`)?"Gimnasio":"Running";
+    const payload={
+     date:dateIso,
+     day,
+     sport:sportClean,
+     type,
+     title,
+     distance:dist===""?0:Number(String(dist).replace(",","."))||0,
+     duration:dur===""?0:Number(String(dur).replace(",","."))||0,
+     pace,
+     objective:obj
+    };
+    sessions.push(`@@SESSION\t${JSON.stringify(payload)}`);
    }
    if(sessions.length){out.push(sessions.join("\n"));return}
   }
