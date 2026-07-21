@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V21.1</title>
+<title>Corredor Sólido · V21.2</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -673,6 +673,38 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 #inicio .home-legacy{display:none!important}
 @media(max-width:380px){#inicio .home-workout-meta b{font-size:11px}#inicio .home-workout-meta>div{padding:0 4px}#inicio .home-today-shell{padding-left:13px;padding-right:13px}#inicio .home-motivation{padding-top:13px}}
 
+
+/* ===== FASE 1 · INICIO V21.2 · acabado final. Solo afecta a Inicio ===== */
+body[data-view="inicio"] header{padding-top:calc(10px + env(safe-area-inset-top));padding-bottom:10px;min-height:auto}
+body[data-view="inicio"] header .kicker{font-size:9px;letter-spacing:.16em;margin-bottom:3px}
+body[data-view="inicio"] header h1{font-size:clamp(24px,7vw,31px);line-height:1.03;letter-spacing:-.035em}
+body[data-view="inicio"] #exportTop{display:none!important}
+body[data-view="inicio"] main{padding-top:0}
+#inicio{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+#inicio .home-motivation{padding:13px 4px 11px}
+#inicio .home-motivation h2{font-size:clamp(20px,5.8vw,27px);line-height:1.08;letter-spacing:-.035em}
+#inicio .home-motivation h2:before,#inicio .home-motivation h2:after{font-size:.8em;vertical-align:.08em}
+#inicio .home-motivation p{margin-top:5px;font-size:13px}
+#inicio .home-today-shell{padding:15px 15px 14px;border-radius:21px}
+#inicio .home-day-pill{margin-bottom:8px;padding:5px 13px;font-size:9px}
+#inicio .home-workout-icon{width:29px;height:29px;margin-bottom:5px}
+#inicio .home-workout-title{max-width:560px;margin-left:auto;margin-right:auto;font-size:clamp(24px,6.7vw,32px);line-height:1.01}
+#inicio .home-workout-distance{margin-top:5px;font-size:clamp(23px,6.5vw,30px)}
+#inicio .home-workout-meta{margin:13px 0 12px;padding-top:12px}
+#inicio .home-workout-meta b{font-size:12px}
+#inicio .home-workout-meta small{font-size:8px;margin-top:3px}
+#inicio .home-start-btn{min-height:52px;padding:13px 42px 13px 18px;border-radius:14px;font-size:15px;letter-spacing:.01em}
+#inicio .home-start-btn:after{top:11px}
+#inicio .home-next-label{margin:13px 2px 7px;font-size:9px}
+#inicio .home-next-card{padding:10px 12px;border-radius:16px}
+#inicio .home-next-icon{width:40px;height:40px;flex-basis:40px;border-radius:12px}
+#inicio .home-next-icon svg{width:22px;height:22px}
+#inicio .home-next-copy strong{font-size:14px}
+#inicio .home-next-copy span{font-size:10px}
+#inicio .home-daily-note{margin-top:8px;padding:9px 12px;border-radius:14px;font-size:11px}
+#inicio .home-daily-note i{font-size:17px}
+@media(max-height:760px){body[data-view="inicio"] header{padding-top:calc(7px + env(safe-area-inset-top));padding-bottom:7px}#inicio .home-motivation{padding-top:9px;padding-bottom:8px}#inicio .home-today-shell{padding-top:12px;padding-bottom:12px}#inicio .home-workout-title{font-size:clamp(22px,6.2vw,29px)}#inicio .home-workout-meta{margin-top:10px;margin-bottom:10px;padding-top:10px}#inicio .home-next-label{margin-top:10px}#inicio .home-daily-note{display:none}}
+
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -709,7 +741,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
-<body>
+<body data-view="inicio">
 <header>
   <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
@@ -2238,7 +2270,7 @@ function render(){
  renderRaces();
  renderToday();renderImportedGymRoutines();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();renderGymPlan();renderFirstUseHint();
 }
-function setView(v){currentView=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
+function setView(v){currentView=v;document.body.dataset.view=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
 document.querySelectorAll("[data-run-view]").forEach(b=>b.onclick=()=>{runHistoryView=b.dataset.runView;document.querySelectorAll("[data-run-view]").forEach(x=>x.classList.toggle("active",x===b));render()});
