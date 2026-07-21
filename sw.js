@@ -1,7 +1,7 @@
-const CACHE="corredor-solido-v21.2-inicio";
+const CACHE="corredor-solido-v21-5-hero";
 self.addEventListener("install",e=>{
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html"])));
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html","./hero-corredor-solido.jpg"])));
 });
 self.addEventListener("activate",e=>{
   e.waitUntil(Promise.all([
