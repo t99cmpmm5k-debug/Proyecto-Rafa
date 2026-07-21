@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.5 · Importador universal</title>
+<title>Corredor Sólido · V22.6 · Importador universal corregido</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -772,21 +772,21 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 .plan-import-dialog::backdrop{background:rgba(0,5,14,.78);backdrop-filter:blur(7px)}
 .plan-import-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 18px 14px;border-bottom:1px solid rgba(130,190,230,.18)}
 .plan-import-dialog-head h3{margin-top:4px;font-size:22px}
-.plan-import-dialog-body{padding:16px 18px 20px;overflow:auto;max-height:calc(88vh - 76px)}
+.plan-import-dialog-body{padding:16px 18px 0;display:flex;flex-direction:column;max-height:calc(88vh - 76px);overflow:hidden}
 .plan-import-dialog-body label{display:grid;gap:7px;color:#aebed1;font-size:13px;font-weight:750}
 .plan-import-dialog-body input,.plan-import-dialog-body textarea{width:100%;border:1px solid rgba(83,145,190,.35);border-radius:12px;background:#06101f;color:#fff;padding:12px}
 .plan-import-summary{margin:14px 0;padding:12px 14px;border:1px solid rgba(0,220,245,.25);border-radius:14px;background:rgba(0,220,245,.06);color:#b9cfdf;font-size:13px}
-.plan-import-preview{display:grid;gap:10px}
+.plan-import-preview{display:grid;gap:10px;overflow:auto;min-height:0;padding-right:5px;overscroll-behavior:contain}
 .plan-import-row{display:grid;grid-template-columns:32px 1fr;gap:10px;padding:12px;border:1px solid rgba(104,155,196,.22);border-radius:14px;background:linear-gradient(145deg,rgba(7,41,74,.86),rgba(3,23,45,.92))}
 .plan-import-row input{width:18px;height:18px;margin:3px 0 0;padding:0}
 .plan-import-row strong{display:block;font-size:15px;color:#fff}
 .plan-import-row span{display:block;margin-top:4px;color:#aebed1;font-size:12px;line-height:1.35}
 .plan-import-raw{margin-top:14px;color:#aebed1;font-size:13px}
 .plan-import-raw textarea{margin-top:10px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.45}
-.plan-import-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.plan-import-dialog-actions{position:sticky;bottom:0;z-index:3;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px -18px 0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(7,20,38,.78),#071426 28%);border-top:1px solid rgba(130,190,230,.18);backdrop-filter:blur(12px)}
 .plan-import-status.loading{display:block;color:#79efff}
 .plan-import-status.error{display:block;color:#ff9f9f}
-@media(max-width:520px){.plan-import-dialog{width:96vw;border-radius:18px}.plan-import-dialog-head{padding:15px}.plan-import-dialog-body{padding:14px}.plan-import-dialog-actions{grid-template-columns:1fr}}
+@media(max-width:520px){.plan-import-dialog{width:96vw;border-radius:18px}.plan-import-dialog-head{padding:15px}.plan-import-dialog-body{padding:14px 14px 0}.plan-import-dialog-actions{grid-template-columns:1fr 1fr;margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}}
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -1645,9 +1645,16 @@ function dayIndexFromText(s){
  const m=clean.match(/\b(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)\b/);return m?PLAN_DAYS[m[1]]:null;
 }
 function explicitDateFromText(s,baseMonday){
- const m=String(s||"").match(/\b(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2,4}))?\b/);if(!m)return "";
- let y=m[3]?Number(m[3]):new Date(`${baseMonday}T12:00:00`).getFullYear();if(y<100)y+=2000;
- const d=new Date(y,Number(m[2])-1,Number(m[1]),12);return Number.isNaN(d.getTime())?"":isoDate(d)
+ const text=String(s||"");
+ // Solo acepta fechas reales (dd/mm[/aaaa]) y evita confundir ritmos como 5:35-5:50/km con una fecha.
+ const candidates=[...text.matchAll(/(^|[^\d:])(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2,4}))?(?![\d:])/g)];
+ for(const m of candidates){
+  const day=Number(m[2]),month=Number(m[3]);if(day<1||day>31||month<1||month>12)continue;
+  let y=m[4]?Number(m[4]):new Date(`${baseMonday}T12:00:00`).getFullYear();if(y<100)y+=2000;
+  const d=new Date(y,month-1,day,12);
+  if(d.getFullYear()===y&&d.getMonth()===month-1&&d.getDate()===day)return isoDate(d);
+ }
+ return "";
 }
 function cleanPlanTitle(text){return String(text||"").replace(/^[-|:;,\s]+/,"").replace(/\s{2,}/g," ").trim()}
 function detectSessionTitle(content){
@@ -1665,13 +1672,29 @@ function parseDistance(content){
  const vals=[...String(content||"").matchAll(/\b(\d{1,2}(?:[.,]\d+)?)\s*(?:km|k)\b/gi)].map(m=>Number(m[1].replace(",","."))).filter(n=>n>0&&n<100);
  return vals.length?vals[0]:0;
 }
-function parseDuration(content){const m=String(content||"").match(/\b(\d{1,3})\s*(?:min(?:utos?)?|')\b/i);return m?Number(m[1]):0}
+function parseDuration(content){
+ const text=String(content||"");
+ // Elimina recuperaciones/descansos entre repeticiones antes de buscar la duración total.
+ const cleaned=text.replace(/(?:rec(?:uperaci[oó]n)?|descanso|pausa)\s*(?:de\s*)?\d{1,3}\s*(?:min(?:utos?)?|['’]|s(?:eg(?:undos?)?)?)/gi,"");
+ const explicit=cleaned.match(/(?:duraci[oó]n|total|durante)\s*[:\-]?\s*(\d{1,3})\s*(?:min(?:utos?)?|['’])/i);
+ if(explicit)return Number(explicit[1]);
+ const matches=[...cleaned.matchAll(/\b(\d{1,3})\s*(?:min(?:utos?)?|['’])(?:\b|$)/gi)].map(m=>Number(m[1])).filter(n=>n>=5&&n<=300);
+ return matches.length?Math.max(...matches):0;
+}
 function parsePace(content){const m=String(content||"").match(/\b(\d{1,2}:\d{2})(?:\s*-\s*(\d{1,2}:\d{2}))?\s*(?:\/\s*km|min\s*\/\s*km)?/i);return m?`${m[1]}${m[2]?`-${m[2]}`:""}/km`:""}
 function parsePlanSessions(rawText,baseMonday){
  const raw=normalizePlanText(rawText);let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
  for(const line of lines){const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);if(day!==null||date){if(current)chunks.push(current);current={day,date,text:line}}else if(current)current.text+=` · ${line}`}
  if(current)chunks.push(current);if(!chunks.length)lines.filter(x=>x.length>3).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
- return chunks.map((c,i)=>{let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));let content=cleanPlanTitle(c.text.replace(/\b(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)\b\s*[:\-]?/i,"").replace(/\b\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?\b/,""));const title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=parsePace(content);return {id:uid(),date,sport:isGym?"Gimnasio":"Running",title,distance,duration,intensity:[pace,content].filter(Boolean).join(" · "),status:"pending",notes:content,category:isRest?"Descanso":title}}).filter(s=>s.title&&s.date)
+ return chunks.map((c,i)=>{
+  let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));
+  let content=cleanPlanTitle(c.text.replace(/\b(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)\b\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
+  const title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
+  const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=isGym||isRest?"":parsePace(content);
+  const sport=isRest?"Descanso":isGym?"Gimnasio":"Running";
+  const normalizedTitle=isGym?(title.startsWith("Fuerza")?title:"Fuerza"):title;
+  return {id:uid(),date,sport,title:normalizedTitle,distance,duration,intensity:[pace,content].filter(Boolean).join(" · "),status:"pending",notes:content,category:isRest?"Descanso":normalizedTitle};
+ }).filter(s=>s.title&&s.date)
 }
 async function extractPdfText(file){
  if(!window.pdfjsLib)throw new Error("No se ha podido cargar el lector PDF. Comprueba la conexión.");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const pages=[];
