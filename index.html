@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V20.9.1</title>
+<title>Corredor Sólido · V21</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -635,14 +635,40 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 @media(max-width:430px){.evolution-tabs{grid-template-columns:repeat(2,1fr)}.evolution-toolbar{grid-template-columns:1fr}}
 
 
-/* Inicio Corredor Sólido · Diseño D */
-.brand-head{min-width:0;text-align:left}.brand-name{font-size:18px;font-weight:950;letter-spacing:.035em;white-space:nowrap}.brand-name span{color:var(--green)}.brand-sub{margin-top:3px;color:var(--muted);font-size:10px;letter-spacing:.02em}
-.home-motivation{display:flex;justify-content:center;align-items:flex-start;gap:10px;text-align:center;padding:22px 8px 18px}.home-motivation .quote-mark{color:var(--green);font-size:44px;line-height:.75;font-weight:950}.home-motivation h2{font-size:23px;letter-spacing:-.55px}.home-motivation p{margin-top:7px;color:var(--muted);font-size:15px}
-.today-stage{margin-top:4px}.today-stage .today-card{position:relative;text-align:center;padding:26px 20px 20px;border-radius:28px;background:radial-gradient(circle at 50% 15%,rgba(168,240,122,.11),transparent 35%),linear-gradient(155deg,#121b16,#090f0c);border:1px solid #56803b;box-shadow:0 20px 55px rgba(0,0,0,.36),inset 0 0 55px rgba(120,220,73,.025)}
-.today-stage .today-label{display:inline-flex;border:1px solid #6ca84a;border-radius:999px;padding:7px 15px;color:var(--green);letter-spacing:.08em;background:rgba(90,150,56,.08)}
-.today-stage .today-title{font-size:39px;letter-spacing:-1.35px;margin-top:17px}.today-stage .today-distance{font-size:31px;color:var(--green);font-weight:950;margin-top:6px}.today-stage .today-icon{font-size:29px;color:var(--green);margin-top:14px}.today-stage .today-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:22px 0 18px;border-top:1px solid var(--line);padding-top:17px}.today-stage .today-stat{padding:0 8px;border-right:1px solid var(--line)}.today-stage .today-stat:last-child{border-right:0}.today-stage .today-stat b{display:block;font-size:14px}.today-stage .today-stat span{display:block;color:var(--muted);font-size:10px;margin-top:5px}.today-stage .actions{margin-top:0}.today-stage .actions .btn{width:100%;padding:16px;font-size:17px;border-radius:16px}
-.next-stage{margin-top:21px}.next-heading{color:var(--muted);font-size:11px;letter-spacing:.08em;margin:0 0 9px 4px}.next-card{display:flex;align-items:center;gap:13px;background:linear-gradient(145deg,#141b18,#0d1310);border:1px solid var(--line);border-radius:19px;padding:13px 14px}.next-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#6842a6,#3e236d);font-size:23px}.next-info{flex:1}.next-info strong{display:block;font-size:16px}.next-info span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.next-arrow{color:var(--muted);font-size:24px}.home-empty{padding:28px 20px;text-align:center;border:1px solid #38533e;border-radius:25px;background:linear-gradient(145deg,#131e17,#0d1410)}.home-empty h3{font-size:24px;margin-bottom:8px}.home-empty p{color:var(--muted);line-height:1.5;margin-bottom:17px}
-@media(max-width:430px){header{padding-left:14px;padding-right:14px}.brand-name{font-size:16px}.brand-sub{font-size:9px}.today-stage .today-title{font-size:35px}.today-stage .today-distance{font-size:28px}.today-stage .today-stat{padding:0 4px}.today-stage .today-stat b{font-size:12px}}
+/* ===== FASE 1 · INICIO V21. Solo afecta a #inicio ===== */
+#inicio{padding-top:4px}
+#inicio .home-brand{display:none}
+#inicio .home-motivation{text-align:center;padding:24px 8px 20px}
+#inicio .home-motivation .quote-mark{display:inline-block;color:var(--green);font-size:42px;font-weight:950;line-height:.7;vertical-align:top;margin-right:8px}
+#inicio .home-motivation h2{display:inline;font-size:clamp(25px,7vw,34px);line-height:1.15;letter-spacing:-.035em}
+#inicio .home-motivation p{margin-top:12px;color:var(--muted);font-size:17px}
+#inicio .home-today-shell{position:relative;overflow:hidden;background:linear-gradient(155deg,#101a14 0%,#0d1411 56%,#0b1010 100%);border:1px solid rgba(159,232,112,.42);border-radius:28px;padding:24px 20px 20px;box-shadow:0 22px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.025)}
+#inicio .home-today-shell:before{content:"";position:absolute;inset:-45% -25% auto auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(159,232,112,.13),transparent 68%);pointer-events:none}
+#inicio .home-day-pill{position:relative;display:table;margin:0 auto 18px;padding:7px 18px;border:1px solid rgba(159,232,112,.62);border-radius:999px;color:var(--green);font-size:12px;font-weight:950;letter-spacing:.08em}
+#inicio .home-workout{text-align:center;position:relative}
+#inicio .home-workout-icon{font-size:31px;line-height:1;margin-bottom:9px;color:var(--green)}
+#inicio .home-workout-title{font-size:clamp(34px,10vw,48px);font-weight:950;letter-spacing:-.045em;line-height:1.02}
+#inicio .home-workout-distance{margin-top:9px;color:var(--green);font-size:clamp(28px,8vw,38px);font-weight:950}
+#inicio .home-workout-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:22px 0 20px;border-top:1px solid rgba(255,255,255,.09);padding-top:18px}
+#inicio .home-workout-meta>div{padding:0 8px;min-width:0}
+#inicio .home-workout-meta>div+div{border-left:1px solid rgba(255,255,255,.09)}
+#inicio .home-workout-meta b{display:block;font-size:14px;line-height:1.25;white-space:normal}
+#inicio .home-workout-meta small{display:block;color:var(--muted);font-size:10px;margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+#inicio .home-start-btn{position:relative;width:100%;border:0;border-radius:18px;padding:17px 20px;background:linear-gradient(90deg,#a8ef72,#83e54b);color:#091006;font-size:18px;font-weight:950;box-shadow:0 10px 30px rgba(134,229,75,.18)}
+#inicio .home-start-btn:after{content:"›";position:absolute;right:20px;font-size:28px;line-height:18px;top:15px}
+#inicio .home-rest-title{font-size:32px;font-weight:950;letter-spacing:-.03em}
+#inicio .home-rest-text{max-width:360px;margin:12px auto 21px;color:var(--muted);line-height:1.5;font-size:15px}
+#inicio .home-next-label{margin:22px 2px 10px;color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.08em}
+#inicio .home-next-card{display:flex;align-items:center;gap:13px;background:linear-gradient(145deg,var(--panel),#10151a);border:1px solid var(--line);border-radius:20px;padding:14px 15px;box-shadow:var(--shadow)}
+#inicio .home-next-icon{display:grid;place-items:center;width:50px;height:50px;flex:0 0 50px;border-radius:15px;background:linear-gradient(145deg,#563ca4,#322367);font-size:24px}
+#inicio .home-next-copy{min-width:0;flex:1}
+#inicio .home-next-copy strong{display:block;font-size:16px}
+#inicio .home-next-copy span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+#inicio .home-next-arrow{color:var(--muted);font-size:25px}
+#inicio .home-daily-note{display:flex;align-items:center;gap:11px;margin-top:12px;padding:14px 16px;background:rgba(18,23,29,.72);border:1px solid var(--line);border-radius:17px;color:#dfe6e1;font-size:13px;line-height:1.35}
+#inicio .home-daily-note i{font-style:normal;color:var(--green);font-size:25px;font-weight:950}
+#inicio .home-legacy{display:none!important}
+@media(max-width:380px){#inicio .home-workout-meta b{font-size:12px}#inicio .home-workout-meta>div{padding:0 5px}#inicio .home-today-shell{padding-left:16px;padding-right:16px}}
 
 </style>
 
@@ -682,22 +708,29 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div class="brand-head"><div class="brand-name">CORREDOR <span>SÓLIDO</span></div><div class="brand-sub">Entrena con criterio. Progresa con datos.</div></div>
+  <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
 <main>
 <section id="inicio" class="view active">
   <div class="home-motivation">
-    <span class="quote-mark">“</span>
-    <div><h2>Construye tu mejor versión.</h2><p>Cada día cuenta.</p></div>
+    <span class="quote-mark">“</span><h2>Construye tu mejor versión.</h2>
+    <p>Cada día cuenta.</p>
   </div>
-  <div id="todayWorkout" class="today-stage">
-    <div class="home-empty"><h3>Hoy toca recuperar.</h3><p>No hay entrenamiento planificado para hoy. Revisa la semana para preparar la próxima sesión.</p><button class="btn primary" type="button" onclick="setView('plan')">VER PLAN</button></div>
+
+  <div id="todayWorkout"></div>
+
+  <div class="home-next-label">PRÓXIMO ENTRENAMIENTO</div>
+  <div id="homeNextWorkout"></div>
+
+  <div class="home-daily-note"><i>“</i><span>La constancia de hoy es la fuerza de mañana.</span></div>
+
+  <!-- Compatibilidad: estos nodos conservan la lógica original sin mostrarse en Inicio. -->
+  <div class="home-legacy" aria-hidden="true">
+    <span id="weekKm"></span><span id="lastPace"></span><span id="lastHr"></span><span id="totalRuns"></span>
+    <span id="consistencyScore"></span><div id="raceCountdown"></div><div id="latest"></div><div id="firstUseHint"></div>
   </div>
-  <div id="nextWorkout" class="next-stage"></div>
-  <div id="raceCountdown"></div>
-  <div id="firstUseHint" class="z2-note" style="display:none">Empieza creando tu planificación semanal para que la aplicación pueda decirte qué toca hoy.</div>
 </section>
 
 
@@ -1351,31 +1384,28 @@ function todayAction(p){
  return `<button class="btn primary small" type="button" onclick="setPlanStatus('${p.id}','done')">Marcar completado</button>`;
 }
 function renderToday(){
- const today=isoDate(new Date());
- const items=data.plan.filter(p=>p.date===today);
- const primary=items[0];
- if(primary){
-   const isRun=primary.sport==="Running";
-   const distance=primary.distance?`${Number(primary.distance).toFixed(1).replace(".",",")} km`:"";
-   const pace=(primary.intensity||"").match(/\d:\d{2}\s*[–-]\s*\d:\d{2}/)?.[0] || (primary.intensity||"Objetivo del plan");
-   const zone=/z2|zona 2/i.test(`${primary.title} ${primary.intensity}`)?"ZONA 2":(primary.intensity||"CONTROLADO");
-   $("#todayWorkout").innerHTML=`<div class="today-card ${primary.status||"pending"}">
-     <div class="today-label">HOY TOCA</div>
-     <div class="today-icon">${isRun?'🏃':'🏋️'}</div>
-     <div class="today-title">${primary.title}</div>
-     ${distance?`<div class="today-distance">${distance}</div>`:""}
-     <div class="today-stats">
-       <div class="today-stat"><b>${pace}</b><span>${isRun?'RITMO':'INTENSIDAD'}</span></div>
-       <div class="today-stat"><b>${zone}</b><span>${isRun?'FC':'OBJETIVO'}</span></div>
-       <div class="today-stat"><b>${primary.duration||'—'}${primary.duration?' min':''}</b><span>DURACIÓN</span></div>
-     </div>
-     <div class="actions">${todayAction(primary)}</div>
-   </div>`;
+ const today=isoDate(new Date()),items=data.plan.filter(p=>p.date===today);
+ const main=items.find(p=>p.status!=="skipped")||items[0];
+ if(main){
+   const isGym=main.sport==="Gimnasio";
+   const distance=Number(main.distance||0);
+   const intensity=(main.intensity||"Objetivo").trim();
+   const paceMatch=intensity.match(/\d{1,2}:\d{2}(?:\s*[–-]\s*\d{1,2}:\d{2})?/);
+   const pace=paceMatch?paceMatch[0]:((main.duration||"—")+" min");
+   const zone=/zona\s*\d/i.test(intensity)?(intensity.match(/zona\s*\d/i)[0]):(isGym?"Fuerza":"Objetivo");
+   const objective=isGym?`${main.gymRoutine?.exercises?.length||"—"} ejercicios`:(/cómodo/i.test(intensity)?"Cómodo":intensity.replace(paceMatch?.[0]||"","").replace(/^[ ·-]+|[ ·-]+$/g,"")||"Completar");
+   const action=main.status==="done"
+     ?`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">VER ENTRENAMIENTO</button>`
+     :isGym&&main.gymRoutine
+       ?`<button class="home-start-btn" type="button" onclick="startPlannedGym('${main.id}')">EMPEZAR</button>`
+       :`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">EMPEZAR</button>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY TOCA</div><div class="home-workout"><div class="home-workout-icon">${isGym?'🏋️':'🏃'}</div><div class="home-workout-title">${main.title}</div>${distance?`<div class="home-workout-distance">${distance.toFixed(1).replace('.',',')} km</div>`:""}<div class="home-workout-meta"><div><b>${pace}</b><small>${paceMatch?'/km':'Duración'}</small></div><div><b>${zone}</b><small>${isGym?'Sesión':'FC'}</small></div><div><b>${objective}</b><small>Objetivo</small></div></div>${action}</div></div>`;
  }else{
-   $("#todayWorkout").innerHTML=`<div class="home-empty"><h3>Hoy toca recuperar.</h3><p>No hay entrenamiento planificado para hoy. Aprovecha para descansar o revisa la semana.</p><button class="btn primary" onclick="setView('plan')">VER PLAN</button></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout"><div class="home-workout-icon">✓</div><div class="home-rest-title">Hoy toca recuperar.</div><p class="home-rest-text">No hay entrenamiento planificado. Recupera bien y prepara la siguiente sesión.</p><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
  }
- const future=data.plan.filter(p=>p.date>today&&p.status!=="done").sort((a,b)=>a.date.localeCompare(b.date))[0];
- $("#nextWorkout").innerHTML=future?`<div class="next-heading">PRÓXIMO ENTRENAMIENTO</div><div class="next-card" onclick="setView('plan')"><div class="next-icon">${future.sport==='Running'?'🏃':'🏋️'}</div><div class="next-info"><strong>${future.title}</strong><span>${fmt(future.date)}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="next-arrow">›</div></div>`:"";
+ const future=data.plan.filter(p=>p.date>today&&p.status!=="skipped").sort((a,b)=>a.date.localeCompare(b.date))[0];
+ const nextEl=$("#homeNextWorkout");
+ if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')"><div class="home-next-icon">${future.sport==='Gimnasio'?'🏋️':'🏃'}</div><div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)} · ${future.sport}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')"><div class="home-next-icon">＋</div><div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
  renderModuleToday();
@@ -2680,7 +2710,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2091").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
