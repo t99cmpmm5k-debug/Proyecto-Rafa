@@ -694,10 +694,14 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 #inicio .home-workout-main{display:grid;grid-template-columns:126px minmax(0,1fr);gap:18px;align-items:center}
 #inicio .home-workout-icon{
   display:grid;place-items:center;width:126px;height:126px;margin:0;
-  border-radius:50%;font-size:54px;color:#00dcf5;
+  border-radius:50%;
   background:radial-gradient(circle at 45% 35%,#0878ad 0%,#034778 45%,#001a39 78%);
   border:1px solid rgba(0,220,245,.72);box-shadow:inset 0 0 26px rgba(0,220,245,.16),0 10px 28px rgba(0,0,0,.28)
 }
+#inicio .home-workout-icon svg{width:58px;height:58px;display:block;stroke:#79efff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 10px rgba(0,220,245,.18))}
+#inicio .home-workout-icon .icon-fill{fill:rgba(121,239,255,.16);stroke:none}
+#inicio .home-workout-icon.rest svg{width:50px;height:50px;stroke-width:2.2}
+#inicio .home-workout-icon.rest .icon-fill{fill:rgba(121,239,255,.12)}
 #inicio .home-workout-copy{min-width:0}
 #inicio .home-workout-title{font-size:clamp(34px,8.5vw,46px);font-weight:900;letter-spacing:-.035em;line-height:1.02;color:#fff}
 #inicio .home-workout-distance{margin-top:8px;color:#00dcf5;font-size:clamp(31px,8vw,42px);font-weight:900;line-height:1}
@@ -723,8 +727,10 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 }
 #inicio .home-next-icon{
   display:grid;place-items:center;width:56px;height:56px;flex:0 0 56px;border-radius:14px;
-  background:linear-gradient(145deg,#0879ba,#03427e);font-size:27px;color:#fff
+  background:linear-gradient(145deg,#0879ba,#03427e);color:#fff
 }
+#inicio .home-next-icon svg{width:28px;height:28px;display:block;stroke:#d5faff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#inicio .home-next-icon .icon-fill{fill:rgba(213,250,255,.15);stroke:none}
 #inicio .home-next-copy{min-width:0;flex:1}
 #inicio .home-next-copy strong{display:block;font-size:18px;color:#fff}
 #inicio .home-next-copy span{display:block;margin-top:4px;color:#afbdd0;font-size:13px}
@@ -736,7 +742,8 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
   #inicio .home-content{margin-top:-28px;padding-left:12px;padding-right:12px}
   #inicio .home-today-shell{padding:18px 14px 17px;border-radius:24px}
   #inicio .home-workout-main{grid-template-columns:94px minmax(0,1fr);gap:14px}
-  #inicio .home-workout-icon{width:94px;height:94px;font-size:42px}
+  #inicio .home-workout-icon{width:94px;height:94px}
+  #inicio .home-workout-icon svg{width:45px;height:45px}
   #inicio .home-workout-title{font-size:34px}
   #inicio .home-workout-distance{font-size:32px}
   #inicio .home-workout-meta b{font-size:14px}
@@ -744,7 +751,8 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 }
 @media(max-width:355px){
   #inicio .home-workout-main{grid-template-columns:78px minmax(0,1fr)}
-  #inicio .home-workout-icon{width:78px;height:78px;font-size:35px}
+  #inicio .home-workout-icon{width:78px;height:78px}
+  #inicio .home-workout-icon svg{width:38px;height:38px}
   #inicio .home-workout-title{font-size:29px}
   #inicio .home-workout-meta>div{padding:0 5px}
 }
@@ -1456,6 +1464,24 @@ function todayAction(p){
  if(p.sport==="Running")return `<button class="btn primary" type="button" onclick="setView('running')">Ir a Running</button>`;
  return `<button class="btn primary small" type="button" onclick="setPlanStatus('${p.id}','done')">Marcar completado</button>`;
 }
+function homeIconSvg(kind){
+  const icons={
+    run:`<svg viewBox="0 0 64 64" aria-hidden="true"><circle class="icon-fill" cx="22" cy="13" r="6"></circle><path d="M25 21l8 7 8 2"></path><path d="M32 28l-5 10-9 8"></path><path d="M35 30l5 12 10 8"></path><path d="M24 47h9"></path><path d="M42 50h10"></path><path d="M29 22l-8 10"></path></svg>`,
+    gym:`<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M23 27v10"></path><path d="M18 24v16"></path><path d="M13 22v20"></path><path d="M41 27v10"></path><path d="M46 24v16"></path><path d="M51 22v20"></path><path d="M23 32h18"></path></svg>`,
+    rest:`<svg viewBox="0 0 64 64" aria-hidden="true"><circle class="icon-fill" cx="32" cy="32" r="20"></circle><path d="M23 33l7 7 12-15"></path></svg>`,
+    add:`<svg viewBox="0 0 64 64" aria-hidden="true"><circle class="icon-fill" cx="32" cy="32" r="21"></circle><path d="M32 21v22"></path><path d="M21 32h22"></path></svg>`
+  };
+  return icons[kind]||icons.run;
+}
+function homeMainIcon(kind){
+  const k=(kind==='gym'||kind==='rest')?kind:'run';
+  return `<div class="home-workout-icon ${k==='rest'?'rest':''}">${homeIconSvg(k)}</div>`;
+}
+function homeMiniIcon(kind){
+  const k=(kind==='gym'||kind==='add')?kind:'run';
+  return `<div class="home-next-icon">${homeIconSvg(k)}</div>`;
+}
+
 function renderToday(){
  const today=isoDate(new Date()),items=data.plan.filter(p=>p.date===today);
  const main=items.find(p=>p.status!=="skipped")||items[0];
@@ -1472,13 +1498,13 @@ function renderToday(){
      :isGym&&main.gymRoutine
        ?`<button class="home-start-btn" type="button" onclick="startPlannedGym('${main.id}')">EMPEZAR</button>`
        :`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">EMPEZAR</button>`;
-   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY TOCA</div><div class="home-workout"><div class="home-workout-main"><div class="home-workout-icon">${isGym?'🏋️':'🏃'}</div><div class="home-workout-copy"><div class="home-workout-title">${main.title}</div>${distance?`<div class="home-workout-distance">${distance.toFixed(1).replace('.',',')} km</div>`:""}</div></div><div class="home-workout-meta"><div><b>${distance?distance.toFixed(1).replace('.',','):'—'}</b><small>${distance?'km':'Sesión'}</small></div><div><b>${pace}</b><small>${paceMatch?'/km':'Duración'}</small></div><div><b>${zone}</b><small>${isGym?'Sesión':'FC'}</small></div></div>${action}</div></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY TOCA</div><div class="home-workout"><div class="home-workout-main">${homeMainIcon(isGym?'gym':'run')}<div class="home-workout-copy"><div class="home-workout-title">${main.title}</div>${distance?`<div class="home-workout-distance">${distance.toFixed(1).replace('.',',')} km</div>`:""}</div></div><div class="home-workout-meta"><div><b>${distance?distance.toFixed(1).replace('.',','):'—'}</b><small>${distance?'km':'Sesión'}</small></div><div><b>${pace}</b><small>${paceMatch?'/km':'Duración'}</small></div><div><b>${zone}</b><small>${isGym?'Sesión':'FC'}</small></div></div>${action}</div></div>`;
  }else{
-   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout"><div class="home-workout-main"><div class="home-workout-icon">✓</div><div><div class="home-rest-title">Recuperación</div><p class="home-rest-text">Hoy no hay entrenamiento planificado.</p></div></div><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout"><div class="home-workout-main">${homeMainIcon('rest')}<div><div class="home-rest-title">Recuperación</div><p class="home-rest-text">Hoy no hay entrenamiento planificado.</p></div></div><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
  }
  const future=data.plan.filter(p=>p.date>today&&p.status!=="skipped").sort((a,b)=>a.date.localeCompare(b.date))[0];
  const nextEl=$("#homeNextWorkout");
- if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')"><div class="home-next-icon">${future.sport==='Gimnasio'?'🏋️':'🏃'}</div><div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)} · ${future.sport}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')"><div class="home-next-icon">＋</div><div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
+ if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')">${homeMiniIcon(future.sport==='Gimnasio'?'gym':'run')}<div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)} · ${future.sport}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')">${homeMiniIcon('add')}<div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
  renderModuleToday();
