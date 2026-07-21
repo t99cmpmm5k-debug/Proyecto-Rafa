@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.4 · Inicio Pulido</title>
+<title>Corredor Sólido · V22.5 · Importador universal</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -767,6 +767,26 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
   #inicio .home-workout-meta>div{padding:0 5px}
 }
 
+
+.plan-import-dialog{width:min(94vw,760px);max-height:88vh;padding:0;border:1px solid rgba(0,220,245,.35);border-radius:22px;background:#071426;color:#fff;box-shadow:0 28px 80px rgba(0,0,0,.6)}
+.plan-import-dialog::backdrop{background:rgba(0,5,14,.78);backdrop-filter:blur(7px)}
+.plan-import-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 18px 14px;border-bottom:1px solid rgba(130,190,230,.18)}
+.plan-import-dialog-head h3{margin-top:4px;font-size:22px}
+.plan-import-dialog-body{padding:16px 18px 20px;overflow:auto;max-height:calc(88vh - 76px)}
+.plan-import-dialog-body label{display:grid;gap:7px;color:#aebed1;font-size:13px;font-weight:750}
+.plan-import-dialog-body input,.plan-import-dialog-body textarea{width:100%;border:1px solid rgba(83,145,190,.35);border-radius:12px;background:#06101f;color:#fff;padding:12px}
+.plan-import-summary{margin:14px 0;padding:12px 14px;border:1px solid rgba(0,220,245,.25);border-radius:14px;background:rgba(0,220,245,.06);color:#b9cfdf;font-size:13px}
+.plan-import-preview{display:grid;gap:10px}
+.plan-import-row{display:grid;grid-template-columns:32px 1fr;gap:10px;padding:12px;border:1px solid rgba(104,155,196,.22);border-radius:14px;background:linear-gradient(145deg,rgba(7,41,74,.86),rgba(3,23,45,.92))}
+.plan-import-row input{width:18px;height:18px;margin:3px 0 0;padding:0}
+.plan-import-row strong{display:block;font-size:15px;color:#fff}
+.plan-import-row span{display:block;margin-top:4px;color:#aebed1;font-size:12px;line-height:1.35}
+.plan-import-raw{margin-top:14px;color:#aebed1;font-size:13px}
+.plan-import-raw textarea{margin-top:10px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.45}
+.plan-import-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.plan-import-status.loading{display:block;color:#79efff}
+.plan-import-status.error{display:block;color:#ff9f9f}
+@media(max-width:520px){.plan-import-dialog{width:96vw;border-radius:18px}.plan-import-dialog-head{padding:15px}.plan-import-dialog-body{padding:14px}.plan-import-dialog-actions{grid-template-columns:1fr}}
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -802,6 +822,8 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 <body data-view="inicio">
 <header>
@@ -872,13 +894,14 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
   <div class="plan-import-card">
     <div class="kicker">IMPORTAR PLAN</div>
-    <h3>Subir rutina creada para Rafa</h3>
-    <p>Selecciona el archivo <strong>.rafa</strong> que acompaña al PDF. Añadirá la semana al calendario y cargará los ejercicios dentro del Gym actual, sin cambiar su estructura.</p>
+    <h3>Sube tu planificación</h3>
+    <p>Importa un plan desde <strong>PDF, Excel o imagen</strong>. La app leerá las sesiones y te mostrará una vista previa antes de añadirlas.</p>
     <div class="plan-import-actions">
-      <button class="btn primary" type="button" id="rafaImportBtn">Subir archivo .rafa</button>
+      <button class="btn primary" type="button" id="universalPlanImportBtn">Seleccionar archivo</button>
+      <button class="btn secondary" type="button" id="pastePlanBtn">Pegar texto</button>
     </div>
-    <input id="rafaPlanInput" class="file" type="file" >
-    <div id="rafaImportStatus" class="plan-import-status"></div>
+    <input id="universalPlanInput" class="file" type="file" accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
+    <div id="universalPlanStatus" class="plan-import-status"></div>
   </div>
 
   <div class="week-nav">
@@ -1122,6 +1145,23 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 <dialog id="raceDetailDialog" class="race-detail-dialog">
   <div class="race-detail-head"><div><div class="kicker">FICHA DE CARRERA</div><h3 id="raceDetailTitle">Carrera</h3></div><button type="button" class="btn secondary small" id="closeRaceDetail">✕</button></div>
   <div id="raceDetailBody" class="race-detail-body"></div>
+</dialog>
+
+<dialog id="planImportDialog" class="plan-import-dialog">
+  <div class="plan-import-dialog-head">
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE</div><h3>Revisar plan detectado</h3></div>
+    <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
+  </div>
+  <div class="plan-import-dialog-body">
+    <label>Semana de inicio<input type="date" id="planImportWeekStart"></label>
+    <div id="planImportSummary" class="plan-import-summary"></div>
+    <div id="planImportPreview" class="plan-import-preview"></div>
+    <details class="plan-import-raw"><summary>Ver texto detectado</summary><textarea id="planImportRawText" rows="9"></textarea></details>
+    <div class="plan-import-dialog-actions">
+      <button type="button" class="btn secondary" id="cancelPlanImport">Cancelar</button>
+      <button type="button" class="btn primary" id="confirmPlanImport">Añadir al plan</button>
+    </div>
+  </div>
 </dialog>
 
 <nav>
@@ -1587,6 +1627,74 @@ function validateRafaPlan(raw){
  if(!raw.sessions.length)throw new Error("El plan no contiene sesiones.");
  raw.sessions.forEach((x,i)=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(x.date||""))throw new Error(`La sesión ${i+1} no tiene una fecha válida.`);if(!["running","gym"].includes(String(x.sport||"").toLowerCase()))throw new Error(`La sesión ${i+1} debe ser running o gym.`)});
  return raw;
+}
+
+let universalPlanDraft={source:"",rawText:"",sessions:[]};
+function planImportStatus(msg,type=""){
+ const el=$("#universalPlanStatus");if(!el)return;el.className=`plan-import-status ${type}`;el.innerHTML=msg||"";
+}
+function mondayOfDate(date){
+ const d=new Date(date);d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoDate(d);
+}
+function addIsoDays(iso,days){const d=new Date(`${iso}T12:00:00`);d.setDate(d.getDate()+days);return isoDate(d)}
+function displayedWeekMonday(){const d=new Date();d.setDate(d.getDate()+weekOffset*7);return mondayOfDate(d)}
+const PLAN_DAYS={lunes:0,lun:0,martes:1,mar:1,miercoles:2,mie:2,x:2,jueves:3,jue:3,viernes:4,vie:4,sabado:5,sab:5,domingo:6,dom:6};
+function normalizePlanText(raw){return String(raw||"").replace(/\r/g,"\n").replace(/[•●▪◦]/g,"-").replace(/[–—]/g,"-").replace(/\t/g," | ").replace(/\n{3,}/g,"\n\n").trim()}
+function dayIndexFromText(s){
+ const clean=String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const m=clean.match(/\b(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)\b/);return m?PLAN_DAYS[m[1]]:null;
+}
+function explicitDateFromText(s,baseMonday){
+ const m=String(s||"").match(/\b(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2,4}))?\b/);if(!m)return "";
+ let y=m[3]?Number(m[3]):new Date(`${baseMonday}T12:00:00`).getFullYear();if(y<100)y+=2000;
+ const d=new Date(y,Number(m[2])-1,Number(m[1]),12);return Number.isNaN(d.getTime())?"":isoDate(d)
+}
+function cleanPlanTitle(text){return String(text||"").replace(/^[-|:;,\s]+/,"").replace(/\s{2,}/g," ").trim()}
+function detectSessionTitle(content){
+ const s=content.toLowerCase();
+ if(/descanso|rest day|libre/.test(s))return "Descanso";
+ if(/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/.test(s))return /superior/.test(s)?"Fuerza · Tren superior":/inferior/.test(s)?"Fuerza · Tren inferior":"Fuerza";
+ if(/series|interval|repeticiones|\d+\s*[x×]\s*\d+/.test(s))return "Series";
+ if(/tempo|ritmo controlado|umbral/.test(s))return "Ritmo controlado";
+ if(/tirada|largo|larga/.test(s))return "Tirada larga";
+ if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje/.test(s))return "Rodaje suave";
+ if(/carrera|competicion|competición/.test(s))return "Carrera";
+ return cleanPlanTitle(content).slice(0,60)||"Entrenamiento";
+}
+function parseDistance(content){
+ const vals=[...String(content||"").matchAll(/\b(\d{1,2}(?:[.,]\d+)?)\s*(?:km|k)\b/gi)].map(m=>Number(m[1].replace(",","."))).filter(n=>n>0&&n<100);
+ return vals.length?vals[0]:0;
+}
+function parseDuration(content){const m=String(content||"").match(/\b(\d{1,3})\s*(?:min(?:utos?)?|')\b/i);return m?Number(m[1]):0}
+function parsePace(content){const m=String(content||"").match(/\b(\d{1,2}:\d{2})(?:\s*-\s*(\d{1,2}:\d{2}))?\s*(?:\/\s*km|min\s*\/\s*km)?/i);return m?`${m[1]}${m[2]?`-${m[2]}`:""}/km`:""}
+function parsePlanSessions(rawText,baseMonday){
+ const raw=normalizePlanText(rawText);let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
+ for(const line of lines){const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);if(day!==null||date){if(current)chunks.push(current);current={day,date,text:line}}else if(current)current.text+=` · ${line}`}
+ if(current)chunks.push(current);if(!chunks.length)lines.filter(x=>x.length>3).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
+ return chunks.map((c,i)=>{let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));let content=cleanPlanTitle(c.text.replace(/\b(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)\b\s*[:\-]?/i,"").replace(/\b\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?\b/,""));const title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=parsePace(content);return {id:uid(),date,sport:isGym?"Gimnasio":"Running",title,distance,duration,intensity:[pace,content].filter(Boolean).join(" · "),status:"pending",notes:content,category:isRest?"Descanso":title}}).filter(s=>s.title&&s.date)
+}
+async function extractPdfText(file){
+ if(!window.pdfjsLib)throw new Error("No se ha podido cargar el lector PDF. Comprueba la conexión.");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const pages=[];
+ for(let n=1;n<=pdf.numPages;n++){const page=await pdf.getPage(n),content=await page.getTextContent();const rows=new Map();content.items.forEach(it=>{const y=Math.round(it.transform[5]/3)*3;rows.set(y,[...(rows.get(y)||[]),it])});pages.push([...rows.entries()].sort((a,b)=>b[0]-a[0]).map(([,items])=>items.sort((a,b)=>a.transform[4]-b.transform[4]).map(x=>x.str).join(" ")).join("\n"))}return pages.join("\n")
+}
+async function extractExcelText(file){
+ if(!window.XLSX)throw new Error("No se ha podido cargar el lector Excel. Comprueba la conexión.");const wb=XLSX.read(await file.arrayBuffer(),{type:"array",cellDates:true});const out=[];wb.SheetNames.forEach(name=>{const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""});out.push(rows.map(r=>r.map(x=>String(x).trim()).filter(Boolean).join(" | ")).filter(Boolean).join("\n"))});return out.join("\n")
+}
+async function extractImageText(file){
+ if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");const result=await Tesseract.recognize(file,"spa",{logger:m=>{if(m.status==="recognizing text")planImportStatus(`Leyendo imagen… ${Math.round((m.progress||0)*100)} %`,`loading`)}});return result?.data?.text||""
+}
+async function extractPlanFileText(file){
+ const ext=(file.name.split(".").pop()||"").toLowerCase();if(ext==="pdf"||file.type==="application/pdf")return extractPdfText(file);if(["xlsx","xls","csv"].includes(ext)||/spreadsheet|excel|csv/.test(file.type))return extractExcelText(file);if(file.type.startsWith("image/")||["jpg","jpeg","png","webp"].includes(ext))return extractImageText(file);if(ext==="txt"||file.type.startsWith("text/"))return file.text();throw new Error("Formato no compatible. Usa PDF, Excel, CSV, JPG, PNG, WEBP o TXT.")
+}
+async function handleUniversalPlanFile(file){
+ try{planImportStatus(`Abriendo <strong>${file.name}</strong>…`,`loading`);const raw=await extractPlanFileText(file);if(!raw.trim())throw new Error("No se ha detectado texto en el archivo.");openUniversalPlanPreview(raw,file.name);planImportStatus(`Archivo leído: <strong>${file.name}</strong>. Revisa las sesiones detectadas.`)}catch(err){planImportStatus(err?.message||"No se pudo leer el archivo.","error")}
+}
+function openUniversalPlanPreview(raw,source){universalPlanDraft={source,rawText:normalizePlanText(raw),sessions:[]};$("#planImportRawText").value=universalPlanDraft.rawText;$("#planImportWeekStart").value=displayedWeekMonday();refreshUniversalPlanPreview();$("#planImportDialog").showModal()}
+function refreshUniversalPlanPreview(){
+ const raw=$("#planImportRawText").value.trim(),monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());universalPlanDraft.rawText=raw;universalPlanDraft.sessions=parsePlanSessions(raw,monday);const sessions=universalPlanDraft.sessions;$("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";$("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
+}
+function confirmUniversalPlanImport(){
+ const checked=[...document.querySelectorAll("[data-plan-import-index]:checked")].map(x=>universalPlanDraft.sessions[Number(x.dataset.planImportIndex)]).filter(Boolean);if(!checked.length){alert("Selecciona al menos una sesión.");return}const min=checked.map(x=>x.date).sort()[0],max=checked.map(x=>x.date).sort().at(-1),existing=data.plan.filter(p=>p.date>=min&&p.date<=max);if(existing.length&&!confirm(`Ya hay ${existing.length} sesiones entre ${fmt(min)} y ${fmt(max)}. ¿Quieres añadir también las nuevas?`))return;checked.forEach(s=>data.plan.push({...s,id:uid()}));save();renderPlan();renderToday();$("#planImportDialog").close();planImportStatus(`<strong>${checked.length} sesiones añadidas</strong> desde ${universalPlanDraft.source}.`);setView("plan")
 }
 function importRafaPlan(raw){
  const plan=validateRafaPlan(raw),importId=uid();
@@ -2701,15 +2809,14 @@ $("#form").onsubmit=e=>{
 function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Proyecto-Rafa-copia-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);localStorage.setItem("proyectoRafaLastBackup",String(Date.now()));renderBackupStatus()}
 $("#exportBtn").onclick=exportData;$("#exportTop").onclick=exportData;
 $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.runs||!x.gym||!x.gear||!x.races)throw 0;if(!x.plan)x.plan=[];if(!x.templates)x.templates=structuredClone(seed.templates||[]);if(confirm("Esto sustituirá los datos actuales. ¿Continuar?")){data=x;save();alert("Copia importada correctamente.")}}catch{alert("La copia no es válida.")}e.target.value=""};
-
-
-$("#rafaImportBtn").onclick=()=>$("#rafaPlanInput").click();
-$("#rafaPlanInput").onchange=async e=>{
- const f=e.target.files?.[0];if(!f)return;
- try{const result=importRafaPlan(JSON.parse(await f.text()));if(result)showRafaStatus(`<strong>${result.name}</strong><br>${result.count} sesiones añadidas · ${fmt(result.start)}–${fmt(result.end)}. Las rutinas aparecerán automáticamente en Gym con tus controles habituales de peso, repeticiones y series.`)}
- catch(err){showRafaStatus(err?.message||"No se pudo importar el archivo.","error")}
- e.target.value="";
-};
+  $("#universalPlanImportBtn").onclick=()=>$("#universalPlanInput").click();
+ $("#universalPlanInput").onchange=async e=>{const f=e.target.files?.[0];e.target.value="";if(f)await handleUniversalPlanFile(f)};
+ $("#pastePlanBtn").onclick=()=>{const raw=prompt("Pega aquí el texto de tu plan de entrenamiento:");if(raw?.trim())openUniversalPlanPreview(raw.trim(),"Texto pegado")};
+ $("#closePlanImportDialog").onclick=()=>$("#planImportDialog").close();
+ $("#cancelPlanImport").onclick=()=>$("#planImportDialog").close();
+ $("#planImportWeekStart").onchange=()=>refreshUniversalPlanPreview();
+ $("#planImportRawText").oninput=()=>{clearTimeout(window.__planImportTimer);window.__planImportTimer=setTimeout(refreshUniversalPlanPreview,350)};
+ $("#confirmPlanImport").onclick=confirmUniversalPlanImport;
 
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};

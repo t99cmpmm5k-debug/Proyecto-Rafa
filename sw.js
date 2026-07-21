@@ -1,4 +1,4 @@
-const CACHE="corredor-solido-v22-4-inicio-pulido";
+const CACHE="corredor-solido-v22-5-importador-universal";
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html","./hero-boceto-c-azul.jpg"])));
