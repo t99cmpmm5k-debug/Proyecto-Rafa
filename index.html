@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.6 · Importador universal corregido</title>
+<title>Corredor Sólido · V22.7 · Excel por columnas corregido</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1701,7 +1701,38 @@ async function extractPdfText(file){
  for(let n=1;n<=pdf.numPages;n++){const page=await pdf.getPage(n),content=await page.getTextContent();const rows=new Map();content.items.forEach(it=>{const y=Math.round(it.transform[5]/3)*3;rows.set(y,[...(rows.get(y)||[]),it])});pages.push([...rows.entries()].sort((a,b)=>b[0]-a[0]).map(([,items])=>items.sort((a,b)=>a.transform[4]-b.transform[4]).map(x=>x.str).join(" ")).join("\n"))}return pages.join("\n")
 }
 async function extractExcelText(file){
- if(!window.XLSX)throw new Error("No se ha podido cargar el lector Excel. Comprueba la conexión.");const wb=XLSX.read(await file.arrayBuffer(),{type:"array",cellDates:true});const out=[];wb.SheetNames.forEach(name=>{const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""});out.push(rows.map(r=>r.map(x=>String(x).trim()).filter(Boolean).join(" | ")).filter(Boolean).join("\n"))});return out.join("\n")
+ if(!window.XLSX)throw new Error("No se ha podido cargar el lector Excel. Comprueba la conexión.");
+ const wb=XLSX.read(await file.arrayBuffer(),{type:"array",cellDates:true});
+ const out=[];
+ wb.SheetNames.forEach(name=>{
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""})
+   .map(r=>r.map(x=>String(x??"").trim()));
+  if(!rows.length)return;
+
+  // Detecta tablas semanales en columnas: Lunes | Martes | ... | Domingo.
+  // Cada columna se convierte en una sesión independiente, conservando todos sus campos.
+  let headerRow=-1,dayColumns=[];
+  for(let r=0;r<Math.min(rows.length,12);r++){
+   const found=[];
+   rows[r].forEach((cell,c)=>{const day=dayIndexFromText(cell);if(day!==null)found.push({c,day,label:cell})});
+   if(found.length>=3){headerRow=r;dayColumns=found;break}
+  }
+  if(headerRow>=0){
+   const columnSessions=dayColumns.map(({c,label})=>{
+    const parts=[label];
+    for(let r=headerRow+1;r<rows.length;r++){
+     const value=String(rows[r]?.[c]??"").trim();
+     if(value)parts.push(value);
+    }
+    return parts.join(" · ");
+   }).filter(x=>x.split(" · ").length>1);
+   if(columnSessions.length){out.push(columnSessions.join("\n"));return}
+  }
+
+  // Formato habitual por filas: cada fila conserva sus columnas unidas.
+  out.push(rows.map(r=>r.filter(Boolean).join(" | ")).filter(Boolean).join("\n"));
+ });
+ return out.filter(Boolean).join("\n")
 }
 async function extractImageText(file){
  if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");const result=await Tesseract.recognize(file,"spa",{logger:m=>{if(m.status==="recognizing text")planImportStatus(`Leyendo imagen… ${Math.round((m.progress||0)*100)} %`,`loading`)}});return result?.data?.text||""

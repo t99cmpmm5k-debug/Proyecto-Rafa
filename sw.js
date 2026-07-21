@@ -1,4 +1,4 @@
-const CACHE="corredor-solido-v22-6-importador-universal-corregido";
+const CACHE="corredor-solido-v22-7-excel-columnas-corregido";
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html","./hero-boceto-c-azul.jpg"])));
