@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V20.9</title>
+<title>Corredor Sólido · V20.9.1</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -692,7 +692,9 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <span class="quote-mark">“</span>
     <div><h2>Construye tu mejor versión.</h2><p>Cada día cuenta.</p></div>
   </div>
-  <div id="todayWorkout" class="today-stage"></div>
+  <div id="todayWorkout" class="today-stage">
+    <div class="home-empty"><h3>Hoy toca recuperar.</h3><p>No hay entrenamiento planificado para hoy. Revisa la semana para preparar la próxima sesión.</p><button class="btn primary" type="button" onclick="setView('plan')">VER PLAN</button></div>
+  </div>
   <div id="nextWorkout" class="next-stage"></div>
   <div id="raceCountdown"></div>
   <div id="firstUseHint" class="z2-note" style="display:none">Empieza creando tu planificación semanal para que la aplicación pueda decirte qué toca hoy.</div>
@@ -2678,7 +2680,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2091").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
