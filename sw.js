@@ -1,7 +1,7 @@
-const CACHE="corredor-solido-v22-inicio-c-azul";
+const CACHE="corredor-solido-v22-boceto-c-azul";
 self.addEventListener("install",e=>{
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html","./hero-boceto-c.jpg"])));
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html","./hero-boceto-c-azul.jpg"])));
 });
 self.addEventListener("activate",e=>{
   e.waitUntil(Promise.all([
