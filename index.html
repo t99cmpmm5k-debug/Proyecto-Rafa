@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080b0e">
+<meta name="theme-color" content="#031326">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V21.5</title>
+<title>Corredor Sólido · V22</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -635,112 +635,97 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 @media(max-width:430px){.evolution-tabs{grid-template-columns:repeat(2,1fr)}.evolution-toolbar{grid-template-columns:1fr}}
 
 
-/* ===== FASE 1 · INICIO V21.1. Solo afecta a #inicio ===== */
-#inicio{padding-top:0;padding-bottom:112px}
+/* ===== FASE 1 · INICIO V21. Solo afecta a #inicio ===== */
+#inicio{padding-top:4px}
 #inicio .home-brand{display:none}
-#inicio .home-motivation{text-align:center;padding:17px 10px 15px}
-#inicio .home-motivation h2{margin:0;font-size:clamp(21px,5.8vw,27px);line-height:1.16;letter-spacing:-.025em;font-weight:900}
-#inicio .home-motivation h2::before{content:"“";color:var(--green);margin-right:7px}
-#inicio .home-motivation h2::after{content:"”";color:var(--green);margin-left:4px}
-#inicio .home-motivation p{margin:7px 0 0;color:var(--muted);font-size:14px}
-#inicio .home-today-shell{position:relative;overflow:hidden;background:linear-gradient(155deg,#101914 0%,#0d1411 58%,#0a0f0d 100%);border:1px solid rgba(159,232,112,.36);border-radius:24px;padding:18px 16px 16px;box-shadow:0 18px 45px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.025)}
-#inicio .home-today-shell:before{content:"";position:absolute;inset:-90px -90px auto auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(159,232,112,.11),transparent 70%);pointer-events:none}
-#inicio .home-day-pill{position:relative;display:table;margin:0 auto 11px;padding:6px 15px;border:1px solid rgba(159,232,112,.55);border-radius:999px;color:var(--green);font-size:10px;font-weight:950;letter-spacing:.12em}
+#inicio .home-motivation{text-align:center;padding:24px 8px 20px}
+#inicio .home-motivation .quote-mark{display:inline-block;color:var(--green);font-size:42px;font-weight:950;line-height:.7;vertical-align:top;margin-right:8px}
+#inicio .home-motivation h2{display:inline;font-size:clamp(25px,7vw,34px);line-height:1.15;letter-spacing:-.035em}
+#inicio .home-motivation p{margin-top:12px;color:var(--muted);font-size:17px}
+#inicio .home-today-shell{position:relative;overflow:hidden;background:linear-gradient(155deg,#101a14 0%,#0d1411 56%,#0b1010 100%);border:1px solid rgba(159,232,112,.42);border-radius:28px;padding:24px 20px 20px;box-shadow:0 22px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.025)}
+#inicio .home-today-shell:before{content:"";position:absolute;inset:-45% -25% auto auto;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(159,232,112,.13),transparent 68%);pointer-events:none}
+#inicio .home-day-pill{position:relative;display:table;margin:0 auto 18px;padding:7px 18px;border:1px solid rgba(159,232,112,.62);border-radius:999px;color:var(--green);font-size:12px;font-weight:950;letter-spacing:.08em}
 #inicio .home-workout{text-align:center;position:relative}
-#inicio .home-workout-icon{width:34px;height:34px;margin:0 auto 7px;color:var(--green)}
-#inicio .home-workout-icon svg{display:block;width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-#inicio .home-workout-title{max-width:100%;font-size:clamp(27px,7.8vw,37px);font-weight:950;letter-spacing:-.04em;line-height:1.02;text-wrap:balance;overflow-wrap:anywhere}
-#inicio .home-workout-distance{margin-top:7px;color:var(--green);font-size:clamp(25px,7vw,33px);font-weight:950}
-#inicio .home-workout-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:16px 0 15px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}
-#inicio .home-workout-meta>div{padding:0 7px;min-width:0}
-#inicio .home-workout-meta>div+div{border-left:1px solid rgba(255,255,255,.08)}
-#inicio .home-workout-meta b{display:block;font-size:13px;line-height:1.22;white-space:normal;overflow-wrap:anywhere}
-#inicio .home-workout-meta small{display:block;color:var(--muted);font-size:9px;margin-top:4px;text-transform:uppercase;letter-spacing:.09em}
-#inicio .home-start-btn{position:relative;width:100%;border:0;border-radius:15px;padding:14px 42px 14px 18px;background:linear-gradient(90deg,#a8ef72,#83e54b);color:#091006;font-size:16px;font-weight:950;box-shadow:0 9px 24px rgba(134,229,75,.15)}
-#inicio .home-start-btn:after{content:"›";position:absolute;right:18px;font-size:25px;line-height:18px;top:12px}
-#inicio .home-rest-title{font-size:27px;font-weight:950;letter-spacing:-.03em}
-#inicio .home-rest-text{max-width:340px;margin:9px auto 16px;color:var(--muted);line-height:1.42;font-size:14px}
-#inicio .home-next-label{margin:17px 2px 8px;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.11em}
-#inicio .home-next-card{display:flex;align-items:center;gap:12px;background:linear-gradient(145deg,var(--panel),#10151a);border:1px solid var(--line);border-radius:18px;padding:12px 13px;box-shadow:var(--shadow)}
-#inicio .home-next-icon{display:grid;place-items:center;width:44px;height:44px;flex:0 0 44px;border-radius:13px;background:linear-gradient(145deg,#49378a,#2e2558);color:#fff}
-#inicio .home-next-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#inicio .home-workout-icon{font-size:31px;line-height:1;margin-bottom:9px;color:var(--green)}
+#inicio .home-workout-title{font-size:clamp(34px,10vw,48px);font-weight:950;letter-spacing:-.045em;line-height:1.02}
+#inicio .home-workout-distance{margin-top:9px;color:var(--green);font-size:clamp(28px,8vw,38px);font-weight:950}
+#inicio .home-workout-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:22px 0 20px;border-top:1px solid rgba(255,255,255,.09);padding-top:18px}
+#inicio .home-workout-meta>div{padding:0 8px;min-width:0}
+#inicio .home-workout-meta>div+div{border-left:1px solid rgba(255,255,255,.09)}
+#inicio .home-workout-meta b{display:block;font-size:14px;line-height:1.25;white-space:normal}
+#inicio .home-workout-meta small{display:block;color:var(--muted);font-size:10px;margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+#inicio .home-start-btn{position:relative;width:100%;border:0;border-radius:18px;padding:17px 20px;background:linear-gradient(90deg,#a8ef72,#83e54b);color:#091006;font-size:18px;font-weight:950;box-shadow:0 10px 30px rgba(134,229,75,.18)}
+#inicio .home-start-btn:after{content:"›";position:absolute;right:20px;font-size:28px;line-height:18px;top:15px}
+#inicio .home-rest-title{font-size:32px;font-weight:950;letter-spacing:-.03em}
+#inicio .home-rest-text{max-width:360px;margin:12px auto 21px;color:var(--muted);line-height:1.5;font-size:15px}
+#inicio .home-next-label{margin:22px 2px 10px;color:var(--muted);font-size:11px;font-weight:900;letter-spacing:.08em}
+#inicio .home-next-card{display:flex;align-items:center;gap:13px;background:linear-gradient(145deg,var(--panel),#10151a);border:1px solid var(--line);border-radius:20px;padding:14px 15px;box-shadow:var(--shadow)}
+#inicio .home-next-icon{display:grid;place-items:center;width:50px;height:50px;flex:0 0 50px;border-radius:15px;background:linear-gradient(145deg,#563ca4,#322367);font-size:24px}
 #inicio .home-next-copy{min-width:0;flex:1}
-#inicio .home-next-copy strong{display:block;font-size:15px;line-height:1.2;overflow-wrap:anywhere}
-#inicio .home-next-copy span{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.25}
-#inicio .home-next-arrow{color:var(--muted);font-size:23px}
-#inicio .home-daily-note{display:none}
-#inicio .home-daily-note i{font-style:normal;color:var(--green);font-size:21px;font-weight:950;line-height:1}
+#inicio .home-next-copy strong{display:block;font-size:16px}
+#inicio .home-next-copy span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+#inicio .home-next-arrow{color:var(--muted);font-size:25px}
+#inicio .home-daily-note{display:flex;align-items:center;gap:11px;margin-top:12px;padding:14px 16px;background:rgba(18,23,29,.72);border:1px solid var(--line);border-radius:17px;color:#dfe6e1;font-size:13px;line-height:1.35}
+#inicio .home-daily-note i{font-style:normal;color:var(--green);font-size:25px;font-weight:950}
 #inicio .home-legacy{display:none!important}
-@media(max-width:380px){#inicio .home-workout-meta b{font-size:11px}#inicio .home-workout-meta>div{padding:0 4px}#inicio .home-today-shell{padding-left:13px;padding-right:13px}#inicio .home-motivation{padding-top:13px}}
+@media(max-width:380px){#inicio .home-workout-meta b{font-size:12px}#inicio .home-workout-meta>div{padding:0 5px}#inicio .home-today-shell{padding-left:16px;padding-right:16px}}
 
 
-/* ===== FASE 1 · INICIO V21.3 · acabado final. Solo afecta a Inicio ===== */
-body[data-view="inicio"] header{padding-top:calc(8px + env(safe-area-inset-top));padding-bottom:8px;min-height:auto}
-body[data-view="inicio"] header .kicker{font-size:8px;letter-spacing:.17em;margin-bottom:2px}
-body[data-view="inicio"] header h1{font-size:clamp(22px,6.4vw,28px);line-height:1.02;letter-spacing:-.04em}
-body[data-view="inicio"] #exportTop{display:none!important}
-body[data-view="inicio"] main{padding-top:0}
-#inicio{padding-bottom:calc(54px + env(safe-area-inset-bottom))}
-#inicio .home-motivation{padding:10px 4px 8px}
-#inicio .home-motivation h2{font-size:clamp(18px,5.1vw,24px);line-height:1.06;letter-spacing:-.03em}
-#inicio .home-motivation h2:before,#inicio .home-motivation h2:after{font-size:.8em;vertical-align:.08em}
-#inicio .home-motivation p{margin-top:4px;font-size:12px}
-#inicio .home-today-shell{padding:13px 14px 13px;border-radius:20px}
-#inicio .home-day-pill{margin-bottom:7px;padding:5px 12px;font-size:9px}
-#inicio .home-workout-icon{width:26px;height:26px;margin-bottom:4px}
-#inicio .home-workout-title{max-width:540px;margin-left:auto;margin-right:auto;font-size:clamp(21px,5.9vw,28px);line-height:1.02}
-#inicio .home-workout-distance{margin-top:4px;font-size:clamp(22px,6vw,28px)}
-#inicio .home-workout-meta{margin:11px 0 10px;padding-top:10px}
-#inicio .home-workout-meta b{font-size:11px}
-#inicio .home-workout-meta small{font-size:8px;margin-top:2px}
-#inicio .home-start-btn{min-height:48px;padding:12px 40px 12px 18px;border-radius:14px;font-size:15px;letter-spacing:.01em}
-#inicio .home-start-btn:after{top:9px}
-#inicio .home-next-label{margin:10px 2px 6px;font-size:9px}
-#inicio .home-next-card{padding:10px 12px;border-radius:16px}
-#inicio .home-next-icon{width:40px;height:40px;flex-basis:40px;border-radius:12px}
-#inicio .home-next-icon svg{width:22px;height:22px}
-#inicio .home-next-copy strong{font-size:14px}
-#inicio .home-next-copy span{font-size:10px}
-#inicio .home-daily-note{margin-top:8px;padding:9px 12px;border-radius:14px;font-size:11px}
-#inicio .home-daily-note i{font-size:17px}
-@media(max-height:760px){body[data-view="inicio"] header{padding-top:calc(6px + env(safe-area-inset-top));padding-bottom:6px}#inicio .home-motivation{padding-top:7px;padding-bottom:6px}#inicio .home-today-shell{padding-top:11px;padding-bottom:11px}#inicio .home-workout-title{font-size:clamp(20px,5.7vw,26px)}#inicio .home-workout-meta{margin-top:8px;margin-bottom:8px;padding-top:8px}#inicio .home-next-label{margin-top:8px}#inicio .home-daily-note{display:none}}
-
-
-/* ===== V21.5 · HERO EN INICIO. SOLO AFECTA A #inicio ===== */
-body[data-view="inicio"] header{display:none!important}
-body[data-view="inicio"] main{padding-top:0}
-#inicio{padding-top:0}
-#inicio .home-motivation{display:none!important}
-#inicio .home-hero{
-  position:relative;
-  width:calc(100% + 28px);
-  margin:0 -14px 10px;
-  height:clamp(235px,43vh,330px);
-  overflow:hidden;
-  border-radius:0 0 26px 26px;
-  background-image:
-    linear-gradient(180deg,rgba(4,8,13,.02) 0%,rgba(4,8,13,.08) 56%,rgba(4,8,13,.92) 100%),
-    url("hero-corredor-solido.jpg");
-  background-size:cover;
-  background-position:center top;
-  box-shadow:0 16px 38px rgba(0,0,0,.34);
+/* ===== V22 · INICIO BOCETO C AZUL ===== */
+body.inicio-activo{background:#031326;color:#f8fbff}
+body.inicio-activo>header{display:none!important}
+body.inicio-activo main{max-width:820px;padding:0 0 18px}
+body.inicio-activo #inicio{padding:0;background:linear-gradient(180deg,#031326 0%,#02101f 100%);min-height:calc(100vh - 86px)}
+#inicio .home-c-hero{
+  position:relative;height:clamp(450px,65vh,650px);overflow:hidden;
+  background-image:linear-gradient(180deg,rgba(0,17,38,.08) 0%,rgba(0,17,38,.03) 43%,rgba(2,16,31,.34) 69%,#02101f 100%),url("hero-boceto-c.jpg");
+  background-size:cover;background-position:center 26%;
 }
-#inicio .home-hero::after{
-  content:"";
-  position:absolute;
-  inset:auto 0 0;
-  height:34%;
-  background:linear-gradient(180deg,transparent,rgba(7,16,12,.94));
-  pointer-events:none;
-}
-#inicio .home-today-shell{
-  margin-top:-34px;
-  position:relative;
-  z-index:3;
-}
-@media(max-height:760px){
-  #inicio .home-hero{height:220px}
-  #inicio .home-today-shell{margin-top:-30px}
+#inicio .home-c-brand{position:absolute;z-index:2;left:clamp(24px,7vw,55px);top:calc(30px + env(safe-area-inset-top));display:flex;flex-direction:column;line-height:.82;letter-spacing:-.03em;text-shadow:0 4px 18px rgba(0,0,0,.38)}
+#inicio .home-c-brand strong{font-size:clamp(28px,8vw,48px);font-weight:950;color:#fff}
+#inicio .home-c-brand span{font-size:clamp(36px,10vw,61px);font-weight:950;color:#08d7ed}
+#inicio .home-c-brand i{position:absolute;left:48px;top:82px;color:#08d7ed;font-size:38px;font-style:normal;letter-spacing:-12px;opacity:.9;transform:rotate(-3deg)}
+#inicio .home-c-quote{position:absolute;z-index:2;left:clamp(25px,7vw,58px);bottom:95px;margin:0;max-width:78%;font-size:clamp(27px,7.6vw,46px);font-weight:900;line-height:1.18;letter-spacing:-.035em;color:#fff;text-shadow:0 5px 22px rgba(0,0,0,.58)}
+#inicio .home-c-quote em{font-style:normal;color:#09d7ee}
+#inicio .home-c-content{position:relative;z-index:4;margin-top:-62px;padding:0 16px 22px}
+#inicio .home-today-shell{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(4,37,68,.97),rgba(1,17,34,.99));border:1px solid rgba(7,216,238,.78);border-radius:29px;padding:26px 20px 20px;box-shadow:0 24px 58px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.05)}
+#inicio .home-today-shell:before{content:"";position:absolute;inset:-110px -70px auto auto;width:270px;height:270px;border-radius:50%;background:radial-gradient(circle,rgba(0,213,239,.15),transparent 68%);pointer-events:none}
+#inicio .home-day-pill{position:relative;display:table;margin:0 auto 18px;padding:0;color:#08dbef;font-size:15px;font-weight:900;letter-spacing:.04em;border:0;background:transparent}
+#inicio .home-day-pill:after{content:"〰";margin-left:14px;font-size:24px;vertical-align:-2px}
+#inicio .home-workout{text-align:center;position:relative}
+#inicio .home-workout-icon{display:grid;place-items:center;width:82px;height:82px;margin:0 auto 14px;border:1px solid rgba(5,218,239,.6);border-radius:50%;background:radial-gradient(circle at 40% 35%,#0a69a5 0%,#04305a 52%,#02182d 100%);font-size:40px;line-height:1;filter:saturate(.85)}
+#inicio .home-workout-title{font-size:clamp(34px,10vw,49px);font-weight:950;letter-spacing:-.045em;line-height:1.02;color:#fff}
+#inicio .home-workout-distance{margin-top:7px;color:#09dcef;font-size:clamp(31px,8.5vw,42px);font-weight:950}
+#inicio .home-workout-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:22px 0 20px;padding-top:18px;border-top:1px solid rgba(144,203,231,.17)}
+#inicio .home-workout-meta>div{padding:0 7px;min-width:0}
+#inicio .home-workout-meta>div+div{border-left:1px solid rgba(144,203,231,.18)}
+#inicio .home-workout-meta b{display:block;font-size:14px;line-height:1.28;color:#f8fbff;white-space:normal}
+#inicio .home-workout-meta small{display:block;color:#9eafc2;font-size:10px;margin-top:5px;text-transform:uppercase;letter-spacing:.08em}
+#inicio .home-start-btn{position:relative;width:100%;border:0;border-radius:17px;padding:17px 20px;background:linear-gradient(90deg,#10d9e8,#08c7e8);color:#001525;font-size:18px;font-weight:950;box-shadow:0 12px 30px rgba(0,206,232,.18)}
+#inicio .home-start-btn:after{content:"›";position:absolute;right:20px;font-size:29px;line-height:18px;top:14px}
+#inicio .home-rest-title{font-size:31px;font-weight:950;letter-spacing:-.03em}
+#inicio .home-rest-text{max-width:390px;margin:12px auto 21px;color:#9eafc2;line-height:1.5;font-size:15px}
+#inicio .home-next-label{margin:26px 2px 10px;color:#08dcef;font-size:13px;font-weight:900;letter-spacing:.055em}
+#inicio .home-next-card{display:flex;align-items:center;gap:14px;background:linear-gradient(145deg,#062746,#03172c);border:1px solid rgba(34,132,189,.55);border-radius:21px;padding:14px 15px;box-shadow:0 15px 34px rgba(0,0,0,.25)}
+#inicio .home-next-icon{display:grid;place-items:center;width:54px;height:54px;flex:0 0 54px;border-radius:14px;background:linear-gradient(145deg,#087ec0,#074681);font-size:25px}
+#inicio .home-next-copy{min-width:0;flex:1}
+#inicio .home-next-copy strong{display:block;font-size:17px;color:#fff}
+#inicio .home-next-copy span{display:block;margin-top:4px;color:#aab7c8;font-size:12px}
+#inicio .home-next-arrow{color:#b9c5d4;font-size:28px}
+#inicio .home-legacy{display:none!important}
+body.inicio-activo nav{grid-template-columns:repeat(7,1fr);background:rgba(1,16,31,.97);border-top:1px solid rgba(35,105,151,.42);backdrop-filter:blur(18px)}
+body.inicio-activo .nav{color:#9aa8ba}
+body.inicio-activo .nav.active{color:#08dcef}
+body.inicio-activo .nav.active:after{content:"";display:block;width:28px;height:2px;margin:5px auto 0;border-radius:3px;background:#08dcef}
+@media(max-width:430px){
+  #inicio .home-c-hero{height:510px;background-position:center 18%}
+  #inicio .home-c-brand{top:calc(23px + env(safe-area-inset-top))}
+  #inicio .home-c-brand i{display:none}
+  #inicio .home-c-quote{bottom:80px;max-width:88%}
+  #inicio .home-c-content{margin-top:-54px;padding-left:12px;padding-right:12px}
+  #inicio .home-today-shell{padding-left:16px;padding-right:16px}
+  #inicio .home-workout-meta b{font-size:12px}
+  #inicio .home-workout-meta>div{padding:0 4px}
 }
 
 </style>
@@ -779,7 +764,7 @@ body[data-view="inicio"] main{padding-top:0}
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
-<body data-view="inicio">
+<body class="inicio-activo">
 <header>
   <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
@@ -787,18 +772,18 @@ body[data-view="inicio"] main{padding-top:0}
 
 <main>
 <section id="inicio" class="view active">
-  <div class="home-hero" aria-label="Corredor entrenando en montaña"></div>
-  <div class="home-motivation">
-    <h2>Construye tu mejor versión.</h2>
-    <p>Cada día cuenta.</p>
+  <div class="home-c-hero">
+    <div class="home-c-brand" aria-label="Corredor Sólido">
+      <strong>CORREDOR</strong><span>SÓLIDO</span><i aria-hidden="true">⌃⌃</i>
+    </div>
+    <blockquote class="home-c-quote">“La constancia hoy<br>es <em>tu fuerza mañana.</em>”</blockquote>
   </div>
 
-  <div id="todayWorkout"></div>
-
-  <div class="home-next-label">PRÓXIMO ENTRENAMIENTO</div>
-  <div id="homeNextWorkout"></div>
-
-  <div class="home-daily-note"><i>“</i><span>La constancia de hoy es la fuerza de mañana.</span><i>”</i></div>
+  <div class="home-c-content">
+    <div id="todayWorkout"></div>
+    <div class="home-next-label">PRÓXIMO ENTRENAMIENTO</div>
+    <div id="homeNextWorkout"></div>
+  </div>
 
   <!-- Compatibilidad: estos nodos conservan la lógica original sin mostrarse en Inicio. -->
   <div class="home-legacy" aria-hidden="true">
@@ -1469,17 +1454,17 @@ function renderToday(){
    const zone=/zona\s*\d/i.test(intensity)?(intensity.match(/zona\s*\d/i)[0]):(isGym?"Fuerza":"Objetivo");
    const objective=isGym?`${main.gymRoutine?.exercises?.length||"—"} ejercicios`:(/cómodo/i.test(intensity)?"Cómodo":intensity.replace(paceMatch?.[0]||"","").replace(/^[ ·-]+|[ ·-]+$/g,"")||"Completar");
    const action=main.status==="done"
-     ?`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">EMPEZAR</button>`
+     ?`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">VER ENTRENAMIENTO</button>`
      :isGym&&main.gymRoutine
        ?`<button class="home-start-btn" type="button" onclick="startPlannedGym('${main.id}')">EMPEZAR</button>`
        :`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">EMPEZAR</button>`;
-   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY TOCA</div><div class="home-workout"><div class="home-workout-icon">${isGym?`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9v6M3 10v4M18 9v6M21 10v4M6 12h12"></path></svg>`:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="5" r="2"></circle><path d="m10 9 3-2 2 3 3 1"></path><path d="m11 10-2 4-4 2"></path><path d="m13 12 3 3 1 4"></path><path d="m9 14 3 2-2 4"></path></svg>`}</div><div class="home-workout-title">${main.title}</div>${distance?`<div class="home-workout-distance">${distance.toFixed(1).replace('.',',')} km</div>`:""}<div class="home-workout-meta"><div><b>${pace}</b><small>${paceMatch?'/km':'Duración'}</small></div><div><b>${zone}</b><small>${isGym?'Sesión':'FC'}</small></div><div><b>${objective}</b><small>Objetivo</small></div></div>${action}</div></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY TOCA</div><div class="home-workout"><div class="home-workout-icon">${isGym?'🏋️':'🏃'}</div><div class="home-workout-title">${main.title}</div>${distance?`<div class="home-workout-distance">${distance.toFixed(1).replace('.',',')} km</div>`:""}<div class="home-workout-meta"><div><b>${pace}</b><small>${paceMatch?'/km':'Duración'}</small></div><div><b>${zone}</b><small>${isGym?'Sesión':'FC'}</small></div><div><b>${objective}</b><small>Objetivo</small></div></div>${action}</div></div>`;
  }else{
-   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout"><div class="home-workout-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"></path></svg></div><div class="home-rest-title">Hoy toca recuperar.</div><p class="home-rest-text">No hay entrenamiento planificado. Recupera bien y prepara la siguiente sesión.</p><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout"><div class="home-workout-icon">✓</div><div class="home-rest-title">Hoy toca recuperar.</div><p class="home-rest-text">No hay entrenamiento planificado. Recupera bien y prepara la siguiente sesión.</p><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
  }
  const future=data.plan.filter(p=>p.date>today&&p.status!=="skipped").sort((a,b)=>a.date.localeCompare(b.date))[0];
  const nextEl=$("#homeNextWorkout");
- if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')"><div class="home-next-icon">${future.sport==='Gimnasio'?`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9v6M3 10v4M18 9v6M21 10v4M6 12h12"></path></svg>`:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="5" r="2"></circle><path d="m10 9 3-2 2 3 3 1"></path><path d="m11 10-2 4-4 2"></path><path d="m13 12 3 3 1 4"></path><path d="m9 14 3 2-2 4"></path></svg>`}</div><div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)} · ${future.sport}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')"><div class="home-next-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></div><div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
+ if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')"><div class="home-next-icon">${future.sport==='Gimnasio'?'🏋️':'🏃'}</div><div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)} · ${future.sport}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')"><div class="home-next-icon">＋</div><div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
  renderModuleToday();
@@ -2309,7 +2294,7 @@ function render(){
  renderRaces();
  renderToday();renderImportedGymRoutines();renderPlan();renderStats();renderCoach();renderTemplates();renderWeekReview();renderZ2Progress();renderConsistency();renderBackupStatus();renderGymPlan();renderFirstUseHint();
 }
-function setView(v){currentView=v;document.body.dataset.view=v;document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
+function setView(v){currentView=v;document.body.classList.toggle("inicio-activo",v==="inicio");document.querySelectorAll(".nav").forEach(b=>b.classList.toggle("active",b.dataset.view===v));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===v));updateFab();scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".nav").forEach(b=>b.onclick=()=>setView(b.dataset.view));
 document.querySelectorAll("[data-run-filter]").forEach(b=>b.onclick=()=>{runFilter=b.dataset.runFilter;document.querySelectorAll("[data-run-filter]").forEach(x=>x.classList.toggle("active",x===b));render()});
 document.querySelectorAll("[data-run-view]").forEach(b=>b.onclick=()=>{runHistoryView=b.dataset.runView;document.querySelectorAll("[data-run-view]").forEach(x=>x.classList.toggle("active",x===b));render()});
