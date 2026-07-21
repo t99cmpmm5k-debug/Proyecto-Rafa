@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.7 · Excel por columnas corregido</title>
+<title>Corredor Sólido · V22.8 · Excel por filas corregido</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1700,28 +1700,41 @@ async function extractPdfText(file){
  if(!window.pdfjsLib)throw new Error("No se ha podido cargar el lector PDF. Comprueba la conexión.");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const pages=[];
  for(let n=1;n<=pdf.numPages;n++){const page=await pdf.getPage(n),content=await page.getTextContent();const rows=new Map();content.items.forEach(it=>{const y=Math.round(it.transform[5]/3)*3;rows.set(y,[...(rows.get(y)||[]),it])});pages.push([...rows.entries()].sort((a,b)=>b[0]-a[0]).map(([,items])=>items.sort((a,b)=>a.transform[4]-b.transform[4]).map(x=>x.str).join(" ")).join("\n"))}return pages.join("\n")
 }
+function normalizeExcelHeader(value){
+ return String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()
+}
+function excelValueToIso(value){
+ if(value instanceof Date&&!Number.isNaN(value.getTime()))return isoDate(value);
+ const text=String(value??"").trim();
+ if(!text)return "";
+ let m=text.match(/^(\d{4})[\/.\-](\d{1,2})[\/.\-](\d{1,2})$/);
+ if(m){const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]),12);return isoDate(d)}
+ m=text.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})$/);
+ if(m){let y=Number(m[3]);if(y<100)y+=2000;const d=new Date(y,Number(m[2])-1,Number(m[1]),12);return isoDate(d)}
+ return "";
+}
+function displayIsoForImport(iso){if(!iso)return "";const [y,m,d]=iso.split("-");return `${d}/${m}/${y}`}
 async function extractExcelText(file){
  if(!window.XLSX)throw new Error("No se ha podido cargar el lector Excel. Comprueba la conexión.");
  const wb=XLSX.read(await file.arrayBuffer(),{type:"array",cellDates:true});
  const out=[];
  wb.SheetNames.forEach(name=>{
-  const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""})
-   .map(r=>r.map(x=>String(x??"").trim()));
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:true,defval:""});
   if(!rows.length)return;
 
-  // Detecta tablas semanales en columnas: Lunes | Martes | ... | Domingo.
-  // Cada columna se convierte en una sesión independiente, conservando todos sus campos.
+  // Tablas semanales en columnas: Lunes | Martes | ... | Domingo.
   let headerRow=-1,dayColumns=[];
-  for(let r=0;r<Math.min(rows.length,12);r++){
+  for(let r=0;r<Math.min(rows.length,15);r++){
    const found=[];
-   rows[r].forEach((cell,c)=>{const day=dayIndexFromText(cell);if(day!==null)found.push({c,day,label:cell})});
+   rows[r].forEach((cell,c)=>{const day=dayIndexFromText(cell);if(day!==null)found.push({c,day,label:String(cell).trim()})});
    if(found.length>=3){headerRow=r;dayColumns=found;break}
   }
   if(headerRow>=0){
    const columnSessions=dayColumns.map(({c,label})=>{
     const parts=[label];
     for(let r=headerRow+1;r<rows.length;r++){
-     const value=String(rows[r]?.[c]??"").trim();
+     const raw=rows[r]?.[c];
+     const value=raw instanceof Date?displayIsoForImport(isoDate(raw)):String(raw??"").trim();
      if(value)parts.push(value);
     }
     return parts.join(" · ");
@@ -1729,8 +1742,43 @@ async function extractExcelText(file){
    if(columnSessions.length){out.push(columnSessions.join("\n"));return}
   }
 
-  // Formato habitual por filas: cada fila conserva sus columnas unidas.
-  out.push(rows.map(r=>r.filter(Boolean).join(" | ")).filter(Boolean).join("\n"));
+  // Tablas por filas: localiza encabezados y crea una línea limpia por entrenamiento.
+  let rowHeader=-1,headers=[];
+  for(let r=0;r<Math.min(rows.length,20);r++){
+   const hs=rows[r].map(normalizeExcelHeader);
+   const score=hs.filter(h=>/^(fecha|dia|deporte|tipo|titulo|distancia|distancia km|duracion|duracion min|ritmo|objetivo|notas|observaciones)$/.test(h)).length;
+   if(score>=2){rowHeader=r;headers=hs;break}
+  }
+  if(rowHeader>=0){
+   const idx=(...names)=>headers.findIndex(h=>names.includes(h));
+   const iDate=idx("fecha"),iDay=idx("dia"),iSport=idx("deporte"),iType=idx("tipo"),iTitle=idx("titulo"),iDist=idx("distancia","distancia km"),iDur=idx("duracion","duracion min"),iPace=idx("ritmo"),iObj=idx("objetivo","notas","observaciones");
+   const sessions=[];
+   for(let r=rowHeader+1;r<rows.length;r++){
+    const row=rows[r];if(!row||!row.some(v=>String(v??"").trim()))continue;
+    const get=i=>i>=0?row[i]:"";
+    const dateIso=excelValueToIso(get(iDate));
+    const day=String(get(iDay)??"").trim();
+    const sport=String(get(iSport)??"").trim();
+    const type=String(get(iType)??"").trim();
+    const title=String(get(iTitle)??"").trim();
+    const dist=String(get(iDist)??"").trim();
+    const dur=String(get(iDur)??"").trim();
+    const pace=String(get(iPace)??"").trim();
+    const obj=String(get(iObj)??"").trim();
+    const prefix=[day,displayIsoForImport(dateIso)].filter(Boolean).join(" ");
+    const parts=[sport,type,title];
+    if(dist)parts.push(/km/i.test(dist)?dist:`${dist} km`);
+    if(dur)parts.push(/min/i.test(dur)?`Duración ${dur}`:`Duración ${dur} min`);
+    if(pace)parts.push(pace);
+    if(obj)parts.push(obj);
+    const clean=parts.map(v=>String(v).trim()).filter(Boolean).filter((v,i,a)=>a.findIndex(x=>x.toLowerCase()===v.toLowerCase())===i);
+    if(prefix||clean.length)sessions.push(`${prefix}${prefix&&clean.length?" · ":""}${clean.join(" · ")}`);
+   }
+   if(sessions.length){out.push(sessions.join("\n"));return}
+  }
+
+  // Respaldo genérico para hojas sin encabezados reconocibles.
+  out.push(rows.map(r=>r.map(v=>v instanceof Date?displayIsoForImport(isoDate(v)):String(v??"").trim()).filter(Boolean).join(" · ")).filter(Boolean).join("\n"));
  });
  return out.filter(Boolean).join("\n")
 }
