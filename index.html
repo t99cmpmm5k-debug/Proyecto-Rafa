@@ -598,6 +598,10 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .analysis-modal.open{display:flex}
 .analysis-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--line);background:rgba(8,11,14,.96)}
 
+.run-analysis-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:14px 0 10px;padding:2px 0}
+.run-analysis-bar strong{display:block;font-size:17px;margin-top:2px}.run-analysis-bar p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+.run-analysis-bar .btn{flex:0 0 auto}.run-hidden-stats{display:none}
+@media(max-width:560px){.run-analysis-bar{align-items:stretch;flex-direction:column}.run-analysis-bar .btn{width:100%}}
 .running-evolution-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;margin:12px 0}
 .running-evolution-entry strong{display:block;font-size:16px;margin-top:2px}.running-evolution-entry p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
 .running-evolution-entry .btn{flex:0 0 auto}
@@ -615,8 +619,8 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .evolution-chart-title strong{font-size:15px}.evolution-chart-title span{font-size:11px;color:var(--muted)}
 .evolution-chart svg{width:100%;height:auto;display:block;overflow:visible}
 .evo-grid{stroke:#ffffff16;stroke-width:1}.evo-line-pace{fill:none;stroke:#9fe870;stroke-width:4}.evo-line-hr{fill:none;stroke:#62b4ff;stroke-width:4}.evo-line-distance{fill:none;stroke:#f5bd62;stroke-width:4}
-.evo-dot-pace{fill:#9fe870;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-dot-hr{fill:#62b4ff;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-dot-distance{fill:#f5bd62;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-label{fill:#9aa6af;font-size:10px}
-.evolution-detail{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px;line-height:1.5}
+.evo-dot-pace{fill:#9fe870;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-dot-hr{fill:#62b4ff;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-dot-distance{fill:#f5bd62;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-label{fill:#9aa6af;font-size:10px}.evo-axis-label{fill:#c7d0d6;font-size:11px;font-weight:700}.evo-value-label{fill:#f5f7f8;font-size:10px;font-weight:800}.evolution-reading{margin-top:12px;padding:12px 13px;background:var(--panel2);border:1px solid var(--line);border-radius:14px;font-size:13px;line-height:1.5}.evolution-reading strong{color:var(--green)}
+.evolution-insufficient{color:var(--muted);font-size:13px;line-height:1.5;margin:4px 0 12px;padding:11px 12px;border-left:3px solid var(--green);background:var(--panel2);border-radius:10px}.evolution-detail{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px;line-height:1.5}
 .evolution-detail strong{display:block;margin-bottom:4px}.evolution-detail span{color:var(--muted);font-size:13px}
 .run-table-expand-hint{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;background:#142119;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px}
 .run-table-expand-hint button{border:0;background:var(--green);color:#071008;border-radius:10px;padding:7px 10px;font-weight:900}
@@ -649,7 +653,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
       <select id="evolutionType" class="evolution-select"><option value="Zona 2">Zona 2</option><option value="Todos">Todos</option><option value="Series">Series</option><option value="Tirada larga">Tirada larga</option><option value="Carrera">Carrera</option></select>
     </div>
     <div id="evolutionChartArea"></div>
-    <div id="evolutionPointDetail" class="evolution-detail"><strong>Toca un punto del gráfico</strong><span>Verás la fecha, el ritmo, las pulsaciones y la distancia del entrenamiento.</span></div>
+    <div id="evolutionPointDetail" class="evolution-detail"><strong>Toca una sesión</strong><span>Verás la fecha, el ritmo, las pulsaciones, la temperatura y la distancia del entrenamiento.</span></div>
   </div>
 </div>
 
@@ -827,33 +831,21 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <button class="run-tab" data-run-filter="Carrera">Carrera</button>
     <button class="run-tab" data-run-filter="Recuperación">Recuperación</button>
   </div>
-  <div class="run-overview">
-    <div class="metric"><span>Sesiones</span><strong id="runFilterCount">0</strong></div>
-    <div class="metric"><span>Kilómetros</span><strong id="runFilterKm">0</strong></div>
-    <div class="metric"><span>Ritmo medio</span><strong id="runFilterPace">—</strong></div>
-  </div>
-
-  <div class="running-evolution-entry">
+  <div class="run-analysis-bar">
     <div>
-      <div class="kicker">ANÁLISIS</div>
-      <strong>Evolución de Running</strong>
-      <p>Compara ritmo, pulsaciones y distancia por fecha.</p>
+      <div class="kicker">HISTORIAL</div>
+      <strong>Entrenamientos registrados</strong>
+      <p>Filtra, abre la tabla completa o analiza la evolución cuando haya suficientes datos.</p>
     </div>
-    <button class="btn primary" type="button" id="openEvolutionBtn">Ver evolución completa</button>
+    <button class="btn secondary" type="button" id="openEvolutionBtn">Analizar evolución</button>
   </div>
-
-  <div id="z2Progress" class="z2-progress">
+  <div class="run-hidden-stats" aria-hidden="true">
+    <span id="runFilterCount">0</span><span id="runFilterKm">0</span><span id="runFilterPace">—</span>
+  </div>
+  <div id="z2Progress" class="z2-progress" style="display:none">
     <div id="z2Hero" class="z2-hero"></div>
     <div id="z2Comparison" class="z2-comparison"></div>
     <div id="z2WeatherNote"></div>
-  </div>
-
-  <div class="run-view-tools">
-    <div><div class="kicker">HISTORIAL</div><strong>Compara tus entrenamientos</strong></div>
-    <div class="run-view-switch">
-      <button class="run-view-btn active" type="button" data-run-view="table">▤ Tabla</button>
-      <button class="run-view-btn" type="button" data-run-view="cards">▦ Tarjetas</button>
-    </div>
   </div>
   <div id="runTableFilters" class="run-table-filters">
     <select id="runShoeFilter" class="wide"><option value="Todas">Todas las zapatillas</option><option>Adidas Adizero EVO SL</option><option>ASICS Gel-Nimbus 28</option><option>Sin especificar</option></select>
@@ -2179,11 +2171,10 @@ function seriesMetrics(r){
 }
 function renderRunHistory(items){
  const cards=$("#runs"),table=$("#runTableView"),filters=$("#runTableFilters");
- cards.style.display=runHistoryView==="cards"?"grid":"none";
- table.style.display=runHistoryView==="table"?"block":"none";
- filters.style.display=runHistoryView==="table"?"grid":"none";
- cards.innerHTML=items.length?items.map(runCard).join(""):`<div class="category-empty">No hay entrenamientos con estos filtros.</div>`;
- if(runHistoryView!=="table")return;
+ cards.style.display="none";
+ table.style.display="block";
+ filters.style.display="grid";
+ cards.innerHTML="";
  if(!items.length){table.innerHTML='<div class="run-table-wrap"><div class="table-empty">No hay entrenamientos con estos filtros.</div></div>';return}
  const seriesMode=runFilter==="Series";
  const head=seriesMode?`<tr><th>Fecha</th><th>Entrenamiento</th><th>Series</th><th>Ritmo series</th><th>Mejor</th><th>Recuperación</th><th>FC media</th><th>Zapatillas</th></tr>`:`<tr><th>Fecha</th><th>Tipo</th><th>Distancia</th><th>Tiempo</th><th>Ritmo</th><th>FC media</th><th>FC máx.</th><th>Cadencia</th><th>Zapatillas</th><th>Sensaciones</th></tr>`;
@@ -2609,23 +2600,67 @@ function evolutionPoint(r){
 window.evolutionPointById=id=>{const r=data.runs.find(x=>x.id===id);if(r)evolutionPoint(r)};
 function renderEvolutionChart(){
  const box=$("#evolutionChartArea"),items=evolutionItems();
- if(!items.length){box.innerHTML='<div class="empty">No hay entrenamientos suficientes con estos filtros.</div>';return}
- const recent=items.slice(-18),W=760,H=300,pL=46,pR=28,pT=24,pB=44;
- const x=i=>recent.length===1?(W/2):pL+i*((W-pL-pR)/(recent.length-1));
+ if(!items.length){
+   box.innerHTML='<div class="empty">No hay entrenamientos con estos filtros.</div>';
+   $("#evolutionPointDetail").innerHTML='<strong>Sin datos</strong><span>Registra entrenamientos para poder analizar la evolución.</span>';
+   return;
+ }
+ const sorted=[...items].sort((a,b)=>a.date.localeCompare(b.date));
+ if(items.length<4){
+   const desc=[...sorted].reverse();
+   const rows=desc.map(r=>{
+     const pace=r.pace||calcPace(r.distance,r.time)||"—";
+     return `<tr onclick="evolutionPointById('${r.id}')"><td>${fmt(r.date)}</td><td>${categoryLabel(r)}</td><td>${Number(r.distance||0).toFixed(2).replace(".",",")} km</td><td>${pace}/km</td><td>${r.avgHr||"—"} ppm</td><td>${r.temperature?`${r.temperature} °C`:"—"}</td></tr>`;
+   }).join("");
+   let reading='Todavía no hay suficientes sesiones comparables para calcular una tendencia fiable.';
+   if(desc.length>=2){
+     const latest=desc[0],previous=desc[1],p1=paceSecondsForRun(latest),p0=paceSecondsForRun(previous);
+     const paceDiff=Math.round(p1-p0),hrDiff=(Number(latest.avgHr)||0)-(Number(previous.avgHr)||0),tempDiff=(Number(latest.temperature)||0)-(Number(previous.temperature)||0);
+     const paceText=paceDiff===0?'el mismo ritmo':`${Math.abs(paceDiff)} s/km ${paceDiff<0?'más rápido':'más lento'}`;
+     const hrText=hrDiff===0?'las mismas pulsaciones':`${Math.abs(hrDiff)} ppm ${hrDiff<0?'menos':'más'}`;
+     const tempText=tempDiff===0?'con temperatura similar':`${Math.abs(tempDiff)} °C ${tempDiff>0?'más':'menos'}`;
+     reading=`Última sesión: <strong>${paceText}</strong>, ${hrText} y ${tempText} que la anterior.`;
+   }
+   box.innerHTML=`<div class="evolution-chart-card"><div class="evolution-chart-title"><strong>Comparación de sesiones</strong><span>${items.length} sesiones</span></div><div class="evolution-insufficient">Con menos de 4 entrenamientos comparables mostramos los datos directamente, sin dibujar una tendencia engañosa.</div><div class="run-table-wrap"><table class="run-history-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Distancia</th><th>Ritmo</th><th>FC media</th><th>Temp.</th></tr></thead><tbody>${rows}</tbody></table></div><div class="evolution-reading">${reading}</div></div>`;
+   $("#evolutionPointDetail").innerHTML='<strong>Comparación directa</strong><span>Toca una fila para revisar todos los datos de esa sesión.</span>';
+   return;
+ }
+ const recent=sorted.slice(-14),W=760,H=330,pL=78,pR=26,pT=28,pB=58;
+ const x=i=>pL+i*((W-pL-pR)/(recent.length-1));
  const paces=recent.map(paceSecondsForRun),hrs=recent.map(r=>Number(r.avgHr)||0),dists=recent.map(r=>Number(r.distance)||0);
- const scale=(vals,invert=false)=>{let mn=Math.min(...vals),mx=Math.max(...vals);if(mx===mn){mx+=1;mn-=1}return v=>pT+((invert?mx-v:v-mn)/(mx-mn))*(H-pT-pB)};
- const yP=scale(paces,false),validHr=hrs.filter(Boolean),yH=scale(validHr.length?validHr:[120,180],true),yD=scale(dists,true);
- const grid=[0,.25,.5,.75,1].map(t=>{const y=pT+t*(H-pT-pB);return `<line class="evo-grid" x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}"/>`}).join("");
- const labels=recent.map((r,i)=>`<text class="evo-label" x="${x(i)}" y="${H-14}" text-anchor="middle">${new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit"}).format(new Date(r.date+"T12:00:00"))}</text>`).join("");
+ function range(vals,pad){let mn=Math.min(...vals),mx=Math.max(...vals);if(mx===mn){mn-=1;mx+=1}const extra=(mx-mn)*pad;return [mn-extra,mx+extra]}
+ const [pMin,pMax]=range(paces,.18), validHr=hrs.filter(Boolean), [hMin,hMax]=range(validHr.length?validHr:[120,180],.18), [dMin,dMax]=range(dists,.15);
+ const yP=v=>pT+((v-pMin)/(pMax-pMin))*(H-pT-pB); // faster pace (smaller) is higher
+ const yH=v=>pT+((hMax-v)/(hMax-hMin))*(H-pT-pB);
+ const yD=v=>pT+((dMax-v)/(dMax-dMin))*(H-pT-pB);
+ const paceLabel=s=>paceTextFromSeconds(Math.max(0,Math.round(s)));
+ const gridFor=(min,max,formatter,invert=false)=>[0,.25,.5,.75,1].map(t=>{
+   const y=pT+t*(H-pT-pB), value=invert?max-t*(max-min):min+t*(max-min);
+   return `<line class="evo-grid" x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}"/><text class="evo-axis-label" x="${pL-10}" y="${y+4}" text-anchor="end">${formatter(value)}</text>`;
+ }).join("");
+ const labels=recent.map((r,i)=>{
+   if(recent.length>8 && i%2===1 && i!==recent.length-1)return '';
+   return `<text class="evo-label" x="${x(i)}" y="${H-18}" text-anchor="middle">${new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit"}).format(new Date(r.date+"T12:00:00"))}</text>`;
+ }).join("");
  const line=(vals,y,cls)=>`<polyline class="${cls}" points="${recent.map((r,i)=>`${x(i)},${y(vals[i])}`).join(" ")}"/>`;
- const dots=(vals,y,cls)=>recent.map((r,i)=>`<circle class="${cls}" cx="${x(i)}" cy="${y(vals[i])}" r="5" onclick="evolutionPointById('${r.id}')"><title>${fmt(r.date)}</title></circle>`).join("");
- let content="",title="";
- if(evolutionMode==="pace"){title="Ritmo medio (min/km)";content=line(paces,yP,"evo-line-pace")+dots(paces,yP,"evo-dot-pace")}
- if(evolutionMode==="hr"){title="Frecuencia cardiaca media (ppm)";content=line(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-line-hr")+dots(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-dot-hr")}
- if(evolutionMode==="both"){title="Ritmo y frecuencia cardiaca";content=line(paces,yP,"evo-line-pace")+dots(paces,yP,"evo-dot-pace")+line(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-line-hr")+dots(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-dot-hr")}
- if(evolutionMode==="distance"){title="Distancia por entrenamiento (km)";content=line(dists,yD,"evo-line-distance")+dots(dists,yD,"evo-dot-distance")}
- box.innerHTML=`<div class="evolution-chart-card"><div class="evolution-chart-title"><strong>${title}</strong><span>${recent.length} sesiones</span></div><div class="evolution-chart"><svg viewBox="0 0 ${W} ${H}" aria-label="Gráfico de evolución">${grid}${content}${labels}</svg></div></div>`;
+ const dots=(vals,y,cls,formatter)=>recent.map((r,i)=>`<g onclick="evolutionPointById('${r.id}')"><circle class="${cls}" cx="${x(i)}" cy="${y(vals[i])}" r="5"><title>${fmt(r.date)} · ${formatter(vals[i])}</title></circle>${recent.length<=8?`<text class="evo-value-label" x="${x(i)}" y="${Math.max(16,y(vals[i])-10)}" text-anchor="middle">${formatter(vals[i])}</text>`:''}</g>`).join("");
+ function card(title,subtitle,grid,content,aria){return `<div class="evolution-chart-card"><div class="evolution-chart-title"><strong>${title}</strong><span>${subtitle}</span></div><div class="evolution-chart"><svg viewBox="0 0 ${W} ${H}" aria-label="${aria}">${grid}${content}${labels}</svg></div></div>`}
+ if(evolutionMode==="pace"){
+   box.innerHTML=card('Ritmo medio','Más rápido arriba',gridFor(pMin,pMax,paceLabel,false),line(paces,yP,'evo-line-pace')+dots(paces,yP,'evo-dot-pace',paceLabel),'Evolución del ritmo con escala en minutos por kilómetro');
+ }
+ if(evolutionMode==="hr"){
+   box.innerHTML=card('Frecuencia cardiaca media','ppm',gridFor(hMin,hMax,v=>Math.round(v),true),line(hrs.map(v=>v||hMin),yH,'evo-line-hr')+dots(hrs.map(v=>v||hMin),yH,'evo-dot-hr',v=>`${Math.round(v)}`),'Evolución de la frecuencia cardiaca media');
+ }
+ if(evolutionMode==="distance"){
+   box.innerHTML=card('Distancia por entrenamiento','km',gridFor(dMin,dMax,v=>v.toFixed(1),true),line(dists,yD,'evo-line-distance')+dots(dists,yD,'evo-dot-distance',v=>`${v.toFixed(1)} km`),'Evolución de la distancia por entrenamiento');
+ }
+ if(evolutionMode==="both"){
+   const paceCard=card('Ritmo medio','Más rápido arriba',gridFor(pMin,pMax,paceLabel,false),line(paces,yP,'evo-line-pace')+dots(paces,yP,'evo-dot-pace',paceLabel),'Evolución del ritmo');
+   const hrCard=card('Frecuencia cardiaca media','Mismas fechas',gridFor(hMin,hMax,v=>Math.round(v),true),line(hrs.map(v=>v||hMin),yH,'evo-line-hr')+dots(hrs.map(v=>v||hMin),yH,'evo-dot-hr',v=>`${Math.round(v)}`),'Evolución de pulsaciones');
+   box.innerHTML=paceCard+hrCard;
+ }
 }
+
 function openEvolution(){
  $("#evolutionModal").classList.add("open");$("#evolutionModal").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";renderEvolutionChart();
 }
@@ -2641,7 +2676,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=206").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
