@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22 · Boceto C</title>
+<title>Corredor Sólido · V22.1 · Boceto C Ajustado</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -657,13 +657,19 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 #inicio{padding:0;background:#00162d;min-height:calc(100vh - 90px)}
 #inicio .home-hero{
   width:100%;
-  height:clamp(350px,49vh,560px);
-  background-image:linear-gradient(180deg,rgba(0,16,38,0) 58%,#00162d 100%),url("hero-boceto-c-azul.jpg");
-  background-size:cover;
-  background-position:center top;
+  height:clamp(318px,44vh,470px);
+  background-image:linear-gradient(180deg,rgba(0,16,38,0) 56%,rgba(0,22,45,.18) 74%,#00162d 100%),url("hero-boceto-c-azul.jpg");
+  background-size:auto 100%;
+  background-position:40% 0%;
   background-repeat:no-repeat;
 }
-#inicio .home-content{position:relative;z-index:2;margin-top:-34px;padding:0 16px 6px}
+#inicio .home-content{position:relative;z-index:2;margin-top:-20px;padding:0 16px 6px}
+@media (max-width:420px){
+  #inicio .home-hero{height:336px;background-position:39% 0%}
+}
+@media (min-width:421px){
+  #inicio .home-hero{background-position:42% 0%}
+}
 #inicio .home-today-shell{
   position:relative;overflow:hidden;
   background:linear-gradient(145deg,rgba(3,39,76,.98),rgba(0,19,44,.99));
