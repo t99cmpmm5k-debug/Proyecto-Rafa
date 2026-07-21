@@ -597,6 +597,12 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .analysis-modal{position:fixed;inset:0;z-index:110;background:rgba(3,6,8,.96);display:none;flex-direction:column;color:var(--text)}
 .analysis-modal.open{display:flex}
 .analysis-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--line);background:rgba(8,11,14,.96)}
+
+.running-evolution-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;margin:12px 0}
+.running-evolution-entry strong{display:block;font-size:16px;margin-top:2px}.running-evolution-entry p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.4}
+.running-evolution-entry .btn{flex:0 0 auto}
+@media(max-width:520px){.running-evolution-entry{align-items:stretch;flex-direction:column}.running-evolution-entry .btn{width:100%}}
+
 .analysis-modal-head h3{font-size:18px}.analysis-modal-body{flex:1;overflow:auto;padding:14px 14px calc(24px + env(safe-area-inset-bottom))}
 .analysis-close{border:0;background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:900}
 .evolution-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
@@ -662,7 +668,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 </head>
 <body>
 <header>
-  <div><div class="kicker">TRAINING BOOK · V20.1</div><h1>Proyecto Rafa</h1></div>
+  <div><div class="kicker">TRAINING BOOK · V20.6</div><h1>Proyecto Rafa</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -672,7 +678,7 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="kicker">TU ENTRENAMIENTO</div>
     <h2>Construye tu mejor versión</h2>
     <p>Running, fuerza, progreso y carreras en un mismo lugar.</p>
-    <span class="version">V20.1 ACTIVA</span>
+    <span class="version">V20.6 ACTIVA</span>
   </div>
   <div class="metrics">
     <div class="metric"><span>Km esta semana</span><strong id="weekKm">0,0</strong></div>
@@ -827,11 +833,17 @@ nav{grid-template-columns:repeat(6,1fr)!important}
     <div class="metric"><span>Ritmo medio</span><strong id="runFilterPace">—</strong></div>
   </div>
 
+  <div class="running-evolution-entry">
+    <div>
+      <div class="kicker">ANÁLISIS</div>
+      <strong>Evolución de Running</strong>
+      <p>Compara ritmo, pulsaciones y distancia por fecha.</p>
+    </div>
+    <button class="btn primary" type="button" id="openEvolutionBtn">Ver evolución completa</button>
+  </div>
+
   <div id="z2Progress" class="z2-progress">
     <div id="z2Hero" class="z2-hero"></div>
-    <div class="z2-summary-actions">
-      <button class="btn primary" type="button" id="openEvolutionBtn">Ver evolución completa</button>
-    </div>
     <div id="z2Comparison" class="z2-comparison"></div>
     <div id="z2WeatherNote"></div>
   </div>
@@ -2629,7 +2641,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=205").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=206").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
