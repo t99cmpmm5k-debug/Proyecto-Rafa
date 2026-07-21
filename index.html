@@ -705,7 +705,18 @@ body[data-view="inicio"] main{padding-top:0}
 #inicio .home-daily-note i{font-size:17px}
 @media(max-height:760px){body[data-view="inicio"] header{padding-top:calc(6px + env(safe-area-inset-top));padding-bottom:6px}#inicio .home-motivation{padding-top:7px;padding-bottom:6px}#inicio .home-today-shell{padding-top:11px;padding-bottom:11px}#inicio .home-workout-title{font-size:clamp(20px,5.7vw,26px)}#inicio .home-workout-meta{margin-top:8px;margin-bottom:8px;padding-top:8px}#inicio .home-next-label{margin-top:8px}#inicio .home-daily-note{display:none}}
 
+
+<style id="theme-extra">
+:root.theme-ocean{--green:#20D6E8;--green2:#48CAE4}
+:root.theme-forest{--green:#49D17D;--green2:#7EE8A8}
+:root.theme-energy{--green:#FF9800;--green2:#FFD54F}
+:root.theme-night{--green:#8B5CF6;--green2:#C4B5FD}
+:root.theme-pulse{--green:#FF4D6D;--green2:#FF8FA3}
+.theme-panel{padding:16px}
+.theme-option{display:flex;justify-content:space-between;align-items:center;padding:12px;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.dot{width:24px;height:24px;border-radius:50%}
 </style>
+
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
   <div class="analysis-modal-head">
@@ -2746,7 +2757,21 @@ $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
+
+function setTheme(t){
+ document.documentElement.classList.remove('theme-ocean','theme-forest','theme-energy','theme-night','theme-pulse');
+ document.documentElement.classList.add('theme-'+t);
+ localStorage.setItem('cs_theme',t);
+}
+(function(){const t=localStorage.getItem('cs_theme')||'forest';setTheme(t);
+document.querySelectorAll('nav .nav').forEach(b=>{if(b.dataset.view==='mas'){b.onclick=()=>{document.getElementById('settingsPanel').style.display='block';window.scrollTo(0,0);};});
+})();
+
 render();updateFab();
 </script>
-</body>
+
+<div id="settingsPanel" style="display:none;padding:16px">
+<h2>🎨 Apariencia</h2>
+<div class="theme-panel">
+<div class="theme-option" onclick="setTheme(\'ocean\')"><span>Ocean</span><span class="dot" style="background:#20D6E8"></span></div><div class="theme-option" onclick="setTheme(\'forest\')"><span>Forest</span><span class="dot" style="background:#49D17D"></span></div><div class="theme-option" onclick="setTheme(\'energy\')"><span>Energy</span><span class="dot" style="background:#FF9800"></span></div><div class="theme-option" onclick="setTheme(\'night\')"><span>Night</span><span class="dot" style="background:#8B5CF6"></span></div><div class="theme-option" onclick="setTheme(\'pulse\')"><span>Pulse</span><span class="dot" style="background:#FF4D6D"></span></div></div></div></body>
 </html>
