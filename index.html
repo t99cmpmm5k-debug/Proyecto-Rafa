@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.9 · Excel por filas definitivo</title>
+<title>Corredor Sólido · V22.10 · Excel por filas definitivo</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1639,7 +1639,15 @@ function mondayOfDate(date){
 function addIsoDays(iso,days){const d=new Date(`${iso}T12:00:00`);d.setDate(d.getDate()+days);return isoDate(d)}
 function displayedWeekMonday(){const d=new Date();d.setDate(d.getDate()+weekOffset*7);return mondayOfDate(d)}
 const PLAN_DAYS={lunes:0,lun:0,martes:1,mar:1,miercoles:2,mie:2,x:2,jueves:3,jue:3,viernes:4,vie:4,sabado:5,sab:5,domingo:6,dom:6};
-function normalizePlanText(raw){return String(raw||"").replace(/\r/g,"\n").replace(/[•●▪◦]/g,"-").replace(/[–—]/g,"-").replace(/\t/g," | ").replace(/\n{3,}/g,"\n\n").trim()}
+function normalizePlanText(raw){
+ const text=String(raw||"").replace(/\r/g,"\n");
+ return text.split("\n").map(line=>{
+  // Las sesiones estructuradas de Excel usan una tabulación como separador.
+  // Debe conservarse para que el lector pueda reconocer y parsear el JSON.
+  if(line.startsWith("@@SESSION\t"))return line;
+  return line.replace(/[•●▪◦]/g,"-").replace(/[–—]/g,"-").replace(/\t/g," | ");
+ }).join("\n").replace(/\n{3,}/g,"\n\n").trim()
+}
 function dayIndexFromText(s){
  const clean=String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  const m=clean.match(/\b(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)\b/);return m?PLAN_DAYS[m[1]]:null;
@@ -1827,7 +1835,14 @@ async function extractPlanFileText(file){
 async function handleUniversalPlanFile(file){
  try{planImportStatus(`Abriendo <strong>${file.name}</strong>…`,`loading`);const raw=await extractPlanFileText(file);if(!raw.trim())throw new Error("No se ha detectado texto en el archivo.");openUniversalPlanPreview(raw,file.name);planImportStatus(`Archivo leído: <strong>${file.name}</strong>. Revisa las sesiones detectadas.`)}catch(err){planImportStatus(err?.message||"No se pudo leer el archivo.","error")}
 }
-function openUniversalPlanPreview(raw,source){universalPlanDraft={source,rawText:normalizePlanText(raw),sessions:[]};$("#planImportRawText").value=universalPlanDraft.rawText;$("#planImportWeekStart").value=displayedWeekMonday();refreshUniversalPlanPreview();$("#planImportDialog").showModal()}
+function openUniversalPlanPreview(raw,source){
+ const normalized=normalizePlanText(raw);
+ universalPlanDraft={source,rawText:normalized,sessions:[]};
+ $("#planImportRawText").value=normalized;
+ $("#planImportWeekStart").value=displayedWeekMonday();
+ refreshUniversalPlanPreview();
+ $("#planImportDialog").showModal()
+}
 function refreshUniversalPlanPreview(){
  const raw=$("#planImportRawText").value.trim(),monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());universalPlanDraft.rawText=raw;universalPlanDraft.sessions=parsePlanSessions(raw,monday);const sessions=universalPlanDraft.sessions;$("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";$("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
 }
