@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rafa">
-<title>Proyecto Rafa · V20</title>
+<title>Proyecto Rafa · V20.5</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -589,7 +589,75 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 .today-module-label{font-size:10px;font-weight:900;letter-spacing:.12em;color:var(--lime);margin-bottom:6px}.today-module-card.running .today-module-label{color:#8bc9ff}
 .today-module-title{font-size:23px;font-weight:950;margin-bottom:5px}.today-module-meta{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:13px}
 .plan-readonly-note{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--panel2);color:var(--muted);font-size:12px;margin-bottom:12px}
+
+
+/* V20.5 · Running analysis redesign */
+.z2-summary-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.z2-summary-actions .btn{flex:1}
+.analysis-modal{position:fixed;inset:0;z-index:110;background:rgba(3,6,8,.96);display:none;flex-direction:column;color:var(--text)}
+.analysis-modal.open{display:flex}
+.analysis-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--line);background:rgba(8,11,14,.96)}
+.analysis-modal-head h3{font-size:18px}.analysis-modal-body{flex:1;overflow:auto;padding:14px 14px calc(24px + env(safe-area-inset-bottom))}
+.analysis-close{border:0;background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 13px;font-weight:900}
+.evolution-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.evolution-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:#0b120e;padding:4px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px}
+.evolution-tab{border:0;background:transparent;color:var(--muted);padding:9px 5px;border-radius:10px;font-size:11px;font-weight:850}
+.evolution-tab.active{background:var(--green);color:#071008}
+.evolution-select{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:13px;padding:11px}
+.evolution-chart-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:10px}
+.evolution-chart-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.evolution-chart-title strong{font-size:15px}.evolution-chart-title span{font-size:11px;color:var(--muted)}
+.evolution-chart svg{width:100%;height:auto;display:block;overflow:visible}
+.evo-grid{stroke:#ffffff16;stroke-width:1}.evo-line-pace{fill:none;stroke:#9fe870;stroke-width:4}.evo-line-hr{fill:none;stroke:#62b4ff;stroke-width:4}.evo-line-distance{fill:none;stroke:#f5bd62;stroke-width:4}
+.evo-dot-pace{fill:#9fe870;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-dot-hr{fill:#62b4ff;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-dot-distance{fill:#f5bd62;stroke:#0b1014;stroke-width:2;cursor:pointer}.evo-label{fill:#9aa6af;font-size:10px}
+.evolution-detail{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px;line-height:1.5}
+.evolution-detail strong{display:block;margin-bottom:4px}.evolution-detail span{color:var(--muted);font-size:13px}
+.run-table-expand-hint{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;background:#142119;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px}
+.run-table-expand-hint button{border:0;background:var(--green);color:#071008;border-radius:10px;padding:7px 10px;font-weight:900}
+.full-table-modal{position:fixed;inset:0;z-index:120;background:#080b0e;display:none;flex-direction:column}
+.full-table-modal.open{display:flex}
+.full-table-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 14px 10px;border-bottom:1px solid var(--line)}
+.full-table-head p{color:var(--muted);font-size:11px;margin-top:3px}.full-table-body{flex:1;overflow:auto;padding:10px 10px calc(18px + env(safe-area-inset-bottom))}
+.full-table-body .run-table-wrap{height:100%;max-height:none;border-radius:14px}.full-table-body .run-history-table{min-width:1080px;font-size:13px}
+.full-table-body .run-history-table th{top:0}
+.orientation-tip{display:none;color:var(--muted);font-size:11px;padding:9px 12px;background:#11181e;border-radius:12px;margin-bottom:8px}
+@media(orientation:portrait) and (max-width:700px){.orientation-tip{display:block}}
+@media(max-width:430px){.evolution-tabs{grid-template-columns:repeat(2,1fr)}.evolution-toolbar{grid-template-columns:1fr}}
+
 </style>
+
+<div id="evolutionModal" class="analysis-modal" aria-hidden="true">
+  <div class="analysis-modal-head">
+    <div><div class="kicker">RUNNING</div><h3>Evolución</h3></div>
+    <button class="analysis-close" type="button" id="closeEvolutionBtn">Cerrar</button>
+  </div>
+  <div class="analysis-modal-body">
+    <div class="evolution-tabs">
+      <button class="evolution-tab active" type="button" data-evo-mode="pace">Ritmo</button>
+      <button class="evolution-tab" type="button" data-evo-mode="hr">Pulsaciones</button>
+      <button class="evolution-tab" type="button" data-evo-mode="both">Ritmo + FC</button>
+      <button class="evolution-tab" type="button" data-evo-mode="distance">Distancia</button>
+    </div>
+    <div class="evolution-toolbar">
+      <select id="evolutionPeriod" class="evolution-select"><option value="30">Últimos 30 días</option><option value="90">Últimos 3 meses</option><option value="all">Todo</option></select>
+      <select id="evolutionType" class="evolution-select"><option value="Zona 2">Zona 2</option><option value="Todos">Todos</option><option value="Series">Series</option><option value="Tirada larga">Tirada larga</option><option value="Carrera">Carrera</option></select>
+    </div>
+    <div id="evolutionChartArea"></div>
+    <div id="evolutionPointDetail" class="evolution-detail"><strong>Toca un punto del gráfico</strong><span>Verás la fecha, el ritmo, las pulsaciones y la distancia del entrenamiento.</span></div>
+  </div>
+</div>
+
+<div id="fullRunTableModal" class="full-table-modal" aria-hidden="true">
+  <div class="full-table-head">
+    <div><div class="kicker">RUNNING</div><h3>Comparar entrenamientos</h3><p>Gira el móvil para aprovechar todo el ancho.</p></div>
+    <button class="analysis-close" type="button" id="closeFullTableBtn">Cerrar</button>
+  </div>
+  <div class="full-table-body">
+    <div class="orientation-tip">Para ver todas las columnas más cómodamente, coloca el iPhone en horizontal.</div>
+    <div id="fullRunTableContent"></div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
@@ -761,13 +829,8 @@ nav{grid-template-columns:repeat(6,1fr)!important}
 
   <div id="z2Progress" class="z2-progress">
     <div id="z2Hero" class="z2-hero"></div>
-    <div class="z2-chart-card">
-      <div class="z2-chart-head"><h4>Evolución Zona 2</h4><span>Últimas 10 sesiones</span></div>
-      <div id="z2Chart" class="z2-chart-wrap"></div>
-      <div class="z2-legend">
-        <span><i style="background:#9fe870"></i>Ritmo medio</span>
-        <span><i style="background:#62b4ff"></i>FC media</span>
-      </div>
+    <div class="z2-summary-actions">
+      <button class="btn primary" type="button" id="openEvolutionBtn">Ver evolución completa</button>
     </div>
     <div id="z2Comparison" class="z2-comparison"></div>
     <div id="z2WeatherNote"></div>
@@ -1675,6 +1738,7 @@ function z2TrendData(items){
 }
 function renderZ2Chart(items){
  const box=$("#z2Chart");
+ if(!box)return;
  const recent=items.slice(-10);
  if(recent.length<2){
    box.innerHTML='<div class="category-empty">Necesitas al menos dos sesiones de Zona 2 para ver la evolución.</div>';
@@ -1713,7 +1777,6 @@ function renderZ2Progress(){
  const items=z2Runs();
  if(!items.length){
    $("#z2Hero").innerHTML='<h3>Progreso Zona 2</h3><p>Aún no hay sesiones suficientes para calcular una tendencia.</p>';
-   $("#z2Chart").innerHTML='<div class="category-empty">Registra sesiones de Zona 2 con tiempo, distancia y pulsaciones.</div>';
    $("#z2Comparison").innerHTML="";
    $("#z2WeatherNote").innerHTML="";
    return;
@@ -1728,10 +1791,9 @@ function renderZ2Progress(){
  <div class="z2-summary">
   <div><small>Ritmo medio</small><b>${paceTextFromSeconds(avgPace)}</b></div>
   <div><small>FC media</small><b>${avgHr?Math.round(avgHr)+" ppm":"—"}</b></div>
-  <div><small>Cadencia media</small><b>${avgCad?Math.round(avgCad)+" ppm":"—"}</b></div>
-  <div><small>Temperatura media</small><b>${avgTemp?avgTemp.toFixed(1).replace(".",",")+" °C":"—"}</b></div>
+  <div><small>Distancia total</small><b>${items.reduce((a,r)=>a+Number(r.distance||0),0).toFixed(1).replace(".",",")} km</b></div>
+  <div><small>Sesiones Z2</small><b>${items.length}</b></div>
  </div>`;
- renderZ2Chart(items);
  $("#z2Comparison").innerHTML=`
   <div class="z2-comparison-card"><span>Primera vs. últimas sesiones</span><strong>${formatPaceDelta(trend.paceDelta)}</strong></div>
   <div class="z2-comparison-card"><span>Cambio de pulsaciones</span><strong>${trend.hrDelta?`${trend.hrDelta>0?"+":""}${Math.round(trend.hrDelta)} ppm`:"Sin datos"}</strong></div>
@@ -2115,10 +2177,10 @@ function renderRunHistory(items){
  const head=seriesMode?`<tr><th>Fecha</th><th>Entrenamiento</th><th>Series</th><th>Ritmo series</th><th>Mejor</th><th>Recuperación</th><th>FC media</th><th>Zapatillas</th></tr>`:`<tr><th>Fecha</th><th>Tipo</th><th>Distancia</th><th>Tiempo</th><th>Ritmo</th><th>FC media</th><th>FC máx.</th><th>Cadencia</th><th>Zapatillas</th><th>Sensaciones</th></tr>`;
  const rows=items.map(r=>{
    const shoe=r.shoes||"Sin especificar",pace=r.pace||calcPace(r.distance,r.time);
-   if(seriesMode){const m=seriesMetrics(r);return `<tr onclick="editItem('run','${r.id}')"><td>${fmt(r.date)}</td><td><span class="run-table-type">${r.type||'Series'}</span><span class="run-table-sub">${Number(r.distance||0).toFixed(2).replace('.',',')} km · ${r.time||'—'}</span></td><td>${m.structure}</td><td>${m.avg}/km</td><td>${m.best}/km</td><td>${m.recovery}</td><td>${r.avgHr||'—'} ppm</td><td><span class="shoe-pill">${shoe}</span></td></tr>`}
-   return `<tr onclick="editItem('run','${r.id}')"><td>${fmt(r.date)}</td><td><span class="run-table-type">${categoryLabel(r)}</span><span class="run-table-sub">${r.type||''}</span></td><td>${Number(r.distance||0).toFixed(2).replace('.',',')} km</td><td>${r.time||'—'}</td><td>${pace?pace+'/km':'—'}</td><td>${r.avgHr||'—'} ppm</td><td>${r.maxHr||'—'} ppm</td><td>${r.avgCadence||r.cadence||'—'}</td><td><span class="shoe-pill">${shoe}</span></td><td>${r.feeling||'—'}</td></tr>`;
+   if(seriesMode){const m=seriesMetrics(r);return `<tr onclick="event.stopPropagation();editItem('run','${r.id}')"><td>${fmt(r.date)}</td><td><span class="run-table-type">${r.type||'Series'}</span><span class="run-table-sub">${Number(r.distance||0).toFixed(2).replace('.',',')} km · ${r.time||'—'}</span></td><td>${m.structure}</td><td>${m.avg}/km</td><td>${m.best}/km</td><td>${m.recovery}</td><td>${r.avgHr||'—'} ppm</td><td><span class="shoe-pill">${shoe}</span></td></tr>`}
+   return `<tr onclick="event.stopPropagation();editItem('run','${r.id}')"><td>${fmt(r.date)}</td><td><span class="run-table-type">${categoryLabel(r)}</span><span class="run-table-sub">${r.type||''}</span></td><td>${Number(r.distance||0).toFixed(2).replace('.',',')} km</td><td>${r.time||'—'}</td><td>${pace?pace+'/km':'—'}</td><td>${r.avgHr||'—'} ppm</td><td>${r.maxHr||'—'} ppm</td><td>${r.avgCadence||r.cadence||'—'}</td><td><span class="shoe-pill">${shoe}</span></td><td>${r.feeling||'—'}</td></tr>`;
  }).join('');
- table.innerHTML=`${seriesMode?'<div class="series-table-note">Pulsa sobre una fila para ver o editar todos los tiempos de las series.</div>':''}<div class="run-table-wrap"><table class="run-history-table"><thead>${head}</thead><tbody>${rows}</tbody></table></div>`;
+ table.innerHTML=`${seriesMode?'<div class="series-table-note">Pulsa sobre una fila para ver o editar todos los tiempos de las series.</div>':''}<div class="run-table-wrap" onclick="openFullRunTable()"><div class="run-table-expand-hint"><span>Pulsa para verla completa</span><button type="button" onclick="event.stopPropagation();openFullRunTable()">⛶ Ampliar</button></div><table class="run-history-table"><thead>${head}</thead><tbody>${rows}</tbody></table></div>`;
 }
 function render(){
  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
@@ -2514,7 +2576,60 @@ $("#clearWeek").onclick=clearCurrentWeek;
 document.querySelectorAll("[data-discovery-area]").forEach(b=>b.onclick=()=>{discoveryArea=b.dataset.discoveryArea;document.querySelectorAll("[data-discovery-area]").forEach(x=>x.classList.toggle("active",x===b));renderRaceDiscovery()});
 $("#discoveryDistance").onchange=renderRaceDiscovery;$("#discoveryMonth").onchange=renderRaceDiscovery;$("#closeRaceDetail").onclick=()=>$("#raceDetailDialog").close();
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=204").catch(()=>{}))}
+
+
+let evolutionMode="pace";
+function evolutionItems(){
+ let items=[...data.runs].filter(r=>Number(r.distance)>0&&timeToSeconds(r.time)>0);
+ const type=$("#evolutionType")?.value||"Zona 2";
+ if(type!=="Todos")items=items.filter(r=>categoryLabel(r)===type);
+ const period=$("#evolutionPeriod")?.value||"30";
+ if(period!=="all"){
+   const min=new Date();min.setDate(min.getDate()-Number(period));min.setHours(0,0,0,0);
+   items=items.filter(r=>new Date(r.date+"T12:00:00")>=min);
+ }
+ return items.sort((a,b)=>a.date.localeCompare(b.date));
+}
+function evolutionPoint(r){
+ const pace=r.pace||calcPace(r.distance,r.time)||"—";
+ $("#evolutionPointDetail").innerHTML=`<strong>${fmt(r.date)} · ${categoryLabel(r)}</strong><span>${Number(r.distance||0).toFixed(2).replace(".",",")} km · ${r.time||"—"} · ${pace}/km · ${r.avgHr||"—"} ppm${r.temperature?` · ${r.temperature} °C`:""}</span>`;
+}
+window.evolutionPointById=id=>{const r=data.runs.find(x=>x.id===id);if(r)evolutionPoint(r)};
+function renderEvolutionChart(){
+ const box=$("#evolutionChartArea"),items=evolutionItems();
+ if(!items.length){box.innerHTML='<div class="empty">No hay entrenamientos suficientes con estos filtros.</div>';return}
+ const recent=items.slice(-18),W=760,H=300,pL=46,pR=28,pT=24,pB=44;
+ const x=i=>recent.length===1?(W/2):pL+i*((W-pL-pR)/(recent.length-1));
+ const paces=recent.map(paceSecondsForRun),hrs=recent.map(r=>Number(r.avgHr)||0),dists=recent.map(r=>Number(r.distance)||0);
+ const scale=(vals,invert=false)=>{let mn=Math.min(...vals),mx=Math.max(...vals);if(mx===mn){mx+=1;mn-=1}return v=>pT+((invert?mx-v:v-mn)/(mx-mn))*(H-pT-pB)};
+ const yP=scale(paces,false),validHr=hrs.filter(Boolean),yH=scale(validHr.length?validHr:[120,180],true),yD=scale(dists,true);
+ const grid=[0,.25,.5,.75,1].map(t=>{const y=pT+t*(H-pT-pB);return `<line class="evo-grid" x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}"/>`}).join("");
+ const labels=recent.map((r,i)=>`<text class="evo-label" x="${x(i)}" y="${H-14}" text-anchor="middle">${new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit"}).format(new Date(r.date+"T12:00:00"))}</text>`).join("");
+ const line=(vals,y,cls)=>`<polyline class="${cls}" points="${recent.map((r,i)=>`${x(i)},${y(vals[i])}`).join(" ")}"/>`;
+ const dots=(vals,y,cls)=>recent.map((r,i)=>`<circle class="${cls}" cx="${x(i)}" cy="${y(vals[i])}" r="5" onclick="evolutionPointById('${r.id}')"><title>${fmt(r.date)}</title></circle>`).join("");
+ let content="",title="";
+ if(evolutionMode==="pace"){title="Ritmo medio (min/km)";content=line(paces,yP,"evo-line-pace")+dots(paces,yP,"evo-dot-pace")}
+ if(evolutionMode==="hr"){title="Frecuencia cardiaca media (ppm)";content=line(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-line-hr")+dots(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-dot-hr")}
+ if(evolutionMode==="both"){title="Ritmo y frecuencia cardiaca";content=line(paces,yP,"evo-line-pace")+dots(paces,yP,"evo-dot-pace")+line(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-line-hr")+dots(hrs.map(v=>v||Math.min(...(validHr.length?validHr:[120]))),yH,"evo-dot-hr")}
+ if(evolutionMode==="distance"){title="Distancia por entrenamiento (km)";content=line(dists,yD,"evo-line-distance")+dots(dists,yD,"evo-dot-distance")}
+ box.innerHTML=`<div class="evolution-chart-card"><div class="evolution-chart-title"><strong>${title}</strong><span>${recent.length} sesiones</span></div><div class="evolution-chart"><svg viewBox="0 0 ${W} ${H}" aria-label="Gráfico de evolución">${grid}${content}${labels}</svg></div></div>`;
+}
+function openEvolution(){
+ $("#evolutionModal").classList.add("open");$("#evolutionModal").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";renderEvolutionChart();
+}
+function closeEvolution(){$("#evolutionModal").classList.remove("open");$("#evolutionModal").setAttribute("aria-hidden","true");document.body.style.overflow=""}
+window.openFullRunTable=()=>{
+ const source=$("#runTableView")?.innerHTML||"";
+ $("#fullRunTableContent").innerHTML=source.replace(/onclick=\"openFullRunTable\(\)\"/g,"").replace(/<div class=\"run-table-expand-hint\">[\s\S]*?<\/div>/,"");
+ $("#fullRunTableModal").classList.add("open");$("#fullRunTableModal").setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+};
+function closeFullRunTable(){$("#fullRunTableModal").classList.remove("open");$("#fullRunTableModal").setAttribute("aria-hidden","true");document.body.style.overflow=""}
+$("#openEvolutionBtn").onclick=openEvolution;$("#closeEvolutionBtn").onclick=closeEvolution;
+$("#closeFullTableBtn").onclick=closeFullRunTable;
+$("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
+document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
+
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=205").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
