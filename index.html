@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V23.1 · Importador inteligente</title>
+<title>Corredor Sólido · V23.2 · Importador por bloques</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1671,12 +1671,21 @@ function dayIndexFromText(s){
  const m=clean.match(/(?:^|[^a-z])(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)/);return m?PLAN_DAYS[m[1]]:null;
 }
 function splitOcrWeekdayLines(text){
- // El OCR puede devolver todo el plan en una sola línea. Insertamos un salto
- // antes de cada día para que cada entrenamiento se convierta en una sesión.
- return String(text||"").split("\n").flatMap(line=>{
-  const expanded=String(line).replace(/(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)(?=\s|\d|[:\-]|$)/gi,"\n$1");
-  return expanded.split("\n").map(x=>x.trim()).filter(Boolean);
- }).join("\n");
+ // Convierte cualquier salida OCR en bloques independientes por día.
+ // Funciona aunque todo venga pegado en una sola línea o en un orden extraño.
+ const source=String(text||"").replace(/\r/g,"\n").replace(/[|•●▪◦]/g," ").replace(/[–—]/g,"-");
+ const clean=source.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+ const re=/(lunes|martes|miercoles|jueves|viernes|sabado|domingo)(?=\s|\d|[:\-]|$)/gi;
+ const matches=[...clean.matchAll(re)];
+ if(!matches.length)return source;
+ const blocks=[];
+ for(let i=0;i<matches.length;i++){
+  const start=matches[i].index;
+  const end=i+1<matches.length?matches[i+1].index:clean.length;
+  const block=clean.slice(start,end).replace(/\s+/g," ").trim();
+  if(block)blocks.push(block);
+ }
+ return blocks.join("\n");
 }
 function explicitDateFromText(s,baseMonday){
  const text=String(s||"");
@@ -1747,14 +1756,22 @@ function parsePlanSessions(rawText,baseMonday){
   }catch(e){}
  });
  if(canonical.length)return canonical;
- const raw=splitOcrWeekdayLines(normalizePlanText(source));let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
- for(const line of lines){const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);if(day!==null||date){if(current)chunks.push(current);current={day,date,text:line}}else if(current)current.text+=` · ${line}`}
- if(current)chunks.push(current);if(!chunks.length)lines.filter(x=>x.length>3).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
+ const raw=splitOcrWeekdayLines(normalizePlanText(source));
+ let lines=raw.split("\n").map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
+ const chunks=[];
+ for(const line of lines){
+  const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);
+  if(day!==null||date)chunks.push({day,date,text:line});
+ }
+ // En archivos sin días explícitos mantenemos el respaldo genérico.
+ if(!chunks.length)lines.filter(x=>x.length>3&&!/^(plan|plan semanal|programa|calendario|entrenamiento|objetivo)$/i.test(x)).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
  return chunks.map((c,i)=>{
   let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));
   let content=cleanPlanTitle(c.text.replace(/^(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
   // Encabezados habituales del documento no forman parte de ninguna sesión.
-  content=cleanPlanTitle(content.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento)\b/gi," "));
+  content=cleanPlanTitle(content.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento|objetivo)\b/gi," "));
+  // Nunca permitimos que un segundo día termine dentro de la misma sesión.
+  content=content.split(/\b(?:lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\b/i)[0].trim();
   let title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
   const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=isGym||isRest?"":parsePace(content);
   // Cuando la imagen solo dice "12 km", usamos el día para dar un nombre útil.
@@ -1898,25 +1915,25 @@ function scorePlanOcrText(text){
 function mergePlanOcrTexts(texts){
  const valid=texts.filter(Boolean);
  if(!valid.length)return "";
- // Cada pasada OCR puede devolver todo en una sola línea o repetir el encabezado.
- // Convertimos primero cada texto en líneas por día y conservamos una única
- // versión por día, evitando que "PLAN" o el entrenamiento siguiente se peguen.
- const byDay=new Map(),extras=[];
+ const byDay=new Map();
  for(const text of valid){
   const expanded=splitOcrWeekdayLines(text);
   for(let line of expanded.split(/\r?\n/)){
    line=String(line||"").replace(/\s+/g," ").trim();
    if(!line)continue;
-   if(/^(plan|plan semanal|entrenamiento|programa|calendario|objetivo)\s*[:.-]*$/i.test(line))continue;
    const day=dayIndexFromText(line);
-   if(day===null){
-    // Solo conservamos texto auxiliar si realmente contiene datos deportivos.
-    if(/\d+\s*[x×]\s*\d+|\d+(?:[.,]\d+)?\s*km|\bz[1-5]\b|fuerza|gimnasio|descanso|rodaje|series|tirada|tempo/i.test(line))extras.push(line);
-    continue;
-   }
+   if(day===null)continue;
+   // Corta cualquier encabezado o segundo día que el OCR haya pegado por error.
+   line=line.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento|objetivo)\b/gi," ").replace(/\s+/g," ").trim();
    const previous=byDay.get(day)||"";
-   // Preferimos la variante más informativa, pero penalizamos encabezados pegados.
-   const quality=x=>scorePlanOcrText(x)-(/\b(plan|programa|calendario)\b/i.test(x)?8:0);
+   const quality=x=>{
+    const t=String(x||"");
+    let q=scorePlanOcrText(t);
+    if(/\d+\s*[x×]\s*\d+/.test(t))q+=8;
+    if(/\d+(?:[.,]\d+)?\s*km/i.test(t))q+=5;
+    if(/\bz[1-5]\b/i.test(t))q+=3;
+    return q;
+   };
    if(!previous||quality(line)>quality(previous))byDay.set(day,line);
   }
  }
