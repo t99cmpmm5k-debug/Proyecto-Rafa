@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V26 · Importador por bloques</title>
+<title>Corredor Sólido · V22.11 · Excel por filas definitivo</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1153,7 +1153,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 <dialog id="planImportDialog" class="plan-import-dialog">
   <div class="plan-import-dialog-head">
-    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V26</div><h3>Revisar plan detectado</h3></div>
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE</div><h3>Revisar plan detectado</h3></div>
     <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
   </div>
   <div class="plan-import-dialog-body">
@@ -1667,25 +1667,7 @@ function normalizePlanText(raw){
 }
 function dayIndexFromText(s){
  const clean=String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
- // Acepta también OCR sin espacio, por ejemplo "Jueves6x800" o "Sábado12 km".
- const m=clean.match(/(?:^|[^a-z])(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)/);return m?PLAN_DAYS[m[1]]:null;
-}
-function splitOcrWeekdayLines(text){
- // Convierte cualquier salida OCR en bloques independientes por día.
- // Funciona aunque todo venga pegado en una sola línea o en un orden extraño.
- const source=String(text||"").replace(/\r/g,"\n").replace(/[|•●▪◦]/g," ").replace(/[–—]/g,"-");
- const clean=source.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
- const re=/(lunes|martes|miercoles|jueves|viernes|sabado|domingo)(?=\s|\d|[:\-]|$)/gi;
- const matches=[...clean.matchAll(re)];
- if(!matches.length)return source;
- const blocks=[];
- for(let i=0;i<matches.length;i++){
-  const start=matches[i].index;
-  const end=i+1<matches.length?matches[i+1].index:clean.length;
-  const block=clean.slice(start,end).replace(/\s+/g," ").trim();
-  if(block)blocks.push(block);
- }
- return blocks.join("\n");
+ const m=clean.match(/\b(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)\b/);return m?PLAN_DAYS[m[1]]:null;
 }
 function explicitDateFromText(s,baseMonday){
  const text=String(s||"");
@@ -1706,8 +1688,8 @@ function detectSessionTitle(content){
  if(/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/.test(s))return /superior/.test(s)?"Fuerza · Tren superior":/inferior/.test(s)?"Fuerza · Tren inferior":"Fuerza";
  if(/series|interval|repeticiones|\d+\s*[x×]\s*\d+/.test(s))return "Series";
  if(/tempo|ritmo controlado|umbral/.test(s))return "Ritmo controlado";
- if(/tirada|largo|larga|long run/.test(s))return "Tirada larga";
- if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje|easy|comodo|cómodo/.test(s))return "Rodaje suave";
+ if(/tirada|largo|larga/.test(s))return "Tirada larga";
+ if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje/.test(s))return "Rodaje suave";
  if(/carrera|competicion|competición/.test(s))return "Carrera";
  return cleanPlanTitle(content).slice(0,60)||"Entrenamiento";
 }
@@ -1756,33 +1738,18 @@ function parsePlanSessions(rawText,baseMonday){
   }catch(e){}
  });
  if(canonical.length)return canonical;
- const raw=splitOcrWeekdayLines(normalizePlanText(source));
- let lines=raw.split("\n").map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
- const chunks=[];
- for(const line of lines){
-  const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);
-  if(day!==null||date)chunks.push({day,date,text:line});
- }
- // En archivos sin días explícitos mantenemos el respaldo genérico.
- if(!chunks.length)lines.filter(x=>x.length>3&&!/^(plan|plan semanal|programa|calendario|entrenamiento|objetivo)$/i.test(x)).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
+ const raw=normalizePlanText(source);let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
+ for(const line of lines){const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);if(day!==null||date){if(current)chunks.push(current);current={day,date,text:line}}else if(current)current.text+=` · ${line}`}
+ if(current)chunks.push(current);if(!chunks.length)lines.filter(x=>x.length>3).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
  return chunks.map((c,i)=>{
   let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));
-  let content=cleanPlanTitle(c.text.replace(/^(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
-  // Encabezados habituales del documento no forman parte de ninguna sesión.
-  content=cleanImportedOcrDayLine(cleanPlanTitle(content.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento|objetivo)\b/gi," ")),c.day);
-  // Nunca permitimos que un segundo día termine dentro de la misma sesión.
-  content=content.split(/\b(?:lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\b/i)[0].trim();
-  let title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
+  let content=cleanPlanTitle(c.text.replace(/\b(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)\b\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
+  const title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
   const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=isGym||isRest?"":parsePace(content);
-  // Cuando la imagen solo dice "12 km", usamos el día para dar un nombre útil.
-  // Sábado/domingo con distancia se interpreta como tirada larga; el resto, rodaje suave.
-  if(!isGym&&!isRest&&/^\d{1,2}(?:[.,]\d+)?\s*(?:km|k)$/i.test(content.trim())){
-   title=(c.day===5||c.day===6)?"Tirada larga":"Rodaje suave";
-  }
   const sport=isRest?"Descanso":isGym?"Gimnasio":"Running";
   const normalizedTitle=isGym?(title.startsWith("Fuerza")?title:"Fuerza"):title;
   return {id:uid(),date,sport,title:normalizedTitle,distance,duration,intensity:[pace,content].filter(Boolean).join(" · "),status:"pending",notes:content,category:isRest?"Descanso":normalizedTitle};
- }).filter(s=>s.title&&s.date).sort((a,b)=>a.date.localeCompare(b.date))
+ }).filter(s=>s.title&&s.date)
 }
 async function extractPdfText(file){
  if(!window.pdfjsLib)throw new Error("No se ha podido cargar el lector PDF. Comprueba la conexión.");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const pages=[];
@@ -1876,157 +1843,8 @@ async function extractExcelText(file){
  });
  return out.filter(Boolean).join("\n")
 }
-async function preparePlanOcrImage(file){
- // Recorta el espacio vacío y amplía el texto. Es especialmente útil con
- // capturas de WhatsApp o imágenes donde el plan ocupa una zona pequeña.
- const bitmap=await createImageBitmap(file);
- const probe=document.createElement("canvas"),pctx=probe.getContext("2d",{willReadFrequently:true});
- probe.width=bitmap.width;probe.height=bitmap.height;pctx.drawImage(bitmap,0,0);
- const data=pctx.getImageData(0,0,probe.width,probe.height).data;
- let minX=probe.width,minY=probe.height,maxX=0,maxY=0,found=false;
- const step=Math.max(1,Math.floor(Math.max(probe.width,probe.height)/1200));
- for(let y=0;y<probe.height;y+=step){for(let x=0;x<probe.width;x+=step){
-  const i=(y*probe.width+x)*4,lum=(data[i]*0.299+data[i+1]*0.587+data[i+2]*0.114);
-  if(lum<205&&data[i+3]>20){found=true;minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y)}
- }}
- if(!found)return file;
- const margin=Math.max(12,Math.round(Math.min(probe.width,probe.height)*0.025));
- minX=Math.max(0,minX-margin);minY=Math.max(0,minY-margin);maxX=Math.min(probe.width,maxX+margin);maxY=Math.min(probe.height,maxY+margin);
- const cropW=Math.max(1,maxX-minX),cropH=Math.max(1,maxY-minY),scale=Math.min(4,Math.max(2,1800/cropW));
- const out=document.createElement("canvas"),ctx=out.getContext("2d",{willReadFrequently:true});
- out.width=Math.round(cropW*scale);out.height=Math.round(cropH*scale);
- ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";ctx.drawImage(bitmap,minX,minY,cropW,cropH,0,0,out.width,out.height);
- const img=ctx.getImageData(0,0,out.width,out.height),px=img.data;
- for(let i=0;i<px.length;i+=4){
-  const g=px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
-  // Contraste fuerte sin destruir trazos finos.
-  const v=g<185?0:g>235?255:Math.round((g-185)*5.1);
-  px[i]=px[i+1]=px[i+2]=v;px[i+3]=255;
- }
- ctx.putImageData(img,0,0);
- return await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar la imagen")),"image/png"));
-}
-function scorePlanOcrText(text){
- const t=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
- const days=(t.match(/lunes|martes|miercoles|jueves|viernes|sabado|domingo|\blun\b|\bmar\b|\bmie\b|\bjue\b|\bvie\b|\bsab\b|\bdom\b/g)||[]).length;
- const sessions=(t.match(/\d+\s*[x×]\s*\d+|\d+(?:[.,]\d+)?\s*km|z[1-5]|fuerza|gimnasio|descanso|rodaje|series|tirada|tempo/g)||[]).length;
- return days*10+sessions*3+Math.min(t.length/40,10);
-}
-function cleanImportedOcrDayLine(line,day){
- let text=String(line||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
- // Elimina títulos del documento incluso si aparecen al final del entrenamiento.
- text=text.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento|objetivo)\b/gi," ").replace(/\s+/g," ").trim();
- // El OCR puede deformar "Sábado" y pegarlo a la sesión anterior. Cortamos esas colas.
- if(day!==5)text=text.split(/\b(?:s[a-z0-9]{0,3}bado|sabado|domingo|lunes|martes|miercoles|jueves|viernes)\b/i)[0].trim();
- // Quita cualquier segundo entrenamiento pegado tras una serie (p. ej. 6x800 ... 12 km).
- if(day===3 && /\d+\s*[x×]\s*\d+/i.test(text)){
-  const rep=text.match(/\d+\s*[x×]\s*\d+/i);
-  if(rep){
-   const before=text.slice(0,rep.index+rep[0].length);
-   const after=text.slice(rep.index+rep[0].length).replace(/^\s*[-:·|]?\s*/,"");
-   // Conserva ritmo/recuperación, pero descarta otra distancia aislada pegada por OCR.
-   const safe=after.replace(/(?:\b|^)[a-z]{0,4}bado\s*\d+(?:[.,]\d+)?\s*km.*$/i,"").replace(/\b12\s*km\b.*$/i,"").trim();
-   text=(before+(safe?" "+safe:"")).trim();
-  }
- }
- return text;
-}
-
-function normalizeSportsOcrPatterns(text){
- let t=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
- // Corrige confusiones OCR típicas dentro de repeticiones: 6xB00, 6×8OO, 6 x 8o0.
- t=t.replace(/\b(\d{1,2})\s*[x×]\s*([0-9oObBsS]{2,4})\b/gi,(m,reps,dist)=>{
-  const fixed=String(dist).replace(/[oO]/g,"0").replace(/[bB]/g,"8").replace(/[sS]/g,"5");
-  return `${reps}x${fixed}`;
- });
- return t;
-}
-function recoverOrphanSportsSessions(texts,byDay){
- const combined=normalizeSportsOcrPatterns(texts.join("\n"));
- // Si el OCR detecta una estructura de series sin el día, la asignamos al jueves,
- // que es el hueco natural entre martes y sábado en planes semanales simples.
- const rep=combined.match(/\b(\d{1,2})\s*[x×]\s*(\d{2,4})\b/i);
- if(rep&&!byDay.has(3))byDay.set(3,`Jueves ${rep[1]}x${rep[2]}`);
- // Respaldo para rodajes/tiradas cuando se reconoce el contenido pero se pierde el día.
- const km=[...combined.matchAll(/\b(\d{1,2}(?:[.,]\d+)?)\s*km\b/gi)].map(m=>m[1]);
- if(km.length>=1&&!byDay.has(1)&&/\bz2\b|rodaje|suave/i.test(combined))byDay.set(1,`Martes ${km[0]} km Z2`);
- if(km.length>=2&&!byDay.has(5))byDay.set(5,`Sábado ${km[km.length-1]} km`);
-}
-async function buildPlanOcrVariants(file){
- const variants=[];
- try{
-  const bitmap=await createImageBitmap(file);
-  const base=document.createElement("canvas"),bctx=base.getContext("2d",{willReadFrequently:true});
-  base.width=bitmap.width;base.height=bitmap.height;bctx.drawImage(bitmap,0,0);
-  const makeBlob=async(canvas)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar OCR")),"image/png"));
-  // Tres bandas horizontales solapadas: rescatan líneas pequeñas que el OCR global ignora.
-  const bands=[[0,.48],[.18,.72],[.45,1]];
-  for(const [a,b] of bands){
-   const y=Math.floor(base.height*a),h=Math.max(1,Math.floor(base.height*(b-a)));
-   const c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
-   const scale=Math.min(5,Math.max(3,1800/base.width));
-   c.width=Math.round(base.width*scale);c.height=Math.round(h*scale);
-   ctx.imageSmoothingEnabled=false;ctx.drawImage(base,0,y,base.width,h,0,0,c.width,c.height);
-   const img=ctx.getImageData(0,0,c.width,c.height),px=img.data;
-   for(let i=0;i<px.length;i+=4){
-    const g=px[i]*.299+px[i+1]*.587+px[i+2]*.114;
-    const v=g<170?0:g>235?255:Math.round((g-170)*3.92);
-    px[i]=px[i+1]=px[i+2]=v;px[i+3]=255;
-   }
-   ctx.putImageData(img,0,0);variants.push(await makeBlob(c));
-  }
- }catch(e){}
- return variants;
-}
-function mergePlanOcrTexts(texts){
- const valid=texts.filter(Boolean).map(normalizeSportsOcrPatterns);
- if(!valid.length)return "";
- const byDay=new Map();
- for(const text of valid){
-  const expanded=splitOcrWeekdayLines(text);
-  for(let line of expanded.split(/\r?\n/)){
-   line=String(line||"").replace(/\s+/g," ").trim();
-   if(!line)continue;
-   const day=dayIndexFromText(line);
-   if(day===null)continue;
-   // Corta cualquier encabezado o segundo día que el OCR haya pegado por error.
-   line=cleanImportedOcrDayLine(line,day);
-   if(!line)continue;
-   const previous=byDay.get(day)||"";
-   const quality=x=>{
-    const t=String(x||"");
-    let q=scorePlanOcrText(t);
-    if(/\d+\s*[x×]\s*\d+/.test(t))q+=8;
-    if(/\d+(?:[.,]\d+)?\s*km/i.test(t))q+=5;
-    if(/\bz[1-5]\b/i.test(t))q+=3;
-    return q;
-   };
-   if(!previous||quality(line)>quality(previous))byDay.set(day,line);
-  }
- }
- recoverOrphanSportsSessions(valid,byDay);
- const ordered=[...byDay.entries()].sort((a,b)=>a[0]-b[0]).map(([,line])=>line);
- if(ordered.length)return ordered.join("\n");
- return valid.sort((a,b)=>scorePlanOcrText(b)-scorePlanOcrText(a))[0];
-}
 async function extractImageText(file){
- if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");
- const prepared=await preparePlanOcrImage(file).catch(()=>file),texts=[];
- const bands=await buildPlanOcrVariants(file);
- const runs=[{src:prepared,label:"Optimizando lectura",psm:"6"},{src:file,label:"Comprobando imagen",psm:"11"},...bands.map((src,i)=>({src,label:`Analizando zona ${i+1}`,psm:"6"}))];
- for(let i=0;i<runs.length;i++){
-  const run=runs[i];
-  const result=await Tesseract.recognize(run.src,"spa+eng",{
-   tessedit_pageseg_mode:run.psm,
-   preserve_interword_spaces:"1",
-   logger:m=>{if(m.status==="recognizing text"){
-    const total=Math.round(((i+(m.progress||0))/runs.length)*100);
-    planImportStatus(`${run.label}… ${total} %`,`loading`)
-   }}
-  });
-  if(result?.data?.text)texts.push(result.data.text);
- }
- return mergePlanOcrTexts(texts)
+ if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");const result=await Tesseract.recognize(file,"spa",{logger:m=>{if(m.status==="recognizing text")planImportStatus(`Leyendo imagen… ${Math.round((m.progress||0)*100)} %`,`loading`)}});return result?.data?.text||""
 }
 async function extractPlanFileText(file){
  const ext=(file.name.split(".").pop()||"").toLowerCase();if(ext==="pdf"||file.type==="application/pdf")return extractPdfText(file);if(["xlsx","xls","csv"].includes(ext)||/spreadsheet|excel|csv/.test(file.type))return extractExcelText(file);if(file.type.startsWith("image/")||["jpg","jpeg","png","webp"].includes(ext))return extractImageText(file);if(ext==="txt"||file.type.startsWith("text/"))return file.text();throw new Error("Formato no compatible. Usa PDF, Excel, CSV, JPG, PNG, WEBP o TXT.")
@@ -2039,32 +1857,11 @@ function openUniversalPlanPreview(raw,source){
  universalPlanDraft={source,rawText:normalized,sessions:[]};
  $("#planImportRawText").value=normalized;
  $("#planImportWeekStart").value=displayedWeekMonday();
- refreshUniversalPlanPreview(true);
+ refreshUniversalPlanPreview();
  $("#planImportDialog").showModal()
 }
-function refreshUniversalPlanPreview(autoSetWeek=false){
- const raw=$("#planImportRawText").value.trim();
- let monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());
- universalPlanDraft.rawText=raw;
- universalPlanDraft.sessions=parsePlanSessions(raw,monday);
- let sessions=universalPlanDraft.sessions;
- // Al abrir un archivo con fechas reales, la semana de inicio se calcula
- // automáticamente a partir de la primera sesión detectada.
- if(autoSetWeek&&sessions.length){
-  const firstDate=sessions.map(s=>s.date).filter(Boolean).sort()[0];
-  if(firstDate){
-   const detectedMonday=mondayOfDate(firstDate);
-   if(detectedMonday&&detectedMonday!==monday){
-    $("#planImportWeekStart").value=detectedMonday;
-    monday=detectedMonday;
-    // Recalcula para formatos que mezclan fechas explícitas y nombres de días.
-    universalPlanDraft.sessions=parsePlanSessions(raw,monday);
-    sessions=universalPlanDraft.sessions;
-   }
-  }
- }
- $("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";
- $("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
+function refreshUniversalPlanPreview(){
+ const raw=$("#planImportRawText").value.trim(),monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());universalPlanDraft.rawText=raw;universalPlanDraft.sessions=parsePlanSessions(raw,monday);const sessions=universalPlanDraft.sessions;$("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";$("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
 }
 function confirmUniversalPlanImport(){
  const checked=[...document.querySelectorAll("[data-plan-import-index]:checked")].map(x=>universalPlanDraft.sessions[Number(x.dataset.planImportIndex)]).filter(Boolean);if(!checked.length){alert("Selecciona al menos una sesión.");return}const min=checked.map(x=>x.date).sort()[0],max=checked.map(x=>x.date).sort().at(-1),existing=data.plan.filter(p=>p.date>=min&&p.date<=max);if(existing.length&&!confirm(`Ya hay ${existing.length} sesiones entre ${fmt(min)} y ${fmt(max)}. ¿Quieres añadir también las nuevas?`))return;checked.forEach(s=>data.plan.push({...s,id:uid()}));save();renderPlan();renderToday();$("#planImportDialog").close();planImportStatus(`<strong>${checked.length} sesiones añadidas</strong> desde ${universalPlanDraft.source}.`);setView("plan")
@@ -3299,7 +3096,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2212").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
