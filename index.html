@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.14 · OCR por días verificado</title>
+<title>Corredor Sólido · V23 · Importador inteligente</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1697,8 +1697,8 @@ function detectSessionTitle(content){
  if(/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/.test(s))return /superior/.test(s)?"Fuerza · Tren superior":/inferior/.test(s)?"Fuerza · Tren inferior":"Fuerza";
  if(/series|interval|repeticiones|\d+\s*[x×]\s*\d+/.test(s))return "Series";
  if(/tempo|ritmo controlado|umbral/.test(s))return "Ritmo controlado";
- if(/tirada|largo|larga/.test(s))return "Tirada larga";
- if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje/.test(s))return "Rodaje suave";
+ if(/tirada|largo|larga|long run/.test(s))return "Tirada larga";
+ if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje|easy|comodo|cómodo/.test(s))return "Rodaje suave";
  if(/carrera|competicion|competición/.test(s))return "Carrera";
  return cleanPlanTitle(content).slice(0,60)||"Entrenamiento";
 }
@@ -1857,8 +1857,67 @@ async function extractExcelText(file){
  });
  return out.filter(Boolean).join("\n")
 }
+async function preparePlanOcrImage(file){
+ // Recorta el espacio vacío y amplía el texto. Es especialmente útil con
+ // capturas de WhatsApp o imágenes donde el plan ocupa una zona pequeña.
+ const bitmap=await createImageBitmap(file);
+ const probe=document.createElement("canvas"),pctx=probe.getContext("2d",{willReadFrequently:true});
+ probe.width=bitmap.width;probe.height=bitmap.height;pctx.drawImage(bitmap,0,0);
+ const data=pctx.getImageData(0,0,probe.width,probe.height).data;
+ let minX=probe.width,minY=probe.height,maxX=0,maxY=0,found=false;
+ const step=Math.max(1,Math.floor(Math.max(probe.width,probe.height)/1200));
+ for(let y=0;y<probe.height;y+=step){for(let x=0;x<probe.width;x+=step){
+  const i=(y*probe.width+x)*4,lum=(data[i]*0.299+data[i+1]*0.587+data[i+2]*0.114);
+  if(lum<205&&data[i+3]>20){found=true;minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y)}
+ }}
+ if(!found)return file;
+ const margin=Math.max(12,Math.round(Math.min(probe.width,probe.height)*0.025));
+ minX=Math.max(0,minX-margin);minY=Math.max(0,minY-margin);maxX=Math.min(probe.width,maxX+margin);maxY=Math.min(probe.height,maxY+margin);
+ const cropW=Math.max(1,maxX-minX),cropH=Math.max(1,maxY-minY),scale=Math.min(4,Math.max(2,1800/cropW));
+ const out=document.createElement("canvas"),ctx=out.getContext("2d",{willReadFrequently:true});
+ out.width=Math.round(cropW*scale);out.height=Math.round(cropH*scale);
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";ctx.drawImage(bitmap,minX,minY,cropW,cropH,0,0,out.width,out.height);
+ const img=ctx.getImageData(0,0,out.width,out.height),px=img.data;
+ for(let i=0;i<px.length;i+=4){
+  const g=px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
+  // Contraste fuerte sin destruir trazos finos.
+  const v=g<185?0:g>235?255:Math.round((g-185)*5.1);
+  px[i]=px[i+1]=px[i+2]=v;px[i+3]=255;
+ }
+ ctx.putImageData(img,0,0);
+ return await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar la imagen")),"image/png"));
+}
+function scorePlanOcrText(text){
+ const t=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const days=(t.match(/lunes|martes|miercoles|jueves|viernes|sabado|domingo|\blun\b|\bmar\b|\bmie\b|\bjue\b|\bvie\b|\bsab\b|\bdom\b/g)||[]).length;
+ const sessions=(t.match(/\d+\s*[x×]\s*\d+|\d+(?:[.,]\d+)?\s*km|z[1-5]|fuerza|gimnasio|descanso|rodaje|series|tirada|tempo/g)||[]).length;
+ return days*10+sessions*3+Math.min(t.length/40,10);
+}
+function mergePlanOcrTexts(texts){
+ const ranked=texts.filter(Boolean).sort((a,b)=>scorePlanOcrText(b)-scorePlanOcrText(a));
+ if(!ranked.length)return "";
+ const best=ranked[0],all=ranked.join("\n");
+ // Si otra pasada recuperó días que faltaban, la añadimos. El parser elimina
+ // duplicados funcionales al presentar la revisión.
+ return scorePlanOcrText(all)>scorePlanOcrText(best)+5?all:best;
+}
 async function extractImageText(file){
- if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");const result=await Tesseract.recognize(file,"spa",{logger:m=>{if(m.status==="recognizing text")planImportStatus(`Leyendo imagen… ${Math.round((m.progress||0)*100)} %`,`loading`)}});return result?.data?.text||""
+ if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");
+ const prepared=await preparePlanOcrImage(file).catch(()=>file),texts=[];
+ const runs=[{src:prepared,label:"Optimizando lectura",psm:"6"},{src:file,label:"Comprobando imagen",psm:"11"}];
+ for(let i=0;i<runs.length;i++){
+  const run=runs[i];
+  const result=await Tesseract.recognize(run.src,"spa+eng",{
+   tessedit_pageseg_mode:run.psm,
+   preserve_interword_spaces:"1",
+   logger:m=>{if(m.status==="recognizing text"){
+    const total=Math.round(((i+(m.progress||0))/runs.length)*100);
+    planImportStatus(`${run.label}… ${total} %`,`loading`)
+   }}
+  });
+  if(result?.data?.text)texts.push(result.data.text);
+ }
+ return mergePlanOcrTexts(texts)
 }
 async function extractPlanFileText(file){
  const ext=(file.name.split(".").pop()||"").toLowerCase();if(ext==="pdf"||file.type==="application/pdf")return extractPdfText(file);if(["xlsx","xls","csv"].includes(ext)||/spreadsheet|excel|csv/.test(file.type))return extractExcelText(file);if(file.type.startsWith("image/")||["jpg","jpeg","png","webp"].includes(ext))return extractImageText(file);if(ext==="txt"||file.type.startsWith("text/"))return file.text();throw new Error("Formato no compatible. Usa PDF, Excel, CSV, JPG, PNG, WEBP o TXT.")
