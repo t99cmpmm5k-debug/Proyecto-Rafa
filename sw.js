@@ -1,4 +1,4 @@
-const CACHE="corredor-solido-v22-9-excel-filas-definitivo";
+const CACHE="corredor-solido-v22-11-sesiones-estructuradas";
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./","./index.html","./hero-boceto-c-azul.jpg"])));

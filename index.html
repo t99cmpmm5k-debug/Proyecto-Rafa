@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.10 · Excel por filas definitivo</title>
+<title>Corredor Sólido · V22.11 · Excel por filas definitivo</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -787,6 +787,10 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 .plan-import-status.loading{display:block;color:#79efff}
 .plan-import-status.error{display:block;color:#ff9f9f}
 @media(max-width:520px){.plan-import-dialog{width:96vw;border-radius:18px}.plan-import-dialog-head{padding:15px}.plan-import-dialog-body{padding:14px 14px 0}.plan-import-dialog-actions{grid-template-columns:1fr 1fr;margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}}
+
+.plan-import-row div{min-width:0}
+.plan-import-row span,.plan-import-row strong{overflow-wrap:anywhere;word-break:break-word}
+#planImportPreview{overflow-x:hidden}
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -1639,12 +1643,25 @@ function mondayOfDate(date){
 function addIsoDays(iso,days){const d=new Date(`${iso}T12:00:00`);d.setDate(d.getDate()+days);return isoDate(d)}
 function displayedWeekMonday(){const d=new Date();d.setDate(d.getDate()+weekOffset*7);return mondayOfDate(d)}
 const PLAN_DAYS={lunes:0,lun:0,martes:1,mar:1,miercoles:2,mie:2,x:2,jueves:3,jue:3,viernes:4,vie:4,sabado:5,sab:5,domingo:6,dom:6};
+const STRUCTURED_SESSION_PREFIX="__PLAN_SESSION__";
+function encodeStructuredSession(payload){
+ try{return STRUCTURED_SESSION_PREFIX+btoa(unescape(encodeURIComponent(JSON.stringify(payload))))}catch(e){return ""}
+}
+function decodeStructuredSession(line){
+ const clean=String(line||"").trim();
+ if(clean.startsWith(STRUCTURED_SESSION_PREFIX)){
+  try{return JSON.parse(decodeURIComponent(escape(atob(clean.slice(STRUCTURED_SESSION_PREFIX.length)))))}catch(e){return null}
+ }
+ const legacy=clean.match(/^@@SESSION(?:\t|\s+)(\{.*\})$/);
+ if(legacy){try{return JSON.parse(legacy[1])}catch(e){return null}}
+ return null;
+}
 function normalizePlanText(raw){
  const text=String(raw||"").replace(/\r/g,"\n");
  return text.split("\n").map(line=>{
   // Las sesiones estructuradas de Excel usan una tabulación como separador.
   // Debe conservarse para que el lector pueda reconocer y parsear el JSON.
-  if(line.startsWith("@@SESSION\t"))return line;
+  if(String(line).trim().startsWith(STRUCTURED_SESSION_PREFIX))return String(line).trim();
   return line.replace(/[•●▪◦]/g,"-").replace(/[–—]/g,"-").replace(/\t/g," | ");
  }).join("\n").replace(/\n{3,}/g,"\n\n").trim()
 }
@@ -1694,10 +1711,10 @@ function parsePlanSessions(rawText,baseMonday){
  const source=String(rawText||"");
  const canonical=[];
  source.split(/\r?\n/).forEach(line=>{
-  if(!line.startsWith("@@SESSION\t"))return;
+  const x=decodeStructuredSession(line);
+  if(!x||!x.date)return;
   try{
-   const x=JSON.parse(line.slice(10));
-   if(!x.date)return;
+   if(!/^\d{4}-\d{2}-\d{2}$/.test(String(x.date)))return;
    const sport=x.sport||"Running";
    const isRest=sport==="Descanso";
    const isGym=sport==="Gimnasio";
@@ -1816,7 +1833,7 @@ async function extractExcelText(file){
      pace,
      objective:obj
     };
-    sessions.push(`@@SESSION\t${JSON.stringify(payload)}`);
+    sessions.push(encodeStructuredSession(payload));
    }
    if(sessions.length){out.push(sessions.join("\n"));return}
   }
