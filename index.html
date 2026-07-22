@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V23 · Importador inteligente</title>
+<title>Corredor Sólido · V23.1 · Importador inteligente</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1753,6 +1753,8 @@ function parsePlanSessions(rawText,baseMonday){
  return chunks.map((c,i)=>{
   let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));
   let content=cleanPlanTitle(c.text.replace(/^(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
+  // Encabezados habituales del documento no forman parte de ninguna sesión.
+  content=cleanPlanTitle(content.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento)\b/gi," "));
   let title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
   const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=isGym||isRest?"":parsePace(content);
   // Cuando la imagen solo dice "12 km", usamos el día para dar un nombre útil.
@@ -1894,12 +1896,33 @@ function scorePlanOcrText(text){
  return days*10+sessions*3+Math.min(t.length/40,10);
 }
 function mergePlanOcrTexts(texts){
- const ranked=texts.filter(Boolean).sort((a,b)=>scorePlanOcrText(b)-scorePlanOcrText(a));
- if(!ranked.length)return "";
- const best=ranked[0],all=ranked.join("\n");
- // Si otra pasada recuperó días que faltaban, la añadimos. El parser elimina
- // duplicados funcionales al presentar la revisión.
- return scorePlanOcrText(all)>scorePlanOcrText(best)+5?all:best;
+ const valid=texts.filter(Boolean);
+ if(!valid.length)return "";
+ // Cada pasada OCR puede devolver todo en una sola línea o repetir el encabezado.
+ // Convertimos primero cada texto en líneas por día y conservamos una única
+ // versión por día, evitando que "PLAN" o el entrenamiento siguiente se peguen.
+ const byDay=new Map(),extras=[];
+ for(const text of valid){
+  const expanded=splitOcrWeekdayLines(text);
+  for(let line of expanded.split(/\r?\n/)){
+   line=String(line||"").replace(/\s+/g," ").trim();
+   if(!line)continue;
+   if(/^(plan|plan semanal|entrenamiento|programa|calendario|objetivo)\s*[:.-]*$/i.test(line))continue;
+   const day=dayIndexFromText(line);
+   if(day===null){
+    // Solo conservamos texto auxiliar si realmente contiene datos deportivos.
+    if(/\d+\s*[x×]\s*\d+|\d+(?:[.,]\d+)?\s*km|\bz[1-5]\b|fuerza|gimnasio|descanso|rodaje|series|tirada|tempo/i.test(line))extras.push(line);
+    continue;
+   }
+   const previous=byDay.get(day)||"";
+   // Preferimos la variante más informativa, pero penalizamos encabezados pegados.
+   const quality=x=>scorePlanOcrText(x)-(/\b(plan|programa|calendario)\b/i.test(x)?8:0);
+   if(!previous||quality(line)>quality(previous))byDay.set(day,line);
+  }
+ }
+ const ordered=[...byDay.entries()].sort((a,b)=>a[0]-b[0]).map(([,line])=>line);
+ if(ordered.length)return ordered.join("\n");
+ return valid.sort((a,b)=>scorePlanOcrText(b)-scorePlanOcrText(a))[0];
 }
 async function extractImageText(file){
  if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");
