@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V25 · Importador por bloques</title>
+<title>Corredor Sólido · V26 · Importador por bloques</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1153,7 +1153,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 <dialog id="planImportDialog" class="plan-import-dialog">
   <div class="plan-import-dialog-head">
-    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V25</div><h3>Revisar plan detectado</h3></div>
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V26</div><h3>Revisar plan detectado</h3></div>
     <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
   </div>
   <div class="plan-import-dialog-body">
@@ -1931,8 +1931,55 @@ function cleanImportedOcrDayLine(line,day){
  }
  return text;
 }
+
+function normalizeSportsOcrPatterns(text){
+ let t=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+ // Corrige confusiones OCR típicas dentro de repeticiones: 6xB00, 6×8OO, 6 x 8o0.
+ t=t.replace(/\b(\d{1,2})\s*[x×]\s*([0-9oObBsS]{2,4})\b/gi,(m,reps,dist)=>{
+  const fixed=String(dist).replace(/[oO]/g,"0").replace(/[bB]/g,"8").replace(/[sS]/g,"5");
+  return `${reps}x${fixed}`;
+ });
+ return t;
+}
+function recoverOrphanSportsSessions(texts,byDay){
+ const combined=normalizeSportsOcrPatterns(texts.join("\n"));
+ // Si el OCR detecta una estructura de series sin el día, la asignamos al jueves,
+ // que es el hueco natural entre martes y sábado en planes semanales simples.
+ const rep=combined.match(/\b(\d{1,2})\s*[x×]\s*(\d{2,4})\b/i);
+ if(rep&&!byDay.has(3))byDay.set(3,`Jueves ${rep[1]}x${rep[2]}`);
+ // Respaldo para rodajes/tiradas cuando se reconoce el contenido pero se pierde el día.
+ const km=[...combined.matchAll(/\b(\d{1,2}(?:[.,]\d+)?)\s*km\b/gi)].map(m=>m[1]);
+ if(km.length>=1&&!byDay.has(1)&&/\bz2\b|rodaje|suave/i.test(combined))byDay.set(1,`Martes ${km[0]} km Z2`);
+ if(km.length>=2&&!byDay.has(5))byDay.set(5,`Sábado ${km[km.length-1]} km`);
+}
+async function buildPlanOcrVariants(file){
+ const variants=[];
+ try{
+  const bitmap=await createImageBitmap(file);
+  const base=document.createElement("canvas"),bctx=base.getContext("2d",{willReadFrequently:true});
+  base.width=bitmap.width;base.height=bitmap.height;bctx.drawImage(bitmap,0,0);
+  const makeBlob=async(canvas)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar OCR")),"image/png"));
+  // Tres bandas horizontales solapadas: rescatan líneas pequeñas que el OCR global ignora.
+  const bands=[[0,.48],[.18,.72],[.45,1]];
+  for(const [a,b] of bands){
+   const y=Math.floor(base.height*a),h=Math.max(1,Math.floor(base.height*(b-a)));
+   const c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
+   const scale=Math.min(5,Math.max(3,1800/base.width));
+   c.width=Math.round(base.width*scale);c.height=Math.round(h*scale);
+   ctx.imageSmoothingEnabled=false;ctx.drawImage(base,0,y,base.width,h,0,0,c.width,c.height);
+   const img=ctx.getImageData(0,0,c.width,c.height),px=img.data;
+   for(let i=0;i<px.length;i+=4){
+    const g=px[i]*.299+px[i+1]*.587+px[i+2]*.114;
+    const v=g<170?0:g>235?255:Math.round((g-170)*3.92);
+    px[i]=px[i+1]=px[i+2]=v;px[i+3]=255;
+   }
+   ctx.putImageData(img,0,0);variants.push(await makeBlob(c));
+  }
+ }catch(e){}
+ return variants;
+}
 function mergePlanOcrTexts(texts){
- const valid=texts.filter(Boolean);
+ const valid=texts.filter(Boolean).map(normalizeSportsOcrPatterns);
  if(!valid.length)return "";
  const byDay=new Map();
  for(const text of valid){
@@ -1957,56 +2004,21 @@ function mergePlanOcrTexts(texts){
    if(!previous||quality(line)>quality(previous))byDay.set(day,line);
   }
  }
+ recoverOrphanSportsSessions(valid,byDay);
  const ordered=[...byDay.entries()].sort((a,b)=>a[0]-b[0]).map(([,line])=>line);
  if(ordered.length)return ordered.join("\n");
  return valid.sort((a,b)=>scorePlanOcrText(b)-scorePlanOcrText(a))[0];
 }
-async function createOcrVariants(file){
- const bitmap=await createImageBitmap(file),variants=[];
- const makeBlob=async(sx,sy,sw,sh,mode="gray",scale=3)=>{
-  const c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
-  c.width=Math.max(1,Math.round(sw*scale));c.height=Math.max(1,Math.round(sh*scale));
-  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
-  ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,c.width,c.height);
-  const img=ctx.getImageData(0,0,c.width,c.height),px=img.data;
-  for(let i=0;i<px.length;i+=4){
-   const g=px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
-   let v=g;
-   if(mode==="bw")v=g<210?0:255;
-   else if(mode==="contrast")v=Math.max(0,Math.min(255,(g-150)*2.7));
-   else v=g;
-   px[i]=px[i+1]=px[i+2]=Math.round(v);px[i+3]=255;
-  }
-  ctx.putImageData(img,0,0);
-  return new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar una variante OCR")),"image/png"));
- };
- // Imagen completa en tres tratamientos.
- variants.push({src:await makeBlob(0,0,bitmap.width,bitmap.height,"gray",2.5),label:"Lectura general",psm:"6"});
- variants.push({src:await makeBlob(0,0,bitmap.width,bitmap.height,"contrast",3),label:"Aumentando contraste",psm:"11"});
- variants.push({src:await makeBlob(0,0,bitmap.width,bitmap.height,"bw",3.5),label:"Lectura en blanco y negro",psm:"6"});
- // Lectura por franjas. Evita que Tesseract ignore líneas pequeñas alejadas entre sí.
- const overlap=Math.round(bitmap.height*0.05),parts=3;
- for(let n=0;n<parts;n++){
-  const y0=Math.max(0,Math.floor(n*bitmap.height/parts)-overlap);
-  const y1=Math.min(bitmap.height,Math.ceil((n+1)*bitmap.height/parts)+overlap);
-  variants.push({src:await makeBlob(0,y0,bitmap.width,y1-y0,"contrast",4),label:`Leyendo zona ${n+1} de ${parts}`,psm:"11"});
- }
- return variants;
-}
 async function extractImageText(file){
  if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");
- const texts=[];
- let runs=[];
- try{runs=await createOcrVariants(file)}catch(e){
-  const prepared=await preparePlanOcrImage(file).catch(()=>file);
-  runs=[{src:prepared,label:"Optimizando lectura",psm:"6"},{src:file,label:"Comprobando imagen",psm:"11"}];
- }
+ const prepared=await preparePlanOcrImage(file).catch(()=>file),texts=[];
+ const bands=await buildPlanOcrVariants(file);
+ const runs=[{src:prepared,label:"Optimizando lectura",psm:"6"},{src:file,label:"Comprobando imagen",psm:"11"},...bands.map((src,i)=>({src,label:`Analizando zona ${i+1}`,psm:"6"}))];
  for(let i=0;i<runs.length;i++){
   const run=runs[i];
   const result=await Tesseract.recognize(run.src,"spa+eng",{
    tessedit_pageseg_mode:run.psm,
    preserve_interword_spaces:"1",
-   user_defined_dpi:"300",
    logger:m=>{if(m.status==="recognizing text"){
     const total=Math.round(((i+(m.progress||0))/runs.length)*100);
     planImportStatus(`${run.label}… ${total} %`,`loading`)
