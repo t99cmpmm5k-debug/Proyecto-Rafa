@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.11 · Excel por filas definitivo</title>
+<title>Corredor Sólido · V22.12 · Semana automática</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -1857,11 +1857,32 @@ function openUniversalPlanPreview(raw,source){
  universalPlanDraft={source,rawText:normalized,sessions:[]};
  $("#planImportRawText").value=normalized;
  $("#planImportWeekStart").value=displayedWeekMonday();
- refreshUniversalPlanPreview();
+ refreshUniversalPlanPreview(true);
  $("#planImportDialog").showModal()
 }
-function refreshUniversalPlanPreview(){
- const raw=$("#planImportRawText").value.trim(),monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());universalPlanDraft.rawText=raw;universalPlanDraft.sessions=parsePlanSessions(raw,monday);const sessions=universalPlanDraft.sessions;$("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";$("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
+function refreshUniversalPlanPreview(autoSetWeek=false){
+ const raw=$("#planImportRawText").value.trim();
+ let monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());
+ universalPlanDraft.rawText=raw;
+ universalPlanDraft.sessions=parsePlanSessions(raw,monday);
+ let sessions=universalPlanDraft.sessions;
+ // Al abrir un archivo con fechas reales, la semana de inicio se calcula
+ // automáticamente a partir de la primera sesión detectada.
+ if(autoSetWeek&&sessions.length){
+  const firstDate=sessions.map(s=>s.date).filter(Boolean).sort()[0];
+  if(firstDate){
+   const detectedMonday=mondayOfDate(firstDate);
+   if(detectedMonday&&detectedMonday!==monday){
+    $("#planImportWeekStart").value=detectedMonday;
+    monday=detectedMonday;
+    // Recalcula para formatos que mezclan fechas explícitas y nombres de días.
+    universalPlanDraft.sessions=parsePlanSessions(raw,monday);
+    sessions=universalPlanDraft.sessions;
+   }
+  }
+ }
+ $("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";
+ $("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
 }
 function confirmUniversalPlanImport(){
  const checked=[...document.querySelectorAll("[data-plan-import-index]:checked")].map(x=>universalPlanDraft.sessions[Number(x.dataset.planImportIndex)]).filter(Boolean);if(!checked.length){alert("Selecciona al menos una sesión.");return}const min=checked.map(x=>x.date).sort()[0],max=checked.map(x=>x.date).sort().at(-1),existing=data.plan.filter(p=>p.date>=min&&p.date<=max);if(existing.length&&!confirm(`Ya hay ${existing.length} sesiones entre ${fmt(min)} y ${fmt(max)}. ¿Quieres añadir también las nuevas?`))return;checked.forEach(s=>data.plan.push({...s,id:uid()}));save();renderPlan();renderToday();$("#planImportDialog").close();planImportStatus(`<strong>${checked.length} sesiones añadidas</strong> desde ${universalPlanDraft.source}.`);setView("plan")
@@ -3096,7 +3117,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2212").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
