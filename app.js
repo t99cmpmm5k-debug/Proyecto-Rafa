@@ -1,188 +1,158 @@
-
-const STORAGE_KEY = "proyectoRafaDataV1";
-
-const defaults = {
-  nextWorkout: "Tirada larga · 12 km Z2",
-  runs: [{
-    id: crypto.randomUUID(),
-    date: "2026-07-17",
-    type: "Rodaje Z2",
-    distance: 7.02,
-    time: "40:06",
-    pace: "5:42",
-    avgHr: 147,
-    maxHr: 155,
-    te: 3.4,
-    temp: 33,
-    shoes: "ASICS Gel-Nimbus 28",
-    notes: "90 % del tiempo en Z2. Buen control de pulsaciones con calor."
-  }],
-  gym: [{
-    id: crypto.randomUUID(),
-    date: "2026-07-16",
-    name: "Torso",
-    notes: "Press banca 20 kg · Remo barra 40 kg · Press militar 20 kg · Laterales 15 kg · Fondos asistidos 40 kg · Curl EZ 10 kg · Tríceps polea 20 kg"
-  }],
-  gear: [
-    {id: crypto.randomUUID(), name:"ASICS Gel-Nimbus 28", type:"Zapatillas", km:7.02, notes:"Rodajes suaves y tiradas largas"},
-    {id: crypto.randomUUID(), name:"Adidas Adizero Evo SL", type:"Zapatillas", km:0, notes:"Series y sesiones rápidas"}
-  ],
-  races: [
-    {id: crypto.randomUUID(), name:"Media Maratón de Murcia", date:"2027-02-01", goal:"Terminar fuerte", notes:"Objetivo principal"}
-  ]
-};
-
-let data = loadData();
-let currentFilter = "Todos";
-let currentForm = null;
-
-function loadData(){
-  try{
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || structuredClone(defaults);
-  }catch{
-    return structuredClone(defaults);
+const sessions = [
+  {
+    day:"LUN", date:"20", title:"Rodaje Z2", main:"7 km suaves",
+    icon:"⌁", color:"#28e6b1", distance:"7,0 km", duration:"42 min", pace:"6:00/km", zone:"Z2",
+    note:"Corre fácil, con control y buenas sensaciones.", done:true,
+    point:{x:5,y:68}
+  },
+  {
+    day:"MAR", date:"21", title:"Fuerza", main:"Tren inferior",
+    icon:"⇆", color:"#7b65ff", distance:"—", duration:"55 min", pace:"—", zone:"Fuerza",
+    note:"Calidad de movimiento, estabilidad y ejecución limpia.", done:true,
+    point:{x:22,y:34}
+  },
+  {
+    day:"MIÉ", date:"22", title:"Descanso", main:"Recuperación",
+    icon:"☾", color:"#a159ff", distance:"—", duration:"—", pace:"—", zone:"Descanso",
+    note:"Recuperar también forma parte del entrenamiento.", done:true,
+    point:{x:37,y:67}
+  },
+  {
+    day:"JUE", date:"23", title:"Series", main:"6 × 800 m",
+    icon:"ϟ", color:"#25eaff", distance:"8,6 km", duration:"58 min", pace:"4:15/km", zone:"Z4–Z5",
+    note:"Controla la primera repetición y termina igual de sólido.", done:false,
+    point:{x:54,y:30}
+  },
+  {
+    day:"VIE", date:"24", title:"Fuerza", main:"Tren superior",
+    icon:"⇆", color:"#7b65ff", distance:"—", duration:"50 min", pace:"—", zone:"Fuerza",
+    note:"Mantén margen y evita llegar al fallo en cada serie.", done:false,
+    point:{x:68,y:43}
+  },
+  {
+    day:"SÁB", date:"25", title:"Rodaje Z2", main:"8 km suaves",
+    icon:"⌁", color:"#28e6b1", distance:"8,0 km", duration:"48 min", pace:"6:00/km", zone:"Z2",
+    note:"Suma kilómetros fáciles sin perseguir el ritmo.", done:false,
+    point:{x:81,y:68}
+  },
+  {
+    day:"DOM", date:"26", title:"Tirada larga", main:"12 km",
+    icon:"⌁", color:"#ffb52b", distance:"12,0 km", duration:"1h 10m", pace:"5:50/km", zone:"Z2",
+    note:"Construye resistencia. Hoy manda la constancia.", done:false,
+    point:{x:96,y:58}
   }
+];
+
+let selectedIndex = 3;
+let completedCount = 3;
+
+const nodesLayer = document.getElementById("nodesLayer");
+const sessionPanel = document.getElementById("sessionPanel");
+const routeProgress = document.getElementById("routeProgress");
+const progressRing = document.getElementById("progressRing");
+const progressValue = document.getElementById("progressValue");
+const sessionCount = document.getElementById("sessionCount");
+
+function buildNodes(){
+  nodesLayer.innerHTML = sessions.map((session,index)=>`
+    <button
+      type="button"
+      class="route-node ${index === selectedIndex ? "active" : ""} ${index < completedCount ? "done" : ""}"
+      style="left:${session.point.x}%;top:${session.point.y}%;--node-color:${session.color}"
+      data-index="${index}"
+      aria-label="${session.day} ${session.date}: ${session.title}"
+    >
+      <span class="route-node__day">${session.day}</span>
+      <strong class="route-node__date">${session.date}</strong>
+      <span class="route-node__orb">${session.icon}</span>
+    </button>
+  `).join("");
+
+  nodesLayer.querySelectorAll(".route-node").forEach(button=>{
+    button.addEventListener("click",()=>{
+      selectedIndex = Number(button.dataset.index);
+      render();
+      sessionPanel.classList.remove("switching");
+      void sessionPanel.offsetWidth;
+      sessionPanel.classList.add("switching");
+    });
+  });
 }
-function saveData(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  renderAll();
-}
-function formatDate(date){
-  return new Intl.DateTimeFormat("es-ES",{day:"2-digit",month:"2-digit",year:"numeric"}).format(new Date(date+"T12:00:00"));
-}
-function paceFrom(distance,time){
-  if(!distance || !time) return "—";
-  const parts=time.split(":").map(Number);
-  const seconds = parts.length===3 ? parts[0]*3600+parts[1]*60+parts[2] : parts[0]*60+parts[1];
-  const paceSec = Math.round(seconds/distance);
-  return `${Math.floor(paceSec/60)}:${String(paceSec%60).padStart(2,"0")}`;
-}
-function weekKm(){
-  const now = new Date();
-  const day = (now.getDay()+6)%7;
-  const monday = new Date(now);
-  monday.setHours(0,0,0,0);
-  monday.setDate(now.getDate()-day);
-  return data.runs.filter(r=>new Date(r.date+"T12:00:00")>=monday).reduce((a,r)=>a+Number(r.distance||0),0);
-}
-function runCard(r){
-  return `<article class="activity-card">
-    <div class="activity-head">
-      <div><div class="activity-title">${r.type}</div><div class="activity-date">${formatDate(r.date)} · ${r.shoes||"Sin zapatillas"}</div></div>
-      <div class="activity-title">${Number(r.distance).toFixed(2).replace(".",",")} km</div>
+
+function renderPanel(){
+  const session = sessions[selectedIndex];
+  sessionPanel.style.setProperty("--panel-accent",session.color);
+  sessionPanel.innerHTML = `
+    <div class="panel-grid">
+      <div>
+        <span class="panel-kicker">SESIÓN SELECCIONADA</span>
+        <h2>${session.title}</h2>
+        <p class="panel-main">${session.main}</p>
+        <p class="panel-note">${session.note}</p>
+      </div>
+      <div class="panel-symbol">${session.icon}</div>
     </div>
-    <div class="stats-row">
-      <div class="stat"><small>Ritmo</small><b>${r.pace||paceFrom(r.distance,r.time)}/km</b></div>
-      <div class="stat"><small>FC media</small><b>${r.avgHr||"—"} ppm</b></div>
-      <div class="stat"><small>Tiempo</small><b>${r.time||"—"}</b></div>
+
+    <div class="metrics">
+      <div class="metric"><span>Distancia</span><strong>${session.distance}</strong></div>
+      <div class="metric"><span>Duración</span><strong>${session.duration}</strong></div>
+      <div class="metric"><span>Ritmo</span><strong>${session.pace}</strong></div>
+      <div class="metric"><span>Zona</span><strong>${session.zone}</strong></div>
     </div>
-    ${r.notes?`<p class="note">${r.notes}</p>`:""}
-  </article>`;
+  `;
 }
-function renderHome(){
-  const latest=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date))[0];
-  document.querySelector("#weekKm").textContent=weekKm().toFixed(1).replace(".",",");
-  document.querySelector("#lastPace").textContent=latest?`${latest.pace||paceFrom(latest.distance,latest.time)}/km`:"—";
-  document.querySelector("#lastHr").textContent=latest?`${latest.avgHr||"—"} ppm`:"—";
-  document.querySelector("#totalRuns").textContent=data.runs.length;
-  document.querySelector("#nextWorkout").textContent=data.nextWorkout;
-  document.querySelector("#latestRun").innerHTML=latest?runCard(latest):`<div class="empty">Aún no hay entrenamientos.</div>`;
-  const progress=Math.min(100,Math.round((weekKm()/25)*100));
-  const ring=document.querySelector(".goal-ring");
-  ring.style.background=`conic-gradient(var(--accent) ${progress*3.6}deg, var(--surface-2) 0deg)`;
-  document.querySelector("#goalPercent").textContent=`${progress}%`;
-}
-function renderRuns(){
-  const rows=[...data.runs].sort((a,b)=>b.date.localeCompare(a.date)).filter(r=>currentFilter==="Todos"||r.type===currentFilter);
-  document.querySelector("#runList").innerHTML=rows.length?rows.map(runCard).join(""):`<div class="empty">No hay entrenamientos en este filtro.</div>`;
-}
-function renderGym(){
-  const rows=[...data.gym].sort((a,b)=>b.date.localeCompare(a.date));
-  document.querySelector("#gymList").innerHTML=rows.length?rows.map(g=>`<article class="activity-card"><div class="activity-head"><div><div class="activity-title">${g.name}</div><div class="activity-date">${formatDate(g.date)}</div></div></div><p class="note">${g.notes||""}</p></article>`).join(""):`<div class="empty">Sin sesiones registradas.</div>`;
-}
-function renderGear(){
-  document.querySelector("#gearList").innerHTML=data.gear.length?data.gear.map(g=>`<article class="activity-card"><div class="activity-head"><div><div class="activity-title">${g.name}</div><div class="activity-date">${g.type}</div></div><div class="activity-title">${Number(g.km||0).toFixed(1).replace(".",",")} km</div></div><p class="note">${g.notes||""}</p></article>`).join(""):`<div class="empty">Sin material registrado.</div>`;
-}
-function renderRaces(){
-  const rows=[...data.races].sort((a,b)=>a.date.localeCompare(b.date));
-  document.querySelector("#raceList").innerHTML=rows.length?rows.map(r=>`<article class="activity-card"><div class="activity-head"><div><div class="activity-title">${r.name}</div><div class="activity-date">${formatDate(r.date)}</div></div><div class="activity-title">${r.goal||""}</div></div><p class="note">${r.notes||""}</p></article>`).join(""):`<div class="empty">Sin carreras registradas.</div>`;
-}
-function renderAll(){renderHome();renderRuns();renderGym();renderGear();renderRaces()}
 
-document.querySelectorAll(".nav-btn").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  btn.classList.add("active");
-  document.querySelector("#"+btn.dataset.view).classList.add("active");
-  scrollTo({top:0,behavior:"smooth"});
-}));
-document.querySelectorAll(".chip").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active"); currentFilter=btn.dataset.filter; renderRuns();
-}));
+function updateProgress(){
+  const totalLength = routeProgress.getTotalLength();
+  const fraction = completedCount === 0 ? 0 : (completedCount - 1) / (sessions.length - 1);
+  routeProgress.style.strokeDasharray = `${totalLength}`;
+  routeProgress.style.strokeDashoffset = `${totalLength * (1 - fraction)}`;
+  routeProgress.classList.toggle("pulse",completedCount > 0);
 
-const modal=document.querySelector("#modal");
-const formFields=document.querySelector("#formFields");
+  const percentage = Math.round((completedCount / sessions.length) * 100);
+  progressRing.style.setProperty("--progress",percentage);
+  progressValue.textContent = `${percentage}%`;
+  sessionCount.textContent = `${completedCount}/${sessions.length}`;
+}
 
-const fields = {
-  running: {
-    title:"Añadir entrenamiento",
-    html:`<div class="field"><label>Fecha</label><input name="date" type="date" required value="${new Date().toISOString().slice(0,10)}"></div>
-    <div class="field"><label>Tipo</label><select name="type"><option>Rodaje Z2</option><option>Series</option><option>Tirada larga</option><option>Carrera</option><option>Recuperación</option></select></div>
-    <div class="two-col"><div class="field"><label>Distancia (km)</label><input name="distance" type="number" step="0.01" required></div><div class="field"><label>Tiempo (mm:ss)</label><input name="time" placeholder="40:06" required></div></div>
-    <div class="two-col"><div class="field"><label>FC media</label><input name="avgHr" type="number"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number"></div></div>
-    <div class="two-col"><div class="field"><label>Training Effect</label><input name="te" type="number" step="0.1"></div><div class="field"><label>Temperatura</label><input name="temp" type="number"></div></div>
-    <div class="field"><label>Zapatillas</label><input name="shoes" value="ASICS Gel-Nimbus 28"></div>
-    <div class="field"><label>Notas</label><textarea name="notes"></textarea></div>`
-  },
-  gym: {
-    title:"Registrar gimnasio",
-    html:`<div class="field"><label>Fecha</label><input name="date" type="date" required value="${new Date().toISOString().slice(0,10)}"></div><div class="field"><label>Sesión</label><input name="name" placeholder="Torso / Pierna / Full body" required></div><div class="field"><label>Ejercicios, pesos y repeticiones</label><textarea name="notes" required></textarea></div>`
-  },
-  material: {
-    title:"Añadir material",
-    html:`<div class="field"><label>Nombre</label><input name="name" required></div><div class="field"><label>Tipo</label><input name="type" value="Zapatillas"></div><div class="field"><label>Kilómetros actuales</label><input name="km" type="number" step="0.1" value="0"></div><div class="field"><label>Notas</label><textarea name="notes"></textarea></div>`
-  },
-  race: {
-    title:"Añadir carrera",
-    html:`<div class="field"><label>Nombre</label><input name="name" required></div><div class="field"><label>Fecha</label><input name="date" type="date" required></div><div class="field"><label>Objetivo</label><input name="goal"></div><div class="field"><label>Notas</label><textarea name="notes"></textarea></div>`
-  }
-};
+function render(){
+  buildNodes();
+  renderPanel();
+  updateProgress();
+}
 
-document.querySelectorAll("[data-open-form]").forEach(btn=>btn.addEventListener("click",()=>{
-  currentForm=btn.dataset.openForm;
-  document.querySelector("#modalTitle").textContent=fields[currentForm].title;
-  formFields.innerHTML=fields[currentForm].html;
-  modal.showModal();
-}));
-
-document.querySelector("#dynamicForm").addEventListener("submit",e=>{
-  if(e.submitter?.value==="cancel") return;
-  e.preventDefault();
-  const fd=Object.fromEntries(new FormData(e.currentTarget).entries());
-  fd.id=crypto.randomUUID();
-  if(currentForm==="running"){
-    fd.distance=Number(fd.distance); fd.avgHr=Number(fd.avgHr)||null; fd.maxHr=Number(fd.maxHr)||null; fd.te=Number(fd.te)||null; fd.temp=Number(fd.temp)||null;
-    fd.pace=paceFrom(fd.distance,fd.time);
-    data.runs.push(fd);
-    const gear=data.gear.find(g=>g.name===fd.shoes);
-    if(gear) gear.km=Number(gear.km||0)+fd.distance;
-  } else if(currentForm==="gym") data.gym.push(fd);
-  else if(currentForm==="material"){fd.km=Number(fd.km)||0;data.gear.push(fd);}
-  else if(currentForm==="race") data.races.push(fd);
-  saveData(); modal.close(); e.currentTarget.reset();
+document.getElementById("previousProgress").addEventListener("click",()=>{
+  completedCount = Math.max(0,completedCount - 1);
+  selectedIndex = Math.min(selectedIndex,Math.max(0,completedCount));
+  render();
 });
 
-document.querySelector("#editNextBtn").addEventListener("click",()=>{
-  const value=prompt("Próximo entrenamiento:",data.nextWorkout);
-  if(value){data.nextWorkout=value;saveData();}
+document.getElementById("nextProgress").addEventListener("click",()=>{
+  completedCount = Math.min(sessions.length,completedCount + 1);
+  selectedIndex = Math.min(sessions.length - 1,Math.max(0,completedCount - 1));
+  render();
 });
 
-document.querySelector("#themeBtn").addEventListener("click",()=>{
-  document.documentElement.classList.toggle("light");
-  localStorage.setItem("proyectoRafaTheme",document.documentElement.classList.contains("light")?"light":"dark");
-});
-if(localStorage.getItem("proyectoRafaTheme")==="light") document.documentElement.classList.add("light");
+const addButton = document.getElementById("addButton");
+const actionSheet = document.getElementById("actionSheet");
+const backdrop = document.getElementById("actionSheetBackdrop");
 
-if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));
-renderAll();
+function openSheet(){
+  backdrop.hidden = false;
+  actionSheet.classList.add("open");
+  actionSheet.setAttribute("aria-hidden","false");
+}
+
+function closeSheet(){
+  actionSheet.classList.remove("open");
+  actionSheet.setAttribute("aria-hidden","true");
+  setTimeout(()=>backdrop.hidden = true,300);
+}
+
+addButton.addEventListener("click",openSheet);
+backdrop.addEventListener("click",closeSheet);
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape") closeSheet();
+});
+
+window.addEventListener("load",render);

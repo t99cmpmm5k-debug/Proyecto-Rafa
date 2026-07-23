@@ -1,19 +1,27 @@
-# Proyecto Rafa
+# V50 · Motor visual
 
-Aplicación web personal para registrar:
+Este paquete es el primer bloque funcional del rediseño de Corredor Sólido.
 
-- Entrenamientos de running
-- Sesiones de gimnasio
-- Material y zapatillas
-- Carreras y objetivos
+Incluye:
 
-## Publicarla en GitHub Pages
+- paisaje nocturno con tres capas de montañas;
+- atmósfera, estrellas y auroras animadas;
+- ruta curva SVG;
+- progreso luminoso animado;
+- siete nodos semanales interactivos;
+- colores por tipo de entrenamiento;
+- panel inferior dinámico;
+- menú visual del botón `+`;
+- adaptación móvil.
 
-1. Sube todos los archivos de esta carpeta a la raíz del repositorio.
-2. Ve a `Settings` → `Pages`.
-3. En `Build and deployment`, elige `Deploy from a branch`.
-4. Selecciona la rama `main` y la carpeta `/root`.
-5. Guarda y espera uno o dos minutos.
+## Abrir
 
-Los datos se guardan en el navegador del dispositivo mediante `localStorage`.
-Actualizacion V19.5
+Abre `index.html` directamente en el navegador.
+
+## Archivos
+
+- `index.html`: estructura.
+- `styles.css`: motor visual completo.
+- `app.js`: datos de demostración e interacción.
+
+Los botones `− Progreso` y `+ Progreso` son únicamente controles de prueba. En la integración final se eliminarán y el progreso procederá de los entrenamientos reales guardados en la aplicación.
