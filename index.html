@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V22.11 · Excel por filas definitivo</title>
+<title>Corredor Sólido · V27 · Importador por bloques</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -791,6 +791,84 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 .plan-import-row div{min-width:0}
 .plan-import-row span,.plan-import-row strong{overflow-wrap:anywhere;word-break:break-word}
 #planImportPreview{overflow-x:hidden}
+
+/* ===== V28 · PLAN PREMIUM ===== */
+#plan{padding-bottom:110px}
+.v28-plan-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+.v28-plan-brand{display:flex;align-items:center;gap:12px}
+.v28-plan-logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(0,225,255,.35);background:linear-gradient(145deg,rgba(0,218,255,.16),rgba(0,73,118,.12));color:#13e4ff;font-weight:1000;font-size:23px;box-shadow:0 0 28px rgba(0,209,255,.12)}
+.v28-plan-title h2{margin:0;font-size:25px;letter-spacing:.02em}
+.v28-plan-title p{margin:4px 0 0;color:#91a8bd;font-size:12px}
+.v28-head-actions{display:flex;gap:8px}
+.v28-icon-btn{width:42px;height:42px;border:1px solid rgba(94,168,208,.28);border-radius:13px;background:rgba(7,24,42,.78);color:#1fe4ff;display:grid;place-items:center;font-size:20px;cursor:pointer}
+.v28-week-switch{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:10px;padding:12px;border:1px solid rgba(80,166,215,.25);border-radius:18px;background:linear-gradient(145deg,rgba(8,31,54,.92),rgba(4,18,34,.94));box-shadow:0 14px 38px rgba(0,0,0,.22);margin-bottom:14px}
+.v28-week-switch button{width:40px;height:40px;border:0;border-radius:12px;background:rgba(7,27,46,.9);color:#23dfff;font-size:25px;cursor:pointer}
+.v28-week-center{text-align:center}
+.v28-week-center small{display:block;color:#8ea5ba;font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+.v28-week-center strong{display:block;margin-top:4px;font-size:17px}
+.v28-progress-track{height:4px;border-radius:999px;background:#10283c;margin:9px auto 0;max-width:180px;overflow:hidden}
+.v28-progress-track span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00d8ff,#14f5d0);box-shadow:0 0 12px rgba(0,224,255,.6)}
+.v28-days{display:grid;grid-template-columns:repeat(7,minmax(54px,1fr));gap:7px;margin:13px 0 15px;overflow-x:auto;padding-bottom:2px}
+.v28-day{min-width:54px;padding:10px 5px 9px;border-radius:16px;border:1px solid rgba(91,145,183,.2);background:linear-gradient(180deg,rgba(8,25,43,.95),rgba(4,15,29,.95));text-align:center;cursor:pointer;transition:.2s ease;color:#91a5b8}
+.v28-day:hover{transform:translateY(-2px)}
+.v28-day.active{color:#eaffff;border-color:#06dfff;background:linear-gradient(180deg,rgba(0,178,224,.24),rgba(0,69,113,.28));box-shadow:0 0 0 1px rgba(0,224,255,.15),0 12px 28px rgba(0,180,224,.13)}
+.v28-day.done{border-color:rgba(52,221,125,.44)}
+.v28-day.long{border-color:rgba(255,191,35,.38)}
+.v28-day b{display:block;font-size:11px;margin-bottom:5px}
+.v28-day strong{display:block;font-size:19px}
+.v28-day i{display:block;width:6px;height:6px;border-radius:50%;background:#64778a;margin:8px auto 0}
+.v28-day.active i{background:#1ce8ff;box-shadow:0 0 10px #1ce8ff}
+.v28-day.done i{background:#41e781}.v28-day.long i{background:#ffc21c}
+.v28-session-card{position:relative;overflow:hidden;border:1px solid rgba(50,166,221,.3);border-radius:23px;background:radial-gradient(circle at 85% 5%,rgba(0,218,255,.13),transparent 34%),linear-gradient(145deg,#082441,#061729 70%);box-shadow:0 20px 55px rgba(0,0,0,.3);margin-bottom:14px}
+.v28-session-top{display:grid;grid-template-columns:82px 1fr;min-height:124px}
+.v28-date-block{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,178,231,.16),rgba(0,71,120,.22));border-right:1px solid rgba(62,161,211,.18)}
+.v28-date-block span{font-size:11px;color:#17dfff;text-transform:uppercase;font-weight:900}
+.v28-date-block strong{font-size:42px;line-height:1;color:#1ce7ff;margin:5px 0 2px}
+.v28-date-block small{font-size:11px;color:#9db4c8}
+.v28-session-main{padding:18px 17px 14px}
+.v28-session-label{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.v28-session-label h3{margin:0;font-size:22px}
+.v28-session-label p{margin:5px 0 0;color:#18e3ff;font-weight:850}
+.v28-intensity{border:1px solid rgba(106,162,196,.35);border-radius:10px;padding:7px 9px;color:#c2d1df;font-size:11px;white-space:nowrap}
+.v28-coach-copy{color:#9bb0c3;font-size:13px;line-height:1.45;margin:13px 0 0}
+.v28-metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(99,158,198,.18);border-bottom:1px solid rgba(99,158,198,.18);margin:0 17px}
+.v28-metric{padding:14px 8px;text-align:center;position:relative}
+.v28-metric:not(:last-child):after{content:"";position:absolute;right:0;top:18%;height:64%;width:1px;background:rgba(94,153,193,.18)}
+.v28-metric small{display:block;color:#7f99ae;font-size:9px;text-transform:uppercase;letter-spacing:.06em}
+.v28-metric strong{display:block;margin-top:5px;font-size:16px;color:#f5fbff}
+.v28-detail-btn{width:calc(100% - 34px);margin:15px 17px 17px;border:0;border-radius:12px;padding:13px;background:linear-gradient(90deg,#00b8ef,#14d6f4);color:#00111e;font-weight:1000;letter-spacing:.03em;cursor:pointer}
+.v28-empty{padding:34px 20px;text-align:center;color:#91a8bd}
+.v28-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.v28-quick{display:flex;align-items:center;gap:11px;padding:13px;border:1px solid rgba(77,145,188,.25);border-radius:15px;background:linear-gradient(145deg,rgba(6,28,48,.9),rgba(4,18,32,.9));cursor:pointer;color:#e8f7ff;text-align:left}
+.v28-quick b{display:block;font-size:13px}.v28-quick small{display:block;color:#879eb2;margin-top:3px;font-size:10px}
+.v28-quick-ico{font-size:23px;color:#16e2ff}
+.v28-week-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid rgba(79,150,195,.2);border-radius:18px;overflow:hidden;background:rgba(47,110,153,.15);margin-top:12px}
+.v28-week-stat{background:#06172a;padding:15px 7px;text-align:center}
+.v28-week-stat strong{display:block;font-size:17px}.v28-week-stat span{display:block;color:#849bae;font-size:9px;margin-top:5px;text-transform:uppercase}
+.v28-hidden-legacy{display:none!important}
+.v28-session-dialog{width:min(94vw,560px);max-height:90vh;padding:0;border:1px solid rgba(0,218,255,.35);border-radius:24px;background:#061426;color:#fff;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.v28-session-dialog::backdrop{background:rgba(0,5,13,.82);backdrop-filter:blur(8px)}
+.v28-dialog-head{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid rgba(83,155,197,.2)}
+.v28-dialog-body{padding:18px;overflow:auto;max-height:calc(90vh - 74px)}
+.v28-detail-hero{padding:18px;border-radius:18px;background:radial-gradient(circle at 90% 0,rgba(0,222,255,.16),transparent 38%),linear-gradient(145deg,#08233e,#06182b);border:1px solid rgba(52,160,211,.24)}
+.v28-detail-hero h2{margin:4px 0}.v28-detail-hero p{margin:5px 0 0;color:#20dcfb;font-weight:850}
+.v28-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.v28-detail-cell{padding:13px;border-radius:14px;background:#071a2d;border:1px solid rgba(78,142,182,.18)}
+.v28-detail-cell small{display:block;color:#7f96aa;font-size:9px;text-transform:uppercase}.v28-detail-cell strong{display:block;margin-top:5px}
+.v28-timeline{margin-top:17px;padding-left:4px}
+.v28-timeline h4{color:#19defd;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.v28-step{display:grid;grid-template-columns:20px 1fr auto;gap:10px;align-items:start;padding:9px 0;position:relative}
+.v28-step:not(:last-child):after{content:"";position:absolute;left:7px;top:28px;bottom:-7px;border-left:1px dashed rgba(25,220,253,.34)}
+.v28-step-dot{width:15px;height:15px;border-radius:50%;background:#16d9f6;box-shadow:0 0 11px rgba(22,217,246,.5)}
+.v28-step span{color:#94aabd;font-size:11px}
+.v28-start-btn{width:100%;margin-top:18px;padding:14px;border:0;border-radius:13px;background:linear-gradient(90deg,#00b9ef,#13d8f4);color:#00131e;font-weight:1000}
+@media(max-width:620px){
+ .v28-days{grid-template-columns:repeat(7,58px)}
+ .v28-metrics{grid-template-columns:1fr 1fr}.v28-metric:nth-child(2):after{display:none}
+ .v28-week-summary{grid-template-columns:repeat(2,1fr)}
+ .v28-plan-title h2{font-size:22px}
+}
+
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -828,6 +906,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
 </head>
 <body data-view="inicio">
 <header>
@@ -885,57 +964,52 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
   <div id="raceProgress"></div>
 </section>
 
+
 <section id="plan" class="view">
-  <div class="section-head">
-    <div><div class="kicker">PLANIFICACIÓN</div><h2>Mi semana</h2></div>
-    <button class="btn primary" data-add="plan">＋ Sesión</button>
-  </div>
-
-  <div class="week-tools">
-    <button class="btn primary small" type="button" id="duplicateWeek">Duplicar semana</button>
-    <button class="btn secondary small" type="button" id="clearWeek">Vaciar semana</button>
-  </div>
-
-  <div class="plan-import-card">
-    <div class="kicker">IMPORTAR PLAN</div>
-    <h3>Sube tu planificación</h3>
-    <p>Importa un plan desde <strong>PDF, Excel o imagen</strong>. La app leerá las sesiones y te mostrará una vista previa antes de añadirlas.</p>
-    <div class="plan-import-actions">
-      <button class="btn primary" type="button" id="universalPlanImportBtn">Seleccionar archivo</button>
-      <button class="btn secondary" type="button" id="pastePlanBtn">Pegar texto</button>
+  <div class="v28-plan-head">
+    <div class="v28-plan-brand">
+      <div class="v28-plan-logo">C</div>
+      <div class="v28-plan-title"><h2>PLAN</h2><p id="v28PlanSubtitle">Semana actual</p></div>
     </div>
-    <input id="universalPlanInput" class="file" type="file" accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
-    <div id="universalPlanStatus" class="plan-import-status"></div>
+    <div class="v28-head-actions">
+      <button class="v28-icon-btn" type="button" data-add="plan" aria-label="Añadir sesión">＋</button>
+      <button class="v28-icon-btn" type="button" id="v28MenuBtn" aria-label="Opciones">☰</button>
+    </div>
   </div>
-
-  <div class="week-nav">
+  <div class="v28-week-switch">
     <button type="button" id="prevWeek">‹</button>
-    <div class="week-title" id="weekTitle">Semana</div>
+    <div class="v28-week-center">
+      <small>Semana de inicio</small>
+      <strong id="weekTitle">Semana</strong>
+      <div class="v28-progress-track"><span id="v28ProgressBar" style="width:0%"></span></div>
+    </div>
     <button type="button" id="nextWeek">›</button>
   </div>
-
-  <div class="plan-summary">
-    <div class="metric"><span>Completadas</span><strong id="planDone">0/0</strong></div>
-    <div class="metric"><span>Km previstos</span><strong id="planKm">0</strong></div>
-    <div class="metric"><span>Cumplimiento</span><strong id="planPct">0%</strong></div>
+  <div id="v28Days" class="v28-days"></div>
+  <div id="v28FeaturedSession"></div>
+  <div class="v28-quick-actions">
+    <button class="v28-quick" type="button" id="universalPlanImportBtn"><span class="v28-quick-ico">⇧</span><span><b>Importar plan</b><small>Archivo, imagen o texto</small></span></button>
+    <button class="v28-quick" type="button" id="v28ChangeWeek"><span class="v28-quick-ico">▣</span><span><b>Cambiar semana</b><small>Navega entre semanas</small></span></button>
   </div>
-
-  <div class="compliance-ring">
-    <div class="ring" id="planRing" style="--pct:0%"><span id="ringPct">0%</span></div>
-    <div><strong id="planMessage">Empieza a planificar tu semana</strong><p class="note" id="planSubmessage">Añade tus entrenamientos y marca los completados.</p></div>
+  <input id="universalPlanInput" class="file" type="file" accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
+  <button id="pastePlanBtn" class="v28-hidden-legacy" type="button">Pegar texto</button>
+  <div id="universalPlanStatus" class="plan-import-status"></div>
+  <div id="v28WeekSummary" class="v28-week-summary"></div>
+  <div class="v28-hidden-legacy">
+    <button id="duplicateWeek"></button><button id="clearWeek"></button>
+    <span id="planDone"></span><span id="planKm"></span><span id="planPct"></span>
+    <div id="planRing"><span id="ringPct"></span></div>
+    <span id="planMessage"></span><span id="planSubmessage"></span>
+    <div id="weekPlan"></div><div id="templateGrid"></div><div id="weekReview"></div>
   </div>
-
-  <div class="section-head"><h3>Calendario semanal</h3></div>
-  <div class="plan-readonly-note">Aquí consultas y organizas la semana. Para entrenar, entra en Running o Gym.</div>
-  <div id="weekPlan" class="week-grid"></div>
-
-  <div class="section-head"><h3>Plantillas</h3></div>
-  <div id="templateGrid" class="template-grid"></div>
-
-  <div class="section-head"><h3>Resumen automático</h3></div>
-  <div id="weekReview" class="week-review"></div>
-
 </section>
+<dialog id="v28SessionDialog" class="v28-session-dialog">
+  <div class="v28-dialog-head">
+    <div><div class="kicker">DETALLE DE LA SESIÓN</div><strong>Sesión</strong></div>
+    <button class="v28-icon-btn" type="button" onclick="document.getElementById('v28SessionDialog').close()">✕</button>
+  </div>
+  <div id="v28SessionDialogBody" class="v28-dialog-body"></div>
+</dialog>
 
 <section id="running" class="view">
   <div class="section-head">
@@ -1153,7 +1227,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 <dialog id="planImportDialog" class="plan-import-dialog">
   <div class="plan-import-dialog-head">
-    <div><div class="kicker">IMPORTACIÓN INTELIGENTE</div><h3>Revisar plan detectado</h3></div>
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V28</div><h3>Revisar plan detectado</h3></div>
     <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
   </div>
   <div class="plan-import-dialog-body">
@@ -1489,29 +1563,117 @@ function planCard(p,compact=false){
    <span class="status ${p.status||"pending"}">${statusLabel(p.status)}</span>
  </div>`
 }
+
+let v28SelectedDate=null;
+function v28SessionType(p){
+ const t=((p?.title||"")+" "+(p?.notes||"")).toLowerCase();
+ if(/serie|interval|repet/.test(t))return "Series";
+ if(/tirada|larga|long/.test(t))return "Tirada larga";
+ if(/tempo|umbral/.test(t))return "Tempo";
+ if(/gym|gimnas|fuerza/.test(t))return "Fuerza";
+ return p?.title||"Rodaje suave";
+}
+function v28Pace(p){
+ const all=[p?.intensity,p?.notes,p?.title].filter(Boolean).join(" ");
+ const m=all.match(/\d{1,2}:\d{2}(?:\s*[–-]\s*\d{1,2}:\d{2})?\s*(?:\/?km)?/);
+ return m?m[0].replace(/\s+/g," "):(/Z2/i.test(all)?"Z2":"Objetivo");
+}
+function v28Zone(p){
+ const all=[p?.intensity,p?.notes,p?.title].filter(Boolean).join(" ");
+ const z=all.match(/Z[1-5](?:\s*[–-]\s*Z[1-5])?/i);
+ if(z)return z[0].toUpperCase().replace("-","–");
+ if(/serie|interval|umbral/i.test(all))return "Z4–Z5";
+ return "Z2";
+}
+function v28Duration(p){
+ if(Number(p?.duration)>0)return `${p.duration} min`;
+ const km=Number(p?.distance||0);
+ if(km)return `${Math.round(km*5.7)} min`;
+ return "—";
+}
+function v28PrimaryText(p){
+ const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
+ const reps=all.match(/\d+\s*[x×]\s*\d+\s*(?:m|km)?/i);
+ if(reps)return reps[0].replace("x"," × ");
+ if(Number(p?.distance)>0)return `${Number(p.distance).toFixed(Number(p.distance)%1?1:0).replace(".",",")} km`;
+ return p?.intensity||"Sesión planificada";
+}
+function v28OpenSession(id){
+ const p=data.plan.find(x=>x.id===id);if(!p)return;
+ const km=Number(p.distance||0),zone=v28Zone(p),pace=v28Pace(p),duration=v28Duration(p);
+ const all=[p.title,p.notes,p.intensity].filter(Boolean).join(" ");
+ const reps=all.match(/(\d+)\s*[x×]\s*(\d+)\s*(m|km)?/i);
+ const recovery=all.match(/(?:rec(?:uperación)?\.?\s*)(\d+\s*(?:min|['’]|s|''|”))/i);
+ const warm=all.match(/calentamiento\s*(\d+\s*(?:min|['’]))/i);
+ const cool=all.match(/enfriamiento\s*(\d+\s*(?:min|['’]))/i);
+ let steps=[];
+ steps.push(["Calentamiento",warm?warm[1]:"10–15 min","Z1–Z2"]);
+ if(reps)steps.push([`${reps[1]} × ${reps[2]} ${reps[3]||"m"}`,pace,zone]);
+ else steps.push([v28SessionType(p),v28PrimaryText(p),zone]);
+ if(recovery)steps.push(["Recuperación",recovery[1],"Trote suave"]);
+ steps.push(["Enfriamiento",cool?cool[1]:"10 min","Z1–Z2"]);
+ $("#v28SessionDialogBody").innerHTML=`
+   <div class="v28-detail-hero"><div class="kicker">${fmt(p.date).toUpperCase()}</div><h2>${v28SessionType(p)}</h2><p>${v28PrimaryText(p)}</p></div>
+   <div class="v28-detail-grid">
+    <div class="v28-detail-cell"><small>Distancia</small><strong>${km?km.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
+    <div class="v28-detail-cell"><small>Duración estimada</small><strong>${duration}</strong></div>
+    <div class="v28-detail-cell"><small>Ritmo objetivo</small><strong>${pace}</strong></div>
+    <div class="v28-detail-cell"><small>Zona objetivo</small><strong>${zone}</strong></div>
+   </div>
+   <div class="v28-timeline"><h4>Estructura de la sesión</h4>${steps.map(x=>`<div class="v28-step"><i class="v28-step-dot"></i><div><strong>${x[0]}</strong><span>${x[2]}</span></div><strong>${x[1]}</strong></div>`).join("")}</div>
+   ${p.notes?`<div class="v28-detail-cell" style="margin-top:14px"><small>Notas</small><strong style="font-size:13px;line-height:1.45">${p.notes}</strong></div>`:""}
+   <button class="v28-start-btn" type="button" onclick="document.getElementById('v28SessionDialog').close();setView('${p.sport==="Gimnasio"?"gym":"running"}')">INICIAR ENTRENAMIENTO ▶</button>`;
+ $("#v28SessionDialog").showModal();
+}
 function renderPlan(){
- const mon=selectedMonday(),sun=datePlus(mon,6);
- $("#weekTitle").textContent=`${fmt(isoDate(mon))} – ${fmt(isoDate(sun))}`;
- const start=isoDate(mon),end=isoDate(sun);
- const items=data.plan.filter(p=>p.date>=start&&p.date<=end);
+ const mon=selectedMonday(),sun=datePlus(mon,6),start=isoDate(mon),end=isoDate(sun);
+ const items=data.plan.filter(p=>p.date>=start&&p.date<=end).sort((a,b)=>a.date.localeCompare(b.date));
  const done=items.filter(p=>p.status==="done").length;
  const pct=items.length?Math.round(done/items.length*100):0;
  const km=items.reduce((a,p)=>a+Number(p.distance||0),0);
- $("#planDone").textContent=`${done}/${items.length}`;
- $("#planKm").textContent=km.toFixed(1).replace(".",",");
- $("#planPct").textContent=pct+"%";
- $("#ringPct").textContent=pct+"%";$("#planRing").style.setProperty("--pct",pct+"%");
- $("#planMessage").textContent=pct===100&&items.length?"Semana completada":pct>=75?"Muy buena constancia":pct>=40?"Vas avanzando":"Empieza por la siguiente sesión";
- $("#planSubmessage").textContent=items.length?`${items.length-done} sesiones pendientes esta semana.`:"No hay sesiones planificadas.";
- const names=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
- $("#weekPlan").innerHTML=names.map((name,i)=>{
-   const d=isoDate(datePlus(mon,i)),dayItems=items.filter(p=>p.date===d);
-   return `<div class="plan-day">
-     <div class="plan-day-head"><div class="plan-date">${name}<small>${fmt(d)}</small></div><button class="btn secondary small" onclick="addPlanForDate('${d}')">＋</button></div>
-     ${dayItems.length?dayItems.map(p=>planCard(p)).join(""):'<p class="note">Descanso o sin sesión planificada.</p>'}
-   </div>`;
+ const mins=items.reduce((a,p)=>a+Number(p.duration||0),0);
+ const names=["L","M","X","J","V","S","D"];
+ $("#weekTitle").textContent=`${fmt(start)} – ${fmt(end)}`;
+ $("#v28PlanSubtitle").textContent=weekOffset===0?"Semana actual":weekOffset>0?`Dentro de ${weekOffset} semana${weekOffset===1?"":"s"}`:`Hace ${Math.abs(weekOffset)} semana${Math.abs(weekOffset)===1?"":"s"}`;
+ $("#v28ProgressBar").style.width=pct+"%";
+ if(!v28SelectedDate||v28SelectedDate<start||v28SelectedDate>end){
+   const today=isoDate(new Date());
+   v28SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
+ }
+ $("#v28Days").innerHTML=names.map((n,i)=>{
+   const d=isoDate(datePlus(mon,i)),day=items.filter(p=>p.date===d),p=day[0];
+   const cls=[d===v28SelectedDate?"active":"",p?.status==="done"?"done":"",/tirada|larga/i.test(p?.title||"")?"long":""].filter(Boolean).join(" ");
+   return `<button class="v28-day ${cls}" type="button" onclick="v28SelectedDate='${d}';renderPlan()"><b>${n}</b><strong>${new Date(d+"T12:00:00").getDate()}</strong><i></i></button>`;
  }).join("");
+ const selected=items.find(p=>p.date===v28SelectedDate)||items[0];
+ if(selected){
+   const dt=new Date(selected.date+"T12:00:00"),weekday=dt.toLocaleDateString("es-ES",{weekday:"long"}).toUpperCase(),month=dt.toLocaleDateString("es-ES",{month:"short"}).replace(".","").toUpperCase();
+   const kmv=Number(selected.distance||0),pace=v28Pace(selected),zone=v28Zone(selected);
+   $("#v28FeaturedSession").innerHTML=`<article class="v28-session-card">
+    <div class="v28-session-top"><div class="v28-date-block"><span>${weekday}</span><strong>${dt.getDate()}</strong><small>${month}</small></div>
+    <div class="v28-session-main"><div class="v28-session-label"><div><h3>${v28SessionType(selected)}</h3><p>${v28PrimaryText(selected)}</p></div><span class="v28-intensity">${selected.intensity||"Objetivo"}</span></div>
+    <p class="v28-coach-copy">${selected.notes||(/serie/i.test(selected.title)?"Trabajo de velocidad y potencia. Enfócate en mantener un ritmo uniforme.":"Sesión planificada para seguir construyendo una base sólida.")}</p></div></div>
+    <div class="v28-metrics">
+      <div class="v28-metric"><small>Distancia</small><strong>${kmv?kmv.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
+      <div class="v28-metric"><small>Duración</small><strong>${v28Duration(selected)}</strong></div>
+      <div class="v28-metric"><small>Ritmo</small><strong>${pace}</strong></div>
+      <div class="v28-metric"><small>Zona</small><strong>${zone}</strong></div>
+    </div>
+    <button class="v28-detail-btn" type="button" onclick="v28OpenSession('${selected.id}')">VER DETALLES DE LA SESIÓN →</button>
+   </article>`;
+ }else{
+   $("#v28FeaturedSession").innerHTML=`<div class="v28-session-card v28-empty"><strong>No hay sesión este día</strong><p>Puedes añadir una nueva sesión o importar tu planificación.</p><button class="btn primary" data-add="plan">＋ Añadir sesión</button></div>`;
+ }
+ $("#v28WeekSummary").innerHTML=`
+  <div class="v28-week-stat"><strong>${km.toFixed(1).replace(".",",")} km</strong><span>Total</span></div>
+  <div class="v28-week-stat"><strong>${mins?`${Math.floor(mins/60)}h ${String(mins%60).padStart(2,"0")}`:"—"}</strong><span>Tiempo</span></div>
+  <div class="v28-week-stat"><strong>${pct}%</strong><span>Completado</span></div>
+  <div class="v28-week-stat"><strong>${items.length}</strong><span>Sesiones</span></div>`;
+ $("#planDone").textContent=`${done}/${items.length}`;$("#planKm").textContent=km.toFixed(1);$("#planPct").textContent=pct+"%";
+ $("#ringPct").textContent=pct+"%";$("#planMessage").textContent="";$("#planSubmessage").textContent="";
+ $("#weekPlan").innerHTML="";
 }
+
 function todayAction(p){
  if(p.status==="done")return `<button class="btn secondary small" type="button" onclick="setView('${p.sport==='Gimnasio'?'gym':'running'}')">Ver módulo</button>`;
  if(p.sport==="Gimnasio"&&p.gymRoutine)return `<button class="btn primary" type="button" onclick="startPlannedGym('${p.id}')">Empezar rutina</button>`;
@@ -1667,7 +1829,25 @@ function normalizePlanText(raw){
 }
 function dayIndexFromText(s){
  const clean=String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
- const m=clean.match(/\b(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)\b/);return m?PLAN_DAYS[m[1]]:null;
+ // Acepta también OCR sin espacio, por ejemplo "Jueves6x800" o "Sábado12 km".
+ const m=clean.match(/(?:^|[^a-z])(lunes|lun|martes|mar|miercoles|mie|jueves|jue|viernes|vie|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)/);return m?PLAN_DAYS[m[1]]:null;
+}
+function splitOcrWeekdayLines(text){
+ // Convierte cualquier salida OCR en bloques independientes por día.
+ // Funciona aunque todo venga pegado en una sola línea o en un orden extraño.
+ const source=String(text||"").replace(/\r/g,"\n").replace(/[|•●▪◦]/g," ").replace(/[–—]/g,"-");
+ const clean=source.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+ const re=/(lunes|martes|miercoles|jueves|viernes|sabado|domingo)(?=\s|\d|[:\-]|$)/gi;
+ const matches=[...clean.matchAll(re)];
+ if(!matches.length)return source;
+ const blocks=[];
+ for(let i=0;i<matches.length;i++){
+  const start=matches[i].index;
+  const end=i+1<matches.length?matches[i+1].index:clean.length;
+  const block=clean.slice(start,end).replace(/\s+/g," ").trim();
+  if(block)blocks.push(block);
+ }
+ return blocks.join("\n");
 }
 function explicitDateFromText(s,baseMonday){
  const text=String(s||"");
@@ -1688,8 +1868,8 @@ function detectSessionTitle(content){
  if(/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/.test(s))return /superior/.test(s)?"Fuerza · Tren superior":/inferior/.test(s)?"Fuerza · Tren inferior":"Fuerza";
  if(/series|interval|repeticiones|\d+\s*[x×]\s*\d+/.test(s))return "Series";
  if(/tempo|ritmo controlado|umbral/.test(s))return "Ritmo controlado";
- if(/tirada|largo|larga/.test(s))return "Tirada larga";
- if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje/.test(s))return "Rodaje suave";
+ if(/tirada|largo|larga|long run/.test(s))return "Tirada larga";
+ if(/zona\s*2|\bz2\b|suave|facil|fácil|rodaje|easy|comodo|cómodo/.test(s))return "Rodaje suave";
  if(/carrera|competicion|competición/.test(s))return "Carrera";
  return cleanPlanTitle(content).slice(0,60)||"Entrenamiento";
 }
@@ -1707,6 +1887,35 @@ function parseDuration(content){
  return matches.length?Math.max(...matches):0;
 }
 function parsePace(content){const m=String(content||"").match(/\b(\d{1,2}:\d{2})(?:\s*-\s*(\d{1,2}:\d{2}))?\s*(?:\/\s*km|min\s*\/\s*km)?/i);return m?`${m[1]}${m[2]?`-${m[2]}`:""}/km`:""}
+
+function parseZone(content){
+ const m=String(content||"").match(/\b(?:zona\s*)?z?([1-5])\b/i);
+ return m?`Z${m[1]}`:"";
+}
+function parseRepetitions(content){
+ const m=String(content||"").match(/\b(\d{1,2})\s*[x×]\s*(\d{2,4})\s*(?:m|metros?)?\b/i);
+ return m?`${m[1]} × ${m[2]} m`:"";
+}
+function parseRecovery(content){
+ const text=String(content||"");
+ const m=text.match(/(?:rec(?:uperaci[oó]n)?|descanso|pausa)\s*(?:de\s*)?[:\-]?\s*(\d{1,3})(?:\s*(min(?:utos?)?|['’]|s(?:eg(?:undos?)?)?))/i);
+ if(!m)return "";
+ const unit=/^s/i.test(m[2]||"")?"s":"min";
+ return `${m[1]} ${unit}`;
+}
+function buildSemanticNotes(content,title){
+ const parts=[];
+ const reps=parseRepetitions(content),recovery=parseRecovery(content),zone=parseZone(content),pace=parsePace(content);
+ if(reps)parts.push(reps);
+ if(pace)parts.push(`Ritmo ${pace}`);
+ if(recovery)parts.push(`Recuperación ${recovery}`);
+ if(zone)parts.push(zone);
+ const lower=String(content||"").toLowerCase();
+ if(/c[oó]modo|muy suave|f[aá]cil/.test(lower)&&!parts.some(x=>/suave|cómodo/i.test(x)))parts.push(/muy suave/.test(lower)?"Muy suave":"Cómodo");
+ if(/carga moderada/.test(lower))parts.push("Carga moderada");
+ if(!parts.length&&content&&String(content).trim().toLowerCase()!==String(title||"").trim().toLowerCase())parts.push(String(content).trim());
+ return [...new Set(parts)].join(" · ");
+}
 function parsePlanSessions(rawText,baseMonday){
  const source=String(rawText||"");
  const canonical=[];
@@ -1738,18 +1947,36 @@ function parsePlanSessions(rawText,baseMonday){
   }catch(e){}
  });
  if(canonical.length)return canonical;
- const raw=normalizePlanText(source);let lines=raw.split("\n").map(x=>x.trim()).filter(Boolean);const chunks=[];let current=null;
- for(const line of lines){const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);if(day!==null||date){if(current)chunks.push(current);current={day,date,text:line}}else if(current)current.text+=` · ${line}`}
- if(current)chunks.push(current);if(!chunks.length)lines.filter(x=>x.length>3).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
+ const raw=splitOcrWeekdayLines(normalizePlanText(source));
+ let lines=raw.split("\n").map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
+ const chunks=[];
+ for(const line of lines){
+  const day=dayIndexFromText(line),date=explicitDateFromText(line,baseMonday);
+  if(day!==null||date)chunks.push({day,date,text:line});
+ }
+ // En archivos sin días explícitos mantenemos el respaldo genérico.
+ if(!chunks.length)lines.filter(x=>x.length>3&&!/^(plan|plan semanal|programa|calendario|entrenamiento|objetivo)$/i.test(x)).forEach((line,i)=>chunks.push({day:Math.min(i,6),date:"",text:line}));
  return chunks.map((c,i)=>{
   let date=c.date||addIsoDays(baseMonday,c.day??Math.min(i,6));
-  let content=cleanPlanTitle(c.text.replace(/\b(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)\b\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
-  const title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
+  let content=cleanPlanTitle(c.text.replace(/^(lunes|lun|martes|mar|miércoles|miercoles|mie|jueves|jue|viernes|vie|sábado|sabado|sab|domingo|dom)(?=\s|\d|[:\-]|$)\s*[:\-]?/i,"").replace(/(^|[^\d:])\d{1,2}[\/.\-]\d{1,2}(?:[\/.\-]\d{2,4})?(?![\d:])/,"$1"));
+  // Encabezados habituales del documento no forman parte de ninguna sesión.
+  content=cleanImportedOcrDayLine(cleanPlanTitle(content.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento|objetivo)\b/gi," ")),c.day);
+  // Nunca permitimos que un segundo día termine dentro de la misma sesión.
+  content=content.split(/\b(?:lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)\b/i)[0].trim();
+  let title=detectSessionTitle(content),isGym=/fuerza|gimnasio|gym|tren superior|tren inferior|pesas/i.test(content),isRest=title==="Descanso";
   const distance=isGym||isRest?0:parseDistance(content),duration=isRest?0:parseDuration(content),pace=isGym||isRest?"":parsePace(content);
+  const semanticNotes=buildSemanticNotes(content,title);
+  // Cuando la imagen solo dice "12 km", usamos el día para dar un nombre útil.
+  // Sábado/domingo con distancia se interpreta como tirada larga; el resto, rodaje suave.
+  if(!isGym&&!isRest&&/^\d{1,2}(?:[.,]\d+)?\s*(?:km|k)$/i.test(content.trim())){
+   title=(c.day===5||c.day===6)?"Tirada larga":"Rodaje suave";
+  }
   const sport=isRest?"Descanso":isGym?"Gimnasio":"Running";
   const normalizedTitle=isGym?(title.startsWith("Fuerza")?title:"Fuerza"):title;
-  return {id:uid(),date,sport,title:normalizedTitle,distance,duration,intensity:[pace,content].filter(Boolean).join(" · "),status:"pending",notes:content,category:isRest?"Descanso":normalizedTitle};
- }).filter(s=>s.title&&s.date)
+  const zone=parseZone(content);
+  const intensity=[pace,zone].filter(Boolean).join(" · ") || semanticNotes;
+  return {id:uid(),date,sport,title:normalizedTitle,distance,duration,intensity,status:"pending",notes:semanticNotes||content,category:isRest?"Descanso":normalizedTitle};
+ }).filter(s=>s.title&&s.date).sort((a,b)=>a.date.localeCompare(b.date))
 }
 async function extractPdfText(file){
  if(!window.pdfjsLib)throw new Error("No se ha podido cargar el lector PDF. Comprueba la conexión.");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const pages=[];
@@ -1843,11 +2070,171 @@ async function extractExcelText(file){
  });
  return out.filter(Boolean).join("\n")
 }
+async function preparePlanOcrImage(file){
+ // Recorta el espacio vacío y amplía el texto. Es especialmente útil con
+ // capturas de WhatsApp o imágenes donde el plan ocupa una zona pequeña.
+ const bitmap=await createImageBitmap(file);
+ const probe=document.createElement("canvas"),pctx=probe.getContext("2d",{willReadFrequently:true});
+ probe.width=bitmap.width;probe.height=bitmap.height;pctx.drawImage(bitmap,0,0);
+ const data=pctx.getImageData(0,0,probe.width,probe.height).data;
+ let minX=probe.width,minY=probe.height,maxX=0,maxY=0,found=false;
+ const step=Math.max(1,Math.floor(Math.max(probe.width,probe.height)/1200));
+ for(let y=0;y<probe.height;y+=step){for(let x=0;x<probe.width;x+=step){
+  const i=(y*probe.width+x)*4,lum=(data[i]*0.299+data[i+1]*0.587+data[i+2]*0.114);
+  if(lum<205&&data[i+3]>20){found=true;minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y)}
+ }}
+ if(!found)return file;
+ const margin=Math.max(12,Math.round(Math.min(probe.width,probe.height)*0.025));
+ minX=Math.max(0,minX-margin);minY=Math.max(0,minY-margin);maxX=Math.min(probe.width,maxX+margin);maxY=Math.min(probe.height,maxY+margin);
+ const cropW=Math.max(1,maxX-minX),cropH=Math.max(1,maxY-minY),scale=Math.min(4,Math.max(2,1800/cropW));
+ const out=document.createElement("canvas"),ctx=out.getContext("2d",{willReadFrequently:true});
+ out.width=Math.round(cropW*scale);out.height=Math.round(cropH*scale);
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";ctx.drawImage(bitmap,minX,minY,cropW,cropH,0,0,out.width,out.height);
+ const img=ctx.getImageData(0,0,out.width,out.height),px=img.data;
+ for(let i=0;i<px.length;i+=4){
+  const g=px[i]*0.299+px[i+1]*0.587+px[i+2]*0.114;
+  // Contraste fuerte sin destruir trazos finos.
+  const v=g<185?0:g>235?255:Math.round((g-185)*5.1);
+  px[i]=px[i+1]=px[i+2]=v;px[i+3]=255;
+ }
+ ctx.putImageData(img,0,0);
+ return await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar la imagen")),"image/png"));
+}
+function scorePlanOcrText(text){
+ const t=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const days=(t.match(/lunes|martes|miercoles|jueves|viernes|sabado|domingo|\blun\b|\bmar\b|\bmie\b|\bjue\b|\bvie\b|\bsab\b|\bdom\b/g)||[]).length;
+ const sessions=(t.match(/\d+\s*[x×]\s*\d+|\d+(?:[.,]\d+)?\s*km|z[1-5]|fuerza|gimnasio|descanso|rodaje|series|tirada|tempo/g)||[]).length;
+ return days*10+sessions*3+Math.min(t.length/40,10);
+}
+function cleanImportedOcrDayLine(line,day){
+ let text=String(line||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
+ // Elimina títulos del documento incluso si aparecen al final del entrenamiento.
+ text=text.replace(/\b(?:plan(?:\s+semanal)?|programa|calendario|entrenamiento|objetivo)\b/gi," ").replace(/\s+/g," ").trim();
+ // El OCR puede deformar "Sábado" y pegarlo a la sesión anterior. Cortamos esas colas.
+ if(day!==5)text=text.split(/\b(?:s[a-z0-9]{0,3}bado|sabado|domingo|lunes|martes|miercoles|jueves|viernes)\b/i)[0].trim();
+ // Quita cualquier segundo entrenamiento pegado tras una serie (p. ej. 6x800 ... 12 km).
+ if(day===3 && /\d+\s*[x×]\s*\d+/i.test(text)){
+  const rep=text.match(/\d+\s*[x×]\s*\d+/i);
+  if(rep){
+   const before=text.slice(0,rep.index+rep[0].length);
+   const after=text.slice(rep.index+rep[0].length).replace(/^\s*[-:·|]?\s*/,"");
+   // Conserva ritmo/recuperación, pero descarta otra distancia aislada pegada por OCR.
+   const safe=after.replace(/(?:\b|^)[a-z]{0,4}bado\s*\d+(?:[.,]\d+)?\s*km.*$/i,"").replace(/\b12\s*km\b.*$/i,"").trim();
+   text=(before+(safe?" "+safe:"")).trim();
+  }
+ }
+ return text;
+}
+
+function normalizeSportsOcrPatterns(text){
+ let t=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+ // Corrige confusiones OCR típicas dentro de repeticiones: 6xB00, 6×8OO, 6 x 8o0.
+ t=t.replace(/\b(\d{1,2})\s*[x×]\s*([0-9oObBsS]{2,4})\b/gi,(m,reps,dist)=>{
+  const fixed=String(dist).replace(/[oO]/g,"0").replace(/[bB]/g,"8").replace(/[sS]/g,"5");
+  return `${reps}x${fixed}`;
+ });
+ return t;
+}
+function recoverOrphanSportsSessions(texts,byDay){
+ const combined=normalizeSportsOcrPatterns(texts.join("\n"));
+ // Si el OCR detecta una estructura de series sin el día, la asignamos al jueves,
+ // que es el hueco natural entre martes y sábado en planes semanales simples.
+ const rep=combined.match(/\b(\d{1,2})\s*[x×]\s*(\d{2,4})\b/i);
+ if(rep&&!byDay.has(3))byDay.set(3,`Jueves ${rep[1]}x${rep[2]}`);
+ // Respaldo para rodajes/tiradas cuando se reconoce el contenido pero se pierde el día.
+ const km=[...combined.matchAll(/\b(\d{1,2}(?:[.,]\d+)?)\s*km\b/gi)].map(m=>m[1]);
+ if(km.length>=1&&!byDay.has(1)&&/\bz2\b|rodaje|suave/i.test(combined))byDay.set(1,`Martes ${km[0]} km Z2`);
+ if(km.length>=2&&!byDay.has(5))byDay.set(5,`Sábado ${km[km.length-1]} km`);
+}
+async function buildPlanOcrVariants(file){
+ const variants=[];
+ try{
+  const bitmap=await createImageBitmap(file);
+  const base=document.createElement("canvas"),bctx=base.getContext("2d",{willReadFrequently:true});
+  base.width=bitmap.width;base.height=bitmap.height;bctx.drawImage(bitmap,0,0);
+  const makeBlob=async(canvas)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar OCR")),"image/png"));
+  // Tres bandas horizontales solapadas: rescatan líneas pequeñas que el OCR global ignora.
+  const bands=[[0,.48],[.18,.72],[.45,1]];
+  for(const [a,b] of bands){
+   const y=Math.floor(base.height*a),h=Math.max(1,Math.floor(base.height*(b-a)));
+   const c=document.createElement("canvas"),ctx=c.getContext("2d",{willReadFrequently:true});
+   const scale=Math.min(5,Math.max(3,1800/base.width));
+   c.width=Math.round(base.width*scale);c.height=Math.round(h*scale);
+   ctx.imageSmoothingEnabled=false;ctx.drawImage(base,0,y,base.width,h,0,0,c.width,c.height);
+   const img=ctx.getImageData(0,0,c.width,c.height),px=img.data;
+   for(let i=0;i<px.length;i+=4){
+    const g=px[i]*.299+px[i+1]*.587+px[i+2]*.114;
+    const v=g<170?0:g>235?255:Math.round((g-170)*3.92);
+    px[i]=px[i+1]=px[i+2]=v;px[i+3]=255;
+   }
+   ctx.putImageData(img,0,0);variants.push(await makeBlob(c));
+  }
+ }catch(e){}
+ return variants;
+}
+function mergePlanOcrTexts(texts){
+ const valid=texts.filter(Boolean).map(normalizeSportsOcrPatterns);
+ if(!valid.length)return "";
+ const byDay=new Map();
+ for(const text of valid){
+  const expanded=splitOcrWeekdayLines(text);
+  for(let line of expanded.split(/\r?\n/)){
+   line=String(line||"").replace(/\s+/g," ").trim();
+   if(!line)continue;
+   const day=dayIndexFromText(line);
+   if(day===null)continue;
+   // Corta cualquier encabezado o segundo día que el OCR haya pegado por error.
+   line=cleanImportedOcrDayLine(line,day);
+   if(!line)continue;
+   const previous=byDay.get(day)||"";
+   const quality=x=>{
+    const t=String(x||"");
+    let q=scorePlanOcrText(t);
+    if(/\d+\s*[x×]\s*\d+/.test(t))q+=8;
+    if(/\d+(?:[.,]\d+)?\s*km/i.test(t))q+=5;
+    if(/\bz[1-5]\b/i.test(t))q+=3;
+    return q;
+   };
+   if(!previous||quality(line)>quality(previous))byDay.set(day,line);
+  }
+ }
+ recoverOrphanSportsSessions(valid,byDay);
+ const ordered=[...byDay.entries()].sort((a,b)=>a[0]-b[0]).map(([,line])=>line);
+ if(ordered.length)return ordered.join("\n");
+ return valid.sort((a,b)=>scorePlanOcrText(b)-scorePlanOcrText(a))[0];
+}
 async function extractImageText(file){
- if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");const result=await Tesseract.recognize(file,"spa",{logger:m=>{if(m.status==="recognizing text")planImportStatus(`Leyendo imagen… ${Math.round((m.progress||0)*100)} %`,`loading`)}});return result?.data?.text||""
+ if(!window.Tesseract)throw new Error("No se ha podido cargar el lector de imágenes. Comprueba la conexión.");
+ const prepared=await preparePlanOcrImage(file).catch(()=>file),texts=[];
+ const bands=await buildPlanOcrVariants(file);
+ const runs=[{src:prepared,label:"Optimizando lectura",psm:"6"},{src:file,label:"Comprobando imagen",psm:"11"},...bands.map((src,i)=>({src,label:`Analizando zona ${i+1}`,psm:"6"}))];
+ for(let i=0;i<runs.length;i++){
+  const run=runs[i];
+  const result=await Tesseract.recognize(run.src,"spa+eng",{
+   tessedit_pageseg_mode:run.psm,
+   preserve_interword_spaces:"1",
+   logger:m=>{if(m.status==="recognizing text"){
+    const total=Math.round(((i+(m.progress||0))/runs.length)*100);
+    planImportStatus(`${run.label}… ${total} %`,`loading`)
+   }}
+  });
+  if(result?.data?.text)texts.push(result.data.text);
+ }
+ return mergePlanOcrTexts(texts)
+}
+async function extractDocxText(file){
+ if(!window.mammoth)throw new Error("No se ha podido cargar el lector Word. Comprueba la conexión.");
+ const result=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
+ return result?.value||"";
 }
 async function extractPlanFileText(file){
- const ext=(file.name.split(".").pop()||"").toLowerCase();if(ext==="pdf"||file.type==="application/pdf")return extractPdfText(file);if(["xlsx","xls","csv"].includes(ext)||/spreadsheet|excel|csv/.test(file.type))return extractExcelText(file);if(file.type.startsWith("image/")||["jpg","jpeg","png","webp"].includes(ext))return extractImageText(file);if(ext==="txt"||file.type.startsWith("text/"))return file.text();throw new Error("Formato no compatible. Usa PDF, Excel, CSV, JPG, PNG, WEBP o TXT.")
+ const ext=(file.name.split(".").pop()||"").toLowerCase();
+ if(ext==="pdf"||file.type==="application/pdf")return extractPdfText(file);
+ if(ext==="docx"||/wordprocessingml/.test(file.type))return extractDocxText(file);
+ if(["xlsx","xls","csv"].includes(ext)||/spreadsheet|excel|csv/.test(file.type))return extractExcelText(file);
+ if(file.type.startsWith("image/")||["jpg","jpeg","png","webp"].includes(ext))return extractImageText(file);
+ if(ext==="txt"||file.type.startsWith("text/"))return file.text();
+ throw new Error("Formato no compatible. Usa PDF, Word, Excel, CSV, JPG, PNG, WEBP o TXT.")
 }
 async function handleUniversalPlanFile(file){
  try{planImportStatus(`Abriendo <strong>${file.name}</strong>…`,`loading`);const raw=await extractPlanFileText(file);if(!raw.trim())throw new Error("No se ha detectado texto en el archivo.");openUniversalPlanPreview(raw,file.name);planImportStatus(`Archivo leído: <strong>${file.name}</strong>. Revisa las sesiones detectadas.`)}catch(err){planImportStatus(err?.message||"No se pudo leer el archivo.","error")}
@@ -1857,11 +2244,32 @@ function openUniversalPlanPreview(raw,source){
  universalPlanDraft={source,rawText:normalized,sessions:[]};
  $("#planImportRawText").value=normalized;
  $("#planImportWeekStart").value=displayedWeekMonday();
- refreshUniversalPlanPreview();
+ refreshUniversalPlanPreview(true);
  $("#planImportDialog").showModal()
 }
-function refreshUniversalPlanPreview(){
- const raw=$("#planImportRawText").value.trim(),monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());universalPlanDraft.rawText=raw;universalPlanDraft.sessions=parsePlanSessions(raw,monday);const sessions=universalPlanDraft.sessions;$("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";$("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
+function refreshUniversalPlanPreview(autoSetWeek=false){
+ const raw=$("#planImportRawText").value.trim();
+ let monday=mondayOfDate($("#planImportWeekStart").value||displayedWeekMonday());
+ universalPlanDraft.rawText=raw;
+ universalPlanDraft.sessions=parsePlanSessions(raw,monday);
+ let sessions=universalPlanDraft.sessions;
+ // Al abrir un archivo con fechas reales, la semana de inicio se calcula
+ // automáticamente a partir de la primera sesión detectada.
+ if(autoSetWeek&&sessions.length){
+  const firstDate=sessions.map(s=>s.date).filter(Boolean).sort()[0];
+  if(firstDate){
+   const detectedMonday=mondayOfDate(firstDate);
+   if(detectedMonday&&detectedMonday!==monday){
+    $("#planImportWeekStart").value=detectedMonday;
+    monday=detectedMonday;
+    // Recalcula para formatos que mezclan fechas explícitas y nombres de días.
+    universalPlanDraft.sessions=parsePlanSessions(raw,monday);
+    sessions=universalPlanDraft.sessions;
+   }
+  }
+ }
+ $("#planImportSummary").innerHTML=sessions.length?`Se han detectado <strong>${sessions.length} sesiones</strong>. Desmarca las que no quieras importar.`:"No se han podido identificar sesiones. Edita el texto detectado o prueba con otro archivo.";
+ $("#planImportPreview").innerHTML=sessions.map((s,i)=>`<label class="plan-import-row"><input type="checkbox" data-plan-import-index="${i}" checked><div><strong>${fmt(s.date)} · ${s.title}</strong><span>${s.sport}${s.distance?` · ${String(s.distance).replace(".",",")} km`:""}${s.duration?` · ${s.duration} min`:""}<br>${s.notes}</span></div></label>`).join("")
 }
 function confirmUniversalPlanImport(){
  const checked=[...document.querySelectorAll("[data-plan-import-index]:checked")].map(x=>universalPlanDraft.sessions[Number(x.dataset.planImportIndex)]).filter(Boolean);if(!checked.length){alert("Selecciona al menos una sesión.");return}const min=checked.map(x=>x.date).sort()[0],max=checked.map(x=>x.date).sort().at(-1),existing=data.plan.filter(p=>p.date>=min&&p.date<=max);if(existing.length&&!confirm(`Ya hay ${existing.length} sesiones entre ${fmt(min)} y ${fmt(max)}. ¿Quieres añadir también las nuevas?`))return;checked.forEach(s=>data.plan.push({...s,id:uid()}));save();renderPlan();renderToday();$("#planImportDialog").close();planImportStatus(`<strong>${checked.length} sesiones añadidas</strong> desde ${universalPlanDraft.source}.`);setView("plan")
@@ -2991,6 +3399,17 @@ $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 
+const v28ChangeWeekBtn=document.getElementById("v28ChangeWeek");
+if(v28ChangeWeekBtn)v28ChangeWeekBtn.onclick=()=>document.getElementById("v28Days")?.scrollIntoView({behavior:"smooth",block:"center"});
+const v28MenuBtn=document.getElementById("v28MenuBtn");
+if(v28MenuBtn)v28MenuBtn.onclick=()=>{
+ const choice=prompt("Opciones del plan:\n1. Pegar texto\n2. Duplicar semana\n3. Vaciar semana\n\nEscribe 1, 2 o 3");
+ if(choice==="1")document.getElementById("pastePlanBtn")?.click();
+ else if(choice==="2")document.getElementById("duplicateWeek")?.click();
+ else if(choice==="3")document.getElementById("clearWeek")?.click();
+};
+
+
 
 $("#duplicateWeek").onclick=duplicateCurrentWeek;
 $("#clearWeek").onclick=clearCurrentWeek;
@@ -3096,7 +3515,7 @@ $("#closeFullTableBtn").onclick=closeFullRunTable;
 $("#evolutionPeriod").onchange=renderEvolutionChart;$("#evolutionType").onchange=renderEvolutionChart;
 document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolutionMode=b.dataset.evoMode;document.querySelectorAll("[data-evo-mode]").forEach(x=>x.classList.toggle("active",x===b));renderEvolutionChart()});
 
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=208").catch(()=>{}))}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2212").catch(()=>{}))}
 render();updateFab();
 </script>
 </body>
