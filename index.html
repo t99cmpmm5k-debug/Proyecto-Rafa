@@ -1019,6 +1019,13 @@ main{width:100%;max-width:820px;overflow:hidden}
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
 
 <style id="v51-premium-plan">
+/* V52 — GARMIN ADVANCED METRICS */
+.advanced-metrics{margin-top:14px;border:1px solid rgba(41,215,239,.35);border-radius:18px;background:rgba(5,25,40,.72);overflow:hidden}
+.advanced-metrics>summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;flex-direction:column;gap:3px;color:#fff;font-weight:800}
+.advanced-metrics>summary::-webkit-details-marker{display:none}.advanced-metrics>summary:after{content:"＋";position:absolute;right:28px;color:var(--cyan);font-size:20px}.advanced-metrics[open]>summary:after{content:"−"}
+.advanced-metrics>summary small{color:var(--muted);font-size:11px;font-weight:500}.advanced-group{padding:14px 16px;border-top:1px solid rgba(41,215,239,.16)}
+.advanced-group h4{margin:0 0 12px;color:var(--cyan);font-size:12px;text-transform:uppercase;letter-spacing:.14em}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:520px){.three{grid-template-columns:1fr 1fr}.three .field:last-child{grid-column:1/-1}.advanced-metrics>summary:after{right:22px}}
 /* V51 — PLAN MAPA PREMIUM */
 #plan{padding-top:10px}
 #plan .v33-shell{gap:10px;max-width:980px;margin:0 auto}
@@ -3352,7 +3359,7 @@ function mergeGarminData(parts){
  return merged;
 }
 function renderGarminDetected(data){
- const values=[["Distancia",data.distance?`${data.distance} km`:"—"],["Tiempo",data.time||"—"],["Ritmo medio",data.pace?`${data.pace}/km`:"—"],["FC media",data.avgHr?`${data.avgHr} ppm`:"—"],["FC máxima",data.maxHr?`${data.maxHr} ppm`:"—"],["Carga",data.exerciseLoad||"—"],["Potencia media",data.avgPower?`${data.avgPower} W`:"—"],["Cadencia",data.avgCadence?`${data.avgCadence} ppm`:"—"],["Ascenso",data.ascent?`${data.ascent} m`:"—"],["Calorías",data.totalCalories||"—"]];
+ const values=[["Distancia",data.distance?`${data.distance} km`:"—"],["Tiempo",data.time||"—"],["Ritmo medio",data.pace?`${data.pace}/km`:"—"],["FC media",data.avgHr?`${data.avgHr} ppm`:"—"],["FC máxima",data.maxHr?`${data.maxHr} ppm`:"—"],["Training Effect",data.aerobicEffect||"—"],["Carga",data.exerciseLoad||"—"],["Stamina final",data.staminaFinal!=null&&data.staminaFinal!==""?`${data.staminaFinal}%`:"—"],["Potencia media",data.avgPower?`${data.avgPower} W`:"—"],["Cadencia",data.avgCadence?`${data.avgCadence} ppm`:"—"],["Zancada",data.strideLength?`${data.strideLength} m`:"—"],["Ascenso",data.ascent?`${data.ascent} m`:"—"],["Calorías activas",data.activeCalories||"—"],["Métricas detectadas",Object.values(data).filter(v=>v!==""&&v!=null).length]];
  $("#garminDetected").innerHTML=`<div class="ocr-result-grid">${values.map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div><div class="z2-note">Revisa los valores antes de guardar. Los campos no encontrados quedan vacíos y no se calculan medias.</div>`;
 }
 async function importGarminImages(files){
@@ -3385,13 +3392,36 @@ const defs={
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
  <div id="runDynamicFields"></div>
  <div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div>
- <details><summary>Datos Garmin avanzados</summary>
- <div class="two"><div class="field"><label>Tiempo en movimiento</label><input name="movingTime" value="${q.movingTime||""}"></div><div class="field"><label>Ritmo óptimo</label><input name="bestPace" value="${q.bestPace||""}"></div></div>
- <div class="two"><div class="field"><label>Carga de ejercicio</label><input name="exerciseLoad" type="number" step=".1" value="${q.exerciseLoad??""}"></div><div class="field"><label>Efecto aeróbico</label><input name="aerobicEffect" type="number" step=".1" value="${q.aerobicEffect??""}"></div></div>
- <div class="two"><div class="field"><label>Potencia media (W)</label><input name="avgPower" type="number" value="${q.avgPower??""}"></div><div class="field"><label>Potencia máxima (W)</label><input name="maxPower" type="number" value="${q.maxPower??""}"></div></div>
- <div class="two"><div class="field"><label>Cadencia máxima</label><input name="maxCadence" type="number" value="${q.maxCadence??""}"></div><div class="field"><label>Zancada media (m)</label><input name="strideLength" type="number" step=".01" value="${q.strideLength??""}"></div></div>
+ <details class="advanced-metrics"><summary><span>Datos Garmin avanzados</span><small>Training Effect, Stamina, potencia, técnica y altitud</small></summary>
+ <div class="advanced-group"><h4>Ritmo y tiempo</h4>
+ <div class="two"><div class="field"><label>Tiempo en movimiento</label><input name="movingTime" value="${q.movingTime||""}" placeholder="49:36"></div><div class="field"><label>Tiempo transcurrido</label><input name="elapsedTime" value="${q.elapsedTime||""}" placeholder="49:38"></div></div>
+ <div class="two"><div class="field"><label>Ritmo en movimiento</label><input name="movingPace" value="${q.movingPace||""}" placeholder="6:12"></div><div class="field"><label>Ritmo adaptado a pendiente</label><input name="gradeAdjustedPace" value="${q.gradeAdjustedPace||""}" placeholder="6:09"></div></div>
+ <div class="two"><div class="field"><label>Ritmo óptimo</label><input name="bestPace" value="${q.bestPace||""}" placeholder="5:13"></div><div class="field"><label>Velocidad máxima (km/h)</label><input name="maxSpeed" type="number" step=".1" value="${q.maxSpeed??""}"></div></div></div>
+
+ <div class="advanced-group"><h4>Training Effect</h4>
+ <div class="field"><label>Beneficio principal</label><input name="primaryBenefit" value="${q.primaryBenefit||""}" placeholder="Base (Aeróbica baja)"></div>
+ <div class="two"><div class="field"><label>Efecto aeróbico</label><input name="aerobicEffect" type="number" step=".1" value="${q.aerobicEffect??""}"></div><div class="field"><label>Efecto anaeróbico</label><input name="anaerobicEffect" type="number" step=".1" value="${q.anaerobicEffect??""}"></div></div>
+ <div class="field"><label>Carga de ejercicio</label><input name="exerciseLoad" type="number" step=".1" value="${q.exerciseLoad??""}"></div></div>
+
+ <div class="advanced-group"><h4>Stamina</h4>
+ <div class="three"><div class="field"><label>Inicial (%)</label><input name="staminaInitial" type="number" value="${q.staminaInitial??""}"></div><div class="field"><label>Final (%)</label><input name="staminaFinal" type="number" value="${q.staminaFinal??""}"></div><div class="field"><label>Mínima (%)</label><input name="staminaMin" type="number" value="${q.staminaMin??""}"></div></div></div>
+
+ <div class="advanced-group"><h4>Potencia</h4>
+ <div class="two"><div class="field"><label>Potencia media (W)</label><input name="avgPower" type="number" value="${q.avgPower??""}"></div><div class="field"><label>Potencia máxima (W)</label><input name="maxPower" type="number" value="${q.maxPower??""}"></div></div></div>
+
+ <div class="advanced-group"><h4>Dinámica de carrera</h4>
+ <div class="two"><div class="field"><label>Cadencia máxima (ppm)</label><input name="maxCadence" type="number" value="${q.maxCadence??""}"></div><div class="field"><label>Zancada media (m)</label><input name="strideLength" type="number" step=".01" value="${q.strideLength??""}"></div></div>
+ <div class="two"><div class="field"><label>Ratio vertical (%)</label><input name="verticalRatio" type="number" step=".1" value="${q.verticalRatio??""}"></div><div class="field"><label>Oscilación vertical (cm)</label><input name="verticalOscillation" type="number" step=".1" value="${q.verticalOscillation??""}"></div></div>
+ <div class="field"><label>Tiempo de contacto con el suelo (ms)</label><input name="groundContactTime" type="number" value="${q.groundContactTime??""}"></div></div>
+
+ <div class="advanced-group"><h4>Altitud e impacto</h4>
  <div class="two"><div class="field"><label>Ascenso total (m)</label><input name="ascent" type="number" value="${q.ascent??""}"></div><div class="field"><label>Descenso total (m)</label><input name="descent" type="number" value="${q.descent??""}"></div></div>
- <div class="two"><div class="field"><label>Calorías totales</label><input name="totalCalories" type="number" value="${q.totalCalories??""}"></div><div class="field"><label>Pérdida líquidos (ml)</label><input name="fluidLoss" type="number" value="${q.fluidLoss??""}"></div></div>
+ <div class="two"><div class="field"><label>Altitud mínima (m)</label><input name="minAltitude" type="number" value="${q.minAltitude??""}"></div><div class="field"><label>Altitud máxima (m)</label><input name="maxAltitude" type="number" value="${q.maxAltitude??""}"></div></div>
+ <div class="field"><label>Carga de impacto (km)</label><input name="impactLoad" type="number" step=".01" value="${q.impactLoad??""}"></div></div>
+
+ <div class="advanced-group"><h4>Nutrición e hidratación</h4>
+ <div class="two"><div class="field"><label>Calorías activas</label><input name="activeCalories" type="number" value="${q.activeCalories??""}"></div><div class="field"><label>Calorías en reposo</label><input name="restingCalories" type="number" value="${q.restingCalories??""}"></div></div>
+ <div class="two"><div class="field"><label>Calorías totales</label><input name="totalCalories" type="number" value="${q.totalCalories??""}"></div><div class="field"><label>Pérdida de líquidos (ml)</label><input name="fluidLoss" type="number" value="${q.fluidLoss??""}"></div></div></div>
  </details>
  <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
  <details open><summary>Material utilizado</summary><div class="field"><label>Zapatillas</label><select name="shoes"><option value="Adidas Adizero EVO SL" ${q.shoes==="Adidas Adizero EVO SL"?"selected":""}>Adidas Adizero EVO SL</option><option value="ASICS Gel-Nimbus 28" ${(!q.shoes||q.shoes==="ASICS Gel-Nimbus 28")?"selected":""}>ASICS Gel-Nimbus 28</option><option value="Sin especificar" ${q.shoes==="Sin especificar"?"selected":""}>Sin especificar</option></select></div></details>
@@ -3585,7 +3615,7 @@ $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
  if(currentType==="run"){
    o.category=o.category||inferRunCategory(o);
-   ["distance","avgHr","maxHr","avgCadence","temperature","officialDistance","z2Limit","exerciseLoad","aerobicEffect","avgPower","maxPower","maxCadence","strideLength","ascent","descent","totalCalories","fluidLoss"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
+   ["distance","avgHr","maxHr","avgCadence","temperature","officialDistance","z2Limit","exerciseLoad","aerobicEffect","anaerobicEffect","avgPower","maxPower","maxCadence","strideLength","verticalRatio","verticalOscillation","groundContactTime","staminaInitial","staminaFinal","staminaMin","avgSpeed","maxSpeed","impactLoad","ascent","descent","minAltitude","maxAltitude","activeCalories","restingCalories","totalCalories","fluidLoss"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
    if(o.category==="Series")o.intervals=[...document.querySelectorAll("#intervalRows .split-row")].map(row=>({distance:Number(row.querySelector('[data-int="distance"]').value)||0,time:row.querySelector('[data-int="time"]').value.trim()})).filter(x=>x.distance||x.time);
    o.distance=Number(o.distance);o.pace=String(o.pace||"").trim();
    if(!o.planId){
