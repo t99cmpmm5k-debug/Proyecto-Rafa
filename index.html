@@ -1189,7 +1189,7 @@ main{width:100%;max-width:820px;overflow:hidden}
   <div id="runningTodayPlan"></div>
   <div class="garmin-import">
     <div class="garmin-import-head">
-      <div><div class="kicker">LABORATORIO OCR · V52 DEV</div><h3>Prueba de lectura de capturas</h3><p>Selecciona una o varias capturas. Esta versión solo detecta la plataforma y muestra el texto leído; no guarda ni modifica entrenamientos.</p></div>
+      <div><div class="kicker">LABORATORIO OCR · V53 DEV</div><h3>Texto OCR visible por captura</h3><p>Selecciona una o varias capturas. El texto reconocido aparecerá debajo de cada imagen; no se guarda ni modifica ningún entrenamiento.</p></div>
     </div>
     <div class="garmin-import-actions">
       <button class="btn primary" type="button" id="garminImportBtn">Subir capturas</button>
@@ -3368,7 +3368,7 @@ async function importGarminImages(files){
  const detectPlatform=text=>{
   const t=String(text||"").toLowerCase();
   const scores={
-   Garmin:["garmin connect","training effect","stamina","beneficio principal","carga de ejercicio","body battery"].filter(x=>t.includes(x)).length,
+   Garmin:["garmin connect","training effect","stamina","beneficio principal","carga de ejercicio","body battery","dinamica de carrera","dinámica de carrera","intervalos de entrenamiento","ritmo medio adapt pend"].filter(x=>t.includes(x)).length,
    Amazfit:["zepp","amazfit","pai","efecto del entrenamiento"].filter(x=>t.includes(x)).length,
    "Apple Watch":["fitness","anillos de actividad","ritmo por milla","apple watch","frecuencia cardiaca media"].filter(x=>t.includes(x)).length
   };
@@ -3380,7 +3380,7 @@ async function importGarminImages(files){
   const reads=[];
   for(let i=0;i<files.length;i++){
    statusText.innerHTML=`<strong>Leyendo captura ${i+1} de ${files.length}…</strong>`;
-   const result=await Tesseract.recognize(files[i],"spa+eng",{logger:m=>{
+   const result=await Tesseract.recognize(files[i],"eng",{logger:m=>{
     if(m.status==="recognizing text"){
      const total=((i+(m.progress||0))/files.length)*100;
      progress.style.width=`${Math.max(4,Math.round(total))}%`;
@@ -3389,6 +3389,7 @@ async function importGarminImages(files){
    }});
    const text=normalizeOcrText(result.data.text||"").trim();
    reads.push({name:files[i].name||`Captura ${i+1}`,text,confidence:Math.round(result.data.confidence||0)});
+   $("#garminDetected").innerHTML=`<div class="ocr-raw-list">${reads.map((r,j)=>`<article class="ocr-raw-card"><header>Captura ${j+1} · Confianza OCR ${r.confidence}%</header><pre>${escapeHtml(r.text||"No se ha reconocido texto en esta captura.")}</pre></article>`).join("")}</div>`;
   }
   const combined=reads.map(x=>x.text).join("\n");
   const platform=detectPlatform(combined);
