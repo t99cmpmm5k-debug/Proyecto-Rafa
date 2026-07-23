@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V50 · Importador por bloques</title>
+<title>Corredor Sólido · V50.1 · Expedición</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -998,6 +998,20 @@ main{width:100%;max-width:820px;overflow:hidden}
 .v50-action-menu{position:absolute;right:10px;top:62px;z-index:21;width:min(310px,calc(100vw - 44px));padding:8px;border-radius:20px;border:1px solid rgba(38,220,255,.3);background:rgba(3,15,28,.96);box-shadow:0 26px 80px rgba(0,0,0,.65),0 0 34px rgba(0,205,255,.1);backdrop-filter:blur(18px);opacity:0;transform:translateY(-8px) scale(.96);pointer-events:none;transition:.22s}
 .v50-action-menu.open{opacity:1;transform:none;pointer-events:auto}.v50-action-menu button{width:100%;display:grid;grid-template-columns:38px 1fr;gap:0 10px;text-align:left;padding:11px;border:0;border-radius:14px;background:transparent;color:#fff}.v50-action-menu button:hover{background:rgba(34,233,255,.08)}.v50-action-menu span{grid-row:1/3;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#08243a;color:#26eaff;font-size:20px}.v50-action-menu b{font-size:12px}.v50-action-menu small{color:#7895a9;font-size:8px;margin-top:3px}.v50-menu-backdrop{position:fixed;inset:0;z-index:20;background:rgba(0,4,10,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s}.v50-menu-backdrop.open{opacity:1;pointer-events:auto}
 @media(max-width:520px){.v33-map{min-height:590px}.v33-progress{width:66px;height:66px}.v33-route{height:235px}.v33-node:nth-of-type(even){transform:translateY(-26px)}.v33-node:nth-of-type(odd){transform:translateY(24px)}.v33-orb{width:46px;height:46px}.v33-detail h3{font-size:23px}.v33-symbol{width:88px;height:88px;font-size:45px}.v33-footer-row{grid-template-columns:1fr}.v33-summary{min-width:0}.v50-week-arrow{display:none}}
+
+/* ===== V50.1 · REFINAMIENTO DE EXPEDICIÓN ===== */
+.v501-badge{display:inline-flex;vertical-align:middle;margin-left:7px;padding:3px 7px;border:1px solid rgba(61,231,255,.35);border-radius:999px;background:rgba(26,216,255,.08);color:#78efff;font-size:9px;letter-spacing:.12em;font-weight:900}
+.v33-map{touch-action:pan-y;box-shadow:0 30px 80px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06)}
+.v33-node.today .v33-orb:after{content:"";position:absolute;inset:-8px;border:1px solid color-mix(in srgb,var(--node-color) 72%,transparent);border-radius:50%;animation:v501TodayPulse 2s ease-out infinite}
+@keyframes v501TodayPulse{0%{transform:scale(.88);opacity:.9}75%,100%{transform:scale(1.34);opacity:0}}
+.v33-node.empty .v33-orb{opacity:.42;filter:saturate(.25)}
+.v33-node.empty .v33-node-day,.v33-node.empty .v33-node-date{opacity:.55}
+.v50-route-line-progress{fill:none;stroke:url(#v50RouteGradient);stroke-width:6;stroke-linecap:round;filter:url(#v50Glow);transition:stroke-dasharray .55s ease}
+.v50-route-line-base{fill:none;stroke:rgba(123,164,185,.2);stroke-width:4;stroke-linecap:round}
+.v33-detail{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.v33-detail:focus-within{border-color:rgba(71,229,255,.38);box-shadow:0 22px 60px rgba(0,0,0,.42),0 0 0 1px rgba(71,229,255,.08)}
+.v50-swipe-hint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:9px;letter-spacing:.14em;color:rgba(204,235,244,.42);text-transform:uppercase;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.v50-route-line,.v33-node.today .v33-orb:after{animation:none!important}.v33-detail,.v50-route-line-progress{transition:none!important}}
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -1039,7 +1053,7 @@ main{width:100%;max-width:820px;overflow:hidden}
 </head>
 <body data-view="inicio">
 <header>
-  <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido</h1></div>
+  <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido <span class="v501-badge">V50.1</span></h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -1101,7 +1115,7 @@ main{width:100%;max-width:820px;overflow:hidden}
 <section id="plan" class="view">
   <div class="v33-shell">
     <header class="v33-head" style="position:static;padding:0;background:transparent;border:0;backdrop-filter:none">
-      <div class="v33-brand"><div class="v50-eyebrow">CORREDOR SÓLIDO · EXPEDICIÓN</div><h2>PLAN</h2><p>Tu ruta hacia un corredor más sólido</p></div>
+      <div class="v33-brand"><div class="v50-eyebrow">CORREDOR SÓLIDO · EXPEDICIÓN V50.1</div><h2>PLAN</h2><p>Tu ruta hacia un corredor más sólido</p></div>
       <button class="v33-add" id="v50MainAction" type="button" aria-label="Abrir acciones">＋</button>
     </header>
 
@@ -1113,7 +1127,7 @@ main{width:100%;max-width:820px;overflow:hidden}
       </div>
 
       <div id="v33Route" class="v33-route"></div>
-      <div id="v33Detail" class="v33-detail"></div>
+      <div id="v33Detail" class="v33-detail"></div><div class="v50-swipe-hint">Desliza para cambiar de semana</div>
     </section>
 
     <div class="v33-footer-row">
@@ -1801,6 +1815,7 @@ function v33Open(id){
 }
 function v33Select(date){
  v33SelectedDate=date;
+ try{localStorage.setItem("v501SelectedDate",date)}catch(e){}
  renderPlan();
  requestAnimationFrame(()=>{
    const d=$("#v33Detail");
@@ -1815,6 +1830,7 @@ function renderPlan(){
  const km=items.reduce((a,p)=>a+Number(p.distance||0),0);
  const mins=items.reduce((a,p)=>a+Number(p.duration||0),0);
  const today=isoDate(new Date());
+ if(!v33SelectedDate){try{v33SelectedDate=localStorage.getItem("v501SelectedDate")||""}catch(e){}}
  if(!v33SelectedDate||v33SelectedDate<start||v33SelectedDate>end){
    v33SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
  }
@@ -1825,13 +1841,15 @@ function renderPlan(){
  $("#v33Progress b").textContent=pct+"%";
  $("#v33Count").textContent=`${done}/${items.length}`;
  const names=["LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"];
- const routeSvg=`<svg class="v50-route-svg" viewBox="0 0 700 220" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="v50RouteGradient" x1="0" x2="1"><stop offset="0" stop-color="#55f4d5"/><stop offset=".38" stop-color="#18dfff"/><stop offset=".7" stop-color="#6f78ff"/><stop offset="1" stop-color="#ffbf45"/></linearGradient><filter id="v50Glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="v50-route-shadow" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/><path class="v50-route-line" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/></svg>`;
+ const routeLength=760,routeDone=Math.round(routeLength*(pct/100));
+ const routeSvg=`<svg class="v50-route-svg" viewBox="0 0 700 220" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="v50RouteGradient" x1="0" x2="1"><stop offset="0" stop-color="#55f4d5"/><stop offset=".38" stop-color="#18dfff"/><stop offset=".7" stop-color="#6f78ff"/><stop offset="1" stop-color="#ffbf45"/></linearGradient><filter id="v50Glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="v50-route-shadow" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/><path class="v50-route-line-base" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/><path class="v50-route-line-progress" pathLength="${routeLength}" stroke-dasharray="${routeDone} ${routeLength}" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/></svg>`;
  $("#v33Route").innerHTML=routeSvg+names.map((n,i)=>{
    const d=isoDate(datePlus(mon,i)),p=items.find(x=>x.date===d);
    const color=p?v33Color(p):"#70859a";
-   const cls=[d===v33SelectedDate?"active":"",p?.status==="done"?"done":""].filter(Boolean).join(" ");
+   const cls=[d===v33SelectedDate?"active":"",p?.status==="done"?"done":"",d===today?"today":"",!p?"empty":""].filter(Boolean).join(" ");
    const icon=p?v33Icon(p):"·";
-   return `<button class="v33-node ${cls}" style="--node-color:${color}" type="button" onclick="v33Select('${d}')">
+   const label=p?`${n} ${new Date(d+"T12:00:00").getDate()}: ${v33Type(p)}`:`${n} ${new Date(d+"T12:00:00").getDate()}: sin entrenamiento`;
+   return `<button class="v33-node ${cls}" style="--node-color:${color}" type="button" aria-label="${label}" aria-pressed="${d===v33SelectedDate}" onclick="v33Select('${d}')">
      <span class="v33-node-day">${n}</span>
      <strong class="v33-node-date">${new Date(d+"T12:00:00").getDate()}</strong>
      <span class="v33-orb">${icon}</span>
@@ -3726,6 +3744,26 @@ document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolution
 
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2212").catch(()=>{}))}
 render();updateFab();
+</script>
+
+<script>
+/* V50.1: navegación táctil y por teclado en el mapa del plan */
+(function(){
+  const map=document.querySelector('.v33-map');
+  if(!map)return;
+  let startX=0,startY=0,tracking=false;
+  map.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;tracking=true;startX=e.clientX;startY=e.clientY;});
+  map.addEventListener('pointerup',e=>{if(!tracking)return;tracking=false;const dx=e.clientX-startX,dy=e.clientY-startY;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.25){document.getElementById(dx<0?'v50NextWeek':'v50PrevWeek')?.click();}});
+  document.addEventListener('keydown',e=>{
+    if(document.body.dataset.view!=='plan'||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''))return;
+    if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
+      const nodes=[...document.querySelectorAll('#v33Route .v33-node')];
+      const current=nodes.findIndex(n=>n.classList.contains('active'));
+      const next=Math.max(0,Math.min(nodes.length-1,current+(e.key==='ArrowRight'?1:-1)));
+      if(nodes[next]){e.preventDefault();nodes[next].click();nodes[next].focus();}
+    }
+  });
+})();
 </script>
 </body>
 </html>
