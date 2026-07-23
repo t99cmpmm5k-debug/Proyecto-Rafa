@@ -1,14 +1,16 @@
-CORREDOR SÓLIDO V50.1 · EXPEDICIÓN
+CORREDOR SÓLIDO · V50.1 EXPEDICIÓN
 
-Versión integrada sobre la V33/V50, preparada para GitHub Pages.
+Versión construida sobre el ZIP actual del usuario.
 
-Novedades V50.1:
-- Ruta semanal con progreso visual real.
-- Marcador animado del día actual.
-- Selección del día recordada en el dispositivo.
-- Cambio de semana mediante gesto horizontal.
-- Navegación de los nodos con flechas del teclado.
-- Mejoras de accesibilidad y reducción de movimiento.
-- Identificación visible de la versión V50.1.
+Cambios de la pantalla PLAN:
+- paisaje de montaña cinematográfico integrado;
+- ruta semanal curva y luminosa;
+- nodos grandes con día, fecha e icono;
+- progreso visual y estado completado;
+- panel inferior premium que cambia al seleccionar un día;
+- botón principal «+» con menú de acciones;
+- botón «Iniciar entrenamiento»;
+- navegación semanal con flechas, teclado y gesto horizontal;
+- diseño optimizado para móvil.
 
-Para publicar: sustituye en el repositorio los archivos index.html y hero-boceto-c-azul.jpg.
+Se conservan los módulos y la lógica existentes de la aplicación.
