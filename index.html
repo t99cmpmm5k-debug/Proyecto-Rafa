@@ -3390,8 +3390,7 @@ async function importGarminImages(files){
    const text=normalizeOcrText(result.data.text||"").trim();
    reads.push({name:files[i].name||`Captura ${i+1}`,text,confidence:Math.round(result.data.confidence||0)});
   }
-  const combined=reads.map(x=>x.text).join("
-");
+  const combined=reads.map(x=>x.text).join("\n");
   const platform=detectPlatform(combined);
   progress.style.width="100%";
   statusText.innerHTML=`<strong>Lectura terminada.</strong> ${files.length} captura${files.length===1?"":"s"} analizada${files.length===1?"":"s"}. No se ha guardado ningún dato.`;
