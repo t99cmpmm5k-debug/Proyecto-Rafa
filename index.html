@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V27 · Importador por bloques</title>
+<title>Corredor Sólido · V31 · Importador por bloques</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -793,199 +793,188 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 #planImportPreview{overflow-x:hidden}
 
 
-/* ===== V30 · PLAN NEON COACH ===== */
-#plan{
-  padding-bottom:120px;
-  position:relative;
-  isolation:isolate;
+
+/* ===== V31 · AURORA PLAN ===== */
+:root{
+  --green:#20e6ff!important;
+  --green2:#b8f8ff!important;
+  --bg:#020a12!important;
+  --panel:#071523!important;
+  --panel2:#0a1d2f!important;
+  --line:#173852!important;
 }
-#plan:before{
-  content:"";
-  position:absolute;
-  inset:-40px -20px auto;
-  height:300px;
+html,body{overflow-x:hidden!important;background:#020a12!important}
+header{background:rgba(2,10,18,.92)!important;border-bottom-color:#173852!important}
+.kicker,.today-label{color:#20e6ff!important}
+.btn.primary{background:linear-gradient(90deg,#00b8ff,#20e6ff)!important;color:#00131d!important}
+.nav.active{color:#20e6ff!important}
+.progress>span,.bar,.progress-track i{background:linear-gradient(90deg,#00b8ff,#20e6ff)!important}
+.version,.prefill-banner,.recommend-badge,.status.done,.load-alert.good{
+  background:#082c3c!important;color:#b8f8ff!important
+}
+.hero:after{background:radial-gradient(circle,#20e6ff 0%,rgba(32,230,255,.18) 42%,transparent 72%)!important}
+.today-card,.quick-run,.stats-hero,.coach-card,.z2-hero{
+  background:linear-gradient(145deg,#071d31,#06111f)!important;
+  border-color:#155173!important
+}
+.plan-item{border-left-color:#20e6ff!important}
+.run-tab.active,.run-category-choice input:checked+span,.feeling-choice input:checked+span{
+  background:#20e6ff!important;border-color:#20e6ff!important;color:#00131d!important
+}
+.ring{background:conic-gradient(#20e6ff var(--pct),var(--panel2) 0)!important}
+main{width:100%;max-width:820px;overflow:hidden}
+
+/* Plan V31 */
+#plan{padding-bottom:118px;overflow:hidden;position:relative}
+#plan::before{
+  content:"";position:absolute;left:-120px;top:-80px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,211,255,.18),transparent 65%);
+  filter:blur(22px);pointer-events:none
+}
+.v31-wrap{display:grid;gap:13px;min-width:0}
+.v31-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 1px}
+.v31-brand{display:flex;align-items:center;gap:11px;min-width:0}
+.v31-logo{
+  width:45px;height:45px;border-radius:15px;display:grid;place-items:center;flex:0 0 auto;
+  color:#55f3ff;font-size:23px;font-weight:1000;
+  background:linear-gradient(145deg,rgba(0,222,255,.18),rgba(15,77,153,.15));
+  border:1px solid rgba(38,229,255,.38);
+  box-shadow:0 0 24px rgba(0,223,255,.14),inset 0 0 18px rgba(0,223,255,.05)
+}
+.v31-brand h2{font-size:24px;margin:0}
+.v31-brand p{font-size:11px;color:#7895aa;margin-top:3px;white-space:nowrap}
+.v31-add{
+  width:43px;height:43px;border-radius:14px;border:1px solid rgba(35,174,255,.32);
+  background:#071a2c;color:#33ecff;font-size:27px;display:grid;place-items:center;flex:0 0 auto
+}
+.v31-hero{
+  position:relative;overflow:hidden;border-radius:26px;
+  padding:18px;
+  border:1px solid rgba(27,193,255,.34);
   background:
-    radial-gradient(circle at 25% 20%,rgba(0,231,255,.16),transparent 30%),
-    radial-gradient(circle at 78% 0%,rgba(40,104,255,.18),transparent 34%);
-  filter:blur(10px);
-  pointer-events:none;
-  z-index:-1;
+    radial-gradient(circle at 93% 4%,rgba(0,230,255,.22),transparent 27%),
+    radial-gradient(circle at 4% 100%,rgba(31,89,255,.18),transparent 38%),
+    linear-gradient(150deg,#071f39 0%,#061528 57%,#030d19 100%);
+  box-shadow:0 24px 70px rgba(0,0,0,.38),0 0 34px rgba(0,198,255,.08)
 }
-.v30-shell{display:grid;gap:14px}
-.v30-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  padding:2px 2px 0;
+.v31-hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(118deg,transparent 25%,rgba(255,255,255,.035) 46%,transparent 65%)
 }
-.v30-brand{display:flex;align-items:center;gap:12px}
-.v30-mark{
-  width:46px;height:46px;border-radius:16px;display:grid;place-items:center;
-  background:linear-gradient(145deg,rgba(0,229,255,.18),rgba(0,95,188,.14));
-  border:1px solid rgba(0,229,255,.38);
-  color:#27efff;font-size:24px;font-weight:1000;
-  box-shadow:0 0 28px rgba(0,229,255,.16),inset 0 0 22px rgba(0,229,255,.05);
+.v31-topline{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.v31-day-label{font-size:10px;letter-spacing:.2em;color:#6ff4ff;font-weight:950;text-transform:uppercase}
+.v31-intensity{
+  max-width:105px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:10px;color:#b8d8ec;padding:7px 9px;border-radius:999px;
+  border:1px solid rgba(69,164,216,.28);background:rgba(5,23,40,.68)
 }
-.v30-brand h2{margin:0;font-size:26px;letter-spacing:.02em}
-.v30-brand p{margin:3px 0 0;color:#86a3bb;font-size:12px}
-.v30-add{
-  width:46px;height:46px;border-radius:15px;border:1px solid rgba(51,160,255,.32);
-  background:linear-gradient(145deg,rgba(8,31,60,.92),rgba(4,17,35,.95));
-  color:#39edff;font-size:29px;display:grid;place-items:center;cursor:pointer;
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
+.v31-title-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;margin-top:13px;min-width:0}
+.v31-title{min-width:0}
+.v31-title h3{font-size:30px;line-height:1;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v31-title p{font-size:20px;color:#30eaff;font-weight:950;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v31-date{
+  text-align:right;flex:0 0 auto;color:#bcd5e6
 }
-.v30-coach-card{
-  position:relative;
-  overflow:hidden;
-  border-radius:28px;
-  padding:24px 20px 20px;
-  background:
-    radial-gradient(circle at 82% 8%,rgba(0,234,255,.24),transparent 28%),
-    radial-gradient(circle at 0 100%,rgba(0,93,255,.18),transparent 40%),
-    linear-gradient(145deg,#071d36,#071428 62%,#04101f);
-  border:1px solid rgba(0,207,255,.32);
-  box-shadow:
-    0 24px 70px rgba(0,0,0,.38),
-    0 0 38px rgba(0,205,255,.08),
-    inset 0 1px 0 rgba(255,255,255,.04);
+.v31-date strong{display:block;font-size:34px;line-height:1;color:#effcff}
+.v31-date span{font-size:10px;color:#63dced;text-transform:uppercase;font-weight:900}
+.v31-coach{
+  margin:15px 0 0;padding:12px 13px;border-radius:15px;
+  color:#a9bfd0;font-size:12px;line-height:1.45;
+  background:rgba(4,17,31,.48);border:1px solid rgba(60,135,180,.15);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
 }
-.v30-coach-card:after{
-  content:"";
-  position:absolute;inset:0;
-  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.035) 42%,transparent 58%);
-  pointer-events:none;
+.v31-data{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:13px
 }
-.v30-eyebrow{
-  color:#76f4ff;font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+.v31-data div{
+  min-width:0;padding:11px 7px;border-radius:14px;text-align:center;
+  background:rgba(3,15,28,.72);border:1px solid rgba(55,132,180,.16)
 }
-.v30-session-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:8px}
-.v30-session-name{margin:0;font-size:32px;line-height:1.04}
-.v30-session-main{margin:8px 0 0;color:#23ebff;font-size:22px;font-weight:1000}
-.v30-badge{
-  flex:none;padding:8px 10px;border-radius:999px;border:1px solid rgba(74,180,255,.36);
-  background:rgba(6,28,52,.58);color:#c8ecff;font-size:11px;font-weight:800;
+.v31-data span{display:block;font-size:8px;color:#708ba1;text-transform:uppercase}
+.v31-data strong{display:block;margin-top:5px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v31-main-btn{
+  width:100%;padding:14px;margin-top:13px;border:0;border-radius:14px;
+  background:linear-gradient(90deg,#00aef5 0%,#20eaff 55%,#4ff5db 100%);
+  color:#00131d;font-size:13px;font-weight:1000;letter-spacing:.03em;
+  box-shadow:0 0 25px rgba(0,218,255,.18)
 }
-.v30-coach-line{
-  margin:18px 0 0;color:#b4c5d3;line-height:1.48;font-size:13px;max-width:560px;
+.v31-week{
+  border:1px solid rgba(45,125,177,.21);border-radius:20px;padding:12px;
+  background:linear-gradient(145deg,rgba(6,25,43,.94),rgba(3,14,26,.97))
 }
-.v30-ring-row{
-  display:grid;grid-template-columns:92px 1fr;gap:18px;align-items:center;margin-top:20px;
+.v31-week-nav{display:grid;grid-template-columns:36px 1fr 36px;align-items:center;gap:8px}
+.v31-week-nav button{
+  width:36px;height:36px;border-radius:11px;border:1px solid rgba(52,138,195,.22);
+  background:#071a2c;color:#25e9ff;font-size:22px
 }
-.v30-ring{
-  --p:0;
-  width:92px;height:92px;border-radius:50%;
-  display:grid;place-items:center;
-  background:conic-gradient(#28f1ff calc(var(--p)*1%),rgba(31,77,109,.28) 0);
-  position:relative;
-  box-shadow:0 0 30px rgba(0,227,255,.14);
+.v31-week-copy{text-align:center;min-width:0}
+.v31-week-copy small{display:block;font-size:8px;color:#708ba1;letter-spacing:.14em;text-transform:uppercase}
+.v31-week-copy strong{display:block;margin-top:3px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v31-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:11px}
+.v31-day{
+  min-width:0;padding:8px 2px;border:1px solid transparent;border-radius:15px;
+  background:#07182a;color:#728da2;text-align:center
 }
-.v30-ring:before{
-  content:"";position:absolute;inset:8px;border-radius:50%;
-  background:linear-gradient(145deg,#07172a,#04101e);
-  border:1px solid rgba(91,160,201,.2);
+.v31-day b{display:block;font-size:9px}
+.v31-day strong{display:block;font-size:16px;margin-top:3px}
+.v31-day i{display:block;width:5px;height:5px;border-radius:50%;margin:6px auto 0;background:#40566a}
+.v31-day.active{
+  color:#f0feff;border-color:#2deaff;
+  background:linear-gradient(180deg,rgba(0,211,255,.24),rgba(0,76,137,.25));
+  box-shadow:0 0 20px rgba(0,221,255,.16)
 }
-.v30-ring strong{position:relative;font-size:21px}
-.v30-ring small{position:relative;display:block;font-size:9px;color:#7793aa;text-transform:uppercase}
-.v30-ring-copy strong{display:block;font-size:18px}
-.v30-ring-copy span{display:block;margin-top:5px;color:#819bb0;font-size:11px}
-.v30-metrics{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:20px;
-  border:1px solid rgba(61,143,198,.2);border-radius:18px;overflow:hidden;
-  background:rgba(38,98,141,.16);
+.v31-day.active i{background:#35efff;box-shadow:0 0 9px #35efff}
+.v31-day.done i{background:#49dca0}
+.v31-day.long i{background:#ffd45c}
+.v31-bottom{
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:stretch
 }
-.v30-metric{background:rgba(4,18,34,.88);padding:14px 8px;text-align:center}
-.v30-metric span{display:block;color:#7891a7;font-size:9px;text-transform:uppercase;letter-spacing:.06em}
-.v30-metric strong{display:block;margin-top:5px;font-size:17px}
-.v30-start{
-  width:100%;margin-top:16px;padding:15px;border:0;border-radius:15px;
-  background:linear-gradient(90deg,#00b6ff 0%,#18efff 54%,#55f7d7 100%);
-  color:#001520;font-weight:1000;font-size:14px;letter-spacing:.04em;cursor:pointer;
-  box-shadow:0 0 28px rgba(0,218,255,.2);
+.v31-import{
+  display:flex;align-items:center;gap:10px;min-width:0;padding:13px;border-radius:16px;
+  border:1px solid rgba(46,139,199,.23);
+  background:linear-gradient(145deg,#071c30,#051423);color:#edfaff;text-align:left
 }
-.v30-week-wrap{
-  border:1px solid rgba(64,143,194,.2);
-  border-radius:20px;
-  background:linear-gradient(145deg,rgba(5,24,43,.9),rgba(3,14,27,.95));
-  padding:14px;
+.v31-import-icon{font-size:23px;color:#30eaff;flex:0 0 auto}
+.v31-import b{display:block;font-size:13px}
+.v31-import small{display:block;margin-top:3px;color:#728ca1;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v31-weekstats{
+  min-width:112px;display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  overflow:hidden;border-radius:16px;border:1px solid rgba(50,131,184,.2);
+  background:rgba(40,100,142,.14)
 }
-.v30-week-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-.v30-week-top button{
-  width:36px;height:36px;border-radius:12px;border:1px solid rgba(59,143,198,.22);
-  background:rgba(6,26,45,.92);color:#25e8ff;font-size:23px;cursor:pointer;
+.v31-weekstats div{padding:9px 7px;text-align:center;background:#061729}
+.v31-weekstats strong{display:block;font-size:13px}
+.v31-weekstats span{display:block;font-size:7px;color:#718ca2;text-transform:uppercase;margin-top:3px}
+.v31-hidden{display:none!important}
+.v31-dialog{
+  width:min(94vw,560px);max-height:90vh;padding:0;border-radius:24px;
+  border:1px solid rgba(21,210,255,.34);background:#051321;color:#fff;
+  box-shadow:0 35px 100px rgba(0,0,0,.8)
 }
-.v30-week-title{text-align:center}
-.v30-week-title small{display:block;color:#6f899f;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
-.v30-week-title strong{display:block;margin-top:4px;font-size:14px}
-.v30-days{
-  display:grid;grid-template-columns:repeat(7,minmax(46px,1fr));gap:7px;overflow-x:auto;
-}
-.v30-day{
-  min-width:48px;padding:10px 5px;border-radius:999px;border:1px solid transparent;
-  background:rgba(7,25,43,.82);color:#7891a6;text-align:center;cursor:pointer;transition:.2s ease;
-}
-.v30-day b{display:block;font-size:10px}
-.v30-day strong{display:block;font-size:17px;margin-top:3px}
-.v30-day i{display:block;width:5px;height:5px;border-radius:50%;margin:7px auto 0;background:#53687a}
-.v30-day.active{
-  color:#efffff;border-color:#1eeeff;
-  background:linear-gradient(180deg,rgba(0,214,255,.24),rgba(0,89,159,.25));
-  box-shadow:0 0 0 1px rgba(0,231,255,.1),0 0 24px rgba(0,221,255,.17);
-  transform:translateY(-2px) scale(1.04);
-}
-.v30-day.active i{background:#3af2ff;box-shadow:0 0 9px #3af2ff}
-.v30-day.done i{background:#5cf0a0}
-.v30-day.long i{background:#ffd24e}
-.v30-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.v30-action{
-  display:flex;align-items:center;gap:11px;padding:14px;border-radius:16px;
-  border:1px solid rgba(58,142,195,.22);
-  background:linear-gradient(145deg,rgba(5,25,44,.92),rgba(3,15,28,.95));
-  color:#ecf8ff;text-align:left;cursor:pointer;
-}
-.v30-action-icon{font-size:24px;color:#31eaff}
-.v30-action b{display:block;font-size:13px}
-.v30-action small{display:block;margin-top:3px;color:#7891a7;font-size:10px}
-.v30-summary{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border-radius:18px;overflow:hidden;
-  border:1px solid rgba(58,137,190,.18);background:rgba(45,102,144,.12);
-}
-.v30-summary div{background:#06172a;padding:15px 7px;text-align:center}
-.v30-summary strong{display:block;font-size:16px}
-.v30-summary span{display:block;margin-top:5px;color:#7590a6;font-size:9px;text-transform:uppercase}
-.v30-hidden{display:none!important}
-.v30-dialog{
-  width:min(94vw,580px);max-height:90vh;padding:0;border-radius:26px;
-  border:1px solid rgba(0,222,255,.34);background:#061426;color:#fff;
-  box-shadow:0 35px 100px rgba(0,0,0,.78);
-}
-.v30-dialog::backdrop{background:rgba(0,5,13,.86);backdrop-filter:blur(9px)}
-.v30-dialog-head{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid rgba(73,146,193,.2)}
-.v30-dialog-body{padding:18px;overflow:auto;max-height:calc(90vh - 76px)}
-.v30-detail-hero{
-  padding:20px;border-radius:20px;
-  background:radial-gradient(circle at 90% 0,rgba(0,229,255,.18),transparent 36%),linear-gradient(145deg,#08233f,#06172a);
-  border:1px solid rgba(48,155,209,.25);
-}
-.v30-detail-hero h2{margin:6px 0 0;font-size:27px}
-.v30-detail-hero p{margin:6px 0 0;color:#2cecff;font-weight:900}
-.v30-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-.v30-detail-cell{padding:14px;border-radius:15px;background:#071a2d;border:1px solid rgba(70,139,180,.17)}
-.v30-detail-cell small{display:block;color:#7690a6;font-size:9px;text-transform:uppercase}
-.v30-detail-cell strong{display:block;margin-top:6px}
-.v30-timeline{margin-top:18px}
-.v30-timeline h4{margin:0 0 8px;color:#2ae9ff;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
-.v30-step{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:start;padding:10px 0;position:relative}
-.v30-step:not(:last-child):after{content:"";position:absolute;left:6px;top:28px;bottom:-8px;border-left:1px dashed rgba(42,233,255,.32)}
-.v30-step-dot{width:13px;height:13px;border-radius:50%;background:#28eaff;box-shadow:0 0 12px rgba(40,234,255,.5)}
-.v30-step span{display:block;color:#7892a7;font-size:10px;margin-top:3px}
-@media(max-width:620px){
-  .v30-session-name{font-size:28px}
-  .v30-ring-row{grid-template-columns:82px 1fr}
-  .v30-ring{width:82px;height:82px}
-  .v30-metrics{grid-template-columns:1fr 1fr}
-  .v30-summary{grid-template-columns:1fr 1fr}
-  .v30-days{grid-template-columns:repeat(7,50px)}
+.v31-dialog::backdrop{background:rgba(0,5,12,.86);backdrop-filter:blur(8px)}
+.v31-dialog-head{display:flex;justify-content:space-between;align-items:center;padding:17px;border-bottom:1px solid #15334a}
+.v31-close{width:39px;height:39px;border:1px solid #173c57;border-radius:12px;background:#071c30;color:#33edff}
+.v31-dialog-body{padding:17px;overflow:auto;max-height:calc(90vh - 74px)}
+.v31-detail-hero{padding:18px;border-radius:18px;background:linear-gradient(145deg,#08233e,#06172a);border:1px solid rgba(39,159,215,.25)}
+.v31-detail-hero h2{margin:6px 0 0;font-size:26px}
+.v31-detail-hero p{margin:6px 0 0;color:#33ebff;font-weight:900}
+.v31-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.v31-cell{padding:13px;border-radius:14px;background:#071a2d;border:1px solid rgba(67,137,180,.17)}
+.v31-cell small{display:block;color:#718da3;font-size:8px;text-transform:uppercase}
+.v31-cell strong{display:block;margin-top:5px}
+.v31-timeline{margin-top:16px}
+.v31-timeline h4{font-size:9px;color:#31eaff;letter-spacing:.14em;text-transform:uppercase}
+.v31-step{display:grid;grid-template-columns:16px 1fr auto;gap:9px;align-items:start;padding:9px 0;position:relative}
+.v31-step:not(:last-child)::after{content:"";position:absolute;left:5px;top:25px;bottom:-6px;border-left:1px dashed rgba(49,234,255,.3)}
+.v31-dot{width:11px;height:11px;border-radius:50%;background:#31eaff;box-shadow:0 0 10px rgba(49,234,255,.5)}
+.v31-step span{display:block;color:#7390a6;font-size:9px;margin-top:2px}
+@media(max-width:390px){
+  .v31-title h3{font-size:27px}
+  .v31-title p{font-size:18px}
+  .v31-date strong{font-size:30px}
+  .v31-data strong{font-size:12px}
+  .v31-bottom{grid-template-columns:1fr}
+  .v31-weekstats{min-width:0}
 }
 
 </style>
@@ -1085,66 +1074,58 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 
 
+
 <section id="plan" class="view">
-  <div class="v30-shell">
-    <header class="v30-head">
-      <div class="v30-brand">
-        <div class="v30-mark">C</div>
-        <div>
-          <h2>PLAN</h2>
-          <p id="v30PlanSubtitle">Tu sesión de hoy</p>
-        </div>
+  <div class="v31-wrap">
+    <header class="v31-head" style="position:static;padding:0;background:transparent;border:0;backdrop-filter:none">
+      <div class="v31-brand">
+        <div class="v31-logo">C</div>
+        <div><h2>PLAN</h2><p id="v31Subtitle">Semana actual</p></div>
       </div>
-      <button class="v30-add" type="button" data-add="plan" aria-label="Añadir sesión">＋</button>
+      <button class="v31-add" type="button" data-add="plan" aria-label="Añadir entrenamiento">＋</button>
     </header>
 
-    <div id="v30CoachCard"></div>
+    <div id="v31Hero"></div>
 
-    <section class="v30-week-wrap">
-      <div class="v30-week-top">
+    <section class="v31-week">
+      <div class="v31-week-nav">
         <button type="button" id="prevWeek">‹</button>
-        <div class="v30-week-title">
-          <small>Semana actual</small>
-          <strong id="weekTitle">Semana</strong>
-        </div>
+        <div class="v31-week-copy"><small>Semana</small><strong id="weekTitle">Semana actual</strong></div>
         <button type="button" id="nextWeek">›</button>
       </div>
-      <div id="v30Days" class="v30-days"></div>
+      <div id="v31Days" class="v31-days"></div>
     </section>
 
-    <div class="v30-actions">
-      <button class="v30-action" type="button" id="universalPlanImportBtn">
-        <span class="v30-action-icon">⇧</span>
-        <span><b>Importar plan</b><small>Archivo, imagen o texto</small></span>
+    <div class="v31-bottom">
+      <button class="v31-import" type="button" id="universalPlanImportBtn">
+        <span class="v31-import-icon">⇧</span>
+        <span><b>Importar plan</b><small>PDF, Excel, imagen, Word o texto</small></span>
       </button>
-      <button class="v30-action" type="button" id="v30PasteBtn">
-        <span class="v30-action-icon">✎</span>
-        <span><b>Pegar entrenamiento</b><small>Texto del entrenador</small></span>
-      </button>
+      <div id="v31WeekStats" class="v31-weekstats"></div>
     </div>
 
     <input id="universalPlanInput" class="file" type="file" accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
-    <button id="pastePlanBtn" class="v30-hidden" type="button">Pegar texto</button>
+    <button id="pastePlanBtn" class="v31-hidden" type="button">Pegar texto</button>
     <div id="universalPlanStatus" class="plan-import-status"></div>
 
-    <div id="v30Summary" class="v30-summary"></div>
-
-    <div class="v30-hidden">
+    <div class="v31-hidden">
       <button id="duplicateWeek"></button><button id="clearWeek"></button>
       <span id="planDone"></span><span id="planKm"></span><span id="planPct"></span>
       <div id="planRing"><span id="ringPct"></span></div>
       <span id="planMessage"></span><span id="planSubmessage"></span>
       <div id="weekPlan"></div><div id="templateGrid"></div><div id="weekReview"></div>
-          </div>
+      <button id="v30PasteBtn"></button><div id="v30CoachCard"></div><div id="v30Days"></div><div id="v30Summary"></div>
+      <span id="v30PlanSubtitle"></span>
+    </div>
   </div>
 </section>
 
-<dialog id="v30SessionDialog" class="v30-dialog">
-  <div class="v30-dialog-head">
-    <div><div class="kicker">DETALLE DE LA SESIÓN</div><strong>Entrenamiento</strong></div>
-    <button class="v30-add" style="width:40px;height:40px;font-size:20px" type="button" onclick="document.getElementById('v30SessionDialog').close()">✕</button>
+<dialog id="v31Dialog" class="v31-dialog">
+  <div class="v31-dialog-head">
+    <div><div class="kicker">DETALLE DE SESIÓN</div><strong>Entrenamiento</strong></div>
+    <button class="v31-close" type="button" onclick="document.getElementById('v31Dialog').close()">✕</button>
   </div>
-  <div id="v30SessionDialogBody" class="v30-dialog-body"></div>
+  <div id="v31DialogBody" class="v31-dialog-body"></div>
 </dialog>
 
 <section id="running" class="view">
@@ -1363,7 +1344,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 <dialog id="planImportDialog" class="plan-import-dialog">
   <div class="plan-import-dialog-head">
-    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V30</div><h3>Revisar plan detectado</h3></div>
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V31</div><h3>Revisar plan detectado</h3></div>
     <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
   </div>
   <div class="plan-import-dialog-body">
@@ -1701,82 +1682,75 @@ function planCard(p,compact=false){
 }
 
 
-let v30SelectedDate=null;
-function v30Type(p){
- const t=((p?.title||"")+" "+(p?.notes||"")+" "+(p?.intensity||"")).toLowerCase();
- if(/serie|interval|repet|fartlek/.test(t))return "Series";
+
+let v31SelectedDate=null;
+function v31Text(p){return [p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ")}
+function v31Type(p){
+ const t=v31Text(p).toLowerCase();
+ if(/serie|interval|repet|fartlek|\d+\s*[x×]\s*\d+/.test(t))return "Series";
  if(/tirada|larga|long/.test(t))return "Tirada larga";
  if(/tempo|umbral/.test(t))return "Tempo";
  if(/gym|gimnas|fuerza/.test(t))return "Fuerza";
  if(/descanso/.test(t))return "Descanso";
- return p?.title||"Rodaje suave";
+ return /z2|suave|rodaje/.test(t)?"Rodaje suave":"Entrenamiento";
 }
-function v30Pace(p){
- const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
- const m=all.match(/\d{1,2}:\d{2}(?:\s*[–-]\s*\d{1,2}:\d{2})?\s*(?:\/?km)?/);
- return m?m[0].replace(/\s+/g," "):(/Z2/i.test(all)?"Z2":"Objetivo");
-}
-function v30Zone(p){
- const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
- const z=all.match(/Z[1-5](?:\s*[–-]\s*Z[1-5])?/i);
- if(z)return z[0].toUpperCase().replace("-","–");
- if(/serie|interval|umbral/i.test(all))return "Z4–Z5";
- return "Z2";
-}
-function v30Duration(p){
- if(Number(p?.duration)>0)return `${p.duration} min`;
- const km=Number(p?.distance||0);
- if(km)return `${Math.round(km*5.7)} min`;
- return "—";
-}
-function v30Main(p){
- const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
+function v31Main(p){
+ const all=v31Text(p);
  const reps=all.match(/\d+\s*[x×]\s*\d+\s*(?:m|km)?/i);
- if(reps)return reps[0].replace("x"," × ");
+ if(reps)return reps[0].replace(/x/i," × ");
  if(Number(p?.distance)>0)return `${Number(p.distance).toFixed(Number(p.distance)%1?1:0).replace(".",",")} km`;
  return p?.intensity||"Sesión planificada";
 }
-function v30CoachText(p){
- const t=v30Type(p);
- if(t==="Series")return "Hoy toca calidad. Busca regularidad en cada repetición y no fuerces la primera.";
- if(t==="Tirada larga")return "Construye resistencia sin perseguir el ritmo. Mantén el esfuerzo controlado.";
- if(t==="Tempo")return "Entrenamiento sostenido. Empieza con margen y termina fuerte, sin descomponerte.";
- if(t==="Fuerza")return "Prioriza técnica y control. La calidad de cada repetición vale más que el peso.";
- if(t==="Descanso")return "Hoy toca recuperar. Caminar suave y dormir bien también forman parte del plan.";
- return "Sesión para seguir construyendo una base sólida. Corre con control y buenas sensaciones.";
+function v31Pace(p){
+ const all=v31Text(p);
+ const m=all.match(/\d{1,2}:\d{2}(?:\s*[–-]\s*\d{1,2}:\d{2})?\s*(?:\/?km)?/);
+ return m?m[0].replace(/\s+/g," "):(/Z2/i.test(all)?"Z2":"—");
 }
-function v30OpenSession(id){
+function v31Zone(p){
+ const all=v31Text(p);
+ const z=all.match(/Z[1-5](?:\s*[–-]\s*Z[1-5])?/i);
+ if(z)return z[0].toUpperCase().replace("-","–");
+ return v31Type(p)==="Series"?"Z4–Z5":(/tempo|umbral/i.test(all)?"Z3–Z4":"Z2");
+}
+function v31Duration(p){
+ if(Number(p?.duration)>0)return `${p.duration} min`;
+ const km=Number(p?.distance||0);
+ return km?`${Math.round(km*5.7)} min`:"—";
+}
+function v31Coach(p){
+ const type=v31Type(p);
+ if(type==="Series")return "Calidad con control: empieza con margen y busca que todas las repeticiones salgan regulares.";
+ if(type==="Tirada larga")return "Acumula tiempo de calidad sin perseguir el ritmo. La constancia manda.";
+ if(type==="Tempo")return "Ritmo sostenido y técnica estable. Debes terminar fuerte, no vacío.";
+ if(type==="Fuerza")return "Prioriza la ejecución. Cada repetición debe verse limpia y controlada.";
+ if(type==="Descanso")return "Recuperar también es entrenar. Hoy suma dormir bien y moverte suave.";
+ return "Corre fácil, respira con control y termina con la sensación de poder continuar.";
+}
+function v31Open(id){
  const p=data.plan.find(x=>x.id===id);if(!p)return;
- const all=[p.title,p.notes,p.intensity].filter(Boolean).join(" ");
+ const all=v31Text(p),type=v31Type(p),pace=v31Pace(p),zone=v31Zone(p),km=Number(p.distance||0);
  const reps=all.match(/(\d+)\s*[x×]\s*(\d+)\s*(m|km)?/i);
- const recovery=all.match(/(?:rec(?:uperación)?\.?\s*)(\d+\s*(?:min|['’]|s|''|”))/i);
- const warm=all.match(/calentamiento\s*(\d+\s*(?:min|['’]|km))/i);
+ const rec=all.match(/(?:rec(?:uperación)?\.?\s*)(\d+\s*(?:min|['’]|s|''|”))/i);
+ const warm=all.match(/calentamiento\s*(\d+(?:[.,]\d+)?\s*(?:min|['’]|km))/i);
  const cool=all.match(/enfriamiento\s*(\d+(?:[.,]\d+)?\s*(?:min|['’]|km))/i);
- const zone=v30Zone(p),pace=v30Pace(p),km=Number(p.distance||0);
  const steps=[
    ["Calentamiento",warm?warm[1]:"10–15 min","Z1–Z2"],
-   [reps?`${reps[1]} × ${reps[2]} ${reps[3]||"m"}`:v30Type(p),reps?pace:v30Main(p),zone],
-   ...(recovery?[["Recuperación",recovery[1],"Trote suave"]]:[]),
+   [reps?`${reps[1]} × ${reps[2]} ${reps[3]||"m"}`:type,reps?pace:v31Main(p),zone],
+   ...(rec?[["Recuperación",rec[1],"Trote suave"]]:[]),
    ["Enfriamiento",cool?cool[1]:"10 min","Z1–Z2"]
  ];
- $("#v30SessionDialogBody").innerHTML=`
-  <div class="v30-detail-hero">
-    <div class="kicker">${fmt(p.date).toUpperCase()}</div>
-    <h2>${v30Type(p)}</h2>
-    <p>${v30Main(p)}</p>
+ $("#v31DialogBody").innerHTML=`
+  <div class="v31-detail-hero"><div class="kicker">${fmt(p.date).toUpperCase()}</div><h2>${type}</h2><p>${v31Main(p)}</p></div>
+  <div class="v31-detail-grid">
+   <div class="v31-cell"><small>Distancia</small><strong>${km?km.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
+   <div class="v31-cell"><small>Duración</small><strong>${v31Duration(p)}</strong></div>
+   <div class="v31-cell"><small>Ritmo</small><strong>${pace}</strong></div>
+   <div class="v31-cell"><small>Zona</small><strong>${zone}</strong></div>
   </div>
-  <div class="v30-detail-grid">
-    <div class="v30-detail-cell"><small>Distancia</small><strong>${km?km.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
-    <div class="v30-detail-cell"><small>Duración</small><strong>${v30Duration(p)}</strong></div>
-    <div class="v30-detail-cell"><small>Ritmo objetivo</small><strong>${pace}</strong></div>
-    <div class="v30-detail-cell"><small>Zona objetivo</small><strong>${zone}</strong></div>
-  </div>
-  <div class="v30-timeline"><h4>Estructura de la sesión</h4>
-   ${steps.map(x=>`<div class="v30-step"><i class="v30-step-dot"></i><div><strong>${x[0]}</strong><span>${x[2]}</span></div><strong>${x[1]}</strong></div>`).join("")}
-  </div>
-  ${p.notes?`<div class="v30-detail-cell" style="margin-top:14px"><small>Notas del entrenamiento</small><strong style="font-size:13px;line-height:1.5">${p.notes}</strong></div>`:""}
-  <button class="v30-start" type="button" onclick="document.getElementById('v30SessionDialog').close();setView('${p.sport==="Gimnasio"?"gym":"running"}')">INICIAR ENTRENAMIENTO ▶</button>`;
- $("#v30SessionDialog").showModal();
+  <div class="v31-timeline"><h4>Estructura</h4>${steps.map(x=>`<div class="v31-step"><i class="v31-dot"></i><div><strong>${x[0]}</strong><span>${x[2]}</span></div><strong>${x[1]}</strong></div>`).join("")}</div>
+  ${p.notes?`<div class="v31-cell" style="margin-top:12px"><small>Notas</small><strong style="font-size:12px;line-height:1.45">${p.notes}</strong></div>`:""}
+  <button class="v31-main-btn" type="button" onclick="document.getElementById('v31Dialog').close();setView('${p.sport==="Gimnasio"?"gym":"running"}')">INICIAR ENTRENAMIENTO ▶</button>`;
+ $("#v31Dialog").showModal();
 }
 function renderPlan(){
  const mon=selectedMonday(),sun=datePlus(mon,6),start=isoDate(mon),end=isoDate(sun);
@@ -1786,62 +1760,50 @@ function renderPlan(){
  const km=items.reduce((a,p)=>a+Number(p.distance||0),0);
  const mins=items.reduce((a,p)=>a+Number(p.duration||0),0);
  const today=isoDate(new Date());
- if(!v30SelectedDate||v30SelectedDate<start||v30SelectedDate>end){
-   v30SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
+ if(!v31SelectedDate||v31SelectedDate<start||v31SelectedDate>end){
+   v31SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
  }
  $("#weekTitle").textContent=`${fmt(start)} – ${fmt(end)}`;
- $("#v30PlanSubtitle").textContent=weekOffset===0?"Tu sesión de hoy":weekOffset>0?`Semana +${weekOffset}`:`Semana ${weekOffset}`;
+ $("#v31Subtitle").textContent=weekOffset===0?"Semana actual":weekOffset>0?`Semana +${weekOffset}`:`Semana ${weekOffset}`;
  const names=["L","M","X","J","V","S","D"];
- $("#v30Days").innerHTML=names.map((n,i)=>{
-   const d=isoDate(datePlus(mon,i)),p=items.find(x=>x.date===d);
-   const cls=[d===v30SelectedDate?"active":"",p?.status==="done"?"done":"",/tirada|larga/i.test(p?.title||"")?"long":""].filter(Boolean).join(" ");
-   return `<button class="v30-day ${cls}" type="button" onclick="v30SelectedDate='${d}';renderPlan()"><b>${n}</b><strong>${new Date(d+"T12:00:00").getDate()}</strong><i></i></button>`;
+ $("#v31Days").innerHTML=names.map((n,i)=>{
+  const d=isoDate(datePlus(mon,i)),p=items.find(x=>x.date===d);
+  const cls=[d===v31SelectedDate?"active":"",p?.status==="done"?"done":"",/tirada|larga/i.test(v31Text(p))?"long":""].filter(Boolean).join(" ");
+  return `<button class="v31-day ${cls}" type="button" onclick="v31SelectedDate='${d}';renderPlan()"><b>${n}</b><strong>${new Date(d+"T12:00:00").getDate()}</strong><i></i></button>`;
  }).join("");
- const selected=items.find(p=>p.date===v30SelectedDate)||items[0];
- if(selected){
-   const kmv=Number(selected.distance||0),pace=v30Pace(selected),zone=v30Zone(selected),dur=v30Duration(selected);
-   const label=selected.date===today?"HOY":fmt(selected.date).toUpperCase();
-   $("#v30CoachCard").innerHTML=`
-    <article class="v30-coach-card">
-      <div class="v30-eyebrow">${label}</div>
-      <div class="v30-session-row">
-        <div><h3 class="v30-session-name">${v30Type(selected)}</h3><p class="v30-session-main">${v30Main(selected)}</p></div>
-        <span class="v30-badge">${selected.intensity||"Planificado"}</span>
-      </div>
-      <p class="v30-coach-line">${v30CoachText(selected)}</p>
-      <div class="v30-ring-row">
-        <div class="v30-ring" style="--p:${pct}"><div style="position:relative;text-align:center"><strong>${pct}%</strong><small>plan</small></div></div>
-        <div class="v30-ring-copy"><strong>${done} de ${items.length} sesiones completadas</strong><span>${km.toFixed(1).replace(".",",")} km previstos esta semana</span></div>
-      </div>
-      <div class="v30-metrics">
-        <div class="v30-metric"><span>Distancia</span><strong>${kmv?kmv.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
-        <div class="v30-metric"><span>Duración</span><strong>${dur}</strong></div>
-        <div class="v30-metric"><span>Ritmo</span><strong>${pace}</strong></div>
-        <div class="v30-metric"><span>Zona</span><strong>${zone}</strong></div>
-      </div>
-      <button class="v30-start" type="button" onclick="v30OpenSession('${selected.id}')">VER SESIÓN COMPLETA →</button>
-    </article>`;
+ const p=items.find(x=>x.date===v31SelectedDate);
+ if(p){
+  const dt=new Date(p.date+"T12:00:00"),kmv=Number(p.distance||0);
+  $("#v31Hero").innerHTML=`<article class="v31-hero">
+   <div class="v31-topline"><span class="v31-day-label">${p.date===today?"HOY":dt.toLocaleDateString("es-ES",{weekday:"long"}).toUpperCase()}</span><span class="v31-intensity">${p.intensity||"Planificado"}</span></div>
+   <div class="v31-title-row">
+    <div class="v31-title"><h3>${v31Type(p)}</h3><p>${v31Main(p)}</p></div>
+    <div class="v31-date"><strong>${dt.getDate()}</strong><span>${dt.toLocaleDateString("es-ES",{month:"short"}).replace(".","")}</span></div>
+   </div>
+   <p class="v31-coach">${v31Coach(p)}</p>
+   <div class="v31-data">
+    <div><span>Distancia</span><strong>${kmv?kmv.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
+    <div><span>Duración</span><strong>${v31Duration(p)}</strong></div>
+    <div><span>Ritmo</span><strong>${v31Pace(p)}</strong></div>
+    <div><span>Zona</span><strong>${v31Zone(p)}</strong></div>
+   </div>
+   <button class="v31-main-btn" type="button" onclick="v31Open('${p.id}')">VER DETALLES →</button>
+  </article>`;
  }else{
-   $("#v30CoachCard").innerHTML=`
-    <article class="v30-coach-card">
-      <div class="v30-eyebrow">${v30SelectedDate===today?"HOY":"DÍA SELECCIONADO"}</div>
-      <div class="v30-session-row"><div><h3 class="v30-session-name">Descanso</h3><p class="v30-session-main">Sin entrenamiento</p></div><span class="v30-badge">Recuperación</span></div>
-      <p class="v30-coach-line">No hay sesión planificada. Aprovecha para recuperar o añade un entrenamiento.</p>
-      <button class="v30-start" type="button" data-add="plan">＋ AÑADIR ENTRENAMIENTO</button>
-    </article>`;
+  $("#v31Hero").innerHTML=`<article class="v31-hero">
+   <div class="v31-topline"><span class="v31-day-label">${v31SelectedDate===today?"HOY":"DÍA SELECCIONADO"}</span><span class="v31-intensity">Recuperación</span></div>
+   <div class="v31-title-row"><div class="v31-title"><h3>Descanso</h3><p>Sin entrenamiento</p></div></div>
+   <p class="v31-coach">No hay una sesión planificada para este día. Recupera o añade un entrenamiento.</p>
+   <button class="v31-main-btn" type="button" data-add="plan">＋ AÑADIR SESIÓN</button>
+  </article>`;
  }
- $("#v30Summary").innerHTML=`
-  <div><strong>${km.toFixed(1).replace(".",",")} km</strong><span>Total</span></div>
-  <div><strong>${mins?`${Math.floor(mins/60)}h ${String(mins%60).padStart(2,"0")}`:"—"}</strong><span>Tiempo</span></div>
-  <div><strong>${pct}%</strong><span>Completado</span></div>
-  <div><strong>${items.length}</strong><span>Sesiones</span></div>`;
- $("#planDone").textContent=`${done}/${items.length}`;
- $("#planKm").textContent=km.toFixed(1);
- $("#planPct").textContent=pct+"%";
- $("#ringPct").textContent=pct+"%";
- $("#planMessage").textContent="";
- $("#planSubmessage").textContent="";
- $("#weekPlan").innerHTML="";
+ $("#v31WeekStats").innerHTML=`
+  <div><strong>${km.toFixed(1).replace(".",",")}</strong><span>km</span></div>
+  <div><strong>${items.length}</strong><span>sesiones</span></div>
+  <div><strong>${pct}%</strong><span>hecho</span></div>
+  <div><strong>${mins?Math.round(mins/60*10)/10+"h":"—"}</strong><span>tiempo</span></div>`;
+ $("#planDone").textContent=`${done}/${items.length}`;$("#planKm").textContent=km.toFixed(1);$("#planPct").textContent=pct+"%";
+ $("#ringPct").textContent=pct+"%";$("#planMessage").textContent="";$("#planSubmessage").textContent="";$("#weekPlan").innerHTML="";
 }
 
 
@@ -3570,8 +3532,6 @@ $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 
-const v30PasteBtn=document.getElementById("v30PasteBtn");
-if(v30PasteBtn)v30PasteBtn.onclick=()=>document.getElementById("pastePlanBtn")?.click();
 
 
 
