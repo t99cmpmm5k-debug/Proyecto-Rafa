@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Corredor Sólido">
-<title>Corredor Sólido · V50.1 · Expedición</title>
+<title>Corredor Sólido · V33 · Importador por bloques</title>
 <style>
 :root{
   --bg:#080b0e;--panel:#12171d;--panel2:#1a2129;--line:#2b343e;
@@ -796,7 +796,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 
 
-/* ===== V50 · INTERACTIVE TRAINING MAP ===== */
+/* ===== V33 · INTERACTIVE TRAINING MAP ===== */
 :root{
   --green:#22e9ff!important;
   --green2:#70f7ff!important;
@@ -979,115 +979,6 @@ main{width:100%;max-width:820px;overflow:hidden}
  .v33-summary{min-width:0}
 }
 
-
-/* ===== V50 · MOTOR VISUAL EXPEDICIÓN ===== */
-.v50-eyebrow{font-size:8px;font-weight:900;letter-spacing:.19em;color:#22e9ff;margin-bottom:5px}
-.v33-map{min-height:610px;padding:18px 13px 16px;background:radial-gradient(circle at 50% 3%,rgba(35,205,255,.18),transparent 28%),linear-gradient(180deg,#071a31 0%,#061528 35%,#020914 100%)}
-.v33-map:before{top:95px;height:285px;opacity:1;background:linear-gradient(153deg,transparent 0 8%,#0b1a2b 8.5% 17%,transparent 17.5% 22%,#0e2135 22.5% 32%,transparent 32.5% 39%,#091827 39.5% 48%,transparent 48.5% 57%,#10243a 57.5% 68%,transparent 68.5%),linear-gradient(25deg,transparent 0 16%,rgba(5,18,31,.95) 16.5% 28%,transparent 28.5% 43%,rgba(5,20,34,.98) 43.5% 56%,transparent 56.5% 68%,rgba(4,16,28,.98) 68.5% 79%,transparent 79.5%);filter:drop-shadow(0 -18px 34px rgba(0,122,220,.22))}
-.v33-map:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 52%,rgba(1,7,14,.85) 80%,#020810 100%),radial-gradient(ellipse at 50% 72%,rgba(0,213,255,.07),transparent 48%)}
-.v33-map-top,.v33-route,.v33-detail{position:relative;z-index:3}
-.v50-week-row{display:flex;align-items:center;gap:7px}.v50-week-row>div{min-width:0}.v50-week-arrow{width:27px;height:31px;border-radius:10px;border:1px solid rgba(54,196,245,.22);background:rgba(4,21,37,.75);color:#27eaff;font-size:20px;line-height:1}
-.v33-route{height:250px;margin:8px -7px 0;display:grid;grid-template-columns:repeat(7,1fr);align-items:center;isolation:isolate}
-.v33-route:before{display:none}.v50-route-svg{position:absolute;inset:8px 0 0;width:100%;height:220px;overflow:visible;z-index:0}.v50-route-shadow{fill:none;stroke:rgba(0,0,0,.6);stroke-width:12}.v50-route-line{fill:none;stroke:url(#v50RouteGradient);stroke-width:5;stroke-linecap:round;filter:url(#v50Glow);stroke-dasharray:900;animation:v50Draw 1.2s ease both}@keyframes v50Draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
-.v33-node{z-index:2}.v33-node:nth-of-type(even){transform:translateY(-30px)}.v33-node:nth-of-type(odd){transform:translateY(28px)}
-.v33-node-day{font-size:9px;letter-spacing:.12em}.v33-node-date{font-size:19px}.v33-orb{width:52px;height:52px;font-size:24px;border-width:2px;background:radial-gradient(circle at 38% 30%,rgba(30,95,130,.95),rgba(2,12,23,.98) 66%);box-shadow:0 0 8px var(--node-color),0 0 28px color-mix(in srgb,var(--node-color) 36%,transparent)}
-.v33-node.active .v33-orb{transform:scale(1.25);box-shadow:0 0 0 6px rgba(34,233,255,.09),0 0 16px var(--node-color),0 0 42px var(--node-color)}
-.v33-detail{margin-top:-22px;min-height:210px;border-color:rgba(35,207,255,.27);background:linear-gradient(145deg,rgba(6,27,47,.96),rgba(2,12,23,.98));box-shadow:0 -10px 45px rgba(0,0,0,.28)}
-.v33-detail:before{content:"";position:absolute;left:50%;top:0;width:74px;height:2px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#28eaff,transparent);box-shadow:0 0 12px #28eaff}
-.v33-add{position:relative;z-index:22;transition:.25s}.v33-add.open{transform:rotate(45deg);background:#17dff3;color:#00141c;box-shadow:0 0 28px rgba(34,233,255,.45)}
-.v50-action-menu{position:absolute;right:10px;top:62px;z-index:21;width:min(310px,calc(100vw - 44px));padding:8px;border-radius:20px;border:1px solid rgba(38,220,255,.3);background:rgba(3,15,28,.96);box-shadow:0 26px 80px rgba(0,0,0,.65),0 0 34px rgba(0,205,255,.1);backdrop-filter:blur(18px);opacity:0;transform:translateY(-8px) scale(.96);pointer-events:none;transition:.22s}
-.v50-action-menu.open{opacity:1;transform:none;pointer-events:auto}.v50-action-menu button{width:100%;display:grid;grid-template-columns:38px 1fr;gap:0 10px;text-align:left;padding:11px;border:0;border-radius:14px;background:transparent;color:#fff}.v50-action-menu button:hover{background:rgba(34,233,255,.08)}.v50-action-menu span{grid-row:1/3;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#08243a;color:#26eaff;font-size:20px}.v50-action-menu b{font-size:12px}.v50-action-menu small{color:#7895a9;font-size:8px;margin-top:3px}.v50-menu-backdrop{position:fixed;inset:0;z-index:20;background:rgba(0,4,10,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s}.v50-menu-backdrop.open{opacity:1;pointer-events:auto}
-@media(max-width:520px){.v33-map{min-height:590px}.v33-progress{width:66px;height:66px}.v33-route{height:235px}.v33-node:nth-of-type(even){transform:translateY(-26px)}.v33-node:nth-of-type(odd){transform:translateY(24px)}.v33-orb{width:46px;height:46px}.v33-detail h3{font-size:23px}.v33-symbol{width:88px;height:88px;font-size:45px}.v33-footer-row{grid-template-columns:1fr}.v33-summary{min-width:0}.v50-week-arrow{display:none}}
-
-/* ===== V50.1 · REFINAMIENTO DE EXPEDICIÓN ===== */
-.v501-badge{display:inline-flex;vertical-align:middle;margin-left:7px;padding:3px 7px;border:1px solid rgba(61,231,255,.35);border-radius:999px;background:rgba(26,216,255,.08);color:#78efff;font-size:9px;letter-spacing:.12em;font-weight:900}
-.v33-map{touch-action:pan-y;box-shadow:0 30px 80px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06)}
-.v33-node.today .v33-orb:after{content:"";position:absolute;inset:-8px;border:1px solid color-mix(in srgb,var(--node-color) 72%,transparent);border-radius:50%;animation:v501TodayPulse 2s ease-out infinite}
-@keyframes v501TodayPulse{0%{transform:scale(.88);opacity:.9}75%,100%{transform:scale(1.34);opacity:0}}
-.v33-node.empty .v33-orb{opacity:.42;filter:saturate(.25)}
-.v33-node.empty .v33-node-day,.v33-node.empty .v33-node-date{opacity:.55}
-.v50-route-line-progress{fill:none;stroke:url(#v50RouteGradient);stroke-width:6;stroke-linecap:round;filter:url(#v50Glow);transition:stroke-dasharray .55s ease}
-.v50-route-line-base{fill:none;stroke:rgba(123,164,185,.2);stroke-width:4;stroke-linecap:round}
-.v33-detail{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
-.v33-detail:focus-within{border-color:rgba(71,229,255,.38);box-shadow:0 22px 60px rgba(0,0,0,.42),0 0 0 1px rgba(71,229,255,.08)}
-.v50-swipe-hint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:9px;letter-spacing:.14em;color:rgba(204,235,244,.42);text-transform:uppercase;pointer-events:none}
-@media (prefers-reduced-motion:reduce){.v50-route-line,.v33-node.today .v33-orb:after{animation:none!important}.v33-detail,.v50-route-line-progress{transition:none!important}}
-
-/* ===== V50.1 FINAL · PANTALLA PLAN EXPEDICIÓN ===== */
-#plan{padding:0!important;background:#020811;overflow:hidden}
-#plan .v33-map{position:relative;min-height:calc(100dvh - 128px);padding:20px 14px 22px;border-radius:0;overflow:hidden;background:
- radial-gradient(circle at 50% -8%,rgba(62,220,255,.24),transparent 31%),
- linear-gradient(180deg,#071b31 0%,#05162a 31%,#020a15 72%,#01060c 100%)}
-#plan .v33-map::before{content:"";position:absolute;inset:102px -18% auto;height:330px;opacity:.98;filter:drop-shadow(0 -12px 24px rgba(0,170,255,.14));background:
- linear-gradient(145deg,transparent 0 11%,#10283d 11.3% 19%,transparent 19.3% 25%,#0b2034 25.3% 35%,transparent 35.3% 43%,#102a40 43.3% 53%,transparent 53.3% 60%,#091b2c 60.3% 70%,transparent 70.3%),
- linear-gradient(32deg,transparent 0 15%,rgba(7,22,37,.98) 15.3% 29%,transparent 29.3% 42%,rgba(6,20,34,.99) 42.3% 58%,transparent 58.3% 71%,rgba(5,17,29,.99) 71.3% 84%,transparent 84.3%)}
-#plan .v33-map::after{content:"";position:absolute;inset:0;pointer-events:none;background:
- radial-gradient(circle at 14% 20%,rgba(90,231,255,.16) 0 1px,transparent 2px),
- radial-gradient(circle at 79% 14%,rgba(255,255,255,.15) 0 1px,transparent 2px),
- radial-gradient(circle at 62% 28%,rgba(91,221,255,.12) 0 1px,transparent 2px),
- linear-gradient(180deg,transparent 43%,rgba(1,7,14,.25) 56%,rgba(1,6,12,.94) 82%,#01060c 100%);background-size:120px 120px,160px 160px,210px 210px,auto}
-#plan .v33-map-top{display:grid;grid-template-columns:1fr auto;align-items:start;gap:12px;margin-bottom:9px}
-#plan .v33-brand h2{margin:0;font-size:31px;letter-spacing:-.045em;line-height:.95;color:#fff}
-#plan .v33-brand p{margin:7px 0 0;font-size:11px;color:#85a6ba}
-#plan .v50-eyebrow{font-size:8px;letter-spacing:.2em;color:#4feaff}
-#plan .v33-add{width:44px;height:44px;border-radius:15px;border:1px solid rgba(82,231,255,.45);background:linear-gradient(145deg,rgba(20,72,96,.85),rgba(4,23,39,.95));color:#72f0ff;font-size:26px;box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 24px rgba(28,221,255,.13)}
-#plan .v33-weekbar{position:relative;z-index:4;display:grid;grid-template-columns:1fr auto;align-items:center;padding:12px 13px;border:1px solid rgba(78,203,241,.17);border-radius:18px;background:linear-gradient(145deg,rgba(8,31,51,.78),rgba(3,15,27,.72));backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-#plan .v33-week strong{font-size:10px;letter-spacing:.16em;color:#52eaff}
-#plan .v33-week span{display:block;margin-top:4px;font-size:10px;color:#d7e8f1}
-#plan .v33-progress{width:68px;height:68px;border-radius:50%;background:conic-gradient(#36e9ff calc(var(--p)*1%),rgba(64,130,154,.18) 0);box-shadow:0 0 30px rgba(39,224,255,.12)}
-#plan .v33-progress::before{inset:6px;background:#061525}
-#plan .v33-progress b{font-size:15px;color:#fff}
-#plan .v33-progress small{font-size:7px;color:#7291a5}
-#plan .v33-route{height:272px;margin:6px -8px 0;z-index:4}
-#plan .v50-route-svg{top:11px;height:226px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}
-#plan .v50-route-line-base{stroke:rgba(114,178,200,.18);stroke-width:5;stroke-dasharray:4 8}
-#plan .v50-route-line-progress{stroke-width:6.5}
-#plan .v33-node{gap:3px;min-width:0;color:#fff;text-shadow:0 2px 8px #000}
-#plan .v33-node:nth-of-type(even){transform:translateY(-35px)}
-#plan .v33-node:nth-of-type(odd){transform:translateY(31px)}
-#plan .v33-node-day{font-size:8px;letter-spacing:.14em;color:#8eabbc}
-#plan .v33-node-date{font-size:18px;line-height:1;color:#fff}
-#plan .v33-orb{position:relative;width:52px;height:52px;border-radius:50%;font-size:23px;border:2px solid var(--node-color);background:radial-gradient(circle at 35% 27%,rgba(44,113,144,.95),rgba(4,18,31,.98) 68%);box-shadow:0 0 0 4px rgba(3,14,25,.86),0 0 12px var(--node-color),0 0 34px color-mix(in srgb,var(--node-color) 33%,transparent)}
-#plan .v33-node.active .v33-orb{transform:scale(1.2);box-shadow:0 0 0 6px rgba(45,230,255,.1),0 0 18px var(--node-color),0 0 48px color-mix(in srgb,var(--node-color) 70%,transparent)}
-#plan .v33-node.active .v33-node-day{color:#5ff0ff}
-#plan .v33-node.done .v33-orb::before{content:"✓";position:absolute;right:-4px;bottom:-4px;width:17px;height:17px;display:grid;place-items:center;border-radius:50%;background:#45eccd;color:#00241f;font-size:10px;font-weight:1000;border:2px solid #04131e;box-shadow:0 0 12px rgba(69,236,205,.55)}
-#plan .v33-detail{position:relative;z-index:5;margin:-26px 0 0;padding:17px;border-radius:24px;border:1px solid rgba(73,218,255,.23);background:linear-gradient(145deg,rgba(8,31,51,.97),rgba(2,12,23,.98));box-shadow:0 28px 70px rgba(0,0,0,.47),inset 0 1px 0 rgba(255,255,255,.05);overflow:hidden}
-#plan .v33-detail::after{content:"";position:absolute;right:-45px;top:-60px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(30,218,255,.09),transparent 70%);pointer-events:none}
-#plan .v33-detail-grid{grid-template-columns:1fr 82px;gap:12px;align-items:center}
-#plan .v33-detail-kicker{font-size:8px;letter-spacing:.18em;color:#42eaff}
-#plan .v33-detail h3{margin:5px 0 3px;font-size:24px;line-height:1.02;letter-spacing:-.03em}
-#plan .v33-detail-main{font-size:12px;color:#d8edf5;font-weight:800}
-#plan .v33-detail-note{margin-top:7px;font-size:10px;line-height:1.42;color:#7898aa}
-#plan .v33-symbol{width:78px;height:78px;border-radius:22px;background:radial-gradient(circle at 35% 25%,color-mix(in srgb,var(--symbol) 31%,#103149),#03101d 72%);border:1px solid color-mix(in srgb,var(--symbol) 62%,transparent);box-shadow:0 0 30px color-mix(in srgb,var(--symbol) 20%,transparent);font-size:39px}
-#plan .v33-detail-metrics{grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}
-#plan .v33-detail-metrics>div{padding:9px 7px;border-radius:13px;background:rgba(3,17,29,.75);border:1px solid rgba(92,166,194,.12)}
-#plan .v33-detail-metrics span{font-size:7px;color:#6f8da0;text-transform:uppercase;letter-spacing:.08em}
-#plan .v33-detail-metrics strong{margin-top:4px;font-size:11px;color:#fff}
-#plan .v33-action{margin-top:12px;min-height:46px;border-radius:14px;border:1px solid rgba(52,229,255,.35);background:linear-gradient(135deg,#36e7f6,#13bdd8);color:#001920;font-size:10px;font-weight:1000;letter-spacing:.08em;box-shadow:0 10px 25px rgba(18,194,219,.16)}
-#plan .v33-footer-row{position:relative;z-index:5;margin-top:10px}
-#plan .v33-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px;border:1px solid rgba(76,183,219,.13);border-radius:18px;background:rgba(3,16,28,.64);backdrop-filter:blur(12px)}
-#plan .v33-summary>div{padding:7px 5px;text-align:center;border-right:1px solid rgba(92,150,173,.11)}
-#plan .v33-summary>div:last-child{border-right:0}
-#plan .v33-summary strong{font-size:13px;color:#fff}
-#plan .v33-summary span{display:block;font-size:7px;text-transform:uppercase;color:#6c8a9e}
-#plan .v50-swipe-hint{bottom:4px;font-size:7px;color:rgba(187,226,237,.35)}
-@media(max-width:420px){
- #plan .v33-map{padding:16px 10px 18px;min-height:calc(100dvh - 118px)}
- #plan .v33-brand h2{font-size:27px}
- #plan .v33-route{height:246px;margin-left:-11px;margin-right:-11px}
- #plan .v33-node:nth-of-type(even){transform:translateY(-29px)}
- #plan .v33-node:nth-of-type(odd){transform:translateY(25px)}
- #plan .v33-orb{width:44px;height:44px;font-size:20px}
- #plan .v33-node-date{font-size:16px}
- #plan .v33-detail{margin-top:-30px;padding:15px}
- #plan .v33-detail h3{font-size:21px}
- #plan .v33-symbol{width:68px;height:68px;font-size:34px}
- #plan .v33-detail-grid{grid-template-columns:1fr 70px}
- #plan .v33-detail-metrics{gap:4px}
- #plan .v33-detail-metrics>div{padding:8px 4px}
- #plan .v33-summary{gap:2px}
-}
-
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -1126,10 +1017,55 @@ main{width:100%;max-width:820px;overflow:hidden}
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+
+<style id="v51-premium-plan">
+/* V51 — PLAN MAPA PREMIUM */
+#plan{padding-top:10px}
+#plan .v33-shell{gap:10px;max-width:980px;margin:0 auto}
+#plan .v33-head{padding:0 4px 4px}
+#plan .v33-brand h2{font-size:30px;letter-spacing:-.03em}
+#plan .v33-brand p{font-size:10px;letter-spacing:.14em;color:#8aa0b2}
+#plan .v33-add{width:48px;height:48px;border-radius:50%;background:rgba(5,22,36,.82);box-shadow:0 0 26px rgba(39,234,255,.12)}
+#plan .v33-map{min-height:0;padding:17px 16px 14px;border-radius:0;background:
+ linear-gradient(180deg,rgba(2,13,23,.08),rgba(2,11,20,.28) 35%,#03101c 75%),
+ radial-gradient(circle at 50% 24%,rgba(19,125,169,.34),transparent 35%),
+ linear-gradient(145deg,#041625,#072239 52%,#020b14);border:1px solid rgba(50,208,241,.28);box-shadow:0 18px 52px rgba(0,0,0,.38);overflow:hidden}
+#plan .v33-map:before{content:"";position:absolute;inset:88px 0 auto;height:235px;opacity:.75;background:
+ linear-gradient(145deg,transparent 0 20%,#071321 20% 36%,transparent 36%),
+ linear-gradient(218deg,transparent 0 22%,#0a1d2f 22% 39%,transparent 39%),
+ linear-gradient(150deg,transparent 0 42%,#061727 42% 59%,transparent 59%);clip-path:polygon(0 58%,13% 42%,25% 50%,39% 23%,52% 47%,68% 18%,83% 43%,100% 27%,100% 100%,0 100%);filter:drop-shadow(0 -12px 35px rgba(25,163,215,.12));pointer-events:none}
+#plan .v33-map:after{content:"";position:absolute;left:0;right:0;top:230px;height:130px;background:linear-gradient(180deg,transparent,rgba(2,12,21,.82));pointer-events:none}
+#plan .v33-map-top{grid-template-columns:1fr 82px 1fr;min-height:76px;z-index:3}
+#plan .v33-week strong{font-size:16px;letter-spacing:.08em}.v33-week span{font-size:10px}
+#plan .v33-progress{width:76px;height:76px;background:conic-gradient(#29ecff calc(var(--p)*1%),rgba(33,87,112,.28) 0);filter:drop-shadow(0 0 12px rgba(30,220,255,.25))}
+#plan .v33-progress:before{inset:7px;background:#061322}.v33-progress b{font-size:18px}.v33-progress small{font-size:6px}
+#plan .v33-count strong{font-size:17px}.v33-count span{font-size:8px;letter-spacing:.1em}
+#plan .v33-route{height:254px;margin:4px -4px 0;padding:0 3px;align-items:center;z-index:4;position:relative}
+#plan .v33-route:before{left:4%;right:4%;top:51%;height:3px;border-radius:999px;background:linear-gradient(90deg,#35e69f,#3bd8ff 45%,#ffb62d 82%,rgba(121,145,161,.5));box-shadow:0 0 16px rgba(41,230,255,.45);transform:none}
+#plan .v33-node{height:205px;justify-content:center;gap:2px;transform:none!important;overflow:visible}
+#plan .v33-node:nth-child(2),#plan .v33-node:nth-child(4),#plan .v33-node:nth-child(6){padding-top:20px}
+#plan .v33-node-day{font-size:8px;letter-spacing:.13em}.v33-node-date{font-size:18px}
+#plan .v33-orb{width:48px;height:48px;margin-top:5px;font-size:20px;border-width:2px;background:radial-gradient(circle at 50% 30%,rgba(31,80,110,.95),#03101c 72%);box-shadow:0 0 0 5px rgba(3,13,23,.78),0 0 20px color-mix(in srgb,var(--node-color) 48%,transparent)}
+#plan .v33-node.active .v33-orb{width:58px;height:58px;box-shadow:0 0 0 5px rgba(3,13,23,.86),0 0 0 8px color-mix(in srgb,var(--node-color) 16%,transparent),0 0 30px var(--node-color)}
+#plan .v33-node.done .v33-orb:after{width:18px;height:18px;font-size:10px;right:-5px;top:-5px}
+#plan .v33-node-meta{display:flex;flex-direction:column;align-items:center;min-height:31px;margin-top:6px;line-height:1.05;max-width:70px}
+#plan .v33-node-type{font-size:7px;text-transform:uppercase;font-weight:900;letter-spacing:.06em;color:var(--node-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px}
+#plan .v33-node-main{font-size:7px;color:#9fb3c2;margin-top:4px;white-space:nowrap}
+#plan .v33-connector{display:none}
+#plan .v33-detail{position:relative;z-index:5;margin-top:-18px;padding:16px;border-radius:17px;background:linear-gradient(135deg,rgba(5,24,39,.96),rgba(4,17,29,.94));border:1px solid rgba(47,206,238,.28);box-shadow:0 15px 35px rgba(0,0,0,.38)}
+#plan .v33-detail-grid{grid-template-columns:1fr 90px;gap:12px}.v33-detail h3{font-size:24px}.v33-detail-main{font-size:17px}.v33-detail-note{margin-top:8px;font-size:10px;-webkit-line-clamp:2}
+#plan .v33-symbol{width:76px;height:76px;border-radius:50%;font-size:32px}
+#plan .v33-detail-metrics{grid-template-columns:repeat(4,1fr);margin-top:10px}.v33-detail-metrics div{padding:8px 4px;border-radius:9px}.v33-detail-metrics strong{font-size:11px}
+#plan .v33-action{height:38px;margin-top:10px;border-radius:8px;font-size:9px}
+#plan .v33-footer-row{grid-template-columns:1fr;gap:8px}.v33-import{display:none}.v33-summary{grid-template-columns:repeat(4,1fr);border-radius:14px;overflow:hidden;border:1px solid rgba(37,116,151,.24)}
+#plan .v33-summary div{padding:11px 6px}.v33-summary strong{font-size:14px}.v33-summary span{font-size:7px}
+@media(min-width:760px){#plan .v33-shell{grid-template-columns:minmax(0,1fr) 280px;align-items:start}#plan .v33-head{grid-column:1/-1}#plan .v33-map{grid-column:1}#plan .v33-footer-row{grid-column:2;grid-row:2;position:sticky;top:90px}.v33-import{display:flex!important}.v33-summary{grid-template-columns:1fr 1fr}.v33-summary div{padding:18px 8px}#plan .v33-route{height:280px}}
+@media(max-width:430px){#plan{padding-left:12px;padding-right:12px}#plan .v33-map{padding:14px 10px 12px}#plan .v33-route{height:230px;margin-left:-8px;margin-right:-8px}#plan .v33-node-day{font-size:7px}#plan .v33-node-date{font-size:16px}#plan .v33-orb{width:43px;height:43px}#plan .v33-node.active .v33-orb{width:51px;height:51px}#plan .v33-node-type,#plan .v33-node-main{font-size:6px}#plan .v33-detail{padding:14px}#plan .v33-detail-grid{grid-template-columns:1fr 70px}#plan .v33-symbol{width:64px;height:64px}.v33-detail h3{font-size:21px}}
+</style>
 </head>
 <body data-view="inicio">
 <header>
-  <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido <span class="v501-badge">V50.1</span></h1></div>
+  <div><div class="kicker">ENTRENA CON CRITERIO</div><h1>Corredor Sólido</h1></div>
   <button class="btn secondary small" id="exportTop">Copia</button>
 </header>
 
@@ -1191,19 +1127,19 @@ main{width:100%;max-width:820px;overflow:hidden}
 <section id="plan" class="view">
   <div class="v33-shell">
     <header class="v33-head" style="position:static;padding:0;background:transparent;border:0;backdrop-filter:none">
-      <div class="v33-brand"><div class="v50-eyebrow">CORREDOR SÓLIDO · EXPEDICIÓN V50.1</div><h2>PLAN</h2><p>Tu ruta hacia un corredor más sólido</p></div>
-      <button class="v33-add" id="v50MainAction" type="button" aria-label="Abrir acciones">＋</button>
+      <div class="v33-brand"><h2>PLAN</h2><p>Tu mapa de entrenamiento</p></div>
+      <button class="v33-add" type="button" data-add="plan" aria-label="Añadir entrenamiento">＋</button>
     </header>
 
     <section class="v33-map">
       <div class="v33-map-top">
-        <div class="v33-week"><div class="v50-week-row"><button class="v50-week-arrow" id="v50PrevWeek" type="button" aria-label="Semana anterior">‹</button><div><strong id="v33WeekNumber">SEMANA</strong><span id="weekTitle">Semana actual</span></div><button class="v50-week-arrow" id="v50NextWeek" type="button" aria-label="Semana siguiente">›</button></div></div>
+        <div class="v33-week"><strong id="v33WeekNumber">SEMANA</strong><span id="weekTitle">Semana actual</span></div>
         <div id="v33Progress" class="v33-progress" style="--p:0"><div style="position:relative;text-align:center"><b>0%</b><small>completado</small></div></div>
         <div class="v33-count"><strong id="v33Count">0/0</strong><span>sesiones</span></div>
       </div>
 
       <div id="v33Route" class="v33-route"></div>
-      <div id="v33Detail" class="v33-detail"></div><div class="v50-swipe-hint">Desliza para cambiar de semana</div>
+      <div id="v33Detail" class="v33-detail"></div>
     </section>
 
     <div class="v33-footer-row">
@@ -1212,14 +1148,6 @@ main{width:100%;max-width:820px;overflow:hidden}
       </button>
       <div id="v33Summary" class="v33-summary"></div>
     </div>
-
-    <div id="v50ActionMenu" class="v50-action-menu" aria-hidden="true">
-      <button type="button" id="v50ImportAction"><span>⇧</span><b>Importar plan</b><small>PDF, Excel, imagen, Word o texto</small></button>
-      <button type="button" id="v50CreateAction"><span>＋</span><b>Crear sesión</b><small>Añade un entrenamiento manualmente</small></button>
-      <button type="button" id="v50DuplicateAction"><span>⧉</span><b>Duplicar semana</b><small>Copia esta expedición a la siguiente</small></button>
-      <button type="button" id="v50ImageAction"><span>◫</span><b>Leer desde imagen</b><small>Importa una captura del plan</small></button>
-    </div>
-    <div id="v50MenuBackdrop" class="v50-menu-backdrop"></div>
 
     <input id="universalPlanInput" class="file" type="file" accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
     <button id="pastePlanBtn" class="v33-hidden" type="button">Pegar texto</button>
@@ -1461,7 +1389,7 @@ main{width:100%;max-width:820px;overflow:hidden}
 
 <dialog id="planImportDialog" class="plan-import-dialog">
   <div class="plan-import-dialog-head">
-    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V50</div><h3>Revisar plan detectado</h3></div>
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V33</div><h3>Revisar plan detectado</h3></div>
     <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
   </div>
   <div class="plan-import-dialog-body">
@@ -1891,7 +1819,6 @@ function v33Open(id){
 }
 function v33Select(date){
  v33SelectedDate=date;
- try{localStorage.setItem("v501SelectedDate",date)}catch(e){}
  renderPlan();
  requestAnimationFrame(()=>{
    const d=$("#v33Detail");
@@ -1906,7 +1833,6 @@ function renderPlan(){
  const km=items.reduce((a,p)=>a+Number(p.distance||0),0);
  const mins=items.reduce((a,p)=>a+Number(p.duration||0),0);
  const today=isoDate(new Date());
- if(!v33SelectedDate){try{v33SelectedDate=localStorage.getItem("v501SelectedDate")||""}catch(e){}}
  if(!v33SelectedDate||v33SelectedDate<start||v33SelectedDate>end){
    v33SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
  }
@@ -1917,18 +1843,16 @@ function renderPlan(){
  $("#v33Progress b").textContent=pct+"%";
  $("#v33Count").textContent=`${done}/${items.length}`;
  const names=["LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"];
- const routeLength=760,routeDone=Math.round(routeLength*(pct/100));
- const routeSvg=`<svg class="v50-route-svg" viewBox="0 0 700 220" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="v50RouteGradient" x1="0" x2="1"><stop offset="0" stop-color="#55f4d5"/><stop offset=".38" stop-color="#18dfff"/><stop offset=".7" stop-color="#6f78ff"/><stop offset="1" stop-color="#ffbf45"/></linearGradient><filter id="v50Glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="v50-route-shadow" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/><path class="v50-route-line-base" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/><path class="v50-route-line-progress" pathLength="${routeLength}" stroke-dasharray="${routeDone} ${routeLength}" d="M28 132 C92 62 154 188 224 112 S356 70 420 132 S552 190 672 82"/></svg>`;
- $("#v33Route").innerHTML=routeSvg+names.map((n,i)=>{
+ $("#v33Route").innerHTML=names.map((n,i)=>{
    const d=isoDate(datePlus(mon,i)),p=items.find(x=>x.date===d);
    const color=p?v33Color(p):"#70859a";
-   const cls=[d===v33SelectedDate?"active":"",p?.status==="done"?"done":"",d===today?"today":"",!p?"empty":""].filter(Boolean).join(" ");
+   const cls=[d===v33SelectedDate?"active":"",p?.status==="done"?"done":""].filter(Boolean).join(" ");
    const icon=p?v33Icon(p):"·";
-   const label=p?`${n} ${new Date(d+"T12:00:00").getDate()}: ${v33Type(p)}`:`${n} ${new Date(d+"T12:00:00").getDate()}: sin entrenamiento`;
-   return `<button class="v33-node ${cls}" style="--node-color:${color}" type="button" aria-label="${label}" aria-pressed="${d===v33SelectedDate}" onclick="v33Select('${d}')">
+   return `<button class="v33-node ${cls}" style="--node-color:${color}" type="button" onclick="v33Select('${d}')">
      <span class="v33-node-day">${n}</span>
      <strong class="v33-node-date">${new Date(d+"T12:00:00").getDate()}</strong>
      <span class="v33-orb">${icon}</span>
+     <span class="v33-node-meta"><b class="v33-node-type">${p?v33Type(p):"Libre"}</b><small class="v33-node-main">${p?v33Main(p):"—"}</small></span>
      <i class="v33-connector"></i>
    </button>`;
  }).join("");
@@ -1951,11 +1875,11 @@ function renderPlan(){
       <div><span>Ritmo</span><strong>${v33Pace(p)}</strong></div>
       <div><span>Zona</span><strong>${v33Zone(p)}</strong></div>
     </div>
-    <button class="v33-action" type="button" onclick="v33Open('${p.id}')">INICIAR ENTRENAMIENTO ▶</button>`;
+    <button class="v33-action" type="button" onclick="v33Open('${p.id}')">VER DETALLES DE LA SESIÓN →</button>`;
  }else{
    $("#v33Detail").innerHTML=`
     <div class="v33-detail-grid">
-      <div><div class="v33-detail-kicker">DÍA SELECCIONADO</div><h3>Tu aventura empieza aquí</h3><p class="v33-detail-main">Sin entrenamiento</p><p class="v33-detail-note">Crea una sesión o importa tu plan para dibujar la ruta de esta semana.</p></div>
+      <div><div class="v33-detail-kicker">DÍA SELECCIONADO</div><h3>Descanso</h3><p class="v33-detail-main">Sin entrenamiento</p><p class="v33-detail-note">No hay una sesión planificada para este día.</p></div>
       <div class="v33-symbol" style="--symbol:#71869a">·</div>
     </div>
     <button class="v33-action" type="button" data-add="plan">＋ AÑADIR ENTRENAMIENTO</button>`;
@@ -3654,22 +3578,6 @@ window.toggleSetDone=(ei,si)=>{
 window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10,done:false});else{const c=structuredClone(sets[sets.length-1]);c.done=false;sets.push(c)}renderGymExerciseEditor()}
 window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10,done:false});renderGymExerciseEditor()}
 
-
-function v50ToggleMenu(force){
- const menu=document.getElementById("v50ActionMenu"),back=document.getElementById("v50MenuBackdrop"),btn=document.getElementById("v50MainAction");
- if(!menu)return;
- const open=typeof force==="boolean"?force:!menu.classList.contains("open");
- menu.classList.toggle("open",open);back.classList.toggle("open",open);btn.classList.toggle("open",open);menu.setAttribute("aria-hidden",String(!open));
-}
-const v50MainAction=document.getElementById("v50MainAction");
-if(v50MainAction)v50MainAction.onclick=()=>v50ToggleMenu();
-const v50Backdrop=document.getElementById("v50MenuBackdrop");if(v50Backdrop)v50Backdrop.onclick=()=>v50ToggleMenu(false);
-const v50Create=document.getElementById("v50CreateAction");if(v50Create)v50Create.onclick=()=>{v50ToggleMenu(false);openForm("plan")};
-const v50Import=document.getElementById("v50ImportAction");if(v50Import)v50Import.onclick=()=>{v50ToggleMenu(false);document.getElementById("universalPlanInput").click()};
-const v50Image=document.getElementById("v50ImageAction");if(v50Image)v50Image.onclick=()=>{v50ToggleMenu(false);const i=document.getElementById("universalPlanInput");i.accept="image/*";i.click();setTimeout(()=>i.accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv",500)};
-const v50Duplicate=document.getElementById("v50DuplicateAction");if(v50Duplicate)v50Duplicate.onclick=()=>{v50ToggleMenu(false);duplicateCurrentWeek()};
-const v50Prev=document.getElementById("v50PrevWeek");if(v50Prev)v50Prev.onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
-const v50Next=document.getElementById("v50NextWeek");if(v50Next)v50Next.onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;window.activeGymPlanId=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
 window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t==="run")data.plan=data.plan.map(p=>p.actualRunId===id?{...p,status:"pending",actualRunId:""}:p);const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
@@ -3820,26 +3728,6 @@ document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolution
 
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2212").catch(()=>{}))}
 render();updateFab();
-</script>
-
-<script>
-/* V50.1: navegación táctil y por teclado en el mapa del plan */
-(function(){
-  const map=document.querySelector('.v33-map');
-  if(!map)return;
-  let startX=0,startY=0,tracking=false;
-  map.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;tracking=true;startX=e.clientX;startY=e.clientY;});
-  map.addEventListener('pointerup',e=>{if(!tracking)return;tracking=false;const dx=e.clientX-startX,dy=e.clientY-startY;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.25){document.getElementById(dx<0?'v50NextWeek':'v50PrevWeek')?.click();}});
-  document.addEventListener('keydown',e=>{
-    if(document.body.dataset.view!=='plan'||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''))return;
-    if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
-      const nodes=[...document.querySelectorAll('#v33Route .v33-node')];
-      const current=nodes.findIndex(n=>n.classList.contains('active'));
-      const next=Math.max(0,Math.min(nodes.length-1,current+(e.key==='ArrowRight'?1:-1)));
-      if(nodes[next]){e.preventDefault();nodes[next].click();nodes[next].focus();}
-    }
-  });
-})();
 </script>
 </body>
 </html>
