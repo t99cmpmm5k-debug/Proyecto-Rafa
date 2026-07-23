@@ -979,14 +979,6 @@ main{width:100%;max-width:820px;overflow:hidden}
  .v33-summary{min-width:0}
 }
 
-
-.register-coming-soon{margin-top:14px;padding:14px 16px;border:1px dashed rgba(77,218,239,.28);border-radius:18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;color:#8fa7ae;background:rgba(4,20,31,.42)}
-.register-coming-soon span{font-weight:800}.register-coming-soon small{grid-column:1/-1;letter-spacing:.14em;text-transform:uppercase;color:#607c86}
-
-/* V60 OCR Lab: aislado visualmente dentro de Running */
-.ocr-lab{margin:14px 0 18px;padding:18px;border:1px solid rgba(65,220,255,.22);border-radius:22px;background:linear-gradient(180deg,rgba(12,31,43,.94),rgba(7,19,28,.98));box-shadow:0 18px 42px rgba(0,0,0,.28)}
-.ocr-lab-head{display:flex;gap:14px;justify-content:space-between;align-items:flex-start}.ocr-lab-head h3{margin:3px 0 5px}.ocr-lab-head p{margin:0;color:var(--muted);max-width:650px}.lab-badge{white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:.08em;color:#6fe9ff;border:1px solid rgba(111,233,255,.35);border-radius:999px;padding:7px 10px;background:rgba(111,233,255,.08)}
-.ocr-lab-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.lab-mode{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--muted);border-radius:12px;padding:10px 13px;font-weight:700}.lab-mode.active{color:#06151d;background:#6fe9ff;border-color:#6fe9ff}.ocr-brand-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;border-radius:15px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);margin:14px 0}.ocr-brand-card b{font-size:18px}.ocr-brand-card small{display:block;color:var(--muted);margin-top:3px}.ocr-confidence{font-weight:800;color:#74efb8}.ocr-section-title{margin:15px 0 8px;font-size:12px;letter-spacing:.09em;color:#90aaba}.ocr-result-grid .missing b{color:#758996}.ocr-result-grid .found{border-color:rgba(83,232,178,.18)}.ocr-result-grid .found b{color:#ecffff}.ocr-raw{margin-top:12px}.ocr-raw pre{white-space:pre-wrap;max-height:220px;overflow:auto;font-size:11px;color:#9cb3c0;background:#061018;border-radius:12px;padding:12px}.ocr-notice{margin-top:12px;padding:11px 13px;border-radius:12px;background:rgba(255,199,95,.08);border:1px solid rgba(255,199,95,.18);color:#d8c49c;font-size:13px}@media(max-width:650px){.ocr-lab-head{display:block}.lab-badge{display:inline-block;margin-top:10px}.ocr-lab-actions .btn{width:100%}.lab-mode{flex:1}}
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -1027,22 +1019,6 @@ main{width:100%;max-width:820px;overflow:hidden}
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
 
 <style id="v51-premium-plan">
-/* V55 — GARMIN + SMART SHOE LIBRARY */
-.advanced-metrics{margin-top:14px;border:1px solid rgba(41,215,239,.35);border-radius:18px;background:rgba(5,25,40,.72);overflow:hidden}
-.advanced-metrics>summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;flex-direction:column;gap:3px;color:#fff;font-weight:800}
-.advanced-metrics>summary::-webkit-details-marker{display:none}.advanced-metrics>summary:after{content:"＋";position:absolute;right:28px;color:var(--cyan);font-size:20px}.advanced-metrics[open]>summary:after{content:"−"}
-.advanced-metrics>summary small{color:var(--muted);font-size:11px;font-weight:500}.advanced-group{padding:14px 16px;border-top:1px solid rgba(41,215,239,.16)}
-.advanced-group h4{margin:0 0 12px;color:var(--cyan);font-size:12px;text-transform:uppercase;letter-spacing:.14em}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:520px){.three{grid-template-columns:1fr 1fr}.three .field:last-child{grid-column:1/-1}.advanced-metrics>summary:after{right:22px}}
-
-/* V55 — RUNNING SMART FORM + SHOE LIBRARY */
-.run-auto-title{margin:4px 0 14px;padding:14px 16px;border:1px solid rgba(41,215,239,.2);border-radius:16px;background:linear-gradient(135deg,rgba(16,70,102,.55),rgba(4,20,34,.82));display:flex;align-items:center;gap:12px}
-.run-auto-title-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(40,218,239,.12);border:1px solid rgba(40,218,239,.34);font-size:22px}
-.run-auto-title strong{display:block;color:#fff;font-size:18px}.run-auto-title small{color:var(--muted)}
-.advanced-group h4{display:flex;align-items:center;justify-content:space-between;gap:10px}.advanced-help{width:24px;height:24px;border-radius:50%;border:1px solid rgba(41,215,239,.36);background:rgba(41,215,239,.08);color:var(--cyan);font-weight:900;cursor:pointer}
-.shoe-picker{margin-top:8px}.shoe-current{width:100%;display:flex;align-items:center;gap:12px;padding:11px;border:1px solid rgba(41,215,239,.3);border-radius:17px;background:#071c2d;color:#fff;text-align:left}.shoe-current img{width:68px;height:46px;object-fit:contain;border-radius:12px;background:linear-gradient(135deg,#0b3048,#06131f)}.shoe-current-copy{min-width:0;flex:1}.shoe-current-copy strong{display:block;font-size:15px}.shoe-current-copy small{display:block;color:var(--muted);margin-top:2px}.shoe-current-change{color:var(--cyan);font-weight:900}
-.shoe-library-panel{margin-top:10px;padding:12px;border:1px solid rgba(41,215,239,.22);border-radius:18px;background:rgba(2,15,26,.96)}.shoe-library-panel[hidden]{display:none}.shoe-search{width:100%;margin:0 0 10px}.shoe-library-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);font-weight:900;margin:12px 2px 8px}.shoe-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.shoe-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:132px;padding:10px;border-radius:16px;border:1px solid rgba(70,164,206,.24);background:linear-gradient(145deg,rgba(10,39,59,.95),rgba(4,18,31,.98));color:#fff;text-align:left;overflow:hidden}.shoe-card.selected{border-color:var(--cyan);box-shadow:0 0 0 1px rgba(41,215,239,.35),0 0 20px rgba(41,215,239,.14)}.shoe-card img{width:100%;height:62px;object-fit:contain;margin-bottom:5px}.shoe-card b{font-size:12px;line-height:1.2}.shoe-card small{color:var(--muted);font-size:10px;margin-top:3px}.shoe-card .shoe-check{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--cyan);color:#012033;font-weight:900;opacity:0}.shoe-card.selected .shoe-check{opacity:1}.shoe-none{grid-column:1/-1;min-height:auto;flex-direction:row;align-items:center;justify-content:center;padding:13px}
-@media(min-width:560px){.shoe-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* V51 — PLAN MAPA PREMIUM */
 #plan{padding-top:10px}
 #plan .v33-shell{gap:10px;max-width:980px;margin:0 auto}
@@ -1085,13 +1061,6 @@ main{width:100%;max-width:820px;overflow:hidden}
 #plan .v33-summary div{padding:11px 6px}.v33-summary strong{font-size:14px}.v33-summary span{font-size:7px}
 @media(min-width:760px){#plan .v33-shell{grid-template-columns:minmax(0,1fr) 280px;align-items:start}#plan .v33-head{grid-column:1/-1}#plan .v33-map{grid-column:1}#plan .v33-footer-row{grid-column:2;grid-row:2;position:sticky;top:90px}.v33-import{display:flex!important}.v33-summary{grid-template-columns:1fr 1fr}.v33-summary div{padding:18px 8px}#plan .v33-route{height:280px}}
 @media(max-width:430px){#plan{padding-left:12px;padding-right:12px}#plan .v33-map{padding:14px 10px 12px}#plan .v33-route{height:230px;margin-left:-8px;margin-right:-8px}#plan .v33-node-day{font-size:7px}#plan .v33-node-date{font-size:16px}#plan .v33-orb{width:43px;height:43px}#plan .v33-node.active .v33-orb{width:51px;height:51px}#plan .v33-node-type,#plan .v33-node-main{font-size:6px}#plan .v33-detail{padding:14px}#plan .v33-detail-grid{grid-template-columns:1fr 70px}#plan .v33-symbol{width:64px;height:64px}.v33-detail h3{font-size:21px}}
-
-/* V55 — FLOW PLANIFICAR / REGISTRAR */
-.plan-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.plan-mode{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:18px;padding:14px;text-align:left}.plan-mode b,.plan-mode small{display:block}.plan-mode small{color:var(--muted);margin-top:4px}.plan-mode.active{border-color:var(--cyan);box-shadow:0 0 20px rgba(34,216,239,.12)}
-.plan-auto-name{border:1px solid rgba(34,216,239,.35);background:linear-gradient(135deg,rgba(34,216,239,.11),rgba(8,25,39,.94));border-radius:18px;padding:15px 17px;margin:0 0 16px}.plan-auto-name small,.plan-auto-name span{display:block;color:var(--muted)}.plan-auto-name strong{display:block;color:var(--cyan);font-size:22px;margin:3px 0}
-.run-import-entry{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid rgba(34,216,239,.45);background:linear-gradient(135deg,rgba(0,183,255,.13),rgba(31,235,205,.08));padding:15px;border-radius:18px;margin-bottom:16px}.run-import-entry b,.run-import-entry small{display:block}.run-import-entry small{color:var(--muted);margin-top:4px;line-height:1.35}.run-import-entry .btn{white-space:nowrap}
-.add-workout-dialog{border:0;background:transparent;padding:0;width:min(92vw,520px)}.add-workout-dialog::backdrop{background:rgba(0,5,10,.82);backdrop-filter:blur(8px)}.add-workout-sheet{position:relative;background:#061827;border:1px solid rgba(34,216,239,.42);border-radius:28px;padding:26px;box-shadow:0 28px 80px rgba(0,0,0,.55)}.add-workout-sheet h2{margin:4px 0 18px;font-size:28px}.sheet-close{position:absolute;right:16px;top:16px;width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:var(--panel2);color:#fff;font-size:25px}.action-choice{width:100%;display:flex;align-items:center;gap:14px;text-align:left;border:1px solid var(--line);background:var(--panel2);color:#fff;border-radius:20px;padding:16px;margin-top:10px}.action-choice>span{font-size:27px}.action-choice b,.action-choice small{display:block}.action-choice small{color:var(--muted);margin-top:4px}.primary-choice{border-color:var(--cyan);background:linear-gradient(135deg,rgba(0,183,255,.18),rgba(31,235,205,.12))}
-@media(max-width:520px){.plan-mode-switch{grid-template-columns:1fr}.run-import-entry{align-items:stretch;flex-direction:column}.run-import-entry .btn{width:100%}}
 </style>
 </head>
 <body data-view="inicio">
@@ -1210,20 +1179,18 @@ main{width:100%;max-width:820px;overflow:hidden}
     <button class="btn primary" data-add="run">＋ Añadir</button>
   </div>
   <div id="runningTodayPlan"></div>
-  <div class="ocr-lab" id="ocrLab">
-    <div class="ocr-lab-head">
-      <div><div class="kicker">LABORATORIO OCR</div><h3>Lector universal de capturas</h3><p>Sube varias capturas de una misma actividad. Esta prueba no guarda nada ni modifica tu historial.</p></div>
-      <span class="lab-badge">MODO PRUEBA</span>
+  <div class="garmin-import">
+    <div class="garmin-import-head">
+      <div><div class="kicker">IMPORTAR ENTRENAMIENTO</div><h3>Garmin o registro manual</h3><p>Selecciona todas las capturas de una misma actividad.</p></div>
     </div>
-    <div class="ocr-lab-actions">
-      <button class="btn primary" type="button" id="garminImportBtn">📷 Subir capturas</button>
-      <button class="lab-mode active" type="button" data-ocr-mode="basic">Datos básicos</button>
-      <button class="lab-mode" type="button" data-ocr-mode="advanced">Datos avanzados</button>
+    <div class="garmin-import-actions">
+      <button class="btn primary" type="button" id="garminImportBtn">Subir capturas</button>
+      <button class="btn secondary" type="button" onclick="openForm('run')">Manual</button>
     </div>
     <input id="garminFileInput" class="file" type="file" accept="image/*" multiple>
-    <details id="garminCaptures" class="garmin-captures"><summary>Capturas seleccionadas <span id="garminCaptureCount" class="garmin-count"></span></summary><div id="garminGallery" class="garmin-gallery"></div></details>
+    <details id="garminCaptures" class="garmin-captures"><summary>Ver capturas originales <span id="garminCaptureCount" class="garmin-count"></span></summary><div id="garminGallery" class="garmin-gallery"></div></details>
     <div id="garminStatus" class="garmin-status">
-      <div id="garminStatusText">Selecciona capturas para comenzar la prueba.</div>
+      <div id="garminStatusText">Preparando lectura…</div>
       <div class="ocr-progress"><i id="garminProgress"></i></div>
       <div id="garminDetected"></div>
     </div>
@@ -3296,7 +3263,6 @@ document.querySelectorAll("[data-finished-filter]").forEach(b=>b.onclick=()=>{fi
 document.querySelectorAll("[data-race-view]").forEach(b=>b.onclick=()=>setRaceView(b.dataset.raceView));
 document.querySelectorAll("[data-gym-day]").forEach(b=>b.onclick=()=>{gymDay=b.dataset.gymDay;document.querySelectorAll("[data-gym-day]").forEach(x=>x.classList.toggle("active",x===b));renderGymPlan()});
 $("#garminImportBtn").onclick=()=>$("#garminFileInput").click();
-document.querySelectorAll("[data-ocr-mode]").forEach(btn=>btn.onclick=()=>{document.querySelectorAll("[data-ocr-mode]").forEach(x=>x.classList.toggle("active",x===btn));ocrLabMode=btn.dataset.ocrMode;if(ocrLabLastResult)renderGarminDetected(ocrLabLastResult)});
 let garminSelectedFiles=[];
 function renderGarminGallery(){
  const box=$("#garminGallery"),details=$("#garminCaptures"),count=$("#garminCaptureCount");
@@ -3322,14 +3288,7 @@ function updateFab(){}
 
 
 function normalizeOcrText(raw){
- return String(raw||"")
-  .replace(/\u00a0/g," ").replace(/[|]/g,"I").replace(/[“”]/g,'"').replace(/\r/g,"\n")
-  .replace(/[‐‑‒–—]/g,"-")
-  .replace(/cardlaca/gi,"cardiaca").replace(/cardíaca/gi,"cardiaca")
-  .replace(/oscilaci[o0]n/gi,"oscilacion").replace(/m[aá]x\.?/gi,"max")
-  .replace(/m[ií]n\.?/gi,"min").replace(/calorlas/gi,"calorias")
-  .replace(/ritrno/gi,"ritmo").replace(/rltmo/gi,"ritmo")
-  .replace(/potenclal/gi,"potencial").replace(/cadencia rnedia/gi,"cadencia media");
+ return String(raw||"").replace(/\u00a0/g," ").replace(/[|]/g,"I").replace(/[“”]/g,'"').replace(/\r/g,"\n");
 }
 function parseDecimal(value){
  const cleaned=String(value||"").replace(/\s/g,"").replace(",",".").replace(/[^\d.-]/g,"");
@@ -3340,60 +3299,6 @@ function normalizeTime(value){
  if(p.length===2)return `${Number(p[0])}:${String(Number(p[1])).padStart(2,"0")}`;
  if(p.length===3)return `${Number(p[0])}:${String(Number(p[1])).padStart(2,"0")}:${String(Number(p[2])).padStart(2,"0")}`;
  return "";
-}
-
-async function preprocessOcrImage(file,mode="contrast"){
- const bitmap=await createImageBitmap(file);
- const maxWidth=1800;
- const scale=Math.max(1.4,Math.min(2.4,maxWidth/bitmap.width));
- const canvas=document.createElement("canvas");
- canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
- const ctx=canvas.getContext("2d",{willReadFrequently:true});
- ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
- ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
- const img=ctx.getImageData(0,0,canvas.width,canvas.height),d=img.data;
- let sum=0;for(let i=0;i<d.length;i+=4)sum+=(d[i]+d[i+1]+d[i+2])/3;
- const mean=sum/(d.length/4),dark=mean<125;
- for(let i=0;i<d.length;i+=4){
-  let y=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];
-  if(dark)y=255-y;
-  if(mode==="binary")y=y>145?255:0;
-  else y=Math.max(0,Math.min(255,(y-128)*1.75+128));
-  d[i]=d[i+1]=d[i+2]=y;d[i+3]=255;
- }
- ctx.putImageData(img,0,0);
- return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar la captura")),"image/png"));
-}
-async function recognizeSportsScreenshot(file,index,total,statusText,progress){
- const variants=[await preprocessOcrImage(file,"contrast"),await preprocessOcrImage(file,"binary")];
- const texts=[];
- for(let pass=0;pass<variants.length;pass++){
-  const result=await Tesseract.recognize(variants[pass],"spa+eng",{
-   logger:m=>{if(m.status==="recognizing text"){
-    const local=(pass+(m.progress||0))/variants.length;
-    const pct=((index+local)/total)*100;progress.style.width=`${Math.max(4,Math.round(pct))}%`;
-    statusText.innerHTML=`<strong>Analizando captura ${index+1} de ${total} · pasada ${pass+1}/2…</strong> ${Math.round((m.progress||0)*100)}%`;
-   }},
-   tessedit_pageseg_mode:6,preserve_interword_spaces:"1"
-  });
-  texts.push(result.data.text||"");
- }
- return texts.join("\n");
-}
-
-let ocrLabMode="basic";
-let ocrLabLastResult=null;
-let ocrLabRawTexts=[];
-function detectWatchBrand(raw){
- const t=(raw||"").toLowerCase();
- const scores={
-  Garmin:["garmin","training effect","stamina","beneficio principal","carga de ejercicio","dinamica de carrera","ritmo optimo","carga de impacto","estadisticas"],
-  Amazfit:["zepp","amazfit","pai","zepp coach","efecto del entrenamiento"],
-  "Apple Watch":["apple watch","anillos de actividad","fitness","tiempo en zona","potencia media de carrera"]
- };
- let best="Desconocida",score=0;
- for(const [brand,words] of Object.entries(scores)){const n=words.reduce((a,w)=>a+(t.includes(w)?1:0),0);if(n>score){best=brand;score=n}}
- return {brand:best,confidence:score>=3?"Alta":score>=1?"Media":"Baja"};
 }
 function parseGarminDate(text){
  const months={enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12};
@@ -3424,20 +3329,19 @@ function parseGarminScreenshot(raw){
  else if(flat.includes("carrera")||flat.includes("race")){category="Carrera";type="Carrera"}
  return {
   date:parseGarminDate(text),type,category,
-  distance:parseDecimal(value(["distancia real","distancia recorrida","distancia"],/(\d{1,3}[.,]\d{1,2})\s*(?:km)?/i,3)),
+  distance:parseDecimal(value(["distancia real","distancia recorrida","distancia"],/(\d{1,3}[.,]\d{1,2})\s*(?:km)?/i,2)),
   time:normalizeTime(value(["tiempo total"],timeRe,2)),movingTime:normalizeTime(value(["tiempo en movimiento"],timeRe,2)),elapsedTime:normalizeTime(value(["tiempo transcurrido"],timeRe,2)),
-  pace:normalizeTime(value(["ritmo medio"],paceRe,2)),movingPace:normalizeTime(value(["ritmo medio en movimiento","ritmo medio movim"],paceRe,2)),gradeAdjustedPace:normalizeTime(value(["ritmo medio adapt pend","ritmo medio adapt","adapt pend"],paceRe,2)),bestPace:normalizeTime(value(["ritmo optimo","mejor ritmo"],paceRe,2)),
+  pace:normalizeTime(value(["ritmo medio"],paceRe,1)),movingPace:normalizeTime(value(["ritmo medio en movimiento"],paceRe,1)),gradeAdjustedPace:normalizeTime(value(["ritmo medio adapt pend","ritmo medio adapt"],paceRe,1)),bestPace:normalizeTime(value(["ritmo optimo","ritmo óptimo"],paceRe,1)),
   avgSpeed:parseDecimal(value(["velocidad media"],numberRe,1)),maxSpeed:parseDecimal(value(["velocidad maxima","velocidad máxima"],numberRe,1)),
-  avgHr:parseDecimal(value(["frecuencia cardiaca media","frec cardiaca media","fc media"],numberRe,3)),maxHr:parseDecimal(value(["frec cardiaca max","frecuencia cardiaca max","fc maxima"],numberRe,3)),
-  staminaInitial:parseDecimal(value(["potencial inicial","stamina inicial"],numberRe,2)),staminaFinal:parseDecimal(value(["potencial final","stamina final"],numberRe,2)),staminaMin:parseDecimal(value(["stamina min","stamina minima"],numberRe,2)),
+  avgHr:parseDecimal(value(["frecuencia cardiaca media","frec. cardiaca media","fc media"],numberRe,2)),maxHr:parseDecimal(value(["frec. cardiaca max","frecuencia cardiaca max","fc maxima"],numberRe,2)),
+  staminaInitial:parseDecimal(value(["potencial inicial"],numberRe,1)),staminaFinal:parseDecimal(value(["potencial final"],numberRe,1)),staminaMin:parseDecimal(value(["stamina min"],numberRe,1)),
   primaryBenefit:value(["beneficio principal"],/(base\s*\([^\n]+|aer[oó]bica[^\n]+|tempo|umbral|vo2[^\n]+)/i,2),
   aerobicEffect:parseDecimal(value(["aerobica","aeróbica"],numberRe,1)),anaerobicEffect:parseDecimal(value(["anaerobico","anaeróbico"],numberRe,1)),exerciseLoad:parseDecimal(value(["carga de ejercicio"],numberRe,1)),
   avgPower:parseDecimal(value(["potencia media"],numberRe,1)),maxPower:parseDecimal(value(["potencia maxima","potencia máxima"],numberRe,1)),
-  avgCadence:parseDecimal(value(["cadencia media de carrera","cadencia media"],numberRe,2)),maxCadence:parseDecimal(value(["cadencia max de carrera","cadencia maxima de carrera"],numberRe,2)),
+  avgCadence:parseDecimal(value(["cadencia media de carrera","cadencia media"],numberRe,1)),maxCadence:parseDecimal(value(["cadencia max. de carrera","cadencia maxima de carrera"],numberRe,1)),
   strideLength:parseDecimal(value(["longitud media de zancada"],numberRe,1)),verticalRatio:parseDecimal(value(["ratio vertical media"],numberRe,1)),verticalOscillation:parseDecimal(value(["oscilacion vertical media","oscilación vertical media"],numberRe,1)),groundContactTime:parseDecimal(value(["tiempo medio cont. suelo","tiempo medio contacto suelo"],numberRe,1)),
   impactLoad:parseDecimal(value(["carga de impacto"],numberRe,1)),ascent:parseDecimal(value(["ascenso total"],numberRe,1)),descent:parseDecimal(value(["descenso total"],numberRe,1)),minAltitude:parseDecimal(value(["altura minima","altura mínima"],numberRe,1)),maxAltitude:parseDecimal(value(["altura maxima","altura máxima"],numberRe,1)),
-  temperature:parseDecimal(value(["temperatura media","temperatura"],/(-?\d{1,2}(?:[.,]\d)?)\s*(?:°|º)?c?/i,2)),
-  restingCalories:parseDecimal(value(["calorias en reposo"],numberRe,2)),activeCalories:parseDecimal(value(["calorias activas"],numberRe,2)),totalCalories:parseDecimal(value(["total de calorias quemadas","calorias totales"],numberRe,2)),fluidLoss:parseDecimal(value(["perdida de liquidos estimada","pérdida de líquidos estimada"],numberRe,1)),
+  restingCalories:parseDecimal(value(["calorias en reposo","calorías en reposo"],numberRe,1)),activeCalories:parseDecimal(value(["calorias activas","calorías activas"],numberRe,1)),totalCalories:parseDecimal(value(["total de calorias quemadas","total de calorías quemadas"],numberRe,1)),fluidLoss:parseDecimal(value(["perdida de liquidos estimada","pérdida de líquidos estimada"],numberRe,1)),
   avgRespiration:parseDecimal(value(["frecuencia respiratoria media"],numberRe,2)),minRespiration:parseDecimal(value(["frecuencia respiratoria minima","frecuencia respiratoria mínima"],numberRe,1)),
   notes:"Importado desde varias capturas de Garmin"
  };
@@ -3447,129 +3351,50 @@ function mergeGarminData(parts){
  for(const part of parts)for(const [key,val] of Object.entries(part))if(val!==""&&val!=null&&(!(key in merged)||merged[key]===""||["date","type","category","notes"].includes(key)))merged[key]=val;
  return merged;
 }
-function metricState(value){return value!==""&&value!=null&&value!==0?"found":"missing"}
 function renderGarminDetected(data){
- ocrLabLastResult=data;
- const basic=[["Fecha",data.date],["Distancia",data.distance?`${data.distance} km`:"No encontrada"],["Tiempo",data.time||"No encontrado"],["Ritmo medio",data.pace?`${data.pace}/km`:"No encontrado"],["FC media",data.avgHr?`${data.avgHr} ppm`:"No encontrada"],["FC máxima",data.maxHr?`${data.maxHr} ppm`:"No encontrada"],["Cadencia",data.avgCadence?`${data.avgCadence} ppm`:"No encontrada"],["Temperatura",data.temperature!==undefined&&data.temperature!==""?`${data.temperature} °C`:"No encontrada"],["Calorías",data.totalCalories||data.activeCalories||"No encontradas"]];
- const advanced=[["Beneficio principal",data.primaryBenefit||"No encontrado"],["Training Effect aeróbico",data.aerobicEffect||"No encontrado"],["Training Effect anaeróbico",data.anaerobicEffect||"No encontrado"],["Carga de ejercicio",data.exerciseLoad||"No encontrada"],["Stamina inicial",data.staminaInitial!==""&&data.staminaInitial!=null?`${data.staminaInitial}%`:"No encontrada"],["Stamina final",data.staminaFinal!==""&&data.staminaFinal!=null?`${data.staminaFinal}%`:"No encontrada"],["Potencia media",data.avgPower?`${data.avgPower} W`:"No encontrada"],["Potencia máxima",data.maxPower?`${data.maxPower} W`:"No encontrada"],["Longitud de zancada",data.strideLength?`${data.strideLength} m`:"No encontrada"],["Oscilación vertical",data.verticalOscillation?`${data.verticalOscillation} cm`:"No encontrada"],["Ratio vertical",data.verticalRatio?`${data.verticalRatio}%`:"No encontrado"],["Contacto con el suelo",data.groundContactTime?`${data.groundContactTime} ms`:"No encontrado"],["Ascenso",data.ascent?`${data.ascent} m`:"No encontrado"],["Descenso",data.descent?`${data.descent} m`:"No encontrado"],["Altitud mínima",data.minAltitude?`${data.minAltitude} m`:"No encontrada"],["Altitud máxima",data.maxAltitude?`${data.maxAltitude} m`:"No encontrada"]];
- const values=ocrLabMode==="advanced"?[...basic,...advanced]:basic;
- const found=values.filter(([,v])=>!String(v).startsWith("No encontr")).length;
- $("#garminDetected").innerHTML=`<div class="ocr-brand-card"><div><small>Marca detectada</small><b>${data.detectedBrand||"Desconocida"}</b><small>${data.sourceFiles||0} captura(s) analizadas</small></div><div class="ocr-confidence">Confianza ${data.brandConfidence||"baja"}</div></div><div class="ocr-section-title">${ocrLabMode==="advanced"?"DATOS BÁSICOS Y AVANZADOS":"DATOS BÁSICOS"} · ${found}/${values.length} DETECTADOS</div><div class="ocr-result-grid">${values.map(([k,v])=>`<div class="${metricState(v)}"><small>${k}</small><b>${v}</b></div>`).join("")}</div><div class="ocr-notice">Modo laboratorio: los resultados no se guardan. Los campos ausentes permanecen vacíos y no se inventan ni se promedian.</div><details class="ocr-raw"><summary>Ver texto OCR de diagnóstico</summary><pre>${escapeHtml(ocrLabRawTexts.join("\n\n--- CAPTURA ---\n\n"))}</pre></details>`;
+ const values=[["Distancia",data.distance?`${data.distance} km`:"—"],["Tiempo",data.time||"—"],["Ritmo medio",data.pace?`${data.pace}/km`:"—"],["FC media",data.avgHr?`${data.avgHr} ppm`:"—"],["FC máxima",data.maxHr?`${data.maxHr} ppm`:"—"],["Carga",data.exerciseLoad||"—"],["Potencia media",data.avgPower?`${data.avgPower} W`:"—"],["Cadencia",data.avgCadence?`${data.avgCadence} ppm`:"—"],["Ascenso",data.ascent?`${data.ascent} m`:"—"],["Calorías",data.totalCalories||"—"]];
+ $("#garminDetected").innerHTML=`<div class="ocr-result-grid">${values.map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join("")}</div><div class="z2-note">Revisa los valores antes de guardar. Los campos no encontrados quedan vacíos y no se calculan medias.</div>`;
 }
 async function importGarminImages(files){
  const status=$("#garminStatus"),statusText=$("#garminStatusText"),progress=$("#garminProgress");status.classList.add("active");$("#garminDetected").innerHTML="";progress.style.width="2%";
  try{
   if(!window.Tesseract)throw new Error("No se ha podido cargar el lector OCR.");
-  const parts=[];ocrLabRawTexts=[];
+  const parts=[];
   for(let i=0;i<files.length;i++){
    statusText.innerHTML=`<strong>Leyendo captura ${i+1} de ${files.length}…</strong>`;
-   const recognized=await recognizeSportsScreenshot(files[i],i,files.length,statusText,progress);
-   ocrLabRawTexts.push(recognized);parts.push(parseGarminScreenshot(recognized));
+   const result=await Tesseract.recognize(files[i],"spa+eng",{logger:m=>{if(m.status==="recognizing text"){const total=((i+(m.progress||0))/files.length)*100;progress.style.width=`${Math.max(4,Math.round(total))}%`;statusText.innerHTML=`<strong>Analizando captura ${i+1} de ${files.length}…</strong> ${Math.round((m.progress||0)*100)}%`}}});
+   parts.push(parseGarminScreenshot(result.data.text));
   }
-  const parsed=mergeGarminData(parts),brand=detectWatchBrand(ocrLabRawTexts.join("\n"));parsed.detectedBrand=brand.brand;parsed.brandConfidence=brand.confidence;parsed.sourceFiles=files.length;
-  progress.style.width="100%";renderGarminDetected(parsed);statusText.innerHTML=`<strong>Prueba completada.</strong> Se aplicaron dos pasadas optimizadas para capturas oscuras. Revisa los datos detectados abajo.`;
+  const parsed=mergeGarminData(parts);progress.style.width="100%";renderGarminDetected(parsed);
+  const useful=[parsed.distance,parsed.time,parsed.pace,parsed.avgHr,parsed.maxHr,parsed.avgCadence,parsed.avgPower,parsed.exerciseLoad].filter(v=>v!==""&&v!=null).length;
+  if(useful<2){statusText.innerHTML="<strong>No se han reconocido suficientes datos.</strong> Revisa que las capturas sean completas y nítidas.";return}
+  statusText.innerHTML=`<strong>${files.length} capturas combinadas.</strong> Abriendo revisión de datos…`;window.quickRunPreset=parsed;setTimeout(()=>openForm("run"),500);
  }catch(err){console.error(err);progress.style.width="0";statusText.innerHTML=`<strong>No se pudieron leer las capturas.</strong> ${err.message||"Prueba de nuevo."}`}
 }
-
-
-
-const POPULAR_SHOES=[
- {name:"ASICS Gel-Nimbus 28",brand:"ASICS",use:"Rodaje cómodo",tone:"#23d6ef"},
- {name:"Adidas Adizero EVO SL",brand:"Adidas",use:"Mixta / rodaje rápido",tone:"#62e6d4"},
- {name:"Adidas Adizero Adios Pro 4",brand:"Adidas",use:"Competición",tone:"#ffd54f"},
- {name:"Nike Pegasus 41",brand:"Nike",use:"Rodaje diario",tone:"#76a9ff"},
- {name:"Nike Vomero 18",brand:"Nike",use:"Máxima amortiguación",tone:"#ff83b5"},
- {name:"Nike Vaporfly 4",brand:"Nike",use:"Competición",tone:"#d8ff66"},
- {name:"HOKA Clifton 10",brand:"HOKA",use:"Rodaje cómodo",tone:"#61a8ff"},
- {name:"HOKA Mach 6",brand:"HOKA",use:"Mixta",tone:"#ff8d5d"},
- {name:"New Balance Fresh Foam X 1080 v14",brand:"New Balance",use:"Rodaje cómodo",tone:"#c6a6ff"},
- {name:"New Balance FuelCell Rebel v5",brand:"New Balance",use:"Mixta",tone:"#74e99b"},
- {name:"Saucony Ride 18",brand:"Saucony",use:"Rodaje diario",tone:"#52c8ff"},
- {name:"Saucony Endorphin Speed 5",brand:"Saucony",use:"Calidad / mixta",tone:"#ffb057"},
- {name:"Brooks Ghost 17",brand:"Brooks",use:"Rodaje diario",tone:"#8bc7ff"},
- {name:"Brooks Glycerin 22",brand:"Brooks",use:"Máxima amortiguación",tone:"#93e6cf"},
- {name:"PUMA Deviate Nitro 3",brand:"PUMA",use:"Calidad / mixta",tone:"#ff7474"},
- {name:"Mizuno Wave Rider 29",brand:"Mizuno",use:"Rodaje diario",tone:"#70a7ff"},
- {name:"On Cloudmonster 2",brand:"On",use:"Rodaje amortiguado",tone:"#eeeeee"},
- {name:"Altra Experience Flow 2",brand:"Altra",use:"Rodaje natural",tone:"#ff9f70"},
- {name:"Sin especificar",brand:"",use:"No sumar kilómetros",tone:"#6f8798"}
-];
-function shoeSvgData(shoe){
- const label=(shoe.brand||"—").slice(0,11);
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="${shoe.tone}"/><stop offset="1" stop-color="#eefbff"/></linearGradient></defs><rect width="240" height="120" rx="20" fill="#071827"/><path d="M28 76c25-3 48-20 63-43 13 12 24 26 47 35 23 8 50 7 69 12 11 3 14 15 4 21-14 8-151 10-179 1-14-4-17-23-4-26z" fill="url(#g)" opacity=".98"/><path d="M64 67l64 9m-49-22l69 21" stroke="#072033" stroke-width="6" stroke-linecap="round" opacity=".65"/><path d="M30 96h184" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".65"/><text x="18" y="24" fill="#dff9ff" font-family="Arial" font-size="14" font-weight="700">${label}</text></svg>`;
- return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-}
-function ownedShoeNames(){return [...new Set((data.gear||[]).filter(g=>(g.type||"").toLowerCase().includes("zapat")).map(g=>g.name).filter(Boolean))]}
-function allShoeOptions(){
- const owned=ownedShoeNames().map(name=>POPULAR_SHOES.find(s=>s.name===name)||{name,brand:"Mis zapatillas",use:"En uso",tone:"#22d8ef"});
- return [...owned,...POPULAR_SHOES.filter(s=>!owned.some(o=>o.name===s.name))];
-}
-window.toggleShoeLibrary=()=>{const p=document.getElementById("shoeLibraryPanel");if(!p)return;p.hidden=!p.hidden;if(!p.hidden){renderShoeLibrary("");setTimeout(()=>document.getElementById("shoeSearch")?.focus(),50)}};
-window.selectShoe=name=>{const input=document.getElementById("selectedShoeInput");if(input)input.value=name;updateSelectedShoe();renderShoeLibrary(document.getElementById("shoeSearch")?.value||"");document.getElementById("shoeLibraryPanel").hidden=true};
-window.renderShoeLibrary=(query="")=>{
- const box=document.getElementById("shoeLibraryContent");if(!box)return;const q=query.toLowerCase().trim(),selected=document.getElementById("selectedShoeInput")?.value||"";
- const opts=allShoeOptions().filter(s=>!q||`${s.name} ${s.brand} ${s.use}`.toLowerCase().includes(q));
- const owned=new Set(ownedShoeNames());
- const cards=arr=>arr.map(s=>`<button type="button" class="shoe-card ${selected===s.name?"selected":""} ${s.name==="Sin especificar"?"shoe-none":""}" onclick='selectShoe(${JSON.stringify(s.name)})'>${s.name!=="Sin especificar"?`<img src="${shoeSvgData(s)}" alt="${s.name}">`:""}<b>${s.name}</b><small>${s.use}</small><span class="shoe-check">✓</span></button>`).join("");
- const mine=opts.filter(s=>owned.has(s.name)),popular=opts.filter(s=>!owned.has(s.name));
- box.innerHTML=`${mine.length?`<div class="shoe-library-title">Mis zapatillas</div><div class="shoe-grid">${cards(mine)}</div>`:""}<div class="shoe-library-title">Modelos más usados</div><div class="shoe-grid">${cards(popular)}</div>`;
-};
-function updateSelectedShoe(){
- const name=document.getElementById("selectedShoeInput")?.value||"Sin especificar",shoe=allShoeOptions().find(s=>s.name===name)||{name,brand:"",use:"Zapatilla personalizada",tone:"#22d8ef"};
- const n=document.getElementById("shoeCurrentName"),img=document.getElementById("shoeCurrentImage"),meta=document.getElementById("shoeCurrentMeta");if(n)n.textContent=name;if(img){img.src=shoeSvgData(shoe);img.style.display=name==="Sin especificar"?"none":"block"}if(meta)meta.textContent=shoe.use||"Toca para elegir otra zapatilla";
-}
-window.showMetricHelp=key=>{
- const help={pace:"Compara el ritmo total, en movimiento, adaptado a pendiente y el mejor ritmo registrado.",effect:"Training Effect resume el estímulo fisiológico. El valor aeróbico y anaeróbico va normalmente de 0,0 a 5,0.",stamina:"Stamina estima la energía disponible durante la actividad. Un porcentaje final alto indica que terminaste con margen.",power:"La potencia refleja el esfuerzo mecánico instantáneo en vatios y ayuda a comparar el esfuerzo con viento o desnivel.",dynamics:"Incluye cadencia, zancada, oscilación vertical, ratio vertical y tiempo de contacto con el suelo.",altitude:"Resume ascenso, descenso, cotas e impacto equivalente de la sesión.",nutrition:"Calorías y pérdida estimada de líquidos registradas por Garmin."};alert(help[key]||"Métrica avanzada de Garmin.")
-};
 
 const defs={
  run:{title:"entrenamiento de running",html:x=>{
  const q=x||window.quickRunPreset||{},linked=q.planId?data.plan.find(p=>p.id===q.planId):null,cat=q.category||inferRunCategory(q);
  return `${linked?`<div class="prefill-banner">Usando el entrenamiento previsto: ${linked.title} · ${Number(linked.distance||0).toFixed(1).replace(".",",")} km</div>`:""}
- <div class="run-import-entry"><div><b>Importar actividad Garmin</b><small>Sube varias capturas y revisa los datos antes de guardar.</small></div><button type="button" class="btn primary" onclick="launchGarminFromRunForm()">SUBIR CAPTURAS</button></div>
  <input type="hidden" name="planId" value="${q.planId||""}">
  <div class="field"><label>Tipo de entrenamiento</label><div class="run-category-picker">${RUN_CATEGORIES.map(v=>`<label class="run-category-choice"><input type="radio" name="category" value="${v}" ${cat===v?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${q.date||new Date().toISOString().slice(0,10)}"></div>
- <input type="hidden" name="type" value="${cat}">
- <div class="run-auto-title"><div class="run-auto-title-icon">🏃</div><div><strong>${cat}</strong><small>El nombre se genera automáticamente según el tipo de entrenamiento.</small></div></div>
+ <div class="field"><label>Nombre</label><input name="type" value="${q.type||cat}" placeholder="Ej. Rodaje Z2 suave"></div>
  <div class="two"><div class="field"><label>Distancia total (km)</label><input name="distance" type="number" step=".01" required value="${q.distance??""}"></div><div class="field"><label>Tiempo total</label><input name="time" required value="${q.time||""}" placeholder="47:35"></div></div>
  <div class="field"><label>Ritmo medio</label><input name="pace" id="runPaceField" value="${q.pace||""}" placeholder="Ej. 5:40"></div>
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
  <div id="runDynamicFields"></div>
  <div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div>
- <details class="advanced-metrics"><summary><span>Datos Garmin avanzados</span><small>Training Effect, Stamina, potencia, técnica y altitud</small></summary>
- <div class="advanced-group"><h4><span>⏱️ Ritmo y tiempo</span><button type="button" class="advanced-help" onclick="showMetricHelp('pace')">i</button></h4>
- <div class="two"><div class="field"><label>Tiempo en movimiento</label><input name="movingTime" value="${q.movingTime||""}" placeholder="49:36"></div><div class="field"><label>Tiempo transcurrido</label><input name="elapsedTime" value="${q.elapsedTime||""}" placeholder="49:38"></div></div>
- <div class="two"><div class="field"><label>Ritmo en movimiento</label><input name="movingPace" value="${q.movingPace||""}" placeholder="6:12"></div><div class="field"><label>Ritmo adaptado a pendiente</label><input name="gradeAdjustedPace" value="${q.gradeAdjustedPace||""}" placeholder="6:09"></div></div>
- <div class="two"><div class="field"><label>Ritmo óptimo</label><input name="bestPace" value="${q.bestPace||""}" placeholder="5:13"></div><div class="field"><label>Velocidad máxima (km/h)</label><input name="maxSpeed" type="number" step=".1" value="${q.maxSpeed??""}"></div></div></div>
-
- <div class="advanced-group"><h4><span>⚡ Training Effect</span><button type="button" class="advanced-help" onclick="showMetricHelp('effect')">i</button></h4>
- <div class="field"><label>Beneficio principal</label><input name="primaryBenefit" value="${q.primaryBenefit||""}" placeholder="Base (Aeróbica baja)"></div>
- <div class="two"><div class="field"><label>Efecto aeróbico</label><input name="aerobicEffect" type="number" step=".1" value="${q.aerobicEffect??""}"></div><div class="field"><label>Efecto anaeróbico</label><input name="anaerobicEffect" type="number" step=".1" value="${q.anaerobicEffect??""}"></div></div>
- <div class="field"><label>Carga de ejercicio</label><input name="exerciseLoad" type="number" step=".1" value="${q.exerciseLoad??""}"></div></div>
-
- <div class="advanced-group"><h4><span>🫀 Stamina</span><button type="button" class="advanced-help" onclick="showMetricHelp('stamina')">i</button></h4>
- <div class="three"><div class="field"><label>Stamina inicial (%)</label><input name="staminaInitial" type="number" value="${q.staminaInitial??""}"></div><div class="field"><label>Stamina final (%)</label><input name="staminaFinal" type="number" value="${q.staminaFinal??""}"></div><div class="field"><label>Stamina mínima (%)</label><input name="staminaMin" type="number" value="${q.staminaMin??""}"></div></div></div>
-
- <div class="advanced-group"><h4><span>⚡ Potencia</span><button type="button" class="advanced-help" onclick="showMetricHelp('power')">i</button></h4>
- <div class="two"><div class="field"><label>Potencia media (W)</label><input name="avgPower" type="number" value="${q.avgPower??""}"></div><div class="field"><label>Potencia máxima (W)</label><input name="maxPower" type="number" value="${q.maxPower??""}"></div></div></div>
-
- <div class="advanced-group"><h4><span>👣 Dinámica de carrera</span><button type="button" class="advanced-help" onclick="showMetricHelp('dynamics')">i</button></h4>
- <div class="two"><div class="field"><label>Cadencia máxima (ppm)</label><input name="maxCadence" type="number" value="${q.maxCadence??""}"></div><div class="field"><label>Zancada media (m)</label><input name="strideLength" type="number" step=".01" value="${q.strideLength??""}"></div></div>
- <div class="two"><div class="field"><label>Ratio vertical (%)</label><input name="verticalRatio" type="number" step=".1" value="${q.verticalRatio??""}"></div><div class="field"><label>Oscilación vertical (cm)</label><input name="verticalOscillation" type="number" step=".1" value="${q.verticalOscillation??""}"></div></div>
- <div class="field"><label>Tiempo de contacto con el suelo (ms)</label><input name="groundContactTime" type="number" value="${q.groundContactTime??""}"></div></div>
-
- <div class="advanced-group"><h4><span>⛰️ Altitud e impacto</span><button type="button" class="advanced-help" onclick="showMetricHelp('altitude')">i</button></h4>
+ <details><summary>Datos Garmin avanzados</summary>
+ <div class="two"><div class="field"><label>Tiempo en movimiento</label><input name="movingTime" value="${q.movingTime||""}"></div><div class="field"><label>Ritmo óptimo</label><input name="bestPace" value="${q.bestPace||""}"></div></div>
+ <div class="two"><div class="field"><label>Carga de ejercicio</label><input name="exerciseLoad" type="number" step=".1" value="${q.exerciseLoad??""}"></div><div class="field"><label>Efecto aeróbico</label><input name="aerobicEffect" type="number" step=".1" value="${q.aerobicEffect??""}"></div></div>
+ <div class="two"><div class="field"><label>Potencia media (W)</label><input name="avgPower" type="number" value="${q.avgPower??""}"></div><div class="field"><label>Potencia máxima (W)</label><input name="maxPower" type="number" value="${q.maxPower??""}"></div></div>
+ <div class="two"><div class="field"><label>Cadencia máxima</label><input name="maxCadence" type="number" value="${q.maxCadence??""}"></div><div class="field"><label>Zancada media (m)</label><input name="strideLength" type="number" step=".01" value="${q.strideLength??""}"></div></div>
  <div class="two"><div class="field"><label>Ascenso total (m)</label><input name="ascent" type="number" value="${q.ascent??""}"></div><div class="field"><label>Descenso total (m)</label><input name="descent" type="number" value="${q.descent??""}"></div></div>
- <div class="two"><div class="field"><label>Altitud mínima (m)</label><input name="minAltitude" type="number" value="${q.minAltitude??""}"></div><div class="field"><label>Altitud máxima (m)</label><input name="maxAltitude" type="number" value="${q.maxAltitude??""}"></div></div>
- <div class="field"><label>Carga de impacto (km)</label><input name="impactLoad" type="number" step=".01" value="${q.impactLoad??""}"></div></div>
-
- <div class="advanced-group"><h4><span>🔥 Nutrición e hidratación</span><button type="button" class="advanced-help" onclick="showMetricHelp('nutrition')">i</button></h4>
- <div class="two"><div class="field"><label>Calorías activas</label><input name="activeCalories" type="number" value="${q.activeCalories??""}"></div><div class="field"><label>Calorías en reposo</label><input name="restingCalories" type="number" value="${q.restingCalories??""}"></div></div>
- <div class="two"><div class="field"><label>Calorías totales</label><input name="totalCalories" type="number" value="${q.totalCalories??""}"></div><div class="field"><label>Pérdida de líquidos (ml)</label><input name="fluidLoss" type="number" value="${q.fluidLoss??""}"></div></div></div>
+ <div class="two"><div class="field"><label>Calorías totales</label><input name="totalCalories" type="number" value="${q.totalCalories??""}"></div><div class="field"><label>Pérdida líquidos (ml)</label><input name="fluidLoss" type="number" value="${q.fluidLoss??""}"></div></div>
  </details>
  <div class="field"><label>Sensaciones</label><div class="feeling-grid">${["Muy bien","Bien","Normal","Duro","Muy duro"].map(v=>`<label class="feeling-choice"><input type="radio" name="feeling" value="${v}" ${q.feeling===v||(!q.feeling&&v==="Normal")?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
- <details open><summary>Material utilizado</summary><div class="field"><label>Zapatillas</label><div class="shoe-picker"><input type="hidden" name="shoes" id="selectedShoeInput" value="${q.shoes||"ASICS Gel-Nimbus 28"}"><button type="button" class="shoe-current" id="shoeCurrentButton" onclick="toggleShoeLibrary()"><img id="shoeCurrentImage" alt=""><span class="shoe-current-copy"><strong id="shoeCurrentName"></strong><small id="shoeCurrentMeta">Toca para elegir otra zapatilla</small></span><span class="shoe-current-change">Cambiar</span></button><div class="shoe-library-panel" id="shoeLibraryPanel" hidden><input class="shoe-search" id="shoeSearch" placeholder="Buscar marca o modelo…" oninput="renderShoeLibrary(this.value)"><div id="shoeLibraryContent"></div></div></div></div></details>
+ <details open><summary>Material utilizado</summary><div class="field"><label>Zapatillas</label><select name="shoes"><option value="Adidas Adizero EVO SL" ${q.shoes==="Adidas Adizero EVO SL"?"selected":""}>Adidas Adizero EVO SL</option><option value="ASICS Gel-Nimbus 28" ${(!q.shoes||q.shoes==="ASICS Gel-Nimbus 28")?"selected":""}>ASICS Gel-Nimbus 28</option><option value="Sin especificar" ${q.shoes==="Sin especificar"?"selected":""}>Sin especificar</option></select></div></details>
  <div class="field"><label>Notas</label><textarea name="notes">${q.notes||""}</textarea></div>`}},
  gym:{title:"sesión de gimnasio",html:x=>`
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||new Date().toISOString().slice(0,10)}"></div>
@@ -3603,15 +3428,9 @@ const defs={
  <div class="two"><div class="field"><label>Tiempo oficial</label><input name="result" value="${x?.result||""}" placeholder="Ej. 49:55"></div><div class="field"><label>Puesto</label><input name="position" value="${x?.position||""}" placeholder="Ej. 36"></div></div>
  <div class="field"><label>Notas</label><textarea name="notes">${x?.notes||""}</textarea></div>`},
  plan:{title:"sesión planificada",html:x=>`
- <div class="plan-mode-switch">
-   <button type="button" class="plan-mode active" onclick="setPlanMode('planned')"><b>📅 Planificar</b><small>Crear una sesión futura</small></button>
-   <button type="button" class="plan-mode" onclick="openCompletedRunFlow()"><b>🏃 Registrar realizado</b><small>Garmin, manual o capturas</small></button>
- </div>
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${x?.date||window.pendingPlanDate||new Date().toISOString().slice(0,10)}"></div>
- <div class="field"><label>Deporte</label><select name="sport" id="planSportSelect" onchange="syncPlanFields()">${["Running","Gimnasio","Natación","Pádel","Descanso","Otro"].map(v=>`<option ${x?.sport===v?"selected":""}>${v}</option>`).join("")}</select></div>
- <div id="planRunningType" class="field"><label>Tipo de entrenamiento</label><div class="run-category-picker">${RUN_CATEGORIES.map(v=>`<label class="run-category-choice"><input type="radio" name="planCategory" value="${v}" ${(x?.title||'').toLowerCase().includes(v.toLowerCase())||(!x?.title&&v==='Zona 2')?"checked":""} onchange="syncPlanFields()"><span>${v}</span></label>`).join("")}</div></div>
- <input type="hidden" name="title" id="planAutoTitle" value="${x?.title||'Rodaje Z2'}">
- <div class="plan-auto-name"><small>SESIÓN</small><strong id="planAutoTitlePreview">${x?.title||'Rodaje Z2'}</strong><span>El nombre se genera automáticamente.</span></div>
+ <div class="field"><label>Deporte</label><select name="sport">${["Running","Gimnasio","Natación","Pádel","Descanso","Otro"].map(v=>`<option ${x?.sport===v?"selected":""}>${v}</option>`).join("")}</select></div>
+ <div class="field"><label>Entrenamiento</label><input name="title" required value="${x?.title||""}" placeholder="Ej. Rodaje Z2"></div>
  <div class="two"><div class="field"><label>Distancia prevista (km)</label><input name="distance" type="number" step=".1" value="${x?.distance??0}"></div><div class="field"><label>Duración prevista (min)</label><input name="duration" type="number" value="${x?.duration??45}"></div></div>
  <div class="field"><label>Intensidad</label><select name="intensity">${["Muy suave","Suave","Moderada","Alta","Descanso"].map(v=>`<option ${x?.intensity===v?"selected":""}>${v}</option>`).join("")}</select></div>
  <div class="field"><label>Estado</label><select name="status">${["pending","done","skipped","moved"].map(v=>`<option value="${v}" ${x?.status===v?"selected":""}>${statusLabel(v)}</option>`).join("")}</select></div>
@@ -3635,26 +3454,6 @@ function renderRunDynamicFields(category,q={}){
  else box.innerHTML="";
 }
 
-window.setPlanMode=()=>{};
-window.syncPlanFields=()=>{
- const sport=document.getElementById("planSportSelect")?.value||"Running";
- const types=document.getElementById("planRunningType");
- if(types)types.style.display=sport==="Running"?"block":"none";
- let title=sport;
- if(sport==="Running"){const cat=document.querySelector('input[name="planCategory"]:checked')?.value||"Zona 2";title=cat==="Zona 2"?"Rodaje Z2":cat;}
- if(sport==="Gimnasio")title="Sesión de gimnasio";if(sport==="Descanso")title="Descanso";
- const hidden=document.getElementById("planAutoTitle"),preview=document.getElementById("planAutoTitlePreview");if(hidden)hidden.value=title;if(preview)preview.textContent=title;
-};
-window.openCompletedRunFlow=()=>{document.getElementById("modal")?.close();setTimeout(()=>openForm("run"),120)};
-window.launchGarminFromRunForm=()=>{document.getElementById("modal")?.close();setView("running");setTimeout(()=>document.getElementById("garminFileInput")?.click(),180)};
-function showRegisterSourceChooser(){
- let d=document.getElementById("registerSourceChooser");
- if(!d){d=document.createElement("dialog");d.id="registerSourceChooser";d.className="add-workout-dialog";d.innerHTML=`<div class="add-workout-sheet"><button class="sheet-close" type="button" onclick="this.closest('dialog').close()">×</button><div class="kicker">REGISTRAR ENTRENAMIENTO</div><h2>¿Cómo quieres añadirlo?</h2><button type="button" class="action-choice primary-choice" onclick="document.getElementById('registerSourceChooser').close();setView('running');setTimeout(()=>document.getElementById('garminFileInput')?.click(),180)"><span>📷</span><div><b>Importar desde Garmin</b><small>Selecciona varias capturas de la misma actividad</small></div></button><button type="button" class="action-choice" onclick="document.getElementById('registerSourceChooser').close();openForm('run')"><span>✍️</span><div><b>Introducir manualmente</b><small>Rellena o corrige los datos del entrenamiento</small></div></button><div class="register-coming-soon"><span>⌚ Amazfit</span><span> Apple Watch</span><small>Próximamente</small></div></div>`;document.body.appendChild(d)}d.showModal();
-}
-function showAddWorkoutChooser(){
- let d=document.getElementById("addWorkoutChooser");
- if(!d){d=document.createElement("dialog");d.id="addWorkoutChooser";d.className="add-workout-dialog";d.innerHTML=`<div class="add-workout-sheet"><button class="sheet-close" type="button" onclick="this.closest('dialog').close()">×</button><div class="kicker">NUEVA ACCIÓN</div><h2>¿Qué quieres hacer?</h2><button type="button" class="action-choice" onclick="document.getElementById('addWorkoutChooser').close();openForm('plan')"><span>📅</span><div><b>Planificar entrenamiento</b><small>Programa una sesión futura en el mapa</small></div></button><button type="button" class="action-choice primary-choice" onclick="document.getElementById('addWorkoutChooser').close();showRegisterSourceChooser()"><span>🏃</span><div><b>Registrar entrenamiento</b><small>Guarda una actividad que ya has realizado</small></div></button></div>`;document.body.appendChild(d)}d.showModal();
-}
 function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDate;
  currentType=type;editingId=id;const item=id?arr(type).find(x=>x.id===id):(type==="run"&&window.quickRunPreset?window.quickRunPreset:(type==="gym"&&window.gymRoutinePreset?window.gymRoutinePreset:null));
  $("#modalTitle").textContent=(id?"Editar ":"Añadir ")+defs[type].title;
@@ -3666,16 +3465,10 @@ function openForm(type,id=null,presetDate=null){window.pendingPlanDate=presetDat
    window.gymRoutinePreset=null;
  }
  $("#modal").showModal();
- if(type==="plan")setTimeout(syncPlanFields,0);
  if(type==="run"){
    const q=item||{};
    renderRunDynamicFields(q.category||inferRunCategory(q),q);
-   document.querySelectorAll('input[name="category"]').forEach(r=>r.addEventListener("change",()=>{
-     renderRunDynamicFields(r.value,q);
-     const hidden=document.querySelector('input[name="type"]');if(hidden)hidden.value=r.value;
-     const title=document.querySelector('.run-auto-title strong');if(title)title.textContent=r.value;
-   }));
-   setTimeout(()=>{updateSelectedShoe();renderShoeLibrary("")},0);
+   document.querySelectorAll('input[name="category"]').forEach(r=>r.addEventListener("change",()=>renderRunDynamicFields(r.value,q)));
    window.quickRunPreset=null;
  }
 }
@@ -3785,23 +3578,14 @@ window.toggleSetDone=(ei,si)=>{
 window.copyLastSet=ei=>{const sets=gymDraftExercises[ei].sets;if(!sets.length)sets.push({weight:0,reps:10,done:false});else{const c=structuredClone(sets[sets.length-1]);c.done=false;sets.push(c)}renderGymExerciseEditor()}
 window.addSet=ei=>{gymDraftExercises[ei].sets.push({weight:0,reps:10,done:false});renderGymExerciseEditor()}
 
-document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>b.dataset.add==="plan"?showAddWorkoutChooser():openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;window.activeGymPlanId=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));$("#closeModal").onclick=()=>{window.quickRunPreset=null;window.activeGymPlanId=null;clearInterval(restTimerId);restTimerId=null;restSeconds=0;$("#modal").close()};
 window.editItem=(t,id)=>openForm(t,id);
 window.removeItem=(t,id)=>{if(!confirm("¿Eliminar este registro?"))return;if(t==="run")data.plan=data.plan.map(p=>p.actualRunId===id?{...p,status:"pending",actualRunId:""}:p);const k=t==="run"?"runs":t==="gym"?"gym":t==="gear"?"gear":t==="plan"?"plan":"races";data[k]=data[k].filter(x=>x.id!==id);save()};
 $("#form").onsubmit=e=>{
  e.preventDefault();const o=Object.fromEntries(new FormData(e.currentTarget));o.id=editingId||uid();
  if(currentType==="run"){
-   const errors=[];
-   if(!o.date)errors.push("Selecciona la fecha.");
-   if(!(Number(o.distance)>0))errors.push("La distancia debe ser mayor que 0 km.");
-   if(!/^\d{1,3}:[0-5]\d(?::[0-5]\d)?$/.test(String(o.time||"").trim()))errors.push("El tiempo debe tener formato mm:ss o hh:mm:ss.");
-   if(o.pace&&!/^\d{1,2}:[0-5]\d$/.test(String(o.pace).trim()))errors.push("El ritmo debe tener formato min:ss.");
-   if(errors.length){alert("Revisa estos datos antes de guardar:\n\n"+errors.join("\n"));return;}
- }
- if(currentType==="run"){
    o.category=o.category||inferRunCategory(o);
-   o.type=o.category;
-   ["distance","avgHr","maxHr","avgCadence","temperature","officialDistance","z2Limit","exerciseLoad","aerobicEffect","anaerobicEffect","avgPower","maxPower","maxCadence","strideLength","verticalRatio","verticalOscillation","groundContactTime","staminaInitial","staminaFinal","staminaMin","avgSpeed","maxSpeed","impactLoad","ascent","descent","minAltitude","maxAltitude","activeCalories","restingCalories","totalCalories","fluidLoss"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
+   ["distance","avgHr","maxHr","avgCadence","temperature","officialDistance","z2Limit","exerciseLoad","aerobicEffect","avgPower","maxPower","maxCadence","strideLength","ascent","descent","totalCalories","fluidLoss"].forEach(k=>{if(k in o)o[k]=Number(o[k])||0});
    if(o.category==="Series")o.intervals=[...document.querySelectorAll("#intervalRows .split-row")].map(row=>({distance:Number(row.querySelector('[data-int="distance"]').value)||0,time:row.querySelector('[data-int="time"]').value.trim()})).filter(x=>x.distance||x.time);
    o.distance=Number(o.distance);o.pace=String(o.pace||"").trim();
    if(!o.planId){
