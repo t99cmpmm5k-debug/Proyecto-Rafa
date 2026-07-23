@@ -3322,7 +3322,14 @@ function updateFab(){}
 
 
 function normalizeOcrText(raw){
- return String(raw||"").replace(/\u00a0/g," ").replace(/[|]/g,"I").replace(/[“”]/g,'"').replace(/\r/g,"\n");
+ return String(raw||"")
+  .replace(/\u00a0/g," ").replace(/[|]/g,"I").replace(/[“”]/g,'"').replace(/\r/g,"\n")
+  .replace(/[‐‑‒–—]/g,"-")
+  .replace(/cardlaca/gi,"cardiaca").replace(/cardíaca/gi,"cardiaca")
+  .replace(/oscilaci[o0]n/gi,"oscilacion").replace(/m[aá]x\.?/gi,"max")
+  .replace(/m[ií]n\.?/gi,"min").replace(/calorlas/gi,"calorias")
+  .replace(/ritrno/gi,"ritmo").replace(/rltmo/gi,"ritmo")
+  .replace(/potenclal/gi,"potencial").replace(/cadencia rnedia/gi,"cadencia media");
 }
 function parseDecimal(value){
  const cleaned=String(value||"").replace(/\s/g,"").replace(",",".").replace(/[^\d.-]/g,"");
@@ -3334,13 +3341,53 @@ function normalizeTime(value){
  if(p.length===3)return `${Number(p[0])}:${String(Number(p[1])).padStart(2,"0")}:${String(Number(p[2])).padStart(2,"0")}`;
  return "";
 }
+
+async function preprocessOcrImage(file,mode="contrast"){
+ const bitmap=await createImageBitmap(file);
+ const maxWidth=1800;
+ const scale=Math.max(1.4,Math.min(2.4,maxWidth/bitmap.width));
+ const canvas=document.createElement("canvas");
+ canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
+ const ctx=canvas.getContext("2d",{willReadFrequently:true});
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+ ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
+ const img=ctx.getImageData(0,0,canvas.width,canvas.height),d=img.data;
+ let sum=0;for(let i=0;i<d.length;i+=4)sum+=(d[i]+d[i+1]+d[i+2])/3;
+ const mean=sum/(d.length/4),dark=mean<125;
+ for(let i=0;i<d.length;i+=4){
+  let y=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];
+  if(dark)y=255-y;
+  if(mode==="binary")y=y>145?255:0;
+  else y=Math.max(0,Math.min(255,(y-128)*1.75+128));
+  d[i]=d[i+1]=d[i+2]=y;d[i+3]=255;
+ }
+ ctx.putImageData(img,0,0);
+ return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("No se pudo preparar la captura")),"image/png"));
+}
+async function recognizeSportsScreenshot(file,index,total,statusText,progress){
+ const variants=[await preprocessOcrImage(file,"contrast"),await preprocessOcrImage(file,"binary")];
+ const texts=[];
+ for(let pass=0;pass<variants.length;pass++){
+  const result=await Tesseract.recognize(variants[pass],"spa+eng",{
+   logger:m=>{if(m.status==="recognizing text"){
+    const local=(pass+(m.progress||0))/variants.length;
+    const pct=((index+local)/total)*100;progress.style.width=`${Math.max(4,Math.round(pct))}%`;
+    statusText.innerHTML=`<strong>Analizando captura ${index+1} de ${total} · pasada ${pass+1}/2…</strong> ${Math.round((m.progress||0)*100)}%`;
+   }},
+   tessedit_pageseg_mode:6,preserve_interword_spaces:"1"
+  });
+  texts.push(result.data.text||"");
+ }
+ return texts.join("\n");
+}
+
 let ocrLabMode="basic";
 let ocrLabLastResult=null;
 let ocrLabRawTexts=[];
 function detectWatchBrand(raw){
  const t=(raw||"").toLowerCase();
  const scores={
-  Garmin:["garmin","training effect","stamina","beneficio principal","carga de ejercicio"],
+  Garmin:["garmin","training effect","stamina","beneficio principal","carga de ejercicio","dinamica de carrera","ritmo optimo","carga de impacto","estadisticas"],
   Amazfit:["zepp","amazfit","pai","zepp coach","efecto del entrenamiento"],
   "Apple Watch":["apple watch","anillos de actividad","fitness","tiempo en zona","potencia media de carrera"]
  };
@@ -3377,19 +3424,20 @@ function parseGarminScreenshot(raw){
  else if(flat.includes("carrera")||flat.includes("race")){category="Carrera";type="Carrera"}
  return {
   date:parseGarminDate(text),type,category,
-  distance:parseDecimal(value(["distancia real","distancia recorrida","distancia"],/(\d{1,3}[.,]\d{1,2})\s*(?:km)?/i,2)),
+  distance:parseDecimal(value(["distancia real","distancia recorrida","distancia"],/(\d{1,3}[.,]\d{1,2})\s*(?:km)?/i,3)),
   time:normalizeTime(value(["tiempo total"],timeRe,2)),movingTime:normalizeTime(value(["tiempo en movimiento"],timeRe,2)),elapsedTime:normalizeTime(value(["tiempo transcurrido"],timeRe,2)),
-  pace:normalizeTime(value(["ritmo medio"],paceRe,1)),movingPace:normalizeTime(value(["ritmo medio en movimiento"],paceRe,1)),gradeAdjustedPace:normalizeTime(value(["ritmo medio adapt pend","ritmo medio adapt"],paceRe,1)),bestPace:normalizeTime(value(["ritmo optimo","ritmo óptimo"],paceRe,1)),
+  pace:normalizeTime(value(["ritmo medio"],paceRe,2)),movingPace:normalizeTime(value(["ritmo medio en movimiento","ritmo medio movim"],paceRe,2)),gradeAdjustedPace:normalizeTime(value(["ritmo medio adapt pend","ritmo medio adapt","adapt pend"],paceRe,2)),bestPace:normalizeTime(value(["ritmo optimo","mejor ritmo"],paceRe,2)),
   avgSpeed:parseDecimal(value(["velocidad media"],numberRe,1)),maxSpeed:parseDecimal(value(["velocidad maxima","velocidad máxima"],numberRe,1)),
-  avgHr:parseDecimal(value(["frecuencia cardiaca media","frec. cardiaca media","fc media"],numberRe,2)),maxHr:parseDecimal(value(["frec. cardiaca max","frecuencia cardiaca max","fc maxima"],numberRe,2)),
-  staminaInitial:parseDecimal(value(["potencial inicial"],numberRe,1)),staminaFinal:parseDecimal(value(["potencial final"],numberRe,1)),staminaMin:parseDecimal(value(["stamina min"],numberRe,1)),
+  avgHr:parseDecimal(value(["frecuencia cardiaca media","frec cardiaca media","fc media"],numberRe,3)),maxHr:parseDecimal(value(["frec cardiaca max","frecuencia cardiaca max","fc maxima"],numberRe,3)),
+  staminaInitial:parseDecimal(value(["potencial inicial","stamina inicial"],numberRe,2)),staminaFinal:parseDecimal(value(["potencial final","stamina final"],numberRe,2)),staminaMin:parseDecimal(value(["stamina min","stamina minima"],numberRe,2)),
   primaryBenefit:value(["beneficio principal"],/(base\s*\([^\n]+|aer[oó]bica[^\n]+|tempo|umbral|vo2[^\n]+)/i,2),
   aerobicEffect:parseDecimal(value(["aerobica","aeróbica"],numberRe,1)),anaerobicEffect:parseDecimal(value(["anaerobico","anaeróbico"],numberRe,1)),exerciseLoad:parseDecimal(value(["carga de ejercicio"],numberRe,1)),
   avgPower:parseDecimal(value(["potencia media"],numberRe,1)),maxPower:parseDecimal(value(["potencia maxima","potencia máxima"],numberRe,1)),
-  avgCadence:parseDecimal(value(["cadencia media de carrera","cadencia media"],numberRe,1)),maxCadence:parseDecimal(value(["cadencia max. de carrera","cadencia maxima de carrera"],numberRe,1)),
+  avgCadence:parseDecimal(value(["cadencia media de carrera","cadencia media"],numberRe,2)),maxCadence:parseDecimal(value(["cadencia max de carrera","cadencia maxima de carrera"],numberRe,2)),
   strideLength:parseDecimal(value(["longitud media de zancada"],numberRe,1)),verticalRatio:parseDecimal(value(["ratio vertical media"],numberRe,1)),verticalOscillation:parseDecimal(value(["oscilacion vertical media","oscilación vertical media"],numberRe,1)),groundContactTime:parseDecimal(value(["tiempo medio cont. suelo","tiempo medio contacto suelo"],numberRe,1)),
   impactLoad:parseDecimal(value(["carga de impacto"],numberRe,1)),ascent:parseDecimal(value(["ascenso total"],numberRe,1)),descent:parseDecimal(value(["descenso total"],numberRe,1)),minAltitude:parseDecimal(value(["altura minima","altura mínima"],numberRe,1)),maxAltitude:parseDecimal(value(["altura maxima","altura máxima"],numberRe,1)),
-  restingCalories:parseDecimal(value(["calorias en reposo","calorías en reposo"],numberRe,1)),activeCalories:parseDecimal(value(["calorias activas","calorías activas"],numberRe,1)),totalCalories:parseDecimal(value(["total de calorias quemadas","total de calorías quemadas"],numberRe,1)),fluidLoss:parseDecimal(value(["perdida de liquidos estimada","pérdida de líquidos estimada"],numberRe,1)),
+  temperature:parseDecimal(value(["temperatura media","temperatura"],/(-?\d{1,2}(?:[.,]\d)?)\s*(?:°|º)?c?/i,2)),
+  restingCalories:parseDecimal(value(["calorias en reposo"],numberRe,2)),activeCalories:parseDecimal(value(["calorias activas"],numberRe,2)),totalCalories:parseDecimal(value(["total de calorias quemadas","calorias totales"],numberRe,2)),fluidLoss:parseDecimal(value(["perdida de liquidos estimada","pérdida de líquidos estimada"],numberRe,1)),
   avgRespiration:parseDecimal(value(["frecuencia respiratoria media"],numberRe,2)),minRespiration:parseDecimal(value(["frecuencia respiratoria minima","frecuencia respiratoria mínima"],numberRe,1)),
   notes:"Importado desde varias capturas de Garmin"
  };
@@ -3415,11 +3463,11 @@ async function importGarminImages(files){
   const parts=[];ocrLabRawTexts=[];
   for(let i=0;i<files.length;i++){
    statusText.innerHTML=`<strong>Leyendo captura ${i+1} de ${files.length}…</strong>`;
-   const result=await Tesseract.recognize(files[i],"spa+eng",{logger:m=>{if(m.status==="recognizing text"){const total=((i+(m.progress||0))/files.length)*100;progress.style.width=`${Math.max(4,Math.round(total))}%`;statusText.innerHTML=`<strong>Analizando captura ${i+1} de ${files.length}…</strong> ${Math.round((m.progress||0)*100)}%`}}});
-   ocrLabRawTexts.push(result.data.text||"");parts.push(parseGarminScreenshot(result.data.text));
+   const recognized=await recognizeSportsScreenshot(files[i],i,files.length,statusText,progress);
+   ocrLabRawTexts.push(recognized);parts.push(parseGarminScreenshot(recognized));
   }
   const parsed=mergeGarminData(parts),brand=detectWatchBrand(ocrLabRawTexts.join("\n"));parsed.detectedBrand=brand.brand;parsed.brandConfidence=brand.confidence;parsed.sourceFiles=files.length;
-  progress.style.width="100%";renderGarminDetected(parsed);statusText.innerHTML=`<strong>Prueba completada.</strong> Revisa los datos detectados abajo.`;
+  progress.style.width="100%";renderGarminDetected(parsed);statusText.innerHTML=`<strong>Prueba completada.</strong> Se aplicaron dos pasadas optimizadas para capturas oscuras. Revisa los datos detectados abajo.`;
  }catch(err){console.error(err);progress.style.width="0";statusText.innerHTML=`<strong>No se pudieron leer las capturas.</strong> ${err.message||"Prueba de nuevo."}`}
 }
 
