@@ -792,81 +792,200 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 .plan-import-row span,.plan-import-row strong{overflow-wrap:anywhere;word-break:break-word}
 #planImportPreview{overflow-x:hidden}
 
-/* ===== V28 · PLAN PREMIUM ===== */
-#plan{padding-bottom:110px}
-.v28-plan-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
-.v28-plan-brand{display:flex;align-items:center;gap:12px}
-.v28-plan-logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(0,225,255,.35);background:linear-gradient(145deg,rgba(0,218,255,.16),rgba(0,73,118,.12));color:#13e4ff;font-weight:1000;font-size:23px;box-shadow:0 0 28px rgba(0,209,255,.12)}
-.v28-plan-title h2{margin:0;font-size:25px;letter-spacing:.02em}
-.v28-plan-title p{margin:4px 0 0;color:#91a8bd;font-size:12px}
-.v28-head-actions{display:flex;gap:8px}
-.v28-icon-btn{width:42px;height:42px;border:1px solid rgba(94,168,208,.28);border-radius:13px;background:rgba(7,24,42,.78);color:#1fe4ff;display:grid;place-items:center;font-size:20px;cursor:pointer}
-.v28-week-switch{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:10px;padding:12px;border:1px solid rgba(80,166,215,.25);border-radius:18px;background:linear-gradient(145deg,rgba(8,31,54,.92),rgba(4,18,34,.94));box-shadow:0 14px 38px rgba(0,0,0,.22);margin-bottom:14px}
-.v28-week-switch button{width:40px;height:40px;border:0;border-radius:12px;background:rgba(7,27,46,.9);color:#23dfff;font-size:25px;cursor:pointer}
-.v28-week-center{text-align:center}
-.v28-week-center small{display:block;color:#8ea5ba;font-size:10px;text-transform:uppercase;letter-spacing:.12em}
-.v28-week-center strong{display:block;margin-top:4px;font-size:17px}
-.v28-progress-track{height:4px;border-radius:999px;background:#10283c;margin:9px auto 0;max-width:180px;overflow:hidden}
-.v28-progress-track span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00d8ff,#14f5d0);box-shadow:0 0 12px rgba(0,224,255,.6)}
-.v28-days{display:grid;grid-template-columns:repeat(7,minmax(54px,1fr));gap:7px;margin:13px 0 15px;overflow-x:auto;padding-bottom:2px}
-.v28-day{min-width:54px;padding:10px 5px 9px;border-radius:16px;border:1px solid rgba(91,145,183,.2);background:linear-gradient(180deg,rgba(8,25,43,.95),rgba(4,15,29,.95));text-align:center;cursor:pointer;transition:.2s ease;color:#91a5b8}
-.v28-day:hover{transform:translateY(-2px)}
-.v28-day.active{color:#eaffff;border-color:#06dfff;background:linear-gradient(180deg,rgba(0,178,224,.24),rgba(0,69,113,.28));box-shadow:0 0 0 1px rgba(0,224,255,.15),0 12px 28px rgba(0,180,224,.13)}
-.v28-day.done{border-color:rgba(52,221,125,.44)}
-.v28-day.long{border-color:rgba(255,191,35,.38)}
-.v28-day b{display:block;font-size:11px;margin-bottom:5px}
-.v28-day strong{display:block;font-size:19px}
-.v28-day i{display:block;width:6px;height:6px;border-radius:50%;background:#64778a;margin:8px auto 0}
-.v28-day.active i{background:#1ce8ff;box-shadow:0 0 10px #1ce8ff}
-.v28-day.done i{background:#41e781}.v28-day.long i{background:#ffc21c}
-.v28-session-card{position:relative;overflow:hidden;border:1px solid rgba(50,166,221,.3);border-radius:23px;background:radial-gradient(circle at 85% 5%,rgba(0,218,255,.13),transparent 34%),linear-gradient(145deg,#082441,#061729 70%);box-shadow:0 20px 55px rgba(0,0,0,.3);margin-bottom:14px}
-.v28-session-top{display:grid;grid-template-columns:82px 1fr;min-height:124px}
-.v28-date-block{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,178,231,.16),rgba(0,71,120,.22));border-right:1px solid rgba(62,161,211,.18)}
-.v28-date-block span{font-size:11px;color:#17dfff;text-transform:uppercase;font-weight:900}
-.v28-date-block strong{font-size:42px;line-height:1;color:#1ce7ff;margin:5px 0 2px}
-.v28-date-block small{font-size:11px;color:#9db4c8}
-.v28-session-main{padding:18px 17px 14px}
-.v28-session-label{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.v28-session-label h3{margin:0;font-size:22px}
-.v28-session-label p{margin:5px 0 0;color:#18e3ff;font-weight:850}
-.v28-intensity{border:1px solid rgba(106,162,196,.35);border-radius:10px;padding:7px 9px;color:#c2d1df;font-size:11px;white-space:nowrap}
-.v28-coach-copy{color:#9bb0c3;font-size:13px;line-height:1.45;margin:13px 0 0}
-.v28-metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(99,158,198,.18);border-bottom:1px solid rgba(99,158,198,.18);margin:0 17px}
-.v28-metric{padding:14px 8px;text-align:center;position:relative}
-.v28-metric:not(:last-child):after{content:"";position:absolute;right:0;top:18%;height:64%;width:1px;background:rgba(94,153,193,.18)}
-.v28-metric small{display:block;color:#7f99ae;font-size:9px;text-transform:uppercase;letter-spacing:.06em}
-.v28-metric strong{display:block;margin-top:5px;font-size:16px;color:#f5fbff}
-.v28-detail-btn{width:calc(100% - 34px);margin:15px 17px 17px;border:0;border-radius:12px;padding:13px;background:linear-gradient(90deg,#00b8ef,#14d6f4);color:#00111e;font-weight:1000;letter-spacing:.03em;cursor:pointer}
-.v28-empty{padding:34px 20px;text-align:center;color:#91a8bd}
-.v28-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.v28-quick{display:flex;align-items:center;gap:11px;padding:13px;border:1px solid rgba(77,145,188,.25);border-radius:15px;background:linear-gradient(145deg,rgba(6,28,48,.9),rgba(4,18,32,.9));cursor:pointer;color:#e8f7ff;text-align:left}
-.v28-quick b{display:block;font-size:13px}.v28-quick small{display:block;color:#879eb2;margin-top:3px;font-size:10px}
-.v28-quick-ico{font-size:23px;color:#16e2ff}
-.v28-week-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid rgba(79,150,195,.2);border-radius:18px;overflow:hidden;background:rgba(47,110,153,.15);margin-top:12px}
-.v28-week-stat{background:#06172a;padding:15px 7px;text-align:center}
-.v28-week-stat strong{display:block;font-size:17px}.v28-week-stat span{display:block;color:#849bae;font-size:9px;margin-top:5px;text-transform:uppercase}
-.v28-hidden-legacy{display:none!important}
-.v28-session-dialog{width:min(94vw,560px);max-height:90vh;padding:0;border:1px solid rgba(0,218,255,.35);border-radius:24px;background:#061426;color:#fff;box-shadow:0 30px 90px rgba(0,0,0,.7)}
-.v28-session-dialog::backdrop{background:rgba(0,5,13,.82);backdrop-filter:blur(8px)}
-.v28-dialog-head{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid rgba(83,155,197,.2)}
-.v28-dialog-body{padding:18px;overflow:auto;max-height:calc(90vh - 74px)}
-.v28-detail-hero{padding:18px;border-radius:18px;background:radial-gradient(circle at 90% 0,rgba(0,222,255,.16),transparent 38%),linear-gradient(145deg,#08233e,#06182b);border:1px solid rgba(52,160,211,.24)}
-.v28-detail-hero h2{margin:4px 0}.v28-detail-hero p{margin:5px 0 0;color:#20dcfb;font-weight:850}
-.v28-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-.v28-detail-cell{padding:13px;border-radius:14px;background:#071a2d;border:1px solid rgba(78,142,182,.18)}
-.v28-detail-cell small{display:block;color:#7f96aa;font-size:9px;text-transform:uppercase}.v28-detail-cell strong{display:block;margin-top:5px}
-.v28-timeline{margin-top:17px;padding-left:4px}
-.v28-timeline h4{color:#19defd;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-.v28-step{display:grid;grid-template-columns:20px 1fr auto;gap:10px;align-items:start;padding:9px 0;position:relative}
-.v28-step:not(:last-child):after{content:"";position:absolute;left:7px;top:28px;bottom:-7px;border-left:1px dashed rgba(25,220,253,.34)}
-.v28-step-dot{width:15px;height:15px;border-radius:50%;background:#16d9f6;box-shadow:0 0 11px rgba(22,217,246,.5)}
-.v28-step span{color:#94aabd;font-size:11px}
-.v28-start-btn{width:100%;margin-top:18px;padding:14px;border:0;border-radius:13px;background:linear-gradient(90deg,#00b9ef,#13d8f4);color:#00131e;font-weight:1000}
+
+/* ===== V30 · PLAN NEON COACH ===== */
+#plan{
+  padding-bottom:120px;
+  position:relative;
+  isolation:isolate;
+}
+#plan:before{
+  content:"";
+  position:absolute;
+  inset:-40px -20px auto;
+  height:300px;
+  background:
+    radial-gradient(circle at 25% 20%,rgba(0,231,255,.16),transparent 30%),
+    radial-gradient(circle at 78% 0%,rgba(40,104,255,.18),transparent 34%);
+  filter:blur(10px);
+  pointer-events:none;
+  z-index:-1;
+}
+.v30-shell{display:grid;gap:14px}
+.v30-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:2px 2px 0;
+}
+.v30-brand{display:flex;align-items:center;gap:12px}
+.v30-mark{
+  width:46px;height:46px;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(145deg,rgba(0,229,255,.18),rgba(0,95,188,.14));
+  border:1px solid rgba(0,229,255,.38);
+  color:#27efff;font-size:24px;font-weight:1000;
+  box-shadow:0 0 28px rgba(0,229,255,.16),inset 0 0 22px rgba(0,229,255,.05);
+}
+.v30-brand h2{margin:0;font-size:26px;letter-spacing:.02em}
+.v30-brand p{margin:3px 0 0;color:#86a3bb;font-size:12px}
+.v30-add{
+  width:46px;height:46px;border-radius:15px;border:1px solid rgba(51,160,255,.32);
+  background:linear-gradient(145deg,rgba(8,31,60,.92),rgba(4,17,35,.95));
+  color:#39edff;font-size:29px;display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+.v30-coach-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  padding:24px 20px 20px;
+  background:
+    radial-gradient(circle at 82% 8%,rgba(0,234,255,.24),transparent 28%),
+    radial-gradient(circle at 0 100%,rgba(0,93,255,.18),transparent 40%),
+    linear-gradient(145deg,#071d36,#071428 62%,#04101f);
+  border:1px solid rgba(0,207,255,.32);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.38),
+    0 0 38px rgba(0,205,255,.08),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+.v30-coach-card:after{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.035) 42%,transparent 58%);
+  pointer-events:none;
+}
+.v30-eyebrow{
+  color:#76f4ff;font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+}
+.v30-session-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:8px}
+.v30-session-name{margin:0;font-size:32px;line-height:1.04}
+.v30-session-main{margin:8px 0 0;color:#23ebff;font-size:22px;font-weight:1000}
+.v30-badge{
+  flex:none;padding:8px 10px;border-radius:999px;border:1px solid rgba(74,180,255,.36);
+  background:rgba(6,28,52,.58);color:#c8ecff;font-size:11px;font-weight:800;
+}
+.v30-coach-line{
+  margin:18px 0 0;color:#b4c5d3;line-height:1.48;font-size:13px;max-width:560px;
+}
+.v30-ring-row{
+  display:grid;grid-template-columns:92px 1fr;gap:18px;align-items:center;margin-top:20px;
+}
+.v30-ring{
+  --p:0;
+  width:92px;height:92px;border-radius:50%;
+  display:grid;place-items:center;
+  background:conic-gradient(#28f1ff calc(var(--p)*1%),rgba(31,77,109,.28) 0);
+  position:relative;
+  box-shadow:0 0 30px rgba(0,227,255,.14);
+}
+.v30-ring:before{
+  content:"";position:absolute;inset:8px;border-radius:50%;
+  background:linear-gradient(145deg,#07172a,#04101e);
+  border:1px solid rgba(91,160,201,.2);
+}
+.v30-ring strong{position:relative;font-size:21px}
+.v30-ring small{position:relative;display:block;font-size:9px;color:#7793aa;text-transform:uppercase}
+.v30-ring-copy strong{display:block;font-size:18px}
+.v30-ring-copy span{display:block;margin-top:5px;color:#819bb0;font-size:11px}
+.v30-metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:20px;
+  border:1px solid rgba(61,143,198,.2);border-radius:18px;overflow:hidden;
+  background:rgba(38,98,141,.16);
+}
+.v30-metric{background:rgba(4,18,34,.88);padding:14px 8px;text-align:center}
+.v30-metric span{display:block;color:#7891a7;font-size:9px;text-transform:uppercase;letter-spacing:.06em}
+.v30-metric strong{display:block;margin-top:5px;font-size:17px}
+.v30-start{
+  width:100%;margin-top:16px;padding:15px;border:0;border-radius:15px;
+  background:linear-gradient(90deg,#00b6ff 0%,#18efff 54%,#55f7d7 100%);
+  color:#001520;font-weight:1000;font-size:14px;letter-spacing:.04em;cursor:pointer;
+  box-shadow:0 0 28px rgba(0,218,255,.2);
+}
+.v30-week-wrap{
+  border:1px solid rgba(64,143,194,.2);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(5,24,43,.9),rgba(3,14,27,.95));
+  padding:14px;
+}
+.v30-week-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.v30-week-top button{
+  width:36px;height:36px;border-radius:12px;border:1px solid rgba(59,143,198,.22);
+  background:rgba(6,26,45,.92);color:#25e8ff;font-size:23px;cursor:pointer;
+}
+.v30-week-title{text-align:center}
+.v30-week-title small{display:block;color:#6f899f;font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+.v30-week-title strong{display:block;margin-top:4px;font-size:14px}
+.v30-days{
+  display:grid;grid-template-columns:repeat(7,minmax(46px,1fr));gap:7px;overflow-x:auto;
+}
+.v30-day{
+  min-width:48px;padding:10px 5px;border-radius:999px;border:1px solid transparent;
+  background:rgba(7,25,43,.82);color:#7891a6;text-align:center;cursor:pointer;transition:.2s ease;
+}
+.v30-day b{display:block;font-size:10px}
+.v30-day strong{display:block;font-size:17px;margin-top:3px}
+.v30-day i{display:block;width:5px;height:5px;border-radius:50%;margin:7px auto 0;background:#53687a}
+.v30-day.active{
+  color:#efffff;border-color:#1eeeff;
+  background:linear-gradient(180deg,rgba(0,214,255,.24),rgba(0,89,159,.25));
+  box-shadow:0 0 0 1px rgba(0,231,255,.1),0 0 24px rgba(0,221,255,.17);
+  transform:translateY(-2px) scale(1.04);
+}
+.v30-day.active i{background:#3af2ff;box-shadow:0 0 9px #3af2ff}
+.v30-day.done i{background:#5cf0a0}
+.v30-day.long i{background:#ffd24e}
+.v30-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.v30-action{
+  display:flex;align-items:center;gap:11px;padding:14px;border-radius:16px;
+  border:1px solid rgba(58,142,195,.22);
+  background:linear-gradient(145deg,rgba(5,25,44,.92),rgba(3,15,28,.95));
+  color:#ecf8ff;text-align:left;cursor:pointer;
+}
+.v30-action-icon{font-size:24px;color:#31eaff}
+.v30-action b{display:block;font-size:13px}
+.v30-action small{display:block;margin-top:3px;color:#7891a7;font-size:10px}
+.v30-summary{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border-radius:18px;overflow:hidden;
+  border:1px solid rgba(58,137,190,.18);background:rgba(45,102,144,.12);
+}
+.v30-summary div{background:#06172a;padding:15px 7px;text-align:center}
+.v30-summary strong{display:block;font-size:16px}
+.v30-summary span{display:block;margin-top:5px;color:#7590a6;font-size:9px;text-transform:uppercase}
+.v30-hidden{display:none!important}
+.v30-dialog{
+  width:min(94vw,580px);max-height:90vh;padding:0;border-radius:26px;
+  border:1px solid rgba(0,222,255,.34);background:#061426;color:#fff;
+  box-shadow:0 35px 100px rgba(0,0,0,.78);
+}
+.v30-dialog::backdrop{background:rgba(0,5,13,.86);backdrop-filter:blur(9px)}
+.v30-dialog-head{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid rgba(73,146,193,.2)}
+.v30-dialog-body{padding:18px;overflow:auto;max-height:calc(90vh - 76px)}
+.v30-detail-hero{
+  padding:20px;border-radius:20px;
+  background:radial-gradient(circle at 90% 0,rgba(0,229,255,.18),transparent 36%),linear-gradient(145deg,#08233f,#06172a);
+  border:1px solid rgba(48,155,209,.25);
+}
+.v30-detail-hero h2{margin:6px 0 0;font-size:27px}
+.v30-detail-hero p{margin:6px 0 0;color:#2cecff;font-weight:900}
+.v30-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.v30-detail-cell{padding:14px;border-radius:15px;background:#071a2d;border:1px solid rgba(70,139,180,.17)}
+.v30-detail-cell small{display:block;color:#7690a6;font-size:9px;text-transform:uppercase}
+.v30-detail-cell strong{display:block;margin-top:6px}
+.v30-timeline{margin-top:18px}
+.v30-timeline h4{margin:0 0 8px;color:#2ae9ff;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.v30-step{display:grid;grid-template-columns:18px 1fr auto;gap:10px;align-items:start;padding:10px 0;position:relative}
+.v30-step:not(:last-child):after{content:"";position:absolute;left:6px;top:28px;bottom:-8px;border-left:1px dashed rgba(42,233,255,.32)}
+.v30-step-dot{width:13px;height:13px;border-radius:50%;background:#28eaff;box-shadow:0 0 12px rgba(40,234,255,.5)}
+.v30-step span{display:block;color:#7892a7;font-size:10px;margin-top:3px}
 @media(max-width:620px){
- .v28-days{grid-template-columns:repeat(7,58px)}
- .v28-metrics{grid-template-columns:1fr 1fr}.v28-metric:nth-child(2):after{display:none}
- .v28-week-summary{grid-template-columns:repeat(2,1fr)}
- .v28-plan-title h2{font-size:22px}
+  .v30-session-name{font-size:28px}
+  .v30-ring-row{grid-template-columns:82px 1fr}
+  .v30-ring{width:82px;height:82px}
+  .v30-metrics{grid-template-columns:1fr 1fr}
+  .v30-summary{grid-template-columns:1fr 1fr}
+  .v30-days{grid-template-columns:repeat(7,50px)}
 }
 
 </style>
@@ -965,50 +1084,67 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 </section>
 
 
+
 <section id="plan" class="view">
-  <div class="v28-plan-head">
-    <div class="v28-plan-brand">
-      <div class="v28-plan-logo">C</div>
-      <div class="v28-plan-title"><h2>PLAN</h2><p id="v28PlanSubtitle">Semana actual</p></div>
+  <div class="v30-shell">
+    <header class="v30-head">
+      <div class="v30-brand">
+        <div class="v30-mark">C</div>
+        <div>
+          <h2>PLAN</h2>
+          <p id="v30PlanSubtitle">Tu sesión de hoy</p>
+        </div>
+      </div>
+      <button class="v30-add" type="button" data-add="plan" aria-label="Añadir sesión">＋</button>
+    </header>
+
+    <div id="v30CoachCard"></div>
+
+    <section class="v30-week-wrap">
+      <div class="v30-week-top">
+        <button type="button" id="prevWeek">‹</button>
+        <div class="v30-week-title">
+          <small>Semana actual</small>
+          <strong id="weekTitle">Semana</strong>
+        </div>
+        <button type="button" id="nextWeek">›</button>
+      </div>
+      <div id="v30Days" class="v30-days"></div>
+    </section>
+
+    <div class="v30-actions">
+      <button class="v30-action" type="button" id="universalPlanImportBtn">
+        <span class="v30-action-icon">⇧</span>
+        <span><b>Importar plan</b><small>Archivo, imagen o texto</small></span>
+      </button>
+      <button class="v30-action" type="button" id="v30PasteBtn">
+        <span class="v30-action-icon">✎</span>
+        <span><b>Pegar entrenamiento</b><small>Texto del entrenador</small></span>
+      </button>
     </div>
-    <div class="v28-head-actions">
-      <button class="v28-icon-btn" type="button" data-add="plan" aria-label="Añadir sesión">＋</button>
-      <button class="v28-icon-btn" type="button" id="v28MenuBtn" aria-label="Opciones">☰</button>
-    </div>
-  </div>
-  <div class="v28-week-switch">
-    <button type="button" id="prevWeek">‹</button>
-    <div class="v28-week-center">
-      <small>Semana de inicio</small>
-      <strong id="weekTitle">Semana</strong>
-      <div class="v28-progress-track"><span id="v28ProgressBar" style="width:0%"></span></div>
-    </div>
-    <button type="button" id="nextWeek">›</button>
-  </div>
-  <div id="v28Days" class="v28-days"></div>
-  <div id="v28FeaturedSession"></div>
-  <div class="v28-quick-actions">
-    <button class="v28-quick" type="button" id="universalPlanImportBtn"><span class="v28-quick-ico">⇧</span><span><b>Importar plan</b><small>Archivo, imagen o texto</small></span></button>
-    <button class="v28-quick" type="button" id="v28ChangeWeek"><span class="v28-quick-ico">▣</span><span><b>Cambiar semana</b><small>Navega entre semanas</small></span></button>
-  </div>
-  <input id="universalPlanInput" class="file" type="file" accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
-  <button id="pastePlanBtn" class="v28-hidden-legacy" type="button">Pegar texto</button>
-  <div id="universalPlanStatus" class="plan-import-status"></div>
-  <div id="v28WeekSummary" class="v28-week-summary"></div>
-  <div class="v28-hidden-legacy">
-    <button id="duplicateWeek"></button><button id="clearWeek"></button>
-    <span id="planDone"></span><span id="planKm"></span><span id="planPct"></span>
-    <div id="planRing"><span id="ringPct"></span></div>
-    <span id="planMessage"></span><span id="planSubmessage"></span>
-    <div id="weekPlan"></div><div id="templateGrid"></div><div id="weekReview"></div>
+
+    <input id="universalPlanInput" class="file" type="file" accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*,text/plain,text/csv">
+    <button id="pastePlanBtn" class="v30-hidden" type="button">Pegar texto</button>
+    <div id="universalPlanStatus" class="plan-import-status"></div>
+
+    <div id="v30Summary" class="v30-summary"></div>
+
+    <div class="v30-hidden">
+      <button id="duplicateWeek"></button><button id="clearWeek"></button>
+      <span id="planDone"></span><span id="planKm"></span><span id="planPct"></span>
+      <div id="planRing"><span id="ringPct"></span></div>
+      <span id="planMessage"></span><span id="planSubmessage"></span>
+      <div id="weekPlan"></div><div id="templateGrid"></div><div id="weekReview"></div>
+          </div>
   </div>
 </section>
-<dialog id="v28SessionDialog" class="v28-session-dialog">
-  <div class="v28-dialog-head">
-    <div><div class="kicker">DETALLE DE LA SESIÓN</div><strong>Sesión</strong></div>
-    <button class="v28-icon-btn" type="button" onclick="document.getElementById('v28SessionDialog').close()">✕</button>
+
+<dialog id="v30SessionDialog" class="v30-dialog">
+  <div class="v30-dialog-head">
+    <div><div class="kicker">DETALLE DE LA SESIÓN</div><strong>Entrenamiento</strong></div>
+    <button class="v30-add" style="width:40px;height:40px;font-size:20px" type="button" onclick="document.getElementById('v30SessionDialog').close()">✕</button>
   </div>
-  <div id="v28SessionDialogBody" class="v28-dialog-body"></div>
+  <div id="v30SessionDialogBody" class="v30-dialog-body"></div>
 </dialog>
 
 <section id="running" class="view">
@@ -1227,7 +1363,7 @@ body[data-view="inicio"] .nav.active{color:#00dcf5}
 
 <dialog id="planImportDialog" class="plan-import-dialog">
   <div class="plan-import-dialog-head">
-    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V28</div><h3>Revisar plan detectado</h3></div>
+    <div><div class="kicker">IMPORTACIÓN INTELIGENTE · MOTOR V30</div><h3>Revisar plan detectado</h3></div>
     <button type="button" class="btn secondary small" id="closePlanImportDialog">✕</button>
   </div>
   <div class="plan-import-dialog-body">
@@ -1564,66 +1700,83 @@ function planCard(p,compact=false){
  </div>`
 }
 
-let v28SelectedDate=null;
-function v28SessionType(p){
- const t=((p?.title||"")+" "+(p?.notes||"")).toLowerCase();
- if(/serie|interval|repet/.test(t))return "Series";
+
+let v30SelectedDate=null;
+function v30Type(p){
+ const t=((p?.title||"")+" "+(p?.notes||"")+" "+(p?.intensity||"")).toLowerCase();
+ if(/serie|interval|repet|fartlek/.test(t))return "Series";
  if(/tirada|larga|long/.test(t))return "Tirada larga";
  if(/tempo|umbral/.test(t))return "Tempo";
  if(/gym|gimnas|fuerza/.test(t))return "Fuerza";
+ if(/descanso/.test(t))return "Descanso";
  return p?.title||"Rodaje suave";
 }
-function v28Pace(p){
- const all=[p?.intensity,p?.notes,p?.title].filter(Boolean).join(" ");
+function v30Pace(p){
+ const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
  const m=all.match(/\d{1,2}:\d{2}(?:\s*[–-]\s*\d{1,2}:\d{2})?\s*(?:\/?km)?/);
  return m?m[0].replace(/\s+/g," "):(/Z2/i.test(all)?"Z2":"Objetivo");
 }
-function v28Zone(p){
- const all=[p?.intensity,p?.notes,p?.title].filter(Boolean).join(" ");
+function v30Zone(p){
+ const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
  const z=all.match(/Z[1-5](?:\s*[–-]\s*Z[1-5])?/i);
  if(z)return z[0].toUpperCase().replace("-","–");
  if(/serie|interval|umbral/i.test(all))return "Z4–Z5";
  return "Z2";
 }
-function v28Duration(p){
+function v30Duration(p){
  if(Number(p?.duration)>0)return `${p.duration} min`;
  const km=Number(p?.distance||0);
  if(km)return `${Math.round(km*5.7)} min`;
  return "—";
 }
-function v28PrimaryText(p){
+function v30Main(p){
  const all=[p?.title,p?.notes,p?.intensity].filter(Boolean).join(" ");
  const reps=all.match(/\d+\s*[x×]\s*\d+\s*(?:m|km)?/i);
  if(reps)return reps[0].replace("x"," × ");
  if(Number(p?.distance)>0)return `${Number(p.distance).toFixed(Number(p.distance)%1?1:0).replace(".",",")} km`;
  return p?.intensity||"Sesión planificada";
 }
-function v28OpenSession(id){
+function v30CoachText(p){
+ const t=v30Type(p);
+ if(t==="Series")return "Hoy toca calidad. Busca regularidad en cada repetición y no fuerces la primera.";
+ if(t==="Tirada larga")return "Construye resistencia sin perseguir el ritmo. Mantén el esfuerzo controlado.";
+ if(t==="Tempo")return "Entrenamiento sostenido. Empieza con margen y termina fuerte, sin descomponerte.";
+ if(t==="Fuerza")return "Prioriza técnica y control. La calidad de cada repetición vale más que el peso.";
+ if(t==="Descanso")return "Hoy toca recuperar. Caminar suave y dormir bien también forman parte del plan.";
+ return "Sesión para seguir construyendo una base sólida. Corre con control y buenas sensaciones.";
+}
+function v30OpenSession(id){
  const p=data.plan.find(x=>x.id===id);if(!p)return;
- const km=Number(p.distance||0),zone=v28Zone(p),pace=v28Pace(p),duration=v28Duration(p);
  const all=[p.title,p.notes,p.intensity].filter(Boolean).join(" ");
  const reps=all.match(/(\d+)\s*[x×]\s*(\d+)\s*(m|km)?/i);
  const recovery=all.match(/(?:rec(?:uperación)?\.?\s*)(\d+\s*(?:min|['’]|s|''|”))/i);
- const warm=all.match(/calentamiento\s*(\d+\s*(?:min|['’]))/i);
- const cool=all.match(/enfriamiento\s*(\d+\s*(?:min|['’]))/i);
- let steps=[];
- steps.push(["Calentamiento",warm?warm[1]:"10–15 min","Z1–Z2"]);
- if(reps)steps.push([`${reps[1]} × ${reps[2]} ${reps[3]||"m"}`,pace,zone]);
- else steps.push([v28SessionType(p),v28PrimaryText(p),zone]);
- if(recovery)steps.push(["Recuperación",recovery[1],"Trote suave"]);
- steps.push(["Enfriamiento",cool?cool[1]:"10 min","Z1–Z2"]);
- $("#v28SessionDialogBody").innerHTML=`
-   <div class="v28-detail-hero"><div class="kicker">${fmt(p.date).toUpperCase()}</div><h2>${v28SessionType(p)}</h2><p>${v28PrimaryText(p)}</p></div>
-   <div class="v28-detail-grid">
-    <div class="v28-detail-cell"><small>Distancia</small><strong>${km?km.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
-    <div class="v28-detail-cell"><small>Duración estimada</small><strong>${duration}</strong></div>
-    <div class="v28-detail-cell"><small>Ritmo objetivo</small><strong>${pace}</strong></div>
-    <div class="v28-detail-cell"><small>Zona objetivo</small><strong>${zone}</strong></div>
-   </div>
-   <div class="v28-timeline"><h4>Estructura de la sesión</h4>${steps.map(x=>`<div class="v28-step"><i class="v28-step-dot"></i><div><strong>${x[0]}</strong><span>${x[2]}</span></div><strong>${x[1]}</strong></div>`).join("")}</div>
-   ${p.notes?`<div class="v28-detail-cell" style="margin-top:14px"><small>Notas</small><strong style="font-size:13px;line-height:1.45">${p.notes}</strong></div>`:""}
-   <button class="v28-start-btn" type="button" onclick="document.getElementById('v28SessionDialog').close();setView('${p.sport==="Gimnasio"?"gym":"running"}')">INICIAR ENTRENAMIENTO ▶</button>`;
- $("#v28SessionDialog").showModal();
+ const warm=all.match(/calentamiento\s*(\d+\s*(?:min|['’]|km))/i);
+ const cool=all.match(/enfriamiento\s*(\d+(?:[.,]\d+)?\s*(?:min|['’]|km))/i);
+ const zone=v30Zone(p),pace=v30Pace(p),km=Number(p.distance||0);
+ const steps=[
+   ["Calentamiento",warm?warm[1]:"10–15 min","Z1–Z2"],
+   [reps?`${reps[1]} × ${reps[2]} ${reps[3]||"m"}`:v30Type(p),reps?pace:v30Main(p),zone],
+   ...(recovery?[["Recuperación",recovery[1],"Trote suave"]]:[]),
+   ["Enfriamiento",cool?cool[1]:"10 min","Z1–Z2"]
+ ];
+ $("#v30SessionDialogBody").innerHTML=`
+  <div class="v30-detail-hero">
+    <div class="kicker">${fmt(p.date).toUpperCase()}</div>
+    <h2>${v30Type(p)}</h2>
+    <p>${v30Main(p)}</p>
+  </div>
+  <div class="v30-detail-grid">
+    <div class="v30-detail-cell"><small>Distancia</small><strong>${km?km.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
+    <div class="v30-detail-cell"><small>Duración</small><strong>${v30Duration(p)}</strong></div>
+    <div class="v30-detail-cell"><small>Ritmo objetivo</small><strong>${pace}</strong></div>
+    <div class="v30-detail-cell"><small>Zona objetivo</small><strong>${zone}</strong></div>
+  </div>
+  <div class="v30-timeline"><h4>Estructura de la sesión</h4>
+   ${steps.map(x=>`<div class="v30-step"><i class="v30-step-dot"></i><div><strong>${x[0]}</strong><span>${x[2]}</span></div><strong>${x[1]}</strong></div>`).join("")}
+  </div>
+  ${p.notes?`<div class="v30-detail-cell" style="margin-top:14px"><small>Notas del entrenamiento</small><strong style="font-size:13px;line-height:1.5">${p.notes}</strong></div>`:""}
+  <button class="v30-start" type="button" onclick="document.getElementById('v30SessionDialog').close();setView('${p.sport==="Gimnasio"?"gym":"running"}')">INICIAR ENTRENAMIENTO ▶</button>`;
+ $("#v30SessionDialog").showModal();
 }
 function renderPlan(){
  const mon=selectedMonday(),sun=datePlus(mon,6),start=isoDate(mon),end=isoDate(sun);
@@ -1632,47 +1785,65 @@ function renderPlan(){
  const pct=items.length?Math.round(done/items.length*100):0;
  const km=items.reduce((a,p)=>a+Number(p.distance||0),0);
  const mins=items.reduce((a,p)=>a+Number(p.duration||0),0);
- const names=["L","M","X","J","V","S","D"];
+ const today=isoDate(new Date());
+ if(!v30SelectedDate||v30SelectedDate<start||v30SelectedDate>end){
+   v30SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
+ }
  $("#weekTitle").textContent=`${fmt(start)} – ${fmt(end)}`;
- $("#v28PlanSubtitle").textContent=weekOffset===0?"Semana actual":weekOffset>0?`Dentro de ${weekOffset} semana${weekOffset===1?"":"s"}`:`Hace ${Math.abs(weekOffset)} semana${Math.abs(weekOffset)===1?"":"s"}`;
- $("#v28ProgressBar").style.width=pct+"%";
- if(!v28SelectedDate||v28SelectedDate<start||v28SelectedDate>end){
-   const today=isoDate(new Date());
-   v28SelectedDate=(today>=start&&today<=end)?today:(items[0]?.date||start);
- }
- $("#v28Days").innerHTML=names.map((n,i)=>{
-   const d=isoDate(datePlus(mon,i)),day=items.filter(p=>p.date===d),p=day[0];
-   const cls=[d===v28SelectedDate?"active":"",p?.status==="done"?"done":"",/tirada|larga/i.test(p?.title||"")?"long":""].filter(Boolean).join(" ");
-   return `<button class="v28-day ${cls}" type="button" onclick="v28SelectedDate='${d}';renderPlan()"><b>${n}</b><strong>${new Date(d+"T12:00:00").getDate()}</strong><i></i></button>`;
+ $("#v30PlanSubtitle").textContent=weekOffset===0?"Tu sesión de hoy":weekOffset>0?`Semana +${weekOffset}`:`Semana ${weekOffset}`;
+ const names=["L","M","X","J","V","S","D"];
+ $("#v30Days").innerHTML=names.map((n,i)=>{
+   const d=isoDate(datePlus(mon,i)),p=items.find(x=>x.date===d);
+   const cls=[d===v30SelectedDate?"active":"",p?.status==="done"?"done":"",/tirada|larga/i.test(p?.title||"")?"long":""].filter(Boolean).join(" ");
+   return `<button class="v30-day ${cls}" type="button" onclick="v30SelectedDate='${d}';renderPlan()"><b>${n}</b><strong>${new Date(d+"T12:00:00").getDate()}</strong><i></i></button>`;
  }).join("");
- const selected=items.find(p=>p.date===v28SelectedDate)||items[0];
+ const selected=items.find(p=>p.date===v30SelectedDate)||items[0];
  if(selected){
-   const dt=new Date(selected.date+"T12:00:00"),weekday=dt.toLocaleDateString("es-ES",{weekday:"long"}).toUpperCase(),month=dt.toLocaleDateString("es-ES",{month:"short"}).replace(".","").toUpperCase();
-   const kmv=Number(selected.distance||0),pace=v28Pace(selected),zone=v28Zone(selected);
-   $("#v28FeaturedSession").innerHTML=`<article class="v28-session-card">
-    <div class="v28-session-top"><div class="v28-date-block"><span>${weekday}</span><strong>${dt.getDate()}</strong><small>${month}</small></div>
-    <div class="v28-session-main"><div class="v28-session-label"><div><h3>${v28SessionType(selected)}</h3><p>${v28PrimaryText(selected)}</p></div><span class="v28-intensity">${selected.intensity||"Objetivo"}</span></div>
-    <p class="v28-coach-copy">${selected.notes||(/serie/i.test(selected.title)?"Trabajo de velocidad y potencia. Enfócate en mantener un ritmo uniforme.":"Sesión planificada para seguir construyendo una base sólida.")}</p></div></div>
-    <div class="v28-metrics">
-      <div class="v28-metric"><small>Distancia</small><strong>${kmv?kmv.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
-      <div class="v28-metric"><small>Duración</small><strong>${v28Duration(selected)}</strong></div>
-      <div class="v28-metric"><small>Ritmo</small><strong>${pace}</strong></div>
-      <div class="v28-metric"><small>Zona</small><strong>${zone}</strong></div>
-    </div>
-    <button class="v28-detail-btn" type="button" onclick="v28OpenSession('${selected.id}')">VER DETALLES DE LA SESIÓN →</button>
-   </article>`;
+   const kmv=Number(selected.distance||0),pace=v30Pace(selected),zone=v30Zone(selected),dur=v30Duration(selected);
+   const label=selected.date===today?"HOY":fmt(selected.date).toUpperCase();
+   $("#v30CoachCard").innerHTML=`
+    <article class="v30-coach-card">
+      <div class="v30-eyebrow">${label}</div>
+      <div class="v30-session-row">
+        <div><h3 class="v30-session-name">${v30Type(selected)}</h3><p class="v30-session-main">${v30Main(selected)}</p></div>
+        <span class="v30-badge">${selected.intensity||"Planificado"}</span>
+      </div>
+      <p class="v30-coach-line">${v30CoachText(selected)}</p>
+      <div class="v30-ring-row">
+        <div class="v30-ring" style="--p:${pct}"><div style="position:relative;text-align:center"><strong>${pct}%</strong><small>plan</small></div></div>
+        <div class="v30-ring-copy"><strong>${done} de ${items.length} sesiones completadas</strong><span>${km.toFixed(1).replace(".",",")} km previstos esta semana</span></div>
+      </div>
+      <div class="v30-metrics">
+        <div class="v30-metric"><span>Distancia</span><strong>${kmv?kmv.toFixed(1).replace(".",",")+" km":"—"}</strong></div>
+        <div class="v30-metric"><span>Duración</span><strong>${dur}</strong></div>
+        <div class="v30-metric"><span>Ritmo</span><strong>${pace}</strong></div>
+        <div class="v30-metric"><span>Zona</span><strong>${zone}</strong></div>
+      </div>
+      <button class="v30-start" type="button" onclick="v30OpenSession('${selected.id}')">VER SESIÓN COMPLETA →</button>
+    </article>`;
  }else{
-   $("#v28FeaturedSession").innerHTML=`<div class="v28-session-card v28-empty"><strong>No hay sesión este día</strong><p>Puedes añadir una nueva sesión o importar tu planificación.</p><button class="btn primary" data-add="plan">＋ Añadir sesión</button></div>`;
+   $("#v30CoachCard").innerHTML=`
+    <article class="v30-coach-card">
+      <div class="v30-eyebrow">${v30SelectedDate===today?"HOY":"DÍA SELECCIONADO"}</div>
+      <div class="v30-session-row"><div><h3 class="v30-session-name">Descanso</h3><p class="v30-session-main">Sin entrenamiento</p></div><span class="v30-badge">Recuperación</span></div>
+      <p class="v30-coach-line">No hay sesión planificada. Aprovecha para recuperar o añade un entrenamiento.</p>
+      <button class="v30-start" type="button" data-add="plan">＋ AÑADIR ENTRENAMIENTO</button>
+    </article>`;
  }
- $("#v28WeekSummary").innerHTML=`
-  <div class="v28-week-stat"><strong>${km.toFixed(1).replace(".",",")} km</strong><span>Total</span></div>
-  <div class="v28-week-stat"><strong>${mins?`${Math.floor(mins/60)}h ${String(mins%60).padStart(2,"0")}`:"—"}</strong><span>Tiempo</span></div>
-  <div class="v28-week-stat"><strong>${pct}%</strong><span>Completado</span></div>
-  <div class="v28-week-stat"><strong>${items.length}</strong><span>Sesiones</span></div>`;
- $("#planDone").textContent=`${done}/${items.length}`;$("#planKm").textContent=km.toFixed(1);$("#planPct").textContent=pct+"%";
- $("#ringPct").textContent=pct+"%";$("#planMessage").textContent="";$("#planSubmessage").textContent="";
+ $("#v30Summary").innerHTML=`
+  <div><strong>${km.toFixed(1).replace(".",",")} km</strong><span>Total</span></div>
+  <div><strong>${mins?`${Math.floor(mins/60)}h ${String(mins%60).padStart(2,"0")}`:"—"}</strong><span>Tiempo</span></div>
+  <div><strong>${pct}%</strong><span>Completado</span></div>
+  <div><strong>${items.length}</strong><span>Sesiones</span></div>`;
+ $("#planDone").textContent=`${done}/${items.length}`;
+ $("#planKm").textContent=km.toFixed(1);
+ $("#planPct").textContent=pct+"%";
+ $("#ringPct").textContent=pct+"%";
+ $("#planMessage").textContent="";
+ $("#planSubmessage").textContent="";
  $("#weekPlan").innerHTML="";
 }
+
 
 function todayAction(p){
  if(p.status==="done")return `<button class="btn secondary small" type="button" onclick="setView('${p.sport==='Gimnasio'?'gym':'running'}')">Ver módulo</button>`;
@@ -3399,15 +3570,8 @@ $("#importInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{
 $("#prevWeek").onclick=()=>{weekOffset--;renderPlan();renderWeekReview()};
 $("#nextWeek").onclick=()=>{weekOffset++;renderPlan();renderWeekReview()};
 
-const v28ChangeWeekBtn=document.getElementById("v28ChangeWeek");
-if(v28ChangeWeekBtn)v28ChangeWeekBtn.onclick=()=>document.getElementById("v28Days")?.scrollIntoView({behavior:"smooth",block:"center"});
-const v28MenuBtn=document.getElementById("v28MenuBtn");
-if(v28MenuBtn)v28MenuBtn.onclick=()=>{
- const choice=prompt("Opciones del plan:\n1. Pegar texto\n2. Duplicar semana\n3. Vaciar semana\n\nEscribe 1, 2 o 3");
- if(choice==="1")document.getElementById("pastePlanBtn")?.click();
- else if(choice==="2")document.getElementById("duplicateWeek")?.click();
- else if(choice==="3")document.getElementById("clearWeek")?.click();
-};
+const v30PasteBtn=document.getElementById("v30PasteBtn");
+if(v30PasteBtn)v30PasteBtn.onclick=()=>document.getElementById("pastePlanBtn")?.click();
 
 
 
