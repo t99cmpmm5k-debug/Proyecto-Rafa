@@ -26,7 +26,19 @@
           return;
         }
 
-        if(!current||candidate.confidence>current.confidence){
+        // Las pantallas de Estadísticas tienen prioridad para las métricas.
+        // Evita que un dato secundario del Resumen sustituya ritmo, FC o cadencia.
+        const performance=[
+          "distance_km","avg_heart_rate_bpm","max_heart_rate_bpm",
+          "avg_pace_min_km","total_time","calories_kcal","cadence_spm",
+          "temperature_c","elevation_gain_m"
+        ];
+        const candidateIsStats=result.parser.startsWith("statistics");
+        const currentIsStats=current?.parserSource==="statistics";
+        candidate.parserSource=candidateIsStats?"statistics":"summary";
+        if(!current ||
+           (performance.includes(key)&&candidateIsStats&&!currentIsStats) ||
+           (candidateIsStats===currentIsStats&&candidate.confidence>current.confidence)){
           fields[key]=candidate;
         }
       });

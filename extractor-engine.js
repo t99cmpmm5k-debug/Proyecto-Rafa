@@ -70,17 +70,42 @@
 
   function maxHeartRate(raw){
     const text=normalizeLabel(compact(raw));
-    const patterns=[
-      /(?:frecuencia cardiaca maxima|frec\s*cardiaca\s*max|fc maxima)[\s\S]{0,45}?((?:[3-9][0-9]|1[0-9]{2}|2[0-4][0-9])\s*(?:ppm|bpm))/i,
-      /((?:[3-9][0-9]|1[0-9]{2}|2[0-4][0-9])\s*(?:ppm|bpm))[\s\S]{0,45}?(?:frecuencia cardiaca maxima|frec\s*cardiaca\s*max|fc maxima)/i
+    const valueToken="((?:[3-9][0-9]|1[0-9]{2}|2[0-4][0-9])\s*(?:ppm|bpm)?)";
+    const labels=[
+      "frecuencia\s*cardiaca\s*(?:maxima|max)",
+      "frec\s*cardiaca\s*(?:maxima|max)",
+      "fc\s*(?:maxima|max)",
+      "max\s*fc"
     ];
 
-    for(const regex of patterns){
-      const match=text.match(regex);
-      if(!match)continue;
-      const value=numberParser(match[1]);
-      if(V.heartRate(value)){
-        return {value,source:match[0],confidence:.99};
+    for(const label of labels){
+      const patterns=[
+        new RegExp(`(?:${label})[\s\S]{0,55}?${valueToken}`,"i"),
+        new RegExp(`${valueToken}[\s\S]{0,55}?(?:${label})`,"i")
+      ];
+      for(const regex of patterns){
+        const match=text.match(regex);
+        if(!match)continue;
+        const value=numberParser(match[1]);
+        if(V.heartRate(value))return {value,source:match[0],confidence:.995};
+      }
+    }
+
+    // Rescate por líneas: Garmin suele mostrar el valor justo encima o debajo
+    // de la etiqueta y Tesseract puede perder "ppm" o separar las palabras.
+    const lines=U.linesOf(raw);
+    for(let i=0;i<lines.length;i++){
+      const label=normalizeLabel(lines[i]);
+      if(!/(?:frecuencia|frec|fc).{0,18}(?:maxima|max)|(?:maxima|max).{0,18}fc/.test(label))continue;
+      for(let d=0;d<=2;d++){
+        for(const j of [i-d,i+d]){
+          if(j<0||j>=lines.length)continue;
+          const nums=String(lines[j]).match(/\b(?:[3-9][0-9]|1[0-9]{2}|2[0-4][0-9])\b/g)||[];
+          for(const token of nums){
+            const value=Number(token);
+            if(V.heartRate(value))return {value,source:`${lines[i]} | ${lines[j]}`,confidence:.985};
+          }
+        }
       }
     }
     return null;

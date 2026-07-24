@@ -3411,18 +3411,60 @@ function normalizeActivityCategory(activity,title){
  if(/recuper/.test(text))return "Recuperación";
  return "Zona 2";
 }
+function cleanImportedLabel(value){
+ let text=String(value||"").replace(/\s+/g," ").trim();
+ if(!text)return "";
+ // Elimina restos OCR habituales al final sin tocar nombres reales.
+ text=text.replace(/\s+(?:ye|yé|ve|v e|za|2a|z4|24|ia)$/i,"").trim();
+ text=text.replace(/^[<‹«>›»:\s-]+|[<‹«>›»:\s-]+$/g,"").trim();
+ return text;
+}
+function durationToSeconds(value){
+ const parts=String(value||"").trim().split(":").map(Number);
+ if(parts.some(n=>!Number.isFinite(n)))return null;
+ if(parts.length===2)return parts[0]*60+parts[1];
+ if(parts.length===3)return parts[0]*3600+parts[1]*60+parts[2];
+ return null;
+}
+function paceToSeconds(value){
+ const parts=String(value||"").trim().match(/^(\d{1,2}):([0-5]\d)$/);
+ return parts?Number(parts[1])*60+Number(parts[2]):null;
+}
+function secondsToPace(seconds){
+ if(!Number.isFinite(seconds)||seconds<=0)return "";
+ const rounded=Math.round(seconds);
+ return `${Math.floor(rounded/60)}:${String(rounded%60).padStart(2,"0")}`;
+}
+function resolveImportedPace(distance,time,ocrPace){
+ const km=Number(String(distance??"").replace(",","."));
+ const total=durationToSeconds(time);
+ const calculated=km>0&&total>0?total/km:null;
+ const detected=paceToSeconds(ocrPace);
+ // Tiempo y distancia son la comprobación más fiable. Si el ritmo OCR se aleja
+ // más de 30 s/km, se corrige automáticamente con el ritmo calculado.
+ if(calculated&&(!detected||Math.abs(calculated-detected)>30))return secondsToPace(calculated);
+ return ocrPace||secondsToPace(calculated);
+}
 function mapGarminFinalToRun(merged){
  const d=merged?.data||{};
  const category=normalizeActivityCategory(d.activity,d.title);
+ const location=cleanImportedLabel(d.location);
+ const activity=cleanImportedLabel(d.activity);
+ let title=cleanImportedLabel(d.title);
+ if(location&&activity)title=`${location} - ${activity}`;
+ else title=title||location||activity||category;
+ const avgHr=d.avg_heart_rate_bpm??"";
+ let maxHr=d.max_heart_rate_bpm??"";
+ if(maxHr!==""&&avgHr!==""&&Number(maxHr)<Number(avgHr))maxHr="";
  return {
    date:ocrDateToIso(d.date),
-   type:d.title||d.activity||category,
+   type:title,
    category,
    distance:d.distance_km??"",
    time:d.total_time||"",
-   pace:d.avg_pace_min_km||"",
-   avgHr:d.avg_heart_rate_bpm??"",
-   maxHr:d.max_heart_rate_bpm??"",
+   pace:resolveImportedPace(d.distance_km,d.total_time,d.avg_pace_min_km),
+   avgHr,
+   maxHr,
    avgCadence:d.cadence_spm??"",
    temperature:d.temperature_c??"",
    ascent:d.elevation_gain_m??"",
@@ -3430,7 +3472,8 @@ function mapGarminFinalToRun(merged){
    totalCalories:d.calories_kcal??"",
    shoes:"ASICS Gel-Nimbus 28",
    feeling:"Normal",
-   notes:[d.location?`Lugar: ${d.location}`:"","Datos importados desde capturas"].filter(Boolean).join(" · ")
+   importedFromCaptures:true,
+   notes:[location?`Lugar: ${location}`:"","Datos importados desde capturas"].filter(Boolean).join(" · ")
  };
 }
 function renderDetectedTraining(data){
@@ -3494,7 +3537,7 @@ async function importTrainingScreenshots(files){
 const defs={
  run:{title:"entrenamiento de running",html:x=>{
  const q=x||window.quickRunPreset||{},linked=q.planId?data.plan.find(p=>p.id===q.planId):null,cat=q.category||inferRunCategory(q);
- return `${linked?`<div class="prefill-banner">Usando el entrenamiento previsto: ${linked.title} · ${Number(linked.distance||0).toFixed(1).replace(".",",")} km</div>`:""}
+ return `${linked?`<div class="prefill-banner">Usando el entrenamiento previsto: ${linked.title} · ${Number(linked.distance||0).toFixed(1).replace(".",",")} km</div>`:""}${q.importedFromCaptures?`<div class="prefill-banner">Entrenamiento importado correctamente. Revisa los datos antes de guardar.</div>`:""}
  <input type="hidden" name="planId" value="${q.planId||""}">
  <div class="field"><label>Tipo de entrenamiento</label><div class="run-category-picker">${RUN_CATEGORIES.map(v=>`<label class="run-category-choice"><input type="radio" name="category" value="${v}" ${cat===v?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
  <div class="field"><label>Fecha</label><input name="date" type="date" required value="${q.date||new Date().toISOString().slice(0,10)}"></div>
@@ -3504,7 +3547,7 @@ const defs={
  <div class="two"><div class="field"><label>FC media</label><input name="avgHr" type="number" value="${q.avgHr??""}"></div><div class="field"><label>FC máxima</label><input name="maxHr" type="number" value="${q.maxHr??""}"></div></div>
  <div id="runDynamicFields"></div>
  <div class="two"><div class="field"><label>Cadencia media (ppm)</label><input name="avgCadence" type="number" value="${q.avgCadence??q.cadence??""}" placeholder="Ej. 168"></div><div class="field"><label>Temperatura (°C)</label><input name="temperature" type="number" step=".1" value="${q.temperature??""}" placeholder="Ej. 28"></div></div>
- <details><summary>Datos Garmin avanzados</summary>
+ <details><summary>Datos avanzados</summary>
  <div class="two"><div class="field"><label>Tiempo en movimiento</label><input name="movingTime" value="${q.movingTime||""}"></div><div class="field"><label>Ritmo óptimo</label><input name="bestPace" value="${q.bestPace||""}"></div></div>
  <div class="two"><div class="field"><label>Carga de ejercicio</label><input name="exerciseLoad" type="number" step=".1" value="${q.exerciseLoad??""}"></div><div class="field"><label>Efecto aeróbico</label><input name="aerobicEffect" type="number" step=".1" value="${q.aerobicEffect??""}"></div></div>
  <div class="two"><div class="field"><label>Potencia media (W)</label><input name="avgPower" type="number" value="${q.avgPower??""}"></div><div class="field"><label>Potencia máxima (W)</label><input name="maxPower" type="number" value="${q.maxPower??""}"></div></div>
