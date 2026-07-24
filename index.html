@@ -1191,6 +1191,75 @@ body[data-view="inicio"]{background:#010914!important}
 @media(min-width:760px){#plan .v33-shell{grid-template-columns:minmax(0,1fr) 280px;align-items:start}#plan .v33-head{grid-column:1/-1}#plan .v33-map{grid-column:1}#plan .v33-footer-row{grid-column:2;grid-row:2;position:sticky;top:90px}.v33-import{display:flex!important}.v33-summary{grid-template-columns:1fr 1fr}.v33-summary div{padding:18px 8px}#plan .v33-route{height:280px}}
 @media(max-width:430px){#plan{padding-left:12px;padding-right:12px}#plan .v33-map{padding:14px 10px 12px}#plan .v33-route{height:230px;margin-left:-8px;margin-right:-8px}#plan .v33-node-day{font-size:7px}#plan .v33-node-date{font-size:16px}#plan .v33-orb{width:43px;height:43px}#plan .v33-node.active .v33-orb{width:51px;height:51px}#plan .v33-node-type,#plan .v33-node-main{font-size:6px}#plan .v33-detail{padding:14px}#plan .v33-detail-grid{grid-template-columns:1fr 70px}#plan .v33-symbol{width:64px;height:64px}.v33-detail h3{font-size:21px}}
 </style>
+
+<style id="v531-home-final-overrides">
+/* V53.1 — Inicio compacto, coherente con Plan y sin accesos rápidos */
+#inicio .home-hero-v2{
+  min-height:330px!important;height:43vh!important;max-height:430px!important;
+  background-position:center 34%!important;
+  background-image:linear-gradient(180deg,rgba(1,8,19,.04) 0%,rgba(1,8,19,.12) 58%,#010914 100%),url("hero-boceto-c-azul.jpg")!important;
+}
+#inicio .home-hero-v2:after{background:linear-gradient(180deg,transparent 42%,rgba(1,9,20,.18) 66%,#010914 100%)!important}
+#inicio .home-neon-orbit{
+  width:min(48vw,280px)!important;height:min(48vw,280px)!important;
+  left:69%!important;top:46%!important;border-width:2px!important;opacity:.66!important;
+  box-shadow:0 0 12px #00bfff,0 0 38px rgba(0,164,255,.45),inset 0 0 30px rgba(0,184,255,.11)!important;
+  pointer-events:none
+}
+#inicio .home-date-card{right:16px!important;top:20px!important;min-width:88px!important;padding:10px 10px!important;border-radius:17px!important}
+#inicio .home-date-card b{font-size:30px!important}
+#inicio .home-greeting{left:22px!important;bottom:18px!important;font-size:14px!important}
+#inicio .home-content-v2{margin-top:-6px!important;padding:0 14px 26px!important}
+#inicio .home-today-shell{border-radius:22px!important;padding:15px!important;box-shadow:0 14px 34px rgba(0,0,0,.38),0 0 18px rgba(0,195,255,.07)!important}
+#inicio .home-day-pill{font-size:12px!important;letter-spacing:.08em!important;margin-bottom:9px!important}
+#inicio .home-workout.compact{display:grid!important;gap:13px!important}
+#inicio .home-workout-main{display:grid!important;grid-template-columns:76px 1fr auto!important;gap:14px!important;align-items:center!important}
+#inicio .home-workout-icon{width:70px!important;height:70px!important;min-width:70px!important}
+#inicio .home-workout-title,#inicio .home-rest-title{font-size:24px!important;line-height:1.05!important;margin:0!important}
+#inicio .home-workout-sub,#inicio .home-rest-text{font-size:12px!important;color:#9fb2c5!important;margin:7px 0 0!important}
+#inicio .home-status-chip{align-self:start;border:1px solid rgba(24,211,255,.32);border-radius:999px;background:rgba(6,42,72,.72);color:#bcefff;font-size:8px;font-weight:900;letter-spacing:.07em;padding:6px 8px;white-space:nowrap}
+#inicio .home-start-btn{height:42px!important;border-radius:12px!important;font-size:12px!important;letter-spacing:.05em!important}
+#inicio .home-week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:11px 2px 0}
+#inicio .home-week-day{border:1px solid rgba(28,91,140,.52);border-radius:14px;background:linear-gradient(180deg,#06192d,#03101f);padding:8px 2px 7px;color:#94a9bd;display:grid;place-items:center;gap:2px;min-width:0}
+#inicio .home-week-day span{font-size:8px;font-weight:850}
+#inicio .home-week-day b{font-size:15px;color:#fff}
+#inicio .home-week-day i{width:15px;height:3px;border-radius:8px;background:#38526c}
+#inicio .home-week-day.run i{background:#1ce7b3;box-shadow:0 0 8px rgba(28,231,179,.65)}
+#inicio .home-week-day.series i{background:#20b7ff;box-shadow:0 0 8px rgba(32,183,255,.7)}
+#inicio .home-week-day.gym i{background:#8f6cff;box-shadow:0 0 8px rgba(143,108,255,.65)}
+#inicio .home-week-day.active{border-color:#20dfff;box-shadow:0 0 16px rgba(0,210,255,.18),inset 0 0 14px rgba(0,190,255,.06);transform:translateY(-2px)}
+#inicio .home-section-line{margin:20px 4px 9px!important}
+#inicio .home-next-card{min-height:82px!important;padding:12px!important;border-radius:18px!important}
+#inicio .home-next-icon{width:54px!important;height:54px!important;min-width:54px!important;border-radius:14px!important}
+#inicio .home-next-copy strong{font-size:16px!important}
+#inicio .home-next-copy span{font-size:11px!important}
+#inicio .home-weekly-summary{grid-template-columns:repeat(5,1fr)!important;border-radius:18px!important}
+#inicio .home-stat{padding:12px 3px 10px!important}
+#inicio .home-stat i{width:22px!important;height:22px!important;font-size:16px!important}
+#inicio .home-stat strong{font-size:15px!important}
+#inicio .home-ring-mini{width:44px!important;height:44px!important}
+#inicio .home-progress-panel{grid-template-columns:1fr 1.25fr!important;padding:13px!important;border-radius:18px!important}
+#inicio .home-spark{height:54px!important}
+#inicio .home-annual-ring{width:64px!important;height:64px!important}
+#inicio .home-annual-ring b{font-size:18px!important}
+#inicio .home-annual-copy strong{font-size:18px!important}
+#inicio .home-quick-grid{display:none!important}
+@media(max-width:430px){
+ #inicio .home-hero-v2{min-height:315px!important;height:40vh!important;background-position:center 35%!important}
+ #inicio .home-neon-orbit{width:56vw!important;height:56vw!important;left:72%!important;top:48%!important}
+ #inicio .home-date-card{right:12px!important;top:16px!important}
+ #inicio .home-greeting{left:16px!important;bottom:16px!important}
+ #inicio .home-content-v2{padding-left:10px!important;padding-right:10px!important}
+ #inicio .home-workout-main{grid-template-columns:68px minmax(0,1fr) auto!important;gap:11px!important}
+ #inicio .home-workout-icon{width:62px!important;height:62px!important;min-width:62px!important}
+ #inicio .home-workout-title,#inicio .home-rest-title{font-size:21px!important}
+ #inicio .home-week-day{padding:7px 1px 6px!important;border-radius:12px!important}
+ #inicio .home-week-day b{font-size:14px!important}
+ #inicio .home-stat span{font-size:7px!important}
+ #inicio .home-progress-panel{grid-template-columns:1fr 1.15fr!important}
+}
+</style>
+
 </head>
 <body data-view="inicio">
 <header>
@@ -1202,12 +1271,12 @@ body[data-view="inicio"]{background:#010914!important}
 <section id="inicio" class="view active">
   <div class="home-hero home-hero-v2" role="img" aria-label="Corredor entrenando entre montañas">
     <div class="home-neon-orbit" aria-hidden="true"></div>
-    <div class="home-brand-v2"><span>CORREDOR</span><strong>SÓLIDO</strong><i aria-hidden="true">⌁⌁</i></div>
     <div class="home-date-card" id="homeDateCard"></div>
     <div class="home-greeting" id="homeGreeting">Buenas noches, Rafa</div>
   </div>
   <div class="home-content home-content-v2">
     <div id="todayWorkout"></div>
+    <div id="homeWeekStrip" class="home-week-strip"></div>
     <div class="home-section-line"><span>PRÓXIMO ENTRENAMIENTO</span><button type="button" onclick="setView('plan')">VER PLAN SEMANAL ›</button></div>
     <div id="homeNextWorkout"></div>
 
@@ -1217,14 +1286,6 @@ body[data-view="inicio"]{background:#010914!important}
     <div class="home-section-line"><span>TU PROGRESO</span></div>
     <div id="homeProgressPanel" class="home-progress-panel"></div>
 
-    <div class="home-section-line"><span>ACCESOS RÁPIDOS</span></div>
-    <div class="home-quick-grid">
-      <button type="button" onclick="openAddMenu()"><i>＋</i><span>Añadir<br>entrenamiento</span></button>
-      <button type="button" onclick="openImportTraining()"><i>⌗</i><span>Analizar<br>capturas</span></button>
-      <button type="button" onclick="setView('progreso')"><i>▥</i><span>Estadísticas</span></button>
-      <button type="button" onclick="setView('running')"><i>♡</i><span>Zonas</span></button>
-      <button type="button" onclick="setView('material')"><i>⌁</i><span>Material</span></button>
-    </div>
 
     <div class="home-legacy" aria-hidden="true">
       <span id="weekKm"></span><span id="lastPace"></span><span id="lastHr"></span><span id="totalRuns"></span>
@@ -2159,15 +2220,26 @@ function renderToday(){
      :isGym&&main.gymRoutine
        ?`<button class="home-start-btn" type="button" onclick="startPlannedGym('${main.id}')">EMPEZAR</button>`
        :`<button class="home-start-btn" type="button" onclick="setView('${isGym?'gym':'running'}')">EMPEZAR</button>`;
-   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY TOCA</div><div class="home-workout"><div class="home-workout-main">${homeMainIcon(isGym?'gym':'run')}<div class="home-workout-copy"><div class="home-workout-title">${main.title}</div>${distance?`<div class="home-workout-distance">${distance.toFixed(1).replace('.',',')} km</div>`:""}</div></div><div class="home-workout-meta"><div><b>${distance?distance.toFixed(1).replace('.',','):'—'}</b><small><span class='home-meta-ico distance'></span>${distance?'Distancia':'Sesión'}</small></div><div><b>${pace}</b><small><span class='home-meta-ico pace'></span>${paceMatch?'Ritmo':'Duración'}</small></div><div><b>${zone}</b><small><span class='home-meta-ico zone'></span>${isGym?'Objetivo':'Zona'}</small></div></div>${action}</div></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout compact"><div class="home-workout-main">${homeMainIcon(isGym?'gym':'run')}<div class="home-workout-copy"><div class="home-workout-title">${main.title}</div><div class="home-workout-sub">${isGym?'Fuerza':(distance?distance.toFixed(1).replace('.',',')+' km':'Running')} · ${pace}</div></div><div class="home-status-chip">${isGym?'GIMNASIO':zone.toUpperCase()}</div></div>${action}</div></div>`;
  }else{
-   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout"><div class="home-workout-main">${homeMainIcon('rest')}<div><div class="home-rest-title">Recuperación</div><p class="home-rest-text">Hoy no hay entrenamiento planificado.</p></div></div><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
+   $("#todayWorkout").innerHTML=`<div class="home-today-shell"><div class="home-day-pill">HOY</div><div class="home-workout compact"><div class="home-workout-main">${homeMainIcon('rest')}<div class="home-workout-copy"><div class="home-rest-title">Recuperación</div><p class="home-rest-text">Hoy no hay entrenamiento planificado.</p></div><div class="home-status-chip">DESCANSO</div></div><button class="home-start-btn" type="button" onclick="setView('plan')">VER PLAN</button></div></div>`;
  }
  const future=data.plan.filter(p=>p.date>today&&p.status!=="skipped").sort((a,b)=>a.date.localeCompare(b.date))[0];
  const nextEl=$("#homeNextWorkout");
  if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')">${homeMiniIcon(future.sport==='Gimnasio'?'gym':'run')}<div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''} · ${future.sport}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')">${homeMiniIcon('add')}<div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
+ const strip=document.getElementById('homeWeekStrip');
+ if(strip){
+   const monday=new Date();monday.setHours(12,0,0,0);monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
+   const labels=['L','M','X','J','V','S','D'];
+   strip.innerHTML=labels.map((label,i)=>{
+     const d=new Date(monday);d.setDate(monday.getDate()+i);const iso=isoDate(d);
+     const item=data.plan.find(p=>p.date===iso&&p.status!=="skipped");
+     const type=item?(item.sport==='Gimnasio'?'gym':(/serie/i.test(item.title||item.category||'')?'series':'run')):'rest';
+     return `<button type="button" class="home-week-day ${iso===today?'active':''} ${type}" onclick="setView('plan')"><span>${label}</span><b>${d.getDate()}</b><i></i></button>`;
+   }).join('');
+ }
  renderHomePremium();
  renderModuleToday();
 }
