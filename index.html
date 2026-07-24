@@ -1099,6 +1099,25 @@ body[data-view="inicio"]{background:#010914!important}
  #inicio .home-quick-grid{gap:5px}.home-quick-grid button{padding-left:2px!important;padding-right:2px!important}.home-quick-grid i{width:38px!important;height:38px!important;font-size:21px!important}.home-quick-grid span{font-size:8px!important}
 }
 
+
+/* ===== HOME V54 HERO (añadido) ===== */
+.homeHeroV54{
+position:relative;
+min-height:240px;
+border-radius:28px;
+overflow:hidden;
+padding:24px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+background:
+linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.65)),
+url('hero-boceto-c-azul.jpg') center/cover no-repeat;
+box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+.homeHeroV54 h1{font-size:34px;margin:0}
+.homeHeroV54 p{margin:8px 0 0;color:#ddd}
+
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -4107,5 +4126,7 @@ document.querySelectorAll("[data-evo-mode]").forEach(b=>b.onclick=()=>{evolution
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=2212").catch(()=>{}))}
 render();updateFab();
 </script>
+
+<!-- V54 HOME preparado: siguiente paso sustituir hero visual -->
 </body>
 </html>
