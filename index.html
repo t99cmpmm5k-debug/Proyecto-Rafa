@@ -1027,6 +1027,78 @@ body[data-view="running"] .run-add-fab{display:grid}
   .training-choice{min-height:112px}
 }
 
+
+
+/* ===== V53 · INICIO NEON ORBIT · DISEÑO CERRADO ===== */
+body[data-view="inicio"]{background:#010914!important}
+#inicio{background:
+ radial-gradient(circle at 50% 4%,rgba(0,148,255,.14),transparent 26%),
+ linear-gradient(180deg,#010914 0%,#020b17 100%)!important}
+#inicio .home-hero-v2{position:relative;overflow:hidden;min-height:390px!important;max-height:520px!important;height:54vh!important;
+ background-image:linear-gradient(180deg,rgba(1,8,19,.06) 0%,rgba(1,8,19,.08) 54%,#010914 100%),url("hero-boceto-c-azul.jpg")!important;
+ background-size:cover!important;background-position:center 36%!important;border-bottom:1px solid rgba(0,226,255,.12)}
+#inicio .home-hero-v2:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(1,8,19,.46),transparent 43%,rgba(1,8,19,.1));pointer-events:none}
+#inicio .home-neon-orbit{position:absolute;z-index:1;width:min(72vw,420px);height:min(72vw,420px);left:50%;top:43%;transform:translate(-50%,-50%);border-radius:50%;
+ border:3px solid rgba(0,196,255,.8);box-shadow:0 0 18px #00bfff,0 0 54px rgba(0,164,255,.7),inset 0 0 42px rgba(0,184,255,.16);opacity:.84}
+#inicio .home-neon-orbit:before,#inicio .home-neon-orbit:after{content:"";position:absolute;border-radius:50%;inset:10%;border:1px solid rgba(75,229,255,.22)}
+#inicio .home-neon-orbit:after{inset:-18%;border-color:rgba(0,174,255,.11);filter:blur(.2px)}
+#inicio .home-brand-v2{position:absolute;z-index:3;left:22px;top:25px;display:grid;line-height:.88;text-shadow:0 2px 16px rgba(0,0,0,.42)}
+#inicio .home-brand-v2 span{font-size:clamp(22px,5.8vw,34px);font-weight:900;color:#fff;letter-spacing:.02em}
+#inicio .home-brand-v2 strong{font-size:clamp(34px,9vw,54px);font-weight:950;color:#10ddff;letter-spacing:.015em;text-shadow:0 0 22px rgba(0,209,255,.36)}
+#inicio .home-brand-v2 i{font-style:normal;color:#10ddff;font-size:34px;letter-spacing:-12px;margin:10px 0 0 10px;transform:rotate(-4deg)}
+#inicio .home-date-card{position:absolute;z-index:3;right:18px;top:25px;min-width:104px;padding:13px 12px;border:1px solid rgba(0,216,255,.55);border-radius:20px;text-align:center;background:linear-gradient(145deg,rgba(4,26,50,.86),rgba(1,12,27,.78));backdrop-filter:blur(12px);box-shadow:0 0 30px rgba(0,163,255,.12)}
+#inicio .home-date-card small{display:block;color:#9eafc2;font-size:10px;font-weight:800;text-transform:uppercase}
+#inicio .home-date-card b{display:block;color:#fff;font-size:35px;line-height:1;margin:4px 0}
+#inicio .home-date-card span{display:block;color:#11ddff;font-size:12px;font-weight:900;text-transform:uppercase}
+#inicio .home-greeting{position:absolute;z-index:3;left:22px;bottom:31px;color:#f7fbff;font-size:15px;font-weight:750;text-shadow:0 2px 10px #000}
+#inicio .home-content-v2{margin-top:-21px!important;max-width:780px;margin-left:auto;margin-right:auto;padding-bottom:28px!important}
+#inicio .home-today-shell{background:linear-gradient(145deg,rgba(4,31,61,.98),rgba(1,13,30,.99))!important;border-color:rgba(0,225,255,.8)!important;box-shadow:0 20px 45px rgba(0,0,0,.46),0 0 26px rgba(0,195,255,.09),inset 0 1px 0 rgba(255,255,255,.05)!important}
+#inicio .home-workout-icon{border:2px solid #07d9ff!important;background:radial-gradient(circle at 45% 35%,#0a75b8 0%,#022e5c 48%,#001329 78%)!important;box-shadow:0 0 14px #00b8ff,0 0 34px rgba(0,168,255,.46),inset 0 0 32px rgba(0,220,255,.2)!important}
+#inicio .home-workout-icon:after{content:"";position:absolute;width:118%;height:118%;border-radius:50%;border:1px solid rgba(23,221,255,.16)}
+#inicio .home-workout-icon{position:relative}
+#inicio .home-start-btn{background:linear-gradient(90deg,#0797ff,#20e6ef)!important;box-shadow:0 0 22px rgba(0,191,255,.26),inset 0 1px 0 rgba(255,255,255,.28)!important}
+#inicio .home-section-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:24px 4px 11px;color:#0edfff;font-size:13px;font-weight:950;letter-spacing:.035em}
+#inicio .home-section-line button{border:0;background:transparent;color:#0edfff;font-size:11px;font-weight:850;padding:4px 0}
+#inicio .home-section-line b{font-size:11px;color:#0edfff}
+#inicio .home-next-label{display:none!important}
+#inicio .home-next-card{background:linear-gradient(145deg,#062445,#021328)!important;border-color:rgba(37,126,200,.58)!important;box-shadow:0 12px 26px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.035)!important}
+#inicio .home-next-icon{background:linear-gradient(145deg,#075fbe,#032765)!important;border:1px solid rgba(0,212,255,.38);box-shadow:0 0 20px rgba(0,151,255,.2)}
+#inicio .home-weekly-summary{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid rgba(22,95,148,.58);border-radius:20px;background:linear-gradient(145deg,#06182d,#020d1d);overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+#inicio .home-stat{min-width:0;text-align:center;padding:15px 6px 13px;position:relative}
+#inicio .home-stat+.home-stat:before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:rgba(93,158,206,.2)}
+#inicio .home-stat i{display:grid;place-items:center;margin:0 auto 6px;width:29px;height:29px;color:#11ddff;font-style:normal;font-size:20px;text-shadow:0 0 13px rgba(0,222,255,.7)}
+#inicio .home-stat.fire i{color:#ff7b13;text-shadow:0 0 13px rgba(255,105,0,.55)}
+#inicio .home-stat strong{display:block;color:#fff;font-size:18px;line-height:1.1;white-space:nowrap}
+#inicio .home-stat span{display:block;color:#0edfff;font-size:8px;font-weight:900;text-transform:uppercase;margin-top:6px;line-height:1.2}
+#inicio .home-ring-mini{--p:63;position:relative;width:50px;height:50px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#12e7ff calc(var(--p)*1%),#103451 0);box-shadow:0 0 18px rgba(0,205,255,.22)}
+#inicio .home-ring-mini:before{content:"";position:absolute;inset:7px;border-radius:50%;background:#031326}
+#inicio .home-ring-mini b{position:relative;z-index:1;color:#fff;font-size:13px}
+#inicio .home-progress-panel{display:grid;grid-template-columns:1fr 1.5fr;border:1px solid rgba(22,95,148,.58);border-radius:20px;background:linear-gradient(145deg,#06182d,#020d1d);overflow:hidden;padding:15px;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+#inicio .home-load{padding-right:15px;border-right:1px solid rgba(85,145,191,.22)}
+#inicio .home-load small,#inicio .home-annual small{color:#aab7c7;font-size:10px;text-transform:uppercase}
+#inicio .home-load strong{display:block;color:#18efb1;font-size:16px;margin:4px 0 8px}
+#inicio .home-spark{height:66px;display:flex;align-items:flex-end;gap:4px}
+#inicio .home-spark i{flex:1;min-width:3px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#14efff,#0753ac);box-shadow:0 0 8px rgba(0,200,255,.22)}
+#inicio .home-annual{padding-left:16px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+#inicio .home-annual-ring{--p:63;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#14e4ff calc(var(--p)*1%),#113452 0);position:relative;box-shadow:0 0 22px rgba(0,196,255,.19)}
+#inicio .home-annual-ring:before{content:"";position:absolute;inset:9px;border-radius:50%;background:#031326}
+#inicio .home-annual-ring b{position:relative;color:#fff;font-size:22px}
+#inicio .home-annual-copy strong{display:block;color:#fff;font-size:21px}.home-annual-copy span{display:block;color:#9fb0c2;font-size:11px;margin-top:4px}.home-annual-copy em{display:block;height:6px;border-radius:5px;background:#0d2943;margin-top:10px;overflow:hidden}.home-annual-copy em i{display:block;height:100%;background:linear-gradient(90deg,#087cff,#16e8ff);border-radius:5px}
+#inicio .home-quick-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+#inicio .home-quick-grid button{min-width:0;border:1px solid rgba(31,98,151,.58);border-radius:17px;background:linear-gradient(145deg,#061a31,#020e1e);color:#fff;padding:12px 5px 10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#inicio .home-quick-grid i{display:grid;place-items:center;width:43px;height:43px;margin:0 auto 8px;border-radius:50%;border:1px solid #0bdfff;color:#0bdfff;font-style:normal;font-size:25px;box-shadow:0 0 14px rgba(0,210,255,.32),inset 0 0 16px rgba(0,210,255,.13)}
+#inicio .home-quick-grid span{font-size:9px;line-height:1.25;color:#eef8ff}
+@media(max-width:430px){
+ #inicio .home-hero-v2{min-height:350px!important;height:48vh!important;background-position:center 32%!important}
+ #inicio .home-neon-orbit{width:78vw;height:78vw;top:48%}
+ #inicio .home-brand-v2{left:16px;top:20px}.home-date-card{right:14px!important;top:20px!important}
+ #inicio .home-greeting{left:16px;bottom:29px}
+ #inicio .home-weekly-summary{grid-template-columns:repeat(5,minmax(0,1fr))}
+ #inicio .home-stat{padding:12px 2px 10px}.home-stat strong{font-size:15px!important}.home-stat span{font-size:7px!important}
+ #inicio .home-progress-panel{grid-template-columns:1fr 1.45fr;padding:12px}.home-annual-ring{width:64px!important;height:64px!important}.home-annual-ring b{font-size:18px!important}
+ #inicio .home-quick-grid{gap:5px}.home-quick-grid button{padding-left:2px!important;padding-right:2px!important}.home-quick-grid i{width:38px!important;height:38px!important;font-size:21px!important}.home-quick-grid span{font-size:8px!important}
+}
+
 </style>
 
 <div id="evolutionModal" class="analysis-modal" aria-hidden="true">
@@ -1128,11 +1200,31 @@ body[data-view="running"] .run-add-fab{display:grid}
 
 <main>
 <section id="inicio" class="view active">
-  <div class="home-hero" role="img" aria-label="Corredor contemplando una cordillera de montañas"></div>
-  <div class="home-content">
+  <div class="home-hero home-hero-v2" role="img" aria-label="Corredor entrenando entre montañas">
+    <div class="home-neon-orbit" aria-hidden="true"></div>
+    <div class="home-brand-v2"><span>CORREDOR</span><strong>SÓLIDO</strong><i aria-hidden="true">⌁⌁</i></div>
+    <div class="home-date-card" id="homeDateCard"></div>
+    <div class="home-greeting" id="homeGreeting">Buenas noches, Rafa</div>
+  </div>
+  <div class="home-content home-content-v2">
     <div id="todayWorkout"></div>
-    <div class="home-next-label">PRÓXIMO ENTRENAMIENTO</div>
+    <div class="home-section-line"><span>PRÓXIMO ENTRENAMIENTO</span><button type="button" onclick="setView('plan')">VER PLAN SEMANAL ›</button></div>
     <div id="homeNextWorkout"></div>
+
+    <div class="home-section-line"><span>RESUMEN SEMANAL</span><b id="homeWeekLabel">SEMANA</b></div>
+    <div id="homeWeeklySummary" class="home-weekly-summary"></div>
+
+    <div class="home-section-line"><span>TU PROGRESO</span></div>
+    <div id="homeProgressPanel" class="home-progress-panel"></div>
+
+    <div class="home-section-line"><span>ACCESOS RÁPIDOS</span></div>
+    <div class="home-quick-grid">
+      <button type="button" onclick="openAddMenu()"><i>＋</i><span>Añadir<br>entrenamiento</span></button>
+      <button type="button" onclick="openImportTraining()"><i>⌗</i><span>Analizar<br>capturas</span></button>
+      <button type="button" onclick="setView('progreso')"><i>▥</i><span>Estadísticas</span></button>
+      <button type="button" onclick="setView('running')"><i>♡</i><span>Zonas</span></button>
+      <button type="button" onclick="setView('material')"><i>⌁</i><span>Material</span></button>
+    </div>
 
     <div class="home-legacy" aria-hidden="true">
       <span id="weekKm"></span><span id="lastPace"></span><span id="lastHr"></span><span id="totalRuns"></span>
@@ -2000,6 +2092,57 @@ function homeMiniIcon(kind){
   return `<div class="home-next-icon">${homeIconSvg(k)}</div>`;
 }
 
+
+
+function openAddMenu(){
+ const b=document.querySelector('[data-add="run"]')||document.querySelector('[data-add="running"]');
+ if(b){b.click();return} setView('running');
+}
+function openImportTraining(){
+ setView('running');setTimeout(()=>{const b=document.querySelector('[data-import-training]')||document.getElementById('runImportBtn')||document.querySelector('[data-add="run"]');if(b)b.click()},120);
+}
+
+function homeMinutes(run){
+ const t=String(run?.time||run?.duration||'');
+ if(/^\d+:\d{2}:\d{2}$/.test(t)){const [h,m,sec]=t.split(':').map(Number);return h*60+m+sec/60}
+ if(/^\d+:\d{2}$/.test(t)){const [m,sec]=t.split(':').map(Number);return m+sec/60}
+ const n=Number(t);return Number.isFinite(n)?n:0;
+}
+function homeWeekInfo(){
+ const now=new Date(),day=(now.getDay()+6)%7,start=new Date(now);start.setDate(now.getDate()-day);start.setHours(0,0,0,0);
+ const end=new Date(start);end.setDate(start.getDate()+7);
+ const inWeek=d=>{const x=new Date(d+'T12:00:00');return x>=start&&x<end};
+ const runs=(data.runs||[]).filter(r=>r.date&&inWeek(r.date));
+ const gyms=(data.gym||[]).filter(r=>r.date&&inWeek(r.date));
+ const plan=(data.plan||[]).filter(p=>p.date&&inWeek(p.date));
+ const done=plan.filter(p=>p.status==='done').length;
+ const km=runs.reduce((n,r)=>n+Number(r.distance||0),0);
+ const mins=runs.reduce((n,r)=>n+homeMinutes(r),0)+gyms.reduce((n,g)=>n+Number(g.duration||0),0);
+ const kcal=runs.reduce((n,r)=>n+Number(r.calories||0),0)+gyms.reduce((n,g)=>n+Number(g.calories||0),0);
+ const pct=plan.length?Math.round(done/plan.length*100):0;
+ const jan4=new Date(now.getFullYear(),0,4),week=Math.ceil((((now-jan4)/86400000)+jan4.getDay()+1)/7);
+ return {runs,gyms,plan,done,km,mins,kcal,pct,week};
+}
+function renderHomePremium(){
+ const now=new Date(),days=['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'],months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+ const dc=document.getElementById('homeDateCard');if(dc)dc.innerHTML=`<small>${days[now.getDay()]}</small><b>${now.getDate()}</b><span>${months[now.getMonth()]} ${now.getFullYear()}</span>`;
+ const hour=now.getHours(),g=hour<13?'Buenos días':hour<20?'Buenas tardes':'Buenas noches';const ge=document.getElementById('homeGreeting');if(ge)ge.textContent=`${g}, Rafa 👋`;
+ const w=homeWeekInfo();const wl=document.getElementById('homeWeekLabel');if(wl)wl.textContent=`SEMANA ${w.week}`;
+ const duration=w.mins>=60?`${Math.floor(w.mins/60)}:${String(Math.round(w.mins%60)).padStart(2,'0')}`:`${Math.round(w.mins)} min`;
+ const hs=document.getElementById('homeWeeklySummary');if(hs)hs.innerHTML=`
+  <div class="home-stat"><i>⌁</i><strong>${w.km.toFixed(1).replace('.',',')}</strong><span>KM TOTALES</span></div>
+  <div class="home-stat"><i>◷</i><strong>${duration}</strong><span>TIEMPO TOTAL</span></div>
+  <div class="home-stat"><i>⌁</i><strong>${w.done} / ${w.plan.length||0}</strong><span>ENTRENOS</span></div>
+  <div class="home-stat fire"><i>♨</i><strong>${Math.round(w.kcal).toLocaleString('es-ES')}</strong><span>KCAL</span></div>
+  <div class="home-stat"><div class="home-ring-mini" style="--p:${w.pct}"><b>${w.pct}%</b></div><span>CUMPLIMIENTO</span></div>`;
+ const allRuns=[...(data.runs||[])].filter(r=>r.date).sort((a,b)=>a.date.localeCompare(b.date));
+ const year=now.getFullYear(),yearRuns=allRuns.filter(r=>String(r.date).startsWith(String(year))),yearKm=yearRuns.reduce((n,r)=>n+Number(r.distance||0),0),goal=2000,annual=Math.min(100,Math.round(yearKm/goal*100));
+ const bars=Array.from({length:12},(_,i)=>{const v=yearRuns.filter(r=>new Date(r.date+'T12:00:00').getMonth()===i).reduce((n,r)=>n+Number(r.distance||0),0);return v});const max=Math.max(1,...bars);
+ const hp=document.getElementById('homeProgressPanel');if(hp)hp.innerHTML=`
+  <div class="home-load"><small>CARGA DE ENTRENAMIENTO</small><strong>${w.done>=Math.max(1,w.plan.length*.6)?'ÓPTIMA':'EN PROGRESO'}</strong><div class="home-spark">${bars.slice(-8).map(v=>`<i style="height:${16+Math.round(v/max*48)}px"></i>`).join('')}</div></div>
+  <div class="home-annual"><div class="home-annual-ring" style="--p:${annual}"><b>${annual}%</b></div><div class="home-annual-copy"><small>PROGRESO ANUAL</small><strong>${yearKm.toFixed(0)} km</strong><span>de ${goal.toLocaleString('es-ES')} km</span><em><i style="width:${annual}%"></i></em></div></div>`;
+}
+
 function renderToday(){
  const today=isoDate(new Date()),items=data.plan.filter(p=>p.date===today);
  const main=items.find(p=>p.status!=="skipped")||items[0];
@@ -2025,6 +2168,7 @@ function renderToday(){
  if(nextEl)nextEl.innerHTML=future?`<div class="home-next-card" onclick="setView('${future.sport==='Gimnasio'?'gym':'plan'}')">${homeMiniIcon(future.sport==='Gimnasio'?'gym':'run')}<div class="home-next-copy"><strong>${future.title}</strong><span>${fmt(future.date)}${future.distance?` · ${Number(future.distance).toFixed(1).replace('.',',')} km`:''} · ${future.sport}</span></div><div class="home-next-arrow">›</div></div>`:`<div class="home-next-card" onclick="setView('plan')">${homeMiniIcon('add')}<div class="home-next-copy"><strong>Planifica tu próxima sesión</strong><span>Aún no hay más entrenamientos programados.</span></div><div class="home-next-arrow">›</div></div>`;
  const race=[...data.races].filter(r=>r.date>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
  $("#raceCountdown").innerHTML=race?`<div class="race-countdown"><div class="kicker">PRÓXIMA CARRERA</div><strong>${race.name}</strong><p class="note">Faltan ${Math.max(0,daysUntil(race.date))} días · ${race.distance||""} · ${fmt(race.date)}</p></div>`:"";
+ renderHomePremium();
  renderModuleToday();
 }
 function renderModuleToday(){
