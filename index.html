@@ -2231,7 +2231,9 @@ function homeWeekInfo(){
  const jan4=new Date(now.getFullYear(),0,4),week=Math.ceil((((now-jan4)/86400000)+jan4.getDay()+1)/7);
  return {runs,gyms,plan,done,km,mins,kcal,pct,week};
 }
-function renderHomePremium(){
+function renderHome(){
+ // V59 Step1: Home aislada
+
  const now=new Date(),days=['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'],months=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
  const dc=document.getElementById('homeDateCard');if(dc)dc.innerHTML=`<small>${days[now.getDay()]}</small><b>${now.getDate()}</b><span>${months[now.getMonth()]} ${now.getFullYear()}</span>`;
  const hour=now.getHours(),g=hour<13?'Buenos días':hour<20?'Buenas tardes':'Buenas noches';const ge=document.getElementById('homeGreeting');if(ge)ge.textContent=`${g}, Rafa 👋`;
@@ -2287,7 +2289,7 @@ function renderToday(){
      return `<button type="button" class="home-week-day ${iso===today?'active':''} ${type}" onclick="setView('plan')"><span>${label}</span><b>${d.getDate()}</b><i></i></button>`;
    }).join('');
  }
- renderHomePremium();
+ renderHome();
  renderModuleToday();
 }
 function renderModuleToday(){
