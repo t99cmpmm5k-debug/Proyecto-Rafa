@@ -2231,6 +2231,7 @@ function homeWeekInfo(){
  const jan4=new Date(now.getFullYear(),0,4),week=Math.ceil((((now-jan4)/86400000)+jan4.getDay()+1)/7);
  return {runs,gyms,plan,done,km,mins,kcal,pct,week};
 }
+/* V59 STEP2: Home legacy cleanup prepared */
 function renderHome(){
  // V59 Step1: Home aislada
 
